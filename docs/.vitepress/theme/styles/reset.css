@@ -1,0 +1,101 @@
+@media (width > 960px) {
+  :root {
+    --EAF-gap: 32px;
+    --EAF-radius: 10px;
+    --EAF-card-backgroun-color: rgba(27, 27, 31, 0.8);
+  }
+
+  .Layout {
+    background: var(--EAF-home-background-image);
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  /* nav-bar */
+  .VPNavBar .social-links {
+    margin-right: 0;
+  }
+
+  .VPNavBar .title {
+    border-bottom: none;
+  }
+
+  .VPNavBarTitle .title {
+    padding: 0 20px;
+  }
+
+  .VPNavBar .content-body {
+    padding-right: 32px;
+  }
+
+  /* local-nav */
+  .Layout .VPLocalNav.has-sidebar {
+    padding: 0 32px 0 var(--vp-sidebar-width);
+    background-color: transparent;
+  }
+
+  .VPLocalNav.has-sidebar .container {
+    background-color: var(--vp-nav-bg-color);
+    border-radius: 0 0 var(--EAF-radius) var(--EAF-radius);
+  }
+
+  /* side-bar */
+  .Layout .VPSidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+  }
+
+  .VPSidebar .curtain {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0 0 var(--EAF-radius) var(--EAF-radius);
+  }
+
+  .VPSidebar .nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--EAF-gap);
+    padding: 20px;
+    border-radius: var(--EAF-radius);
+    background-color: var(--EAF-card-backgroun-color);
+  }
+
+  .VPSidebar .nav .group {
+    width: auto;
+    border-top: 1px solid var(--vp-c-divider);
+  }
+
+  /* content */
+  .VPContent .VPDoc {
+    padding: var(--EAF-gap);
+    padding-left: 0;
+  }
+
+  .VPContent .container {
+    padding: 20px 0;
+    border-radius: var(--EAF-radius);
+    background-color: var(--EAF-card-backgroun-color);
+  }
+}
+
+@media (width > 1280px) {
+  .VPNavBar .content-body {
+    border-radius: 0 0 var(--EAF-radius) var(--EAF-radius);
+  }
+}
+
+/* colors */
+.VPNavBar .title {
+  color: var(--EAF-c-title);
+}
+
+.vp-doc h1 {
+  color: var(--EAF-c-h1);
+}
+
+.VPDocOutlineItem .outline-link:hover,
+.VPDocOutlineItem .outline-link.active {
+  color: var(--EAF-c-outline-link);
+}
