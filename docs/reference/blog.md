@@ -320,6 +320,6 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-### 代码推送
+## 结语
 
-在 `main` 分支上推送代码，github 会自动进行部署。
+所有配置好后，将更改推送到 `main` 分支并等待 `GitHub Action` 工作流完成，最后到 `GitHub Pages` 设置中就能查看到部署的网站地址，点击进行访问即可。后续只需要推送 `main` 分支，后台就能持续集成，自动部署。
