@@ -40,7 +40,7 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/Antik-0/ebb-and-flow' }
     ],
     outline: {
       label: '页面导航',
