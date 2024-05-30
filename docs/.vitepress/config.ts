@@ -58,10 +58,10 @@ export default defineConfig({
     },
     returnToTopLabel: '回到顶部',
     externalLinkIcon: true
-  },
+  }
 
   // vite.config
-  vite: {
-    configFile: 'vite.config.ts'
-  }
+  // vite: {
+  //   configFile: 'vite.config.ts'
+  // }
 })
