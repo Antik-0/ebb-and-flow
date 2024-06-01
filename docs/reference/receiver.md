@@ -10,7 +10,7 @@ MDN 中关于 [Reflect.get](https://developer.mozilla.org/zh-CN/docs/Web/JavaScr
 >
 > 如果遇到 setter，receiver 则为 setter 调用时的 this 值。
 
-上面的描述都提到了 this，通过一个例子即可说明。
+上面的描述都提到了 `this`，通过一个例子即可说明。
 
 ```js
 const foo = {
@@ -99,6 +99,6 @@ console.log(Object.hasOwn(bar, 'id')) // true
 
 ## 结语
 
-在 Reflect 中，receiver 对象指代了 **_getter/setter_** 中的 **this** 对象
+在 Reflect 中，receiver 对象指代了 **_getter/setter_** 中的 **this** 对象。
 
-在 Proxy 中， receiver 对象指代了 **最初被操作** 的对象
+在 Proxy 中， receiver 对象指代了 **最初被操作** 的对象。

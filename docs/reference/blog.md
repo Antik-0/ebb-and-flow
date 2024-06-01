@@ -108,9 +108,9 @@ export default defineConfig({
 设置一下开启压缩。
 
 ```ts
-import { compression } from 'vite-plugin-compression2'
 import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
+import compression from 'vite-plugin-compression'
 
 export default defineConfig(({ command, mode }) => {
   // path-alias
