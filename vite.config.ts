@@ -1,6 +1,6 @@
-import { compression } from 'vite-plugin-compression2'
 import { defineConfig } from 'vite'
 import { resolve } from 'node:path'
+import compression from 'vite-plugin-compression'
 
 export default defineConfig(({ command, mode }) => {
   // path-alias
