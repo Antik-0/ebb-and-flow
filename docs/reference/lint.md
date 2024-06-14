@@ -114,7 +114,7 @@ export default [
 pnpm add -D lint-staged
 ```
 
-安装完后，在 `package.json` 文件进行如下配置。
+安装完后，在 `package.json` 文件增加如下配置。
 
 ```json
 {
@@ -131,7 +131,7 @@ pnpm add -D lint-staged
 
 ## git-hooks 配置
 
-这里选择 vue 源码使用的工具 - `simple-git-hooks`。
+这里选择 vue 项目使用的工具 - `simple-git-hooks`。
 
 ```cmd
 pnpm add -D simple-git-hooks

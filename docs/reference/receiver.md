@@ -1,6 +1,8 @@
 # Receiver 对象
 
-`receiver` 这个对象存在于 Proxy 和 Reflect 实例中的 **_get_** 和 **_set_** 方法。关于 Proxy 和 Reflect 的更多知识可以参考 [阮一峰老师的 ES6 教程](https://wangdoc.com/es6/proxy) 以及 [MDN 文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect)。
+`receiver` 这个对象存在于 `Proxy/Reflect` 对象中的 **_get_** 和 **_set_** 方法。
+
+关于 `Proxy/Reflect` 的更多知识可以参考 [阮一峰老师的 ES6 教程](https://wangdoc.com/es6/proxy) 以及 [MDN 文档](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect)。
 
 ## Reflect
 
@@ -49,7 +51,7 @@ console.log(empty.n) // 100
 
 MDN 中关于 [handler.get](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/get) 和 [handler.set](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set) 有如下描述：
 
-> Proxy 或者继承 Proxy 的对象
+> Proxy 或者继承 Proxy 的对象。
 >
 > 最初接收赋值的对象。通常是 proxy 本身，但 handler 的 set 方法也有可能在原型链上，或以其他方式被间接地调用（因此不一定是 proxy 本身）。
 
