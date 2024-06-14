@@ -37,6 +37,11 @@ export default defineConfig({
           { text: '规范化', link: '/reference/lint' },
           { text: '博客搭建', link: '/reference/blog' }
         ]
+      },
+      {
+        text: '算法基础',
+        collapsed: false,
+        items: [{ text: '排序', link: '/algorithm/sort' }]
       }
     ],
     socialLinks: [
