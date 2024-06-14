@@ -1,13 +1,13 @@
 # Vue 源码解析之-Reactive
 
 ::: tip 前言
-本文解析的 vue 源码版本为 **_3.4.27_**，只涉及包 **packages/reactivity** 下的内容，一般文章的标题就是其对应的源码模块。
+本文解析的 vue 源码版本为 `3.4.27`，只涉及包 `packages/reactivity` 下的内容，一般文章的标题就是其对应的源码模块。
 
-推荐先阅读 vue 官方文档-[深入响应式系统](https://cn.vuejs.org/guide/extras/reactivity-in-depth.html)，对 dep(依赖)、effect(作用)等相关术语有所了解，这将有助于更好的理解 vue 响应式系统源码。
+推荐先阅读 vue 官方文档-[深入响应式系统](https://cn.vuejs.org/guide/extras/reactivity-in-depth.html)，理解 dep(依赖)、effect(作用)等相关术语，这将有助于更好的理解 vue 响应式系统。
 
 **vue3** 响应式系统的基础是 Proxy，关于 Proxy 的知识可查看[阮一峰老师的教程](https://wangdoc.com/es6/proxy)。
 
-为了行文方便，下文中出现 `reactive` 这个词并不是特指 `reactive` 这个函数，更多的是表示一个对象被 `reactive、readonly` 等响应式函数包装后具有了 vue 的响应性，是泛指这一系列代理，具体意思根据上下文会有所不同。
+为了行文方便，下文中出现 `reactive` 这个词有时候并不是特指 `reactive` 这个函数，更多的是表示一个对象被 `reactive、readonly` 等响应式函数包装后具有了 vue 的响应性，是泛指这一系列代理，具体意思根据上下文会有所不同。
 :::
 
 ## reactive
@@ -18,7 +18,7 @@
 export function reactive<T extends object>(target: T): UnwrapNestedRefs<T>
 export function reactive(target: object) {
   // if trying to observe a readonly proxy, return the readonly version.
-  // ✨如果target已存在只读代理(readonly)，返回只读代理
+  // ✨如果target已存在只读代理，返回只读代理
   if (isReadonly(target)) {
     return target
   }
@@ -62,7 +62,7 @@ function createReactiveObject(
   }
 
   // target already has corresponding Proxy
-  // ✨target已存在相应的响应式代理对象
+  // ✨target已存在响应式代理
   const existingProxy = proxyMap.get(target)
   if (existingProxy) {
     return existingProxy
@@ -82,7 +82,7 @@ function createReactiveObject(
     targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
   )
 
-  // ✨保存代理对象至对应的map
+  // ✨缓存代理对象至对应的map
   proxyMap.set(target, proxy)
   return proxy
 }
@@ -92,7 +92,7 @@ function createReactiveObject(
 
 ## ReactiveFlags
 
-`createReactiveObject` 开头使用了一个 `ReactiveFlags` 对象，这是一个 ts 的枚举对象，其定义以及相应属性涉及的工具函数如下：
+`createReactiveObject` 开头使用了一个 `ReactiveFlags` 对象，这是一个 `ts` 的枚举对象，其定义以及相应属性涉及的工具函数如下：
 
 ```ts
 export enum ReactiveFlags {
@@ -104,9 +104,9 @@ export enum ReactiveFlags {
 }
 ```
 
-该枚举对象的属性只有 `ReactiveFlags.SKIP` 是真正赋值到了 `target` 对象上，其余都是非常巧妙的通过 `proxy.get` 进行了代理，详情将在 **BaseHandlers** 文章中解释。
+该枚举的成员只有 `ReactiveFlags.SKIP` 是真正赋值到了代理对象上，其余都是非常巧妙的通过 `proxy.get` 进行了代理，详情将在 **BaseHandlers** 文章中解释。
 
-了解了上述 `ReactiveFlags` 的定义后，我们再来看下面这个表达式成立的条件：
+了解了上述 `ReactiveFlags` 枚举的定义后，我们再来看下面这个表达式成立的条件：
 
 > `!(isReadonly && target[ReactiveFlags.IS_REACTIVE])`
 
@@ -133,7 +133,7 @@ a.id += 1 // 触发watch
 b.id += 1 // 警告：b是一个只读对象，不会触发watch
 ```
 
-从例子中可以看到：`b` 是一个只读版本的代理，因此不能修改 `b` 的任何属性，但同时 `b` 代理的对象 `a` 是一个响应式对象，因此直接修改 `a` 身上的属性，也能触发**依赖 b 属性的 effect(即 watch)**，这样就保证了 **readonly** 工具既具备只读的特性，也保留了对象的响应性。
+从例子中可以看到：`b` 是一个只读版本的代理，因此不能修改 `b` 的任何属性，但同时 `b` 代理的对象 `a` 是一个响应式对象，因此直接修改 `a` 身上的属性，也能触发依赖 `b` 属性的 effect(即 watch)，这样就保证了 `readonly(reactive(target))` 这样调用既具备只读的特性，也保留了对象的响应性，而如果只是 `readonly(target)` 这样调用，意味着只是单纯的只读，不会进行任何的依赖收集。
 
 ## TargetType
 
@@ -272,7 +272,7 @@ export function shallowReadonly<T extends object>(target: T): Readonly<T> {
 在 `reactive.ts` 模块中，还暴露了一些工具 API，因为其定义都很简单，因此直接贴出代码即可。
 
 ```ts
-// ✨检查value是否是由 reactive() 或 shallowReactive() 创建的代理
+// ✨检查value是否是由 reactive()、shallowReactive() 创建的代理
 export function isReactive(value: unknown): boolean {
   if (isReadonly(value)) {
     return isReactive((value as Target)[ReactiveFlags.RAW])
@@ -285,7 +285,7 @@ export function isReadonly(value: unknown): boolean {
   return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
 }
 
-// ✨检查value是否是由 reactive()、readonly()、shallowReactive() 或 shallowReadonly() 创建的代理。
+// ✨检查value是否是由 reactive()、readonly()、shallowReactive()、shallowReadonly() 创建的代理。
 export function isProxy(value: unknown): boolean {
   return isReactive(value) || isReadonly(value)
 }
@@ -293,7 +293,7 @@ export function isProxy(value: unknown): boolean {
 // ✨返回vue响应代理的原始对象
 export function toRaw<T>(observed: T): T {
   /**
-   * 只有经过reactive等工具代理过的target，才会触发[ReactiveFlags.RAW]这个属性的get拦截
+   * 只有经过reactive等工具代理过的target，才会触发 ReactiveFlags.RAW 这个属性的get拦截
    * 只要返回的raw变量不是undefined，就说明observed还是一个vue的响应代理对象
    */
   const raw = observed && (observed as Target)[ReactiveFlags.RAW]
@@ -320,4 +320,4 @@ export const toReadonly = <T extends unknown>(value: T): T =>
 
 ## 结语
 
-以上就是 `reactive.ts` 模块的主要内容，该模块主要是暴露了 4 个响应式函数以及一些响应式工具，同时对响应式对象的类型边界进行处理，并引入了各种响应式函数的 **ProxyHandler**。其中 `COMMON` 类型的代理逻辑在 `baseHandlers.ts` 模块，`COLLECTION` 类型的代理逻辑在 `collectionHandlers.ts` 模块，接下来将分析 `baseHandlers.ts` 模块，即 vue 是如何代理 `Object/Array` 类型的对象。
+以上就是 `reactive.ts` 模块的主要内容，该模块主要是暴露了 4 个响应式函数以及一些响应式工具，同时对响应式对象的类型边界进行处理，并引入了各种响应式函数的 `ProxyHandler`。其中 `COMMON` 类型的代理逻辑在 `baseHandlers.ts` 模块，`COLLECTION` 类型的代理逻辑在 `collectionHandlers.ts` 模块，接下来将分析 `baseHandlers.ts` 模块，即 vue 是如何代理 `Object/Array` 类型的对象。

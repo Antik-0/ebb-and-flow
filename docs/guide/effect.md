@@ -34,7 +34,7 @@ export class ReactiveEffect<T = any> {
   // ✨effect的依赖集合，每个dep也保存着该effect，因此这个数组其实存在循环引用
   deps: Dep[] = []
 
-  // ✨如果依赖是一个计算属性，则绑定这个计算属性
+  // ✨计算属性同时作为一个作用和依赖，绑定这个计算属性方便访问
   computed?: ComputedRefImpl<T>
   allowRecurse?: boolean
 
@@ -48,7 +48,7 @@ export class ReactiveEffect<T = any> {
   // ✨脏检查，控制effect的调度时机，默认为最高级
   _dirtyLevel = DirtyLevels.Dirty
 
-  // ✨每次执行effect.run()和effect.stop()后，此Id会自增+1
+  // ✨每次执行effect.run/effect.stop后，此Id会自增+1
   _trackId = 0
 
   // ✨当前effect正在执行的次数
@@ -57,7 +57,7 @@ export class ReactiveEffect<T = any> {
   // ✨是否应该调度
   _shouldSchedule = false
 
-  // ✨依赖的集合数量
+  // ✨依赖集合的长度，同时也是收集依赖时的对应依赖的位置指针
   _depsLength = 0
 
   constructor(
@@ -91,7 +91,7 @@ export class ReactiveEffect<T = any> {
 }
 ```
 
-在这里只需简单了解 `ReactiveEffect` 类提供了哪些属性和方法，关于详细的解释，将在下文进行具体说明。
+在这里只需简单了解 `ReactiveEffect` 类提供了哪些属性和方法，关于详细的解释，将在下文逐步进行说明。
 
 ## dep: 依赖
 
@@ -114,17 +114,17 @@ export const createDep = (
 }
 ```
 
-`Dep` 的构造十分简单，从其类型中可以看到，`Dep` 就是一个存储了该依赖的订阅者 (effect) 的 Map 集合，其 `key` 为 `ReactiveEffect` 实例，`value` 为 `effect._trackId`，同时该集合还有 `cleanup` 和 `computed` 这两个额外属性。
+依赖的构造十分简单，从其类型定义中可以看到，`Dep` 就是一个存储了该依赖的订阅者 (effects) 的 `Map` 集合，其 `key` 为 `ReactiveEffect` 实例，`value` 为 `effect._trackId`，同时该集合还有 `cleanup` 和 `computed` 这两个额外属性。
 
 当我们了解 `effect` 和 `dep` 的构造后，就可以开始分析 `track` 和 `trigger` 了。
 
 ## track: 追踪依赖
 
-在了解 `effect` 和 `dep` 的结构后，我们知道 **effect** 有个 `deps` 属性会保存依赖，而一个 **dep** 则是其所有订阅的 `effect` 的 `Map` 集合。由于 `effect` 和 `dep` 是多对多的关系，因此需要这样的双边信息存储，才能够在**依赖更新**的时候触发其所有**订阅的作用**，同时在**清除某个作用**的时候，又能够快速找到该作用所有的依赖对应的这个 `effect`，取消其订阅。
+在了解 `effect` 和 `dep` 的结构后，我们知道 `effect` 有个 `deps` 属性会保存依赖，而一个 `dep` 则是其所有订阅者 **effects** 的 `Map` 集合。由于 `effect` 和 `dep` 是多对多的关系，因此需要这样的双边信息存储，才能够在**依赖更新**的时候触发其所有**订阅的作用**，同时在**清除某个作用**的时候，又能够快速找到该作用所有的依赖对应的这个 `effect`，取消其订阅。
 
 ### 操作类型
 
-首先，给出 **track** 的操作类型 `TrackOpTypes` 定义如下：
+首先，给出 track 的操作类型 `TrackOpTypes` 定义如下：
 
 ```ts
 export enum TrackOpTypes {
@@ -140,7 +140,7 @@ export enum TrackOpTypes {
 
 ### trackEffect
 
-**track** 操作的底层接口来自于 `trackEffect` 函数, 其作用就是对传入 `effect` 和 `dep` 参数进行双边的信息跟踪存储。
+track 操作的底层接口来自于 `trackEffect` 函数, 其作用就是对传入 `effect` 和 `dep` 参数进行双边的信息跟踪存储。
 
 ```ts
 export function trackEffect(
@@ -156,7 +156,7 @@ export function trackEffect(
     // ✨如果暂时不明白下面的更新逻辑，可以等看完 effect.run 部分再回来理解✨
 
     // ✨_depsLength 指针指向了当前 dep 在 effect.deps 中的位置
-    // ✨更直白的说：_depsLength 表示这个依赖在 effect 中是第几个访问的
+    // ✨更直白的说：_depsLength 的当前值表示这个依赖在 effect 中是第几个访问的
     const oldDep = effect.deps[effect._depsLength]
     if (oldDep !== dep) {
       // ✨ oldDep !== dep 说明 effect 中的依赖顺序发生了变化
@@ -188,7 +188,7 @@ export function trackEffect(
 
 ### ref
 
-对于 `ref` 响应式函数的 **track** 处理，其调用入口为 `trackRefValue`，位于 `ref.ts` 模块，相应的源码如下：
+对于 `ref` 响应式函数的 track 处理，其调用入口为 `trackRefValue`，位于 `ref.ts` 模块，相应的源码如下：
 
 ```ts
 export function trackRefValue(ref: RefBase<any>) {
@@ -213,15 +213,19 @@ export function trackRefValue(ref: RefBase<any>) {
 }
 ```
 
-可以看到，`trackRefValue` 在 `trackEffect` 外部加了一层当前是否存在活跃的副作用以及是否应该 **track** 的判断。
+可以看到，`trackRefValue` 在 `trackEffect` 外部加了一层当前是否存在活跃的副作用以及是否应该 track 的判断。
 
-同时我们也知道 `ref` 本质是一个对外暴露了 `.value` 属性的对象，因此也可以对其进行 **readonly** 代理，改变其 `.value` 属性为只读，这与 `readonly(reactive(target))` 的情况是一样的，因此需要对其进行 `toRaw(ref)` 转换。
+同时我们也知道 `ref` 本质是一个对外暴露了 `.value` 属性的对象，因此也可以对其进行 `readonly` 代理，改变其 `.value` 属性为只读，这与 `readonly(reactive(target))` 的情况是一样的，因此需要对其进行 `toRaw(ref)` 转换。
 
-并且，可以看到对于 `ref` 的 **track** 是只跟踪了其 `.value` 属性，如果 `.value` 的值是一个对象，那么对其的响应性跟踪则由 `reactive` 接管，见下文。
+并且，可以看到对于 `ref` 的 track 是只跟踪了其 `.value` 属性，如果 `.value` 的值是一个对象，那么对其的响应性跟踪则由 `reactive` 接管，见下文。
+
+:::tip
+对于 `ref` 而言，不需要像 `reactive` 那样将每个追踪的 key 都缓存在一个 `map` 中，因为只追踪了其 `.value` 一个属性，因而在 `ref` 类有一个 `dep` 属性用来保存 `.value` 这个依赖，方便访问。
+:::
 
 ### reactive
 
-对于 `reactive` 函数，即对象类型的 **track** 处理，其调用入口为 `track` 函数，位于 `reactiveEffect.ts` 模块，相应的源码如下：
+对于 `reactive` 函数，即对象类型的 track 处理，其调用入口为 `track` 函数，位于 `reactiveEffect.ts` 模块，相应的源码如下：
 
 ```ts
 export function track(target: object, type: TrackOpTypes, key: unknown) {
@@ -261,13 +265,13 @@ type KeyToDepMap = Map<any, Dep>
 const targetMap = new WeakMap<object, KeyToDepMap>()
 ```
 
-不同于 `ref` 类型，由于 `reactive` 是惰性转换的，因此只需要**追踪需要用到**的 `key`，并创建相应的依赖即可。
+不同于 `ref` 类型，由于 `reactive` 是惰性转换的，因此只需要追踪需要用到的 `key`，并创建相应的依赖即可。
 
 ## trigger: 触发作用
 
 ### 操作类型
 
-首先，给出 **trigger** 的操作类型 `TriggerOpTypes` 定义如下：
+首先，给出 trigger 的操作类型 `TriggerOpTypes` 定义如下：
 
 ```ts
 export enum TriggerOpTypes {
@@ -280,7 +284,7 @@ export enum TriggerOpTypes {
 
 ### 脏检查
 
-在分析 **trigger** 之前，先来看看 `effect` 中的 **“脏”** 问题。在 `ReactiveEffect` 类中有一个 `_dirtyLevel` 属性，初始化的时候被赋值为 `DirtyLevels.Dirty`，对于 `DirtyLevels` 的定义如下：
+在分析 trigger 之前，先了解一下 `effect` 中的 **“脏”** 问题。在 `ReactiveEffect` 类中有一个 `_dirtyLevel` 属性，初始化的时候被赋值为 `DirtyLevels.Dirty`，对于 `DirtyLevels` 这个枚举的定义如下：
 
 ```ts
 export enum DirtyLevels {
@@ -292,11 +296,11 @@ export enum DirtyLevels {
 }
 ```
 
-脏检查是一种用于检测数据是否已经发生变化从而判断需要重新渲染的机制，因此这些脏等级是与数据是否发生变化有关。目前，我们只需知道：**当值为 `Dirty` 时，表示数据发生变化，需要进行相应的更新操作即可**。
+脏检查是一种用于检测数据是否已经发生变化从而判断需要重新渲染的机制，因此这些脏等级是与数据是否发生变化有关。目前，我们只需知道：当值为 `Dirty` 时，表示数据发生变化，需要进行相应的更新操作即可。
 
 ### triggerEffects
 
-**trigger** 操作的底层接口是 `triggerEffects` 函数，其源码如下：
+trigger 操作的底层接口是 `triggerEffects` 函数，其源码如下：
 
 ```ts
 export function triggerEffects(
@@ -338,7 +342,7 @@ export function triggerEffects(
         (!effect._runnings || effect.allowRecurse) &&
         effect._dirtyLevel !== DirtyLevels.MaybeDirty_ComputedSideEffect
       ) {
-        // ✨在一个时间片中effect只能调度一次
+        // ✨在一个更新周期中effect只能调度一次
         effect._shouldSchedule = false
         if (effect.scheduler) {
           queueEffectSchedulers.push(effect.scheduler)
@@ -356,7 +360,7 @@ export function triggerEffects(
 
 ### ref
 
-对于 `ref` 响应式函数的 **trigger** 处理，其调用入口为 `triggerRefValue`，位于 `ref.ts` 模块，相应的源码如下：
+对于 `ref` 响应式函数的 trigger 处理，其调用入口为 `triggerRefValue`，位于 `ref.ts` 模块，相应的源码如下：
 
 ```ts
 export function triggerRefValue(
@@ -393,7 +397,7 @@ class RefImpl<T> {
 
 ### reactive
 
-对于 `reactive` 响应式函数的 **trigger** 处理，其调用入口为 `trigger`，位于 `reactiveEffect.ts` 模块，由于 `trigger` 的逻辑有点多，因此将切割为 3 部分进行讲解。
+对于 `reactive` 响应式函数的 trigger 处理，其调用入口为 `trigger`，位于 `reactiveEffect.ts` 模块，由于 `trigger` 的逻辑有点多，因此将切割为 3 部分进行说明。
 
 第 1 部分：
 
@@ -544,9 +548,9 @@ export function trigger(
 
 ### 额外细节
 
-首先，对于 `ref` 和 `reactive` 的 **trigger** 操作，可以看到，传入的 `dirtyLevel` 参数都是 `DirtyLevels.Dirty`，根据**脏检查**的概念，也就是说，所有的 **trigger** 操作都视为是数据发生了变化。
+首先，对于 `ref` 和 `reactive` 的 trigger 操作，可以看到，传入的 `dirtyLevel` 参数都是 `DirtyLevels.Dirty`，根据脏检查的概念，也就是说，所有的 trigger 操作都视为是数据发生了变化。
 
-其次，在 `triggerEffects` 这个底层 API 中，我们并没有看到实际运行的 effect 的相关代码，其中只涉及到了调度的操作，然而，调度并不是真正的触发数据更新的行为。出于性能考量，vue 采用批处理的方式进行数据更新和渲染，诚如官网所说：
+其次，在 `triggerEffects` 这个底层 API 中，我们并没有看到实际运行 effect 的相关代码，其中只涉及到了调度的操作，然而，调度并不是真正的触发数据更新的行为。出于性能考量，vue 采用批处理的方式进行数据更新和渲染，诚如官网所说：
 
 > 类似于组件更新，用户创建的侦听器回调函数也会被批量处理以避免重复调用。
 
@@ -554,7 +558,7 @@ export function trigger(
 
 ## effect 的调度
 
-在分析 `effect` 的调度问题前，还有一个坑需要填下。在文章开头部分给出了 `ReactiveEffect` 类的简化代码，其中我们省略了 `.run` 和 `.stop` 方法，因此先对这两个方法进行说明。
+在分析 `effect` 的调度问题前，还有一个坑需要填下。在文章开头部分给出了 `ReactiveEffect` 类的简化代码，其中省略了 `.run` 和 `.stop` 方法，因此先对这两个方法进行说明。
 
 ### effect.run
 
@@ -627,7 +631,7 @@ function cleanupDepEffect(dep: Dep, effect: ReactiveEffect) {
 }
 ```
 
-首先，`run` 方法更新了 `_dirtyLevel` 属性为 `notDirty`，结合前文 `triggerEffects` 函数中的过滤，这表明在当前调度时间片中，接下来不会再次对此 effect 进行调度。接着是将该 effect 赋值为顶层变量 `activeEffect`，设置当前作用为正在活跃的副作用，同时保存之前活跃的作用状态，然后准备执行当前副作用。
+首先，`run` 方法更新了 `_dirtyLevel` 属性为 `notDirty`，结合前文 `triggerEffects` 函数中的过滤，这表明在当前更新周期中，接下来不会再次对此 effect 进行调度。接着是将该 effect 赋值为顶层变量 `activeEffect`，设置当前作用为正在活跃的副作用，同时保存之前活跃的作用状态，然后准备执行当前副作用。
 
 接着执行到 `this._runnings++`，`runings` 表示当前作用正在被执行的次数，这个计数的实际用途，在这个模块中没找到，猜测是因为后面 `this.fn()` 的执行也许会再次调用该作用，因此需要进行计数，以便于进行相关的优化。
 
@@ -654,7 +658,7 @@ proxy.two = 200 // 触发watchEffect
 proxy.one = 100 // watchEffect的依赖变为one和three，删除了two依赖
 ```
 
-在上面的例子中，`watchEffect` 首次运行只有 `one` 和 `two` 两个依赖，为什么没有 `three`？因为压根就没有触发 `three` 属性的 `get` 或者任何其他的取值拦截操作。当修改 `one` 的值后，作用重新运行`(this.fn()执行)`，此时由于内部的流程控制更改，导致没有触发 `two` 的 `get`，而触发了 `three` 的 `get`，因此作用重新运行后，相应的依赖也发生了变化。
+在上面的例子中，`watchEffect` 首次运行只有 `one` 和 `two` 两个依赖，为什么没有 `three`？因为压根就没有触发 `three` 属性的 `get` 或者任何其他的取值拦截操作。当修改 `one` 的值后，作用重新运行`(执行this.fn)`，此时由于内部的流程控制更改，导致没有触发 `two` 的 `get`，而触发了 `three` 的 `get`，因此作用重新运行后，相应的依赖也发生了变化。
 
 通过上述例子可以得知：**一个副作用是不确定的，每次运行后产生的依赖也会有所不同**。
 
@@ -730,12 +734,12 @@ export function resetScheduling() {
 }
 ```
 
-对于调度，需要关注的一点就是如何：通过调度优化，来减少 effect 的重复触发次数，进而实现批量更新。
+对于调度，需要关注的一点就是：如何通过调度优化，来减少 effect 的重复触发次数，进而实现批量更新。
 
 在上文中的 `triggerEffects` 和 `trigger` 源码中，我们注意到在进行依赖和作用的遍历操作时，其外层都包含了一对 `pauseScheduling` 和 `resetScheduling` 调用，
 其目的就是等一个作用的所有依赖的更新都结束了，再将该作用推入一个任务队列。
 
-其实，这个模块的调度并不是 vue 批处理的关键，其核心逻辑在别的包，不在 `reactivity` 这个包中，由于我还没阅读到，这里也不打算多说什么了，就以 `watchEffect` 函数为例，看看这个模块中的调度做了什么吧。
+其实，这个模块的调度并不是 vue 批处理的关键，其核心逻辑在别的包，不在 `reactivity` 这个包中，由于我还没阅读到，这里也就不打算展开了，就以 `watchEffect` 函数为例，看看这个模块中的调度做了什么吧。
 
 首先，在 `watchEffect` 运行的时候，会创建一个 `ReactiveEffect` 实例，并且传入 `scheduler` 调度器参数，其代码如下：
 

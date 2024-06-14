@@ -2,7 +2,7 @@
 
 ## ref
 
-Ref 可以持有任何类型的值，包括深层嵌套的对象、数组或者 JavaScript 内置的数据结构。其入口代码如下：
+`Ref` 可以持有任何类型的值，包括深层嵌套的对象、数组或者 JavaScript 内置的数据结构，其入口代码如下：
 
 ```ts
 export function ref(value?: unknown) {
@@ -21,14 +21,14 @@ function createRef(rawValue: unknown, shallow: boolean) {
 }
 ```
 
-从 `ref` 和 `shallowRef` 的 ts 接口可以看到，其参数 `value` 是一个可选参数，因此直接调用 `ref()` 也是合法的，这将返回一个值为 `undefined` 的 ref。 同时两个函数的核心是一个 `RefImpl` 类，源码如下：
+从 `ref` 和 `shallowRef` 的 `ts` 接口可以看到，其参数 `value` 是一个可选参数，因此直接调用 `ref()` 也是合法的，这将返回一个值为 `undefined` 的 `ref`。 同时两个函数的核心是一个 `RefImpl` 类，源码如下：
 
 ```ts
 class RefImpl<T> {
   private _value: T
   private _rawValue: T
 
-  // ✨dep(依赖)，该dep指的是ref.value这个依赖
+  // ✨依赖，该依赖指的是ref.value这个依赖
   public dep?: Dep = undefined
   public readonly __v_isRef = true
 
@@ -63,11 +63,11 @@ class RefImpl<T> {
 }
 ```
 
-`RefImpl` 类的逻辑很简单，只提供了一个 `.value` 属性的 **getter** 和 **setter**，然后在 **getter** 中追踪依赖，在 **setter** 中触发依赖该 ref 的 effect。在构造器 `constructor` 中，对于 `.value` 的响应式转换是通过 `toReactive` 函数进行，`toReactive` 函数的源码非常简单，只有一行：
+`RefImpl` 类的逻辑很简单，只提供了一个 `.value` 属性的 `getter` 和 `setter`，然后在 `getter` 中追踪依赖，在 `setter` 中触发依赖该 `ref` 的 effects。在构造器 `constructor` 中，对于 `.value` 的响应式转换是通过 `toReactive` 函数进行，`toReactive` 函数的源码非常简单，只有一行：
 
 > `toReactive = (value) => isObject(value) ? reactive(value) : value`
 
-可以看到，如果传入 ref 的值是一个对象，那么其转换是交给 `reactive` 函数，如果是原始类型，则直接返回。
+可以看到，如果传入 `ref` 的值是一个对象，那么其转换由 `reactive` 函数接管，如果是原始类型，则直接返回。
 
 对于 `trackRefValue` 和 `triggerRefValue` 这两个处理 **effects** 的函数，这里先不展开分析，放到后面 effects 章节再进行讲解。同时在 `ref.ts` 模块中还提供了一些响应式工具，这些工具很常用，因此下面进行介绍。
 
@@ -188,7 +188,7 @@ export function toRef(
 
 `toRef` 根据传参的不同有 4 种返回情况，我们关注的是第 2/3 种的 if 条件。
 
-首先是第 2 种，该 `if` 转换的对象是一个 **getter** 函数，`toRef` 会返回一个只有 **getter** 代理的 ref，即 **readonly** 版本的 ref 对象。其构造类 `GetterRefImpl` 的源码如下：
+首先是第 2 种，该 `if` 转换的对象是一个 `getter函数`，`toRef` 会返回一个只有 **getter** 代理的 `ref`，即 `readonly` 版本的 `ref` 对象。其构造类 `GetterRefImpl` 的源码如下：
 
 ```ts
 class GetterRefImpl<T> {
@@ -201,7 +201,7 @@ class GetterRefImpl<T> {
 }
 ```
 
-由于是 **readonly** 的，因此无需 **track** 和 **trigger** 操作，代码十分简单。根据官方文档的介绍，这种情况主要在：把一个 prop 的属性作为 ref 传递给一个组合式函数时会很有用。[toRef 介绍](https://cn.vuejs.org/api/reactivity-utilities.html#toref)
+由于是 `readonly` 的，因此无需 `track/trigger` 操作，代码十分简单。根据官方文档的介绍，这种情况主要在：把一个 prop 的属性作为 ref 传递给一个组合式函数时会很有用。[toRef 介绍](https://cn.vuejs.org/api/reactivity-utilities.html#toref)
 
 接着是第 3 种情况，此种情况要求入参的 `soure` 是一个 `Object` 类型，同时要需要传入 `key` 参数，表明要转换对象的哪个属性。其转换函数 `propertyToRef` 的源码如下：
 
@@ -242,7 +242,7 @@ class ObjectRefImpl<T extends object, K extends keyof T> {
 }
 ```
 
-通过观察 `ObjectRefImpl` 的 **getter** 和 **setter**，我们可以发现一个点，就是：`ObjectRefImpl` 内部也没有进行 **track** 和 **trigger** 操作，其 **get** 和 **set** 都是直接作用与原对象上，因此如果传入的 `object` 参数不是一个 **reactive**，那么返回的 ref 实例也就不是响应式的。
+通过观察 `ObjectRefImpl` 的 `getter/setter`，我们可以发现一个点，就是：`ObjectRefImpl` 内部也没有进行 `track/trigger` 操作，其 `get/set` 操作都是直接作用在原对象上，因此如果传入的 `object` 参数不是一个 `reactive`，那么返回的 `ref` 实例也就不是响应式的。
 
 ```ts
 const target = toRef({ id: 1 }, 'id')
@@ -273,9 +273,9 @@ export function toRefs<T extends object>(object: T): ToRefs<T> {
 }
 ```
 
-从源码中可以看到，`toRefs` 的转换就是 `toRef` 的第三种情况，都是用的 `propertyToRef` 方法，但是缺少了 `defaultValue` 参数，同时，前面我们已经知道，`propertyToRef` 方法内部并没有强制要求转换的对象是一个 **reactive**，而 `toRefs` 应该被用于 **reactive** 对象的转换，因此方法首先是对 `object` 参数做了一个 `isProxy` 的检查。
+从源码中可以看到，`toRefs` 的转换就是 `toRef` 的第三种情况，都是用的 `propertyToRef` 方法，但是缺少了 `defaultValue` 参数，同时，前面我们已经知道，`propertyToRef` 方法内部并没有强制要求转换的对象是一个 `reactive`，而 `toRefs` 应该被用于 `reactive` 对象的转换，因此方法首先是对 `object` 参数做了一个 `isProxy` 的检查。
 
-此外小提一点，官方文档指出：每个单独的 ref 都是使用 toRef() 创建的。但查看源码后得知，其实是通过 `propertyToRef` 函数创建的，不过其根本都是一样的。
+此外小提一点，官方文档指出：每个单独的 `ref` 都是使用 `toRef()` 创建的。但查看源码后得知，其实是通过 `propertyToRef` 函数创建的，不过其根本都是一样的。
 
 ## 结语
 

@@ -1,6 +1,6 @@
 # Vue 源码解析之-Computed
 
-当看完前面的 `reactive`，`ref` 和 `effect` 内容后，再来看 `computed` 的内容就简单许多了，因为 `computed` 本身内容也不多，那么话不多说，直接开始吧。
+当看完前面的 `reactive`，`ref` 和 `effect` 内容后，再来看 `computed` 的内容就简单许多了，加上 `computed` 本身内容也不多，那么话不多说，直接开始吧。
 
 ## computed
 
@@ -140,7 +140,7 @@ export class ComputedRefImpl<T> {
 - effect.dirty > 0
 - getter 的返回值发生了变化
 
-在这 3 点中，我们主要关注第 2 点，即什么时候 `effect.dirty > 0`。由于 `computed` 本身就是一个 `effect`，因此当 `getter` 中的**依赖**发生变化，就会触发这个计算属性作用，而在之前的文章中已经了解到，在 **trigger** 过程中，会改变 `dirty` 的值，因为数据发生了变化。同时还注意到在 `constructor` 中，创建的 `effect` 实例，传入的 `trigger` 参数中，设置的 `dirtyValue` 为 `DirtyLevels.MaybeDirty_ComputedSideEffect || DirtyLevels.MaybeDirty`，因此只要 `getter` 中的依赖发生了变化，就会重新计算 `computed` 的值，值得注意的是在后面的 `hasChange` 判断中，只要重新计算的新值与旧值符合 `Object.is`，那么缓存也不会失效。
+在这 3 点中，我们主要关注第 2 点，即什么时候 `effect.dirty > 0`。由于 `computed` 本身就是一个 `effect`，因此当 `getter` 中的**依赖**发生变化，就会触发这个计算属性作用，而在之前的文章中已经了解到，在 trigger 过程中，会改变 `dirty` 的值，因为数据发生了变化。同时还注意到在 `constructor` 中，创建的 `effect` 实例，传入的 `trigger` 参数中，设置的 `dirtyValue` 为 `DirtyLevels.MaybeDirty_ComputedSideEffect || DirtyLevels.MaybeDirty`，因此只要 `getter` 中的依赖发生了变化，就会重新计算 `computed` 的值，值得注意的是在后面的 `hasChange` 判断中，只要重新计算的新值与旧值符合 `Object.is`，那么缓存也不会失效。
 
 接着是处理了一个边界问题，其中警告的内容如下：
 
