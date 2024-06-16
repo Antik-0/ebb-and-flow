@@ -35,7 +35,8 @@ export default defineConfig({
         items: [
           { text: 'Receiver', link: '/reference/receiver' },
           { text: '规范化', link: '/reference/lint' },
-          { text: '博客搭建', link: '/reference/blog' }
+          { text: '博客搭建', link: '/reference/blog' },
+          { text: '网络文章', link: '/reference/links' }
         ]
       },
       {
