@@ -39,29 +39,30 @@ function handleEnter() {
 <style scoped>
 .avatar {
   position: relative;
-  margin: 0 auto;
+  width: var(--EAF-cover-avatar-size);
+  height: var(--EAF-cover-avatar-size);
 }
 
 .avatar-bg {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--EAF-cover-avatar-size);
-  height: var(--EAF-cover-avatar-size);
+  inset: 0;
   border-radius: 50%;
+  opacity: 0.4;
   background: var(--EAF-cover-avatar-background);
-  filter: blur(80px);
-  transform: translate(-50%, -50%);
+  filter: blur(60px);
   z-index: 10;
+  transition: all 1s ease-in;
+}
+
+.avatar:hover .avatar-bg {
+  opacity: 1;
 }
 
 .avatar-src {
-  position: relative;
-  width: var(--EAF-cover-avatar-size);
-  height: var(--EAF-cover-avatar-size);
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
-  box-shadow: var(--EAF-cover-avatar-shadow);
-  transition: all 0.6s ease-in;
+  transition: all 1s ease-in;
   z-index: 20;
 }
 
@@ -70,13 +71,13 @@ function handleEnter() {
 }
 
 .name {
-  align-self: center;
   margin: 0 0 -20px;
   padding: 32px 0;
   width: 360px;
   font-size: 48px;
-  font-weight: 600;
   line-height: 60px;
+  font-weight: 600;
+  text-align: center;
   color: var(--EAF-cover-name-color);
   background: var(--EAF-cover-name-background);
   background-clip: text;
