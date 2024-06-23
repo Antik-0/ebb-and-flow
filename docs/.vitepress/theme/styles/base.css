@@ -2,6 +2,23 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  background: var(--body-background-image) center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#app {
+  position: relative;
+  z-index: 20;
+}
+
+#meteor-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
 .EAFHome {
   display: flex;
   flex-direction: column;
@@ -9,8 +26,6 @@ html {
   min-height: 100vh;
   line-height: 1;
   overflow: hidden;
-  background: var(--EAF-home-background-image) center no-repeat;
-  background-size: cover;
 }
 
 .EAFHome-cover {

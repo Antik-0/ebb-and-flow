@@ -2,8 +2,8 @@
 import DefaultTheme from 'vitepress/theme'
 import EAFHome from './components/EAFHome.vue'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
-import { computed } from 'vue'
-import { useViewTransition } from './hooks/useViewTransition'
+import { computed, onMounted } from 'vue'
+import { useViewTransition, useMeteorAnimation } from './hooks'
 
 defineOptions({ name: 'EAFLayout' })
 
@@ -42,6 +42,11 @@ const routerGuard: RouterGuard = {
 }
 
 Object.assign(router, routerGuard)
+
+onMounted(() => {
+  // use 流星动画
+  useMeteorAnimation()
+})
 </script>
 
 <template>

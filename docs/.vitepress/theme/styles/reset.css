@@ -1,31 +1,22 @@
+:root {
+  --EAF-gap: 32px;
+  --EAF-radius: 10px;
+  --EAF-card-backgroun-color: rgba(27, 27, 31, 0.8);
+}
+
 @media (width > 960px) {
-  :root {
-    --EAF-gap: 32px;
-    --EAF-radius: 10px;
-    --EAF-card-backgroun-color: rgba(27, 27, 31, 0.8);
-  }
-
-  .Layout {
-    background: var(--EAF-home-background-image);
-    background-size: cover;
-    background-attachment: fixed;
-  }
-
   /* nav-bar */
   .VPNavBar .social-links {
     margin-right: 0;
   }
 
-  .VPNavBar .title {
-    border-bottom: none;
+  .VPNavBar .content-body {
+    padding-right: 32px;
   }
 
   .VPNavBarTitle .title {
     padding: 0 20px;
-  }
-
-  .VPNavBar .content-body {
-    padding-right: 32px;
+    border-bottom: none;
   }
 
   /* local-nav */
@@ -35,8 +26,8 @@
   }
 
   .VPLocalNav.has-sidebar .container {
-    background-color: var(--vp-nav-bg-color);
     border-radius: 0 0 var(--EAF-radius) var(--EAF-radius);
+    background-color: var(--vp-nav-bg-color);
   }
 
   /* side-bar */
@@ -76,6 +67,12 @@
   .VPContent .container {
     padding: 20px 0;
     border-radius: var(--EAF-radius);
+    background-color: var(--EAF-card-backgroun-color);
+  }
+}
+
+@media (width < 960px) {
+  .VPContent .VPDoc {
     background-color: var(--EAF-card-backgroun-color);
   }
 }

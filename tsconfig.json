@@ -27,7 +27,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Types */
-    "types": ["node"]
+    "types": ["node", "@types/lodash-es"]
   },
   "include": ["docs/**/*.ts", "docs/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

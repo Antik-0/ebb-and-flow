@@ -1,6 +1,7 @@
 /* home */
 :root {
-  --EAF-home-background-image: url('/assets/EAF-home.png');
+  --body-background-image: url('/assets/EAF-home.png');
+
   --EAF-cover-padding: 200px 60px 64px;
   --EAF-cover-avatar-size: 160px;
   --EAF-cover-avatar-shadow--hover: 0 0 10px 0 #7b9ebb;
