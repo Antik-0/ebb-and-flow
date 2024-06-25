@@ -36,6 +36,7 @@ export default defineConfig({
           { text: 'Receiver', link: '/reference/receiver' },
           { text: 'CSS-@layer', link: '/reference/css-@layer' },
           { text: 'Monorepos', link: '/reference/monorepos' },
+          { text: '视图过渡', link: '/reference/view-transitions' },
           { text: '规范化', link: '/reference/lint' },
           { text: '博客搭建', link: '/reference/blog' },
           { text: '网络文章', link: '/reference/links' }

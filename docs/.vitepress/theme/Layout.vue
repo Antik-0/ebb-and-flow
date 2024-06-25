@@ -26,12 +26,12 @@ interface RouterGuard {
 
 const routerGuard: RouterGuard = {
   onBeforeRouteChange(to) {
-    // 首页滑出
+    // 主页滑出
     if (to === withBase('/guide/reactive')) {
       viewTransitionStart(true)
     }
 
-    // 首页滑入
+    // 主页滑入
     if (to === site.value.base) {
       viewTransitionStart(false)
     }
