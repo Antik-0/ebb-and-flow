@@ -35,6 +35,7 @@ export default defineConfig({
         items: [
           { text: 'Receiver', link: '/reference/receiver' },
           { text: 'CSS-@layer', link: '/reference/css-@layer' },
+          { text: 'Monorepos', link: '/reference/monorepos' },
           { text: '规范化', link: '/reference/lint' },
           { text: '博客搭建', link: '/reference/blog' },
           { text: '网络文章', link: '/reference/links' }
