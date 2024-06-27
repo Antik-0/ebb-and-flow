@@ -84,24 +84,21 @@ body {
 
 /* Home View Transitions */
 ::view-transition-group(root) {
-  animation-duration: 1.6s;
-  animation-timing-function: ease-in;
+  --transition-duration: 1.6s;
 }
 
 .home-slide-out::view-transition-old(root) {
-  animation-name: slide-down;
-  animation-direction: reverse;
+  animation: slide-down var(--transition-duration) ease reverse;
 }
 
 .home-slide-out::view-transition-new(root) {
-  animation-name: slide-up;
+  animation: slide-up var(--transition-duration) ease;
 }
 
 .home-slide-in::view-transition-old(root) {
-  animation-name: slide-up;
-  animation-direction: reverse;
+  animation: slide-up var(--transition-duration) ease reverse;
 }
 
 .home-slide-in::view-transition-new(root) {
-  animation-name: slide-down;
+  animation: slide-down var(--transition-duration) ease;
 }

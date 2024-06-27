@@ -16,32 +16,31 @@ const isCustom = computed(() => {
   return isRoot && layoutValue === 'EAF-HOME'
 })
 
-const { viewTransitionStart, viewTransitionEnd } = useViewTransition()
+const { viewTransitionStart, sleep } = useViewTransition()
 const router = useRouter()
 
 interface RouterGuard {
-  onBeforeRouteChange: typeof router.onBeforePageLoad
-  onAfterRouteChanged: typeof router.onAfterRouteChanged
+  onBeforeRouteChange: typeof router.onBeforeRouteChange
 }
 
-const routerGuard: RouterGuard = {
-  onBeforeRouteChange(to) {
+Object.assign(router, {
+  async onBeforeRouteChange(to) {
     // 主页滑出
-    if (to === withBase('/guide/reactive')) {
+    const base = site.value.base
+    const isBase = route.path === base
+    if (isBase && to === withBase('/guide/reactive')) {
       viewTransitionStart(true)
+      // 为了保证能正确获取当前路由的快照，延迟一点时间再进行路由跳转
+      return await sleep(100)
     }
 
     // 主页滑入
-    if (to === site.value.base) {
+    if (to === base) {
       viewTransitionStart(false)
+      return await sleep(100)
     }
-  },
-  onAfterRouteChanged(to) {
-    viewTransitionEnd()
   }
-}
-
-Object.assign(router, routerGuard)
+} as RouterGuard)
 
 onMounted(() => {
   // use 流星动画

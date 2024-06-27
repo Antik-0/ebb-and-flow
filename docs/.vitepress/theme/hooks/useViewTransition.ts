@@ -3,29 +3,21 @@ const enableTransitions = () =>
   window.matchMedia('(prefers-reduced-motion: no-preference)').matches
 
 export function useViewTransition() {
-  let transitionResolve: ((value: unknown) => void) | null = null
-
   async function viewTransitionStart(out: boolean) {
     if (!enableTransitions()) return
 
     const transitionClass = out ? 'home-slide-out' : 'home-slide-in'
-    const transitionPromise = new Promise(
-      resolve => (transitionResolve = resolve)
-    )
-
-    const transition = (document as any).startViewTransition(async () => {
+    const transition = (document as any).startViewTransition(() => {
       document.documentElement.classList.add(transitionClass)
-      await transitionPromise
     })
 
     await transition.finished
     document.documentElement.classList.remove(transitionClass)
-    transitionResolve = null
   }
 
-  function viewTransitionEnd() {
-    transitionResolve && transitionResolve(true)
+  function sleep(time: number): Promise<boolean> {
+    return new Promise(resolve => setTimeout(() => resolve(true), time))
   }
 
-  return { viewTransitionStart, viewTransitionEnd }
+  return { viewTransitionStart, sleep }
 }
