@@ -59,7 +59,7 @@ body {
   height: 100%;
   border-top: 2px solid #aed1d3;
   background-color: rgba(200, 216, 216, 0.1);
-  animation: var(--EAF-animation-tidewater);
+  /* animation: var(--EAF-animation-tidewater); */
 }
 
 .tidewater::before {

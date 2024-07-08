@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 const webBase = '/ebb-and-flow/'
 export default defineConfig({
-  title: '潮起潮落的小站',
+  title: '潮起潮落的站点',
   titleTemplate: '潮起潮落',
   description: '潮起潮落的个人博客',
   lang: 'zh-cn',
