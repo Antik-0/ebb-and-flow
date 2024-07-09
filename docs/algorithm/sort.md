@@ -23,6 +23,43 @@ function bubbleSort(arr: number[]) {
 }
 ```
 
+## 鸡尾酒排序
+
+时间复杂度 `O(N2)`，空间复杂度 `O(1)`，稳定排序
+
+```ts
+function cocktailSort(arr: number[]) {
+  let start = 0
+  let end = arr.length - 1
+  let exchange = true
+
+  while (exchange) {
+    exchange = false
+
+    for (let i = start; i < end; i++) {
+      if (arr[i] > arr[i + 1]) {
+        ;[arr[i], arr[i + 1]] = [arr[i + 1], arr[i]]
+        exchange = true
+      }
+    }
+    end -= 1
+
+    if (exchange === false) break
+    exchange = false
+
+    for (let j = end; j > start; j -= 1) {
+      if (arr[j] < arr[j - 1]) {
+        ;[arr[j], arr[j - 1]] = [arr[j - 1], arr[j]]
+        exchange = true
+      }
+    }
+    start += 1
+  }
+
+  return arr
+}
+```
+
 ## 插入排序
 
 时间复杂度 `O(N2)`，空间复杂度 `O(1)`，稳定排序
@@ -31,13 +68,11 @@ function bubbleSort(arr: number[]) {
 function insertSort(arr: number[]) {
   const n = arr.length
   for (let i = 1; i < n; i++) {
-    const temp = arr[i]
-    let j = i - 1
-    while (j >= 0 && arr[j] > temp) {
-      arr[j + 1] = arr[j]
-      j -= 1
+    for (let j = i; j > 0; j--) {
+      if (arr[j] < arr[j - 1]) {
+        ;[arr[j], arr[j - 1]] = [arr[j - 1], arr[j]]
+      }
     }
-    arr[j + 1] = temp
   }
   return arr
 }
@@ -51,26 +86,22 @@ function insertSort(arr: number[]) {
 function binaryInsertSort(arr: number[]) {
   const binarySearch = (end: number, value: number) => {
     let l = 0
-    let r = end - 1
+    let r = end
     while (l <= r) {
       const m = l + Math.floor((r - l) / 2)
       if (arr[m] <= value) {
-        // ✨为了保持稳定性，如果值相等，则返回m右边界
         l = m + 1
       } else {
         r = m - 1
       }
     }
-    return l < end ? l : -1
+    return l
   }
 
   const n = arr.length
   for (let i = 1; i < n; i++) {
     const value = arr[i]
-    const insertIndex = binarySearch(i, value)
-    if (insertIndex === -1) {
-      continue
-    }
+    const insertIndex = binarySearch(i - 1, value)
     let j = i
     while (j > insertIndex) {
       arr[j] = arr[j - 1]
@@ -78,6 +109,7 @@ function binaryInsertSort(arr: number[]) {
     }
     arr[insertIndex] = value
   }
+
   return arr
 }
 ```
@@ -116,16 +148,14 @@ function shellSort(arr: number[]) {
 ```ts
 function selectSort(arr: number[]) {
   const n = arr.length
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n - 1; i++) {
     let minIndex = i
     for (let j = i + 1; j < n; j++) {
       if (arr[j] < arr[minIndex]) {
         minIndex = j
       }
     }
-    if (minIndex !== i) {
-      ;[arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
-    }
+    ;[arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
   }
   return arr
 }
@@ -153,15 +183,15 @@ function quickSort(arr: number[]) {
     return left
   }
 
-  const core = (left: number, right: number) => {
+  const sort = (left: number, right: number) => {
     if (left < right) {
       const baseIndex = division(left, right)
-      core(left, baseIndex - 1)
-      core(baseIndex + 1, right)
+      sort(left, baseIndex - 1)
+      sort(baseIndex + 1, right)
     }
   }
 
-  core(0, arr.length - 1)
+  sort(0, arr.length - 1)
   return arr
 }
 ```
@@ -175,41 +205,39 @@ function mergeSort(arr: number[]) {
   const n = arr.length
   const temp = new Array(n).fill(0)
 
-  function merge(left: number, mid: number, right: number) {
-    let i = left
-    let j = mid
+  const merge = (left: number, mid: number, right: number) => {
+    let p1 = left
+    let p2 = mid
     let k = 0
-
-    while (i < mid && j < right) {
-      if (arr[i] <= arr[j]) {
-        temp[k] = arr[i++]
+    while (p1 < mid && p2 < right) {
+      if (arr[p1] <= arr[p2]) {
+        temp[k] = arr[p1++]
       } else {
-        temp[k] = arr[j++]
+        temp[k] = arr[p2++]
       }
       k += 1
     }
-    while (i < mid) {
-      temp[k++] = arr[i++]
+    while (p1 < mid) {
+      temp[k++] = arr[p1++]
     }
-    while (j < right) {
-      temp[k++] = arr[j++]
+    while (p2 < right) {
+      temp[k++] = arr[p2++]
     }
-
     k = 0
     while (left < right) {
       arr[left++] = temp[k++]
     }
   }
 
-  function core(left: number, right: number) {
+  const division = (left: number, right: number) => {
     if (left >= right - 1) return
     const mid = left + Math.floor((right - left) / 2)
-    core(left, mid)
-    core(mid, right)
+    division(left, mid)
+    division(mid, right)
     merge(left, mid, right)
   }
 
-  core(0, n)
+  division(0, n)
   return arr
 }
 ```
@@ -220,36 +248,43 @@ function mergeSort(arr: number[]) {
 function test() {
   const arr1 = [64, 34, 25, 12, 22, 11, 90]
   console.log('随机排序-排序前:', arr1)
-  console.log('冒泡排序:', bubbleSort(arr1))
-  console.log('插入排序:', insertSort(arr1))
-  console.log('二分插入排序:', binaryInsertSort(arr1))
-  console.log('选择排序:', selectSort(arr1))
-  console.log('快速排序:', quickSort(arr1))
-  console.log('归并排序:', mergeSort(arr1))
+  console.log('冒泡排序:', bubbleSort([...arr1]))
+  console.log('鸡尾酒排序:', cocktailSort([...arr1]))
+  console.log('插入排序:', insertSort([...arr1]))
+  console.log('二分插入排序:', binaryInsertSort([...arr1]))
+  console.log('希尔排序:', shellSort([...arr1]))
+  console.log('选择排序:', selectSort([...arr1]))
+  console.log('快速排序:', quickSort([...arr1]))
+  console.log('归并排序:', mergeSort([...arr1]))
   console.log('-------------------- 分 割 线 --------------------')
 
   const arr2 = [11, 22, 25, 34, 64, 90]
   console.log('正序排序-排序前:', arr2)
-  console.log('冒泡排序:', bubbleSort(arr2))
-  console.log('插入排序:', insertSort(arr2))
-  console.log('二分插入排序:', binaryInsertSort(arr2))
-  console.log('选择排序:', selectSort(arr2))
-  console.log('快速排序:', quickSort(arr2))
-  console.log('归并排序:', mergeSort(arr2))
+  console.log('冒泡排序:', bubbleSort([...arr2]))
+  console.log('鸡尾酒排序:', cocktailSort([...arr2]))
+  console.log('插入排序:', insertSort([...arr2]))
+  console.log('二分插入排序:', binaryInsertSort([...arr2]))
+  console.log('希尔排序:', shellSort([...arr2]))
+  console.log('选择排序:', selectSort([...arr2]))
+  console.log('快速排序:', quickSort([...arr2]))
+  console.log('归并排序:', mergeSort([...arr2]))
   console.log('-------------------- 分 割 线 --------------------')
 
   const arr3 = [90, 64, 34, 25, 22, 11]
   console.log('逆序排序-排序前:', arr3)
-  console.log('冒泡排序:', bubbleSort(arr3))
-  console.log('插入排序:', insertSort(arr3))
-  console.log('二分插入排序:', binaryInsertSort(arr3))
-  console.log('选择排序:', selectSort(arr3))
-  console.log('快速排序:', quickSort(arr3))
-  console.log('归并排序:', mergeSort(arr3))
+  console.log('冒泡排序:', bubbleSort([...arr3]))
+  console.log('鸡尾酒排序:', cocktailSort([...arr3]))
+  console.log('插入排序:', insertSort([...arr3]))
+  console.log('二分插入排序:', binaryInsertSort([...arr3]))
+  console.log('希尔排序:', shellSort([...arr3]))
+  console.log('选择排序:', selectSort([...arr3]))
+  console.log('快速排序:', quickSort([...arr3]))
+  console.log('归并排序:', mergeSort([...arr3]))
 }
 
 // 随机排序-排序前: [64, 34, 25, 12, 22, 11, 90]
 // 冒泡排序: [11, 12, 22, 25, 34, 64, 90]
+// 鸡尾酒排序: [11, 12, 22, 25, 34, 64, 90]
 // 插入排序: [11, 12, 22, 25, 34, 64, 90]
 // 二分插入排序: [11, 12, 22, 25, 34, 64, 90]
 // 选择排序: [11, 12, 22, 25, 34, 64, 90]
@@ -258,6 +293,7 @@ function test() {
 // ---------------- 分 割 线 --------------------
 // 正序排序-排序前: [11, 22, 25, 34, 64, 90]
 // 冒泡排序: [11, 22, 25, 34, 64, 90]
+// 鸡尾酒排序: [11, 22, 25, 34, 64, 90]
 // 插入排序: [11, 22, 25, 34, 64, 90]
 // 二分插入排序: [11, 22, 25, 34, 64, 90]
 // 选择排序: [11, 22, 25, 34, 64, 90]
@@ -266,6 +302,7 @@ function test() {
 // ---------------- 分 割 线 --------------------
 // 逆序排前: [90, 64, 34, 25, 22, 11]
 // 冒泡排序: [11, 22, 25, 34, 64, 90]
+// 鸡尾酒排序: [11, 22, 25, 34, 64, 90]
 // 插入排序: [11, 22, 25, 34, 64, 90]
 // 二分插入排序: [11, 22, 25, 34, 64, 90]
 // 选择排序: [11, 22, 25, 34, 64, 90]
