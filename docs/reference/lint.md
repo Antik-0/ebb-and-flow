@@ -8,7 +8,7 @@
 
 安装 `prettier` 包。
 
-```cmd
+```bash
 pnpm add -D prettier
 ```
 
@@ -38,13 +38,13 @@ pnpm-lock.yaml
 
 安装 `ESLint v9+` 包。
 
-```cmd
+```bash
 pnpm add -D eslint
 ```
 
 安装 `ESLint` 插件。
 
-```cmd
+```bash
 <!-- vue官方维护的 ESLint 插件 -->
 pnpm add -D eslint-plugin-vue
 
@@ -110,7 +110,7 @@ export default [
 
 安装 `lint-staged` 包，该包的作用是将 `git暂存区` 的文件传入 `Prettier/ESLint` 的 `CLI` 命令，这样就不用每次都全量扫描，只对提交的代码进行检查，从而提高速度。
 
-```cmd
+```bash
 pnpm add -D lint-staged
 ```
 
@@ -133,7 +133,7 @@ pnpm add -D lint-staged
 
 这里选择 vue 项目使用的工具 - `simple-git-hooks`。
 
-```cmd
+```bash
 pnpm add -D simple-git-hooks
 ```
 

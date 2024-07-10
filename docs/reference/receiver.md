@@ -76,8 +76,8 @@ const c = new Proxy(b, {
 })
 c.msg = 'receiver is me'
 c.msg // 触发 get
-// proxy b >>> Proxy(Object) {msg: 'receiver is me'}
 // proxy c >>> Proxy(Object) {msg: 'receiver is me'}
+// proxy b >>> Proxy(Object) {msg: 'receiver is me'}
 ```
 
 在上面例子中，存在嵌套代理，同时 `c.get` 和 `b.get` 中 `reciver` 对象都是指向了 `c` 实例，这就说明了 `receiver` 指向了最初进行操作的对象。

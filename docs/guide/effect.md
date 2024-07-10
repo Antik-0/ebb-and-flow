@@ -611,11 +611,13 @@ function preCleanupEffect(effect: ReactiveEffect) {
 function postCleanupEffect(effect: ReactiveEffect) {
   // ✨_depsLength !== 0，表明在effect.run的过程中，产生了新的依赖
   if (effect.deps.length > effect._depsLength) {
-    // ✨清除旧的依赖，effect.deps.length是包含了新的依赖的长度
+    // ✨清除旧的依赖
+    // ✨effect.deps.length是旧依赖集合的长度
+    // ✨effect._depsLength是新依赖集合的长度
     for (let i = effect._depsLength; i < effect.deps.length; i++) {
       cleanupDepEffect(effect.deps[i], effect)
     }
-    // ✨保存新的依赖
+    // ✨更新当前依赖集合的长度
     effect.deps.length = effect._depsLength
   }
 }
@@ -655,7 +657,7 @@ watchEffect(() => {
 
 proxy.three = 300 // 不会触发watchEffect，因为three不是依赖
 proxy.two = 200 // 触发watchEffect
-proxy.one = 100 // watchEffect的依赖变为one和three，删除了two依赖
+proxy.one = 100 // watchEffect的依赖变为one和three，清除了two依赖
 ```
 
 在上面的例子中，`watchEffect` 首次运行只有 `one` 和 `two` 两个依赖，为什么没有 `three`？因为压根就没有触发 `three` 属性的 `get` 或者任何其他的取值拦截操作。当修改 `one` 的值后，作用重新运行`(执行this.fn)`，此时由于内部的流程控制更改，导致没有触发 `two` 的 `get`，而触发了 `three` 的 `get`，因此作用重新运行后，相应的依赖也发生了变化。
@@ -694,7 +696,7 @@ export function resetTracking() {
 
 从 `trackStack` 这个变量的命名其实已经可以知道上述代码的作用了，就是处理嵌套的 `effect` 作用域问题。
 
-为什么在 `run` 中需要保存相关上下文的信息，就是因为作用本身是存在嵌套使用的，这很好理解，因为 `vue 组件实例` 本身就是绑定了一个 `effect`，而我们在组件中又可以使用 `computed, watch, watchEffect` 这些能产生副作用的函数，并且 vue 还提供了底层的 API，如 `effectScope` 来让开发者更灵活的控制 `effect` 的作用域。
+为什么在 `run` 中需要保存相关上下文的信息，就是因为作用本身是存在嵌套使用的，这很好理解，因为 `vue 组件实例` 本身就是绑定了一个 `effect`，而我们在组件中又可以使用 `computed, watch, watchEffect` 这些能产生 `effect` 的函数，并且 vue 还提供了底层的 API，如 `effectScope` 来让开发者更灵活的控制 `effect` 的作用域。
 
 ### effect.stop
 
