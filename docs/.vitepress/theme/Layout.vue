@@ -31,13 +31,13 @@ Object.assign(router, {
     if (isBase && to === withBase('/guide/reactive')) {
       viewTransitionStart(true)
       // 为了保证能正确获取当前路由的快照，延迟一点时间再进行路由跳转
-      return await sleep(200)
+      return await sleep(100)
     }
 
     // 主页滑入
     if (to === base) {
       viewTransitionStart(false)
-      return await sleep(200)
+      return await sleep(100)
     }
   }
 } as RouterGuard)
