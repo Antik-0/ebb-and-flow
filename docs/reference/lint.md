@@ -1,20 +1,19 @@
-# 项目规范化
+# 项目规范
 
-这是一个关于项目规范化的记录
+这是一个关于项目规范的记录。思路是：利用 `git hooks` 配置 **prettier**、**eslint**，在项目 `git` 提交信息前，对提交代码(暂存区)进行检查与格式化。
 
-思路：配置 **prettier**、**eslint**，利用 **git hooks**，在项目进行 git 提交的时候，对提交代码(暂存区)进行检查与格式化。
+## Prettier
 
-## Prettier 配置
-
-安装 `prettier` 包。
+### Install
 
 ```bash
 pnpm add -D prettier
 ```
 
-配置 `.prettierrc` 文件。
+### 配置
 
 ```json
+// .prettierrc
 {
   "printWidth": 80, // 换行长度
   "semi": false, // 语句末尾不打印分号
@@ -24,39 +23,39 @@ pnpm add -D prettier
 }
 ```
 
-配置 `.prettierignore` 文件。
-
 ```json
+// .prettierignore
 dist
 docs
-*.md
 *.html
 pnpm-lock.yaml
 ```
 
-## ESLint 配置
+## ESLint
 
-安装 `ESLint v9+` 包。
+### Install
 
 ```bash
 pnpm add -D eslint
 ```
 
-安装 `ESLint` 插件。
+### 插件
 
 ```bash
-<!-- vue官方维护的 ESLint 插件 -->
+// vue官方维护的 ESLint 插件
 pnpm add -D eslint-plugin-vue
 
-<!-- vue官方提供的解析器，需要 9.x 以上-->
+// vue官方提供的解析器，需要 9.x 以上
 pnpm add -D vue-eslint-parser
 
-<!-- 解决 Prettier 和 ESLint 冲突的插件 -->
+// 处理 Prettier 和 ESLint 冲突的插件
 pnpm add -D eslint-config-prettier
 
-<!-- ts解析器，如果项目不是ts可跳过 -->
+// ts解析器，如果项目不是ts可跳过
 pnpm add -D typescript-eslint
 ```
+
+### 配置
 
 配置 `eslint.config.js` 文件 (这是新的[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files)，需要 `ESLint v9+`)。
 
@@ -106,9 +105,11 @@ export default [
 ]
 ```
 
-## lint-staged 配置
+## lint-staged
 
 安装 `lint-staged` 包，该包的作用是将 `git暂存区` 的文件传入 `Prettier/ESLint` 的 `CLI` 命令，这样就不用每次都全量扫描，只对提交的代码进行检查，从而提高速度。
+
+### Install
 
 ```bash
 pnpm add -D lint-staged
@@ -127,11 +128,11 @@ pnpm add -D lint-staged
 }
 ```
 
-配置好 `lint-staged` 后，还不能直接对暂存区的代码进行检查，需要搭配 `git hooks` 使用。
-
-## git-hooks 配置
+## git-hooks
 
 这里选择 vue 项目使用的工具 - `simple-git-hooks`。
+
+### Install
 
 ```bash
 pnpm add -D simple-git-hooks
@@ -144,11 +145,11 @@ pnpm add -D simple-git-hooks
   "scripts": {
     // ...
     // 注册git-hook
-    "postinstall": "simple-git-hooks"
+    "postinstall": "simple-git-hooks" // [!code ++]
   },
   "simple-git-hooks": {
-    // git提交之前运行 `pnpm lint-staged` 命令，若命令返回值不是0，则 git 提交失败
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "pnpm lint-staged", // [!code ++]
+    "commit-msg": "node ./scripts/vertify-commit.js" // [!code ++]
   },
   "lint-staged": {
     "*.{ts,vue}": ["eslint --fix", "prettier --write"],
@@ -157,20 +158,34 @@ pnpm add -D simple-git-hooks
 }
 ```
 
-配置好选项后，先运行一次 `pnpm postinstall` 注册 git-hook(每当更改 hook 要执行的命令后，都需要重新注册)，注册后在项目的 `.git/hooks` 文件下会生成一个 `pre-commit` 文件，`hooks` 文件夹下有很多 `.sample` 后缀的文件，这些都是示例文件，去掉后缀即可运行。
+`postinstall` 是 `npm hooks`，作用是在每次安装包后都重新注册 `git hooks`，也可以通过 `pnpm simple-git-hooks` 命令手动更新 `git hooks`，注册后的文件位于 `.git/hooks` 目录下。
 
-## 使用
+`pre-commit` 是在提交代码之前，同时也在 `commit-msg hook` 之前，作用是对项目进行 lint 和 格式化。
 
-完成上述配置后，在点击 git 提交就可以对代码进行规范检查了，当 git 提交失败的时候，可以通过 git 的命令输出查看哪些文件出问题。
+`commit-msg` 是在提交信息之前，作用是对 git 的提交信息进行模板验证。
 
-但是 `vscode` 的命令输出会乱码，而且也无法跳转到错误，因此可以添加一个 **npm 脚本命令**。
+### 提交信息验证
 
-```json
-"scripts": {
-    // ...
-    "lint": "eslint --cache"
-    // ...
-  },
+其中 `./scripts/vertify-commit.js` 脚本的内容如下：
+
+```js
+import pc from 'picocolors'
+import { readFileSync } from 'node:fs'
+import path from 'path'
+
+const msgPath = path.resolve('.git/COMMIT_EDITMSG')
+const msg = readFileSync(msgPath, 'utf-8').trim()
+
+const commitRE = /^(新增|修改|修复|回滚)(\(.+\))?：.{1,50}/
+
+if (!commitRE.test(msg)) {
+  console.log(
+    pc.green(`
+    提交信息不符合规范:
+    提交信息：${msg}
+    正则规范：${commitRE}
+    `)
+  )
+  process.exit(1)
+}
 ```
-
-当 git 失败后，运行 **lint** 命令(默认是全量扫描，也可以传入指定文件)，即可在 CMD 终端查看更友好的错误提示，并通过点击跳转到目标文件，进行错误修复。
