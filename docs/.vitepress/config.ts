@@ -41,7 +41,8 @@ export default defineConfig({
           { text: '博客搭建', link: '/reference/blog' },
           { text: '网络文章', link: '/reference/links' },
           { text: '图标之旅', link: '/reference/icon-travel' },
-          { text: 'node-版本管理', link: '/reference/node-version' }
+          { text: 'node-版本管理', link: '/reference/node-version' },
+          { text: 'CSS-Effect', link: '/reference/css-effect ' }
         ]
       },
       {
