@@ -51,9 +51,7 @@ function get(
 }
 ```
 
-对于 `get` 方法，有一个关注点：`target` 的指向问题。
-
-### target 指向
+对于 `get` 方法，有一个关注点：`target` 的指向。
 
 ```ts
 const raw = new Map()
@@ -91,7 +89,7 @@ setTimeout(() => {
 // >>> 1
 ```
 
-上述例子中，我们通过 `watchEffect` 创建了一个 effect，其依赖是 **key=1**。但是，由于 `readonlyProxy` 是一个 `readonly` 代理，因此我们无法通过 `readonlyProxy.set` 去修改 **key=1** 对应的值。然而，由于 `readonlyProxy` 代理的 `target` 是一个 `reactive` 代理，因此可以通过 `reactiveProxy.set(1, 1)` 来进行 `trriger`，这是合法的，并且也能成功触发 effect 的更新。
+上述例子中，我们通过 `watchEffect` 创建了一个 effect，其依赖是 **key=1**。但是，由于 `readonlyProxy` 是一个 `readonly` 代理，因此我们无法通过 `readonlyProxy.set` 去修改 **key=1** 对应的值。然而，由于 `readonlyProxy` 代理的 `target` 是一个 `reactive` 代理，因此可以通过 `reactiveProxy.set(1, 1)` 来进行 `trigger`，这是合法的，并且也能成功触发 effect 的更新。
 
 此时，当运行到 `watchEffect` 代码块时 `get` 方法内部的执行情况是这样的：首先 `target` 指向了 `reactiveProxy` 变量，`rawTarget` 指向 `raw` 变量，同时 get 是在一个 `readonly` 代理版本上调用的，因此 `!isReadonly === true`，跳过了对 `rawTarget` 的 track，并且由于 `raw` 是一个空 Map，不存在任何 key，所以执行最后一个 if 语句 `else if (target !== rawTarget)`，通过调用 `target.get(key)` 来触发 `reactive` 代理版本的依赖收集。
 
@@ -119,7 +117,7 @@ function get() {
 特别注意的是，最后一个 if 语句没有经过 wrap 包装，也没有进行 return，原因是由于这个 if 条件就是针对 `readonly(reactive(Map))` 这个情况，此时条件中的 `target` 已经是一个 `reactive` 代理了，如果再进行一层 readonly wrap，那么就破坏了 `reactive` 的特性。而没有 return 是因为此条件的前置条件是 key 不存在 rawTarget Map 中，`target.get(key)` 的结果为 undefined，是否显示 return 都是返回 undefined。
 :::
 
-综上所述：对于 `Map/Set` 对象的 `get` 拦截，如果是 `readonly(Map)` 代理，则不会进行任何 `key` 的依赖追踪，但如果是 `readonly(reactive(Map))` 情况，则需要返回一个 **_readonly + reactive_** 版本的代理对象。
+综上所述：对于 `Map/Set` 对象的 `get` 拦截，如果是 `readonly(Map)` 代理，则不会进行任何 `key` 的依赖追踪，但如果是 `readonly(reactive(Map))` 情况，则需要返回一个 readonly + reactive 版本的代理对象。
 
 ## set
 
@@ -300,9 +298,9 @@ function clear(this: IterableCollections) {
 
 ## Iterator
 
-由于 `Map/Set` 还实现了 `Iterator` (迭代器)接口，因此除了以上的 7 个方法，还需要对依赖迭代器的方法进行代理拦截，其中涉及到迭代器的使用有以下几种情况：
+由于 `Map/Set` 还实现了 `Iterator` 迭代器接口，因此除了以上的 7 个方法，还需要对依赖迭代器的方法进行代理拦截，其中涉及到迭代器的使用有以下几种情况：
 
-> `keys(), values(), entries(), forof循环`
+> `keys(), values(), entries(), forof循环，集合解构`
 
 vue 通过一个 `createIterableMethod` 函数来实现迭代器的代理拦截，其源码如下：
 
@@ -555,8 +553,8 @@ function createInstrumentationGetter(isReadonly: boolean, shallow: boolean) {
       return target
     }
 
-    // ✨注意：只有Map和Set对象原生的key才具有响应式特性
-    // ✨对于往Map和Set实例上添加自定义属性，是不具备响应式的
+    // ✨只有Map和Set对象原生的key才具有响应式特性
+    // ✨对于往Map和Set实例上添加的自定义属性，是不具备响应性的
     return Reflect.get(
       hasOwn(instrumentations, key) && key in target
         ? instrumentations
@@ -593,4 +591,4 @@ export const shallowReadonlyCollectionHandlers: ProxyHandler<CollectionTypes> =
 
 `collectionHandlers.ts` 模块处理了 `Map/Set` 对象的代理，结合 `baseHandlers.ts` 模块对 `Object/Array` 对象的代理，vue 关于对象的响应式代理分析就结束了。
 
-目前为止，关于 `track/trigger` 的逻辑都是直接跳过省略，对于这部分将在后续 **effect** 概念中进行展开，接下来将介绍 vue 关于**原始类型**的响应式处理，即 `ref` 模块。
+目前为止，关于 `track/trigger` 的逻辑都是直接跳过省略，对于这部分将在后续 **effect** 概念中进行展开，接下来将介绍 vue 关于原始类型的响应式处理，即 `ref` 模块。

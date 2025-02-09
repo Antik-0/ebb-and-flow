@@ -3,7 +3,7 @@
 ::: tip 前言
 由于本人写作水平有限，如果在阅读本文遇到暂时不理解的地方，可以先往下看，然后再回头理解。
 
-effect 概念涉及的模块比较多，有些知识比较绕，并且某些概念不在 `packages/reactivity` 这个包的范围内，因此不会展开介绍。
+effect 的概念需要与之前的模块进行交叉理解，有些知识比较绕，并且某些概念不在 `packages/reactivity` 这个包的范围内，因此不会展开介绍。
 
 effect 涉及的主要模块：effect.ts、dep.ts、ref.ts，reactiveEffect.ts。
 :::
@@ -135,7 +135,7 @@ export enum TrackOpTypes {
 ```
 
 ::: tip
-触发 `TrackOpTypes.ITERATE` 的操作有 ownKeys 代理、集合的.size 访问、集合的.forEach 方法，以及涉及到集合的迭代器的方法：keys，values，entries，forof 循环。
+触发 `TrackOpTypes.ITERATE` 的操作有 ownKeys 代理、集合的.size 访问、集合的.forEach 方法，以及涉及到集合的迭代器的方法：keys，values，entries，forof 循环以及数组/集合解构。
 :::
 
 ### trackEffect
@@ -183,8 +183,6 @@ export function trackEffect(
 ![trackEffect](./images/trackEffect.png)
 
 可以看到，在 `watchEffect` 中第二次和第三次调用 `foo.id`，是不会重复执行 `trackEffect` 内的逻辑了。
-
-对于剩下部分的更新逻辑，如果你暂时不理解，可以等看完下文的 [effect.run](#effect-run) 后再回来阅读，届时你就会此部分的代码更加清晰。
 
 ### ref
 
@@ -311,7 +309,7 @@ export function triggerEffects(
   // ✨暂停调度
   pauseScheduling()
 
-  // ✨遍历dep的所有订阅的effect
+  // ✨遍历dep所有订阅的effect
   for (const effect of dep.keys()) {
     // dep.get(effect) is very expensive, we need to calculate it lazily and reuse the result
     // ✨上面的注释：
@@ -641,7 +639,7 @@ function cleanupDepEffect(dep: Dep, effect: ReactiveEffect) {
 
 最后恢复之前的作用状态，`run` 运行结束。
 
-当我第一次看到这里的时候，我在想：为什么要在运行的时候清空依赖？`preCleanupEffect` 和 `postCleanupEffect` 到底是在做什么？如果你也对此感到疑惑，那么请看下面的例子。
+下面以举个栗子来分析上述代码的运行过程：
 
 ```ts
 const proxy = reactive({ one: 1, two: 2, three: 3 })
@@ -668,9 +666,7 @@ proxy.one = 100 // watchEffect的依赖变为one和three，清除了two依赖
 
 到此，我想你应该理解了为什么需要在每次作用运行后，都要清除旧的依赖，以及 `preCleanupEffect` 和 `postCleanupEffect` 方法的作用。现在你可以回头再次阅读 [trackEffect](#trackeffect) 的源码，此时，你应该可以明白 `_depsLength` 指针的巧妙之处，以及为什么移除依赖要分 `preCleanupEffect` 和 `postCleanupEffect` 这两个阶段了。
 
-最后，还有一个小小的问题需要说明一下：`shouldTrack` 的作用。
-
-其实在该模块还有一块代码如下所示：
+最后在该模块还有一段涉及到 `Track` 的代码，如下所示：
 
 ```ts
 export let shouldTrack = true
@@ -717,9 +713,9 @@ class ReactiveEffect<T = any> {
 }
 ```
 
-### Scheduling
+### scheduling
 
-`effect` 的调度操作只有如下几行代码：
+该模块中关于 `effect` 的调度操作只有如下几行代码：
 
 ```ts
 export let pauseScheduleStack = 0
@@ -738,8 +734,7 @@ export function resetScheduling() {
 
 对于调度，需要关注的一点就是：如何通过调度优化，来减少 effect 的重复触发次数，进而实现批量更新。
 
-在上文中的 `triggerEffects` 和 `trigger` 源码中，我们注意到在进行依赖和作用的遍历操作时，其外层都包含了一对 `pauseScheduling` 和 `resetScheduling` 调用，
-其目的就是等一个作用的所有依赖的更新都结束了，再将该作用推入一个任务队列。
+在上文中的 `triggerEffects` 和 `trigger` 源码中，我们注意到在进行依赖和作用的遍历操作时，其外层都包含了一对 `pauseScheduling` 和 `resetScheduling` 调用，其目的就是等一个作用的所有依赖的更新都结束了，再将该作用推入一个任务队列。
 
 其实，这个模块的调度并不是 vue 批处理的关键，其核心逻辑在别的包，不在 `reactivity` 这个包中，由于我还没阅读到，这里也就不打算展开了，就以 `watchEffect` 函数为例，看看这个模块中的调度做了什么吧。
 

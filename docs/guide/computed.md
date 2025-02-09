@@ -1,6 +1,6 @@
 # Vue 源码解析之-Computed
 
-当看完前面的 `reactive`，`ref` 和 `effect` 内容后，再来看 `computed` 的内容就简单许多了，加上 `computed` 本身内容也不多，那么话不多说，直接开始吧。
+当看完前面的 `reactive`，`ref` 和 `effect` 内容后，再来看 `computed` 的内容就简单许多了，同时 `computed` 本身内容也不多，那么话不多说，直接开始吧。
 
 ## computed
 

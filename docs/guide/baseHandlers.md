@@ -45,7 +45,7 @@ class ReadonlyReactiveHandler extends BaseReactiveHandler {
 > **_BaseReactiveHandler、MutableReactiveHandler、ReadonlyReactiveHandler_**
 
 ::: tip
-在 **_get_** 和 **_set_** 代理存在一个 `receiver` 对象，关于这个对象的知识可以参考这篇文章：[Receiver](../reference/receiver)
+在 **_get_** 和 **_set_** 代理的逻辑中存在一个 `receiver` 对象，关于这个对象的知识可以参考这篇文章：[Receiver](../reference/receiver)
 :::
 
 ## BaseReactiveHandler
@@ -67,6 +67,7 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
 
     // ✨拦截 ReactiveFlags 枚举的成员访问
     // ✨分别对应 isReactive, isReadonly, isShallow, toRaw 4个响应式工具
+    // ✨同时可以看到，其结果并不依赖某个成员是否在目标对象上，而是通过闭包的方式，存储在构造类的作用域中
     if (key === ReactiveFlags.IS_REACTIVE) {
       return !isReadonly
     } else if (key === ReactiveFlags.IS_READONLY) {
@@ -89,8 +90,8 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
         Object.getPrototypeOf(target) === Object.getPrototypeOf(receiver)
       ) {
         /**
-         * ✨条件1：当前操作的receiver是vue已经生成并保存在对应map中的代理对象
-         * ✨条件2：对vue的响应式代理又进行了自定义代理
+         * ✨条件1成立：当前操作的receiver是vue已经生成并保存在对应map中的代理对象
+         * ✨条件2成立：对vue的响应式代理对象又进行了自定义代理
          * @example 条件2
          * const raw = {}
            const vueProxy = reactive(raw)
@@ -145,7 +146,7 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
 
     // ✨递归调用转换，因此reactive是深层的，同时也是惰性执行的
     // ✨对于 惰性执行 是这样理解的：
-    // ✨一个对象的属性如果没有被访问，就不会触发get代理，只有通过get访问才会进行响应性代理，所以是lazy的
+    // ✨一个对象的属性如果没有被访问，就不会触发其本身以及子属性的get代理，只有通过get访问才会进行响应性代理，所以是lazy的
     // ✨可以看出，虽然reactive默认是进行深层转换的，但这个操作只针对需要访问的属性，提高了初始化的效率，这点与vue2是不同的
     if (isObject(res)) {
       // Convert returned value into a proxy as well. we do the isObject check
@@ -159,7 +160,7 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
 }
 ```
 
-`get` 代理中的逻辑较为简单，首先是处理了之前提到的 `ReactiveFlags` 枚举成员的拦截，接着是对部分数组方法和 `hasOwnProperty` 方法进行边界处理，详情见下文，然后进行 track，`ref` 的自动解包，最后进行递归的响应式转换。
+`get` 代理的逻辑较为简单，首先是处理了之前提到的 `ReactiveFlags` 枚举成员的拦截，接着是对部分数组方法和 `hasOwnProperty` 方法的拦截，详情见下文，然后进行 track，`ref` 的自动解包，最后进行递归的响应式转换。
 
 需要特别说明的是关于 `toRaw` 工具返回代理的原始对象的这个条件：
 
@@ -178,8 +179,10 @@ const target = {
   reactive: reactive(v)
 }
 const proxy = reactive(target)
+console.log(proxy.raw === v) // false
 console.log(proxy.raw === proxy.reactive) // true
 // ✨原因在于 get 代理最后的代码进行了 reactive 递归转换，因此 proxy.raw 等价于 reactive(v)
+// ✨或者说当访问 proxy.reactive 的时候，实际背后的执行的是 reactive(reactive(v))
 // ✨同时对于每个原始对象的代理版本会缓存在相应的 map 中，因此反复转换也只会返回同一个代理对象
 ```
 
@@ -212,7 +215,7 @@ class MutableReactiveHandler extends BaseReactiveHandler {
         oldValue = toRaw(oldValue)
         value = toRaw(value)
       }
-      // ✨对ref属性进行自动解包赋值，如果ref只读则跳过赋值
+      // ✨对ref属性进行自动解包赋值，如果赋值的新属性不是ref或者本体是只读代理则跳过赋值
       if (!isArray(target) && isRef(oldValue) && !isRef(value)) {
         if (isOldValueReadonly) {
           return false
@@ -232,6 +235,7 @@ class MutableReactiveHandler extends BaseReactiveHandler {
         ? Number(key) < target.length
         : hasOwn(target, key)
     const result = Reflect.set(target, key, value, receiver)
+
     // don't trigger if target is something up in the prototype chain of original
     /**
      * 若target位于receiver的原型链上，不触发trigger，也就是说：
@@ -324,7 +328,7 @@ proxy.raw = v
 proxy.reactive = reactive(v)
 proxy.readonly = readonly(v)
 
-// ✨set 拦截的开始对 reactive 进行了 value = toRaw(value) 操作
+// ✨set代理拦截的开始对 reactive 进行了 value = toRaw(value) 操作
 console.log(target.raw === target.reactive) // true
 console.log(target.raw === target.readonly) // false
 ```
@@ -428,7 +432,7 @@ class ReadonlyReactiveHandler extends BaseReactiveHandler {
 
 ## 数组的特殊处理
 
-虽然原生 `Proxy` 也支持对数组的代理，但在 vue 的响应性系统中还是有一些特殊的边界问题需要处理。vue 对 `includes、indexOf、lastIndexOf、push、pop、shift、unshift、splice` 这 7 个数组方法进行了特殊处理，其源码如下：
+虽然原生 `Proxy` 也支持对数组的代理，但在 vue 的响应性系统中还是有一些特殊的边界问题需要处理。vue 对 `includes、indexOf、lastIndexOf、push、pop、shift、unshift、splice` 这 7 个数组方法进行了重载处理，其源码如下：
 
 ```ts
 function createArrayInstrumentations() {
@@ -495,9 +499,9 @@ const proxy = new Proxy([1, 2, 3], handler)
 
 ![代理数组的方法调用](./images/array-proxy.png)
 
-通过上图可以看到，当在一个数组的代理对象上调用相关的方法时，除了触发 **方法名** 的 `get` 之外，还会触发 `length` 属性以及 **数组下标** 的 `get` 代理。这是因为数组的任何操作，其底层都要依赖一个 for 循环，因此绕不开对 `length` 属性的访问。
+通过上图可以看到，当在一个数组的代理对象上调用相关的方法时，除了触发方法函数的 `get` 之外，还会触发 `length` 属性以及对应数组下标的 `get` 代理。这是因为数组的任何操作，其底层都要依赖一个 for 循环，因此绕不开对 `length` 属性的访问。
 
-同时，还应该特别注意到，对于 `push/pop` 方法，不仅触发了 `length` 的 `get` 拦截，还触发了一次 `set` 拦截。这就是为什么要对 `['push', 'pop', 'shift', 'unshift', 'splice']` 这 5 个方法特殊处理的原因：它们会修改数组的 `length` 属性。(具体的缘由讨论 [github issue](https://github.com/vuejs/core/pull/2138))
+同时，还应该特别注意到，对于 `push/pop` 方法，不仅触发了 `length` 的 `get` 拦截，还触发了一次 `length` 的 `set` 拦截。这就是为什么要对 `['push', 'pop', 'shift', 'unshift', 'splice']` 这 5 个方法特殊处理的原因：它们会修改数组的 `length` 属性。(具体的缘由讨论 [github issue](https://github.com/vuejs/core/pull/2138))
 
 在前文的 [baseReactiveHandler.get](#proxy-get) 和 [ mutableReactiveHandler.set](#proxy-set) 的源码中，我们知道 vue 的响应式系统会在 `get` 拦截中对 `effect` 的依赖进行 track，然后在 `set` 拦截中进行 `trigger`，而调用 `push/pop` 等方法，同时触发了对 `length` 属性进行了 `get/set` 代理，也就造成了同时对这个依赖的 `track/trigger`，从而出现无限循环依赖。
 

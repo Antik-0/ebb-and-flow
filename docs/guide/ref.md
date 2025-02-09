@@ -1,8 +1,8 @@
 # Vue 源码解析之-Ref
 
-## ref
+`Ref` 可以持有任何类型的值，包括深层嵌套的对象、数组或者 JavaScript 内置的数据结构。看似比 `Reactive` 更加强大，但事实上，`ref` 的值总要通过 `.value` 来访问，所以其本质就是一个 `{ value: any }` 结构的 `reactive` 对象
 
-`Ref` 可以持有任何类型的值，包括深层嵌套的对象、数组或者 JavaScript 内置的数据结构，其入口代码如下：
+## ref
 
 ```ts
 export function ref(value?: unknown) {
@@ -71,7 +71,7 @@ class RefImpl<T> {
 
 对于 `trackRefValue` 和 `triggerRefValue` 这两个处理 **effects** 的函数，这里先不展开分析，放到后面 effects 章节再进行讲解。同时在 `ref.ts` 模块中还提供了一些响应式工具，这些工具很常用，因此下面进行介绍。
 
-## 响应式：工具
+## Ref：工具
 
 ```ts
 // ✨检查对象上的__v_isRef属性是否为true
@@ -201,7 +201,7 @@ class GetterRefImpl<T> {
 }
 ```
 
-由于是 `readonly` 的，因此无需 `track/trigger` 操作，代码十分简单。根据官方文档的介绍，这种情况主要在：把一个 prop 的属性作为 ref 传递给一个组合式函数时会很有用。[toRef 介绍](https://cn.vuejs.org/api/reactivity-utilities.html#toref)
+由于是 `readonly` 的，无需 `trigger` 操作，而 `track` 操作的逻辑由 `this._getter()` 触发，因而 `GetterRefImpl` 类本身不需要再编写额外逻辑。根据官方文档的介绍，这种情况主要在：把一个 prop 的属性作为 ref 传递给一个组合式函数时会很有用。[toRef 介绍](https://cn.vuejs.org/api/reactivity-utilities.html#toref)
 
 接着是第 3 种情况，此种情况要求入参的 `soure` 是一个 `Object` 类型，同时要需要传入 `key` 参数，表明要转换对象的哪个属性。其转换函数 `propertyToRef` 的源码如下：
 
@@ -249,7 +249,7 @@ const target = toRef({ id: 1 }, 'id')
 watchEffect(() => {
   console.log('>>>', target.value)
 })
-// 不会再次触发watchEffect，因为result不是一个响应式ref
+// 不会再次触发watchEffect，因为target不是一个响应式ref
 target.value = 100
 ```
 
@@ -274,8 +274,6 @@ export function toRefs<T extends object>(object: T): ToRefs<T> {
 ```
 
 从源码中可以看到，`toRefs` 的转换就是 `toRef` 的第三种情况，都是用的 `propertyToRef` 方法，但是缺少了 `defaultValue` 参数，同时，前面我们已经知道，`propertyToRef` 方法内部并没有强制要求转换的对象是一个 `reactive`，而 `toRefs` 应该被用于 `reactive` 对象的转换，因此方法首先是对 `object` 参数做了一个 `isProxy` 的检查。
-
-此外小提一点，官方文档指出：每个单独的 `ref` 都是使用 `toRef()` 创建的。但查看源码后得知，其实是通过 `propertyToRef` 函数创建的，不过其根本都是一样的。
 
 ## 结语
 

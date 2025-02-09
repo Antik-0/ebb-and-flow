@@ -32,7 +32,7 @@ export function reactive(target: object) {
 }
 ```
 
-从上述代码可以看到 `reactive` 函数的主要逻辑在 `createReactiveObject` 函数内，因此我们直接跳到 `createReactiveObject` 一探究竟。
+响应式代理由于要处理不同的数据类型以及一些边界问题，实际经过了多层的函数逻辑处理。由于其响应式的代理逻辑并不在 `reactive.ts` 这个模块，因而本文先暂不涉及其代理逻辑，主要分析 `reactive` 函数的边界问题。
 
 ## createReactiveObject
 
@@ -58,6 +58,7 @@ function createReactiveObject(
     target[ReactiveFlags.RAW] &&
     !(isReadonly && target[ReactiveFlags.IS_REACTIVE])
   ) {
+    // ✨如果target[ReactiveFlags.RAW]为true表明target已经是一个响应式对象了
     return target
   }
 
@@ -88,11 +89,11 @@ function createReactiveObject(
 }
 ```
 
-`createReactiveObject` 函数总体来说很简单，主要是先对 `target` 参数进行一些类型上的边界处理，其中有几个关注点，下面进行说明。
+`createReactiveObject` 函数总体来说很简单，主要是先对代理对象 `target` 参数进行一些类型上的边界处理，其中有几个关注点，下面进行说明。
 
 ## ReactiveFlags
 
-`createReactiveObject` 开头使用了一个 `ReactiveFlags` 对象，这是一个 `ts` 的枚举对象，其定义以及相应属性涉及的工具函数如下：
+`createReactiveObject` 开头使用了一个 `ReactiveFlags` 对象，这是一个 `ts` 的枚举对象，其定义以及相应属性涉及的常见工具函数如下：
 
 ```ts
 export enum ReactiveFlags {
@@ -185,7 +186,7 @@ function createReactiveObject(
 }
 ```
 
-## 响应式：函数
+## Reactive：函数
 
 在了解 `createReactiveObject` 函数后，下面给出 vue 中 4 个响应式函数的定义如下：
 
@@ -267,7 +268,7 @@ export function shallowReadonly<T extends object>(target: T): Readonly<T> {
 }
 ```
 
-## 响应式：工具
+## Reactive：工具
 
 在 `reactive.ts` 模块中，还暴露了一些工具 API，因为其定义都很简单，因此直接贴出代码即可。
 
@@ -320,4 +321,4 @@ export const toReadonly = <T extends unknown>(value: T): T =>
 
 ## 结语
 
-以上就是 `reactive.ts` 模块的主要内容，该模块主要是暴露了 4 个响应式函数以及一些响应式工具，同时对响应式对象的类型边界进行处理，并引入了各种响应式函数的 `ProxyHandler`。其中 `COMMON` 类型的代理逻辑在 `baseHandlers.ts` 模块，`COLLECTION` 类型的代理逻辑在 `collectionHandlers.ts` 模块，接下来将分析 `baseHandlers.ts` 模块，即 vue 是如何代理 `Object/Array` 类型的对象。
+以上就是 `reactive.ts` 模块的主要内容，该模块主要是暴露了 4 个响应式函数以及一些响应式工具，同时对响应式对象的类型边界进行处理，并引入了不同数据类型对应的 `ProxyHandler`。其中 `COMMON` 类型的代理逻辑在 `baseHandlers.ts` 模块，`COLLECTION` 类型的代理逻辑在 `collectionHandlers.ts` 模块，接下来将分析 `baseHandlers.ts` 模块，即 vue 是如何代理 `Object/Array` 类型的对象。
