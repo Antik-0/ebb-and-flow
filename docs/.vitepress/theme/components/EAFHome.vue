@@ -89,12 +89,15 @@ function handleEnter() {
   font-size: 20px;
   font-weight: 600;
   line-height: 2;
+  text-align: center;
   color: var(--EAF-cover-tagline-color);
+  opacity: 0;
   background: var(--EAF-cover-tagline-background);
   background-size: 200% 100%;
   background-clip: text;
   animation: var(--EAF-animation-tagline);
   animation-fill-mode: forwards;
+  animation-delay: 400ms;
 }
 
 .entry-button {
