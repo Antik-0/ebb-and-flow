@@ -107,9 +107,9 @@ export class FetchClient {
   /**
    * hooks
    */
-  public fetchBeforeHooks: FetchBeforeHook[] = []
-  public fetchAfterHooks: FetchAfterHook[] = []
-  public fetchErrorHooks: FetchErrorHook[] = []
+  private fetchBeforeHooks: FetchBeforeHook[] = []
+  private fetchAfterHooks: FetchAfterHook[] = []
+  private fetchErrorHooks: FetchErrorHook[] = []
 
   constructor(options: FetchClientOptions) {
     const { baseURL, timeout = 0, ...config } = options
@@ -313,7 +313,7 @@ export class FetchClient {
     payload: any,
     options: FetchRequestOptions = {}
   ) {
-    const method = options.method ?? 'post'
+    const method = options.method ?? 'get'
     options.format = 'blob'
     if (method === 'get') {
       return this.get(url, payload, options)
