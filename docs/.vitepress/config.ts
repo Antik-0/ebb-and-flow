@@ -43,7 +43,8 @@ export default defineConfig({
           { text: '图标之旅', link: '/reference/icon-travel' },
           { text: 'node-版本管理', link: '/reference/node-version' },
           { text: 'CSS-Effect', link: '/reference/css-effect' },
-          { text: 'fetch-请求类封装', link: '/reference/fetch-request' }
+          { text: 'fetch-请求类封装', link: '/reference/fetch-request' },
+          { text: '手动渲染组件', link: '/reference/manual-render' }
         ]
       },
       {
