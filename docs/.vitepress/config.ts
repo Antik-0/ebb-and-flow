@@ -30,6 +30,19 @@ export default defineConfig({
         ]
       },
       {
+        text: 'vue 源码解析(3.5+)',
+        collapsed: true,
+        items: [
+          { text: 'reactive', link: '/source/reactive' },
+          { text: 'baseHandlers', link: '/source/baseHandlers' },
+          { text: 'collectionHandlers', link: '/source/collectionHandlers' },
+          {
+            text: 'arrayInstrumentations',
+            link: '/source/arrayInstrumentations'
+          }
+        ]
+      },
+      {
         text: '参考',
         collapsed: false,
         items: [
