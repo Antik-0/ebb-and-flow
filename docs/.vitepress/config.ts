@@ -41,7 +41,8 @@ export default defineConfig({
             link: '/source/arrayInstrumentations'
           },
           { text: 'ref', link: '/source/ref' },
-          { text: 'computed', link: '/source/computed' }
+          { text: 'computed', link: '/source/computed' },
+          { text: 'dep', link: '/source/dep' }
         ]
       },
       {
