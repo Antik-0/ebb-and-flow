@@ -42,7 +42,8 @@ export default defineConfig({
           },
           { text: 'ref', link: '/source/ref' },
           { text: 'computed', link: '/source/computed' },
-          { text: 'dep', link: '/source/dep' }
+          { text: 'dep', link: '/source/dep' },
+          { text: 'effect', link: '/source/effect' }
         ]
       },
       {
