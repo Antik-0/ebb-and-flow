@@ -47,16 +47,17 @@ export enum EffectFlags {
   /**
    * ReactiveEffect only
    */
-  ACTIVE = 1 << 0, // ✨激活
-  RUNNING = 1 << 1, // ✨运行中
-  TRACKING = 1 << 2, // ✨进行追踪依赖
-  NOTIFIED = 1 << 3, // ✨以触发更新
-  DIRTY = 1 << 4, // ✨需要更新
-  ALLOW_RECURSE = 1 << 5, // ✨运行递归
-  PAUSED = 1 << 6 // ✨暂停
+  ACTIVE = 1 << 0, // ✨激活中状态(是否可用)
+  RUNNING = 1 << 1, // ✨运行中状态(是否正在运行回调)
+  TRACKING = 1 << 2, // ✨追踪依赖中状态(是否可以收集依赖)
+  NOTIFIED = 1 << 3, // ✨已通知状态(表示已加入批处理队列，但是可能还未更新)
+  DIRTY = 1 << 4, // ✨脏状态(依赖变动，需要更新)
+  ALLOW_RECURSE = 1 << 5, // ✨允许递归(允许收集嵌套的依赖)
+  PAUSED = 1 << 6 // ✨暂停状态(暂停依赖收集)
 }
 
 /**
+ * ✨订阅者就是一个 effect，在下文注释中会混合使用订阅者和 effect，本质是一个东西
  * Subscriber is a type that tracks (or subscribes to) a list of deps.
  */
 export interface Subscriber extends DebuggerOptions {
@@ -92,40 +93,38 @@ export class ReactiveEffect<T = any>
   implements Subscriber, ReactiveEffectOptions
 {
   /**
-   *✨当前 effect 的第一个 dep
+   *✨订阅的第一个依赖，链表的头部节点
    * @internal
    */
   deps?: Link = undefined
   /**
-   * ✨当前 effect 的最后一个 dep
+   * ✨订阅的最后一个依赖，链表的尾部节点
    * @internal
    */
   depsTail?: Link = undefined
   /**
-   * ✨当前 effect 的状态
+   * ✨当前 effect 的状态，用二进制位表示，新建为激活中状态和可追踪依赖状态
    * @internal
    */
   flags: EffectFlags = EffectFlags.ACTIVE | EffectFlags.TRACKING
   /**
-   * ✨表示下一个需要进行更新的 effect，具体见下文的 batch
+   * ✨指向下一个需要进行更新的 effect，类比组件嵌套，也就是指向当前上下文的父上下文，具体见下文的 batch 流程
    * @internal
    */
   next?: Subscriber = undefined
   /**
-   * ✨当 effect 没有任何依赖的时候，执行该方法
+   * ✨effect 依赖清除的回调，在重新收集依赖或停用 effect 的时候调用
    * @internal
    */
   cleanup?: () => void = undefined
   /**
-   * ✨决定当前 effect 何时更新的调度器，不在本包范围内
+   * ✨决定当前 effect 何时更新的调度器，不在本模块范围内
    */
   scheduler?: EffectScheduler = undefined
-
   /**
-   * ✨
+   * ✨effect 停用的回调
    */
   onStop?: () => void
-
   /**
    * ✨开发环境下的调试钩子
    */
@@ -133,21 +132,20 @@ export class ReactiveEffect<T = any>
   onTrigger?: (event: DebuggerEvent) => void
 
   constructor(public fn: () => T) {
-    // ✨fn 函数就是 effect 的更新函数
+    // ✨fn 函数就是 effect 的更新函数，比如 watch 的回调
     if (activeEffectScope && activeEffectScope.active) {
-      // ✨将当前 effect 推入当前活跃的 effectScope
+      // ✨将当前 effect 推入当前活跃的上下文
       activeEffectScope.effects.push(this)
     }
   }
 
   pause(): void {
-    // ✨打开暂停状态
     this.flags |= EffectFlags.PAUSED
   }
 
   resume(): void {
     if (this.flags & EffectFlags.PAUSED) {
-      // ✨关闭暂停状态，保持其他状态不变
+      // ✨关闭暂停状态，保持其他状态不变，并执行一次更新
       this.flags &= ~EffectFlags.PAUSED
       if (pausedQueueEffects.has(this)) {
         pausedQueueEffects.delete(this)
@@ -186,7 +184,7 @@ export class ReactiveEffect<T = any>
     // ✨运行 cleanup 回调，只运行一次
     cleanupEffect(this)
 
-    // ✨标记当前 effect 所有绑定的 dep 为失活状态，即将当前 effect 下的所有 dep 的 version 设置为 -1
+    // ✨标记当前 effect 所有绑定的 dep 为失活状态，即将当前 effect 下的所有依赖的 version 设置为 -1
     // ✨等 this.fn() 运行完后，清理掉 dep.version = -1 的依赖，代表这个依赖不需要了
     prepareDeps(this)
 
@@ -200,7 +198,7 @@ export class ReactiveEffect<T = any>
     shouldTrack = true
 
     try {
-      // ✨执行 effect 的回调函数
+      // ✨执行 effect 的更新函数
       return this.fn()
     } finally {
       if (__DEV__ && activeSub !== this) {
@@ -212,7 +210,7 @@ export class ReactiveEffect<T = any>
       }
 
       // ✨重新收集依赖，清除当前 effect 下所有 version = -1 的 dep
-      // ✨通过 dep.version 可以判断之前的依赖是否可以复用
+      // ✨通过 dep.version 可以判断之前的依赖是否可以复用，避免不必要的创建
       cleanupDeps(this)
 
       // ✨运行结束，恢复之前的上下文
@@ -225,20 +223,21 @@ export class ReactiveEffect<T = any>
   }
 
   stop(): void {
+    // ✨停用当前 effect
     if (this.flags & EffectFlags.ACTIVE) {
       for (let link = this.deps; link; link = link.nextDep) {
         // ✨从头开始，按顺序，断开所有与该 effect 有关的 dep 链接
         removeSub(link)
       }
 
-      // ✨清空 dep
+      // ✨清空依赖
       this.deps = this.depsTail = undefined
 
-      // ✨运行回调
+      // ✨运行清空回调
       cleanupEffect(this)
       this.onStop && this.onStop()
 
-      // ✨设置当前 effect 为不可用状态
+      // ✨设置当前 effect 为不可用状态，并保持其他状态不变
       this.flags &= ~EffectFlags.ACTIVE
     }
   }
@@ -251,7 +250,7 @@ export class ReactiveEffect<T = any>
       // ✨存在调度器，执行调度器
       this.scheduler()
     } else {
-      // ✨判断依赖是否变动来决定是否需要立即执行 this.run()
+      // ✨判断依赖是否变动来决定是否需要执行更新回调
       this.runIfDirty()
     }
   }
@@ -260,7 +259,7 @@ export class ReactiveEffect<T = any>
    * @internal
    */
   runIfDirty(): void {
-    // ✨dirty 可以简单理解为该 effect 绑定的依赖是否发生变动
+    // ✨dirty 状态可以简单理解为该 effect 绑定的依赖是否发生变动
     if (isDirty(this)) {
       this.run()
     }
@@ -288,11 +287,11 @@ export class ReactiveEffect<T = any>
 //   }))
 // }
 
-// ✨批处理的深度，其实是表示 effectScope 的嵌套深度
+// ✨批处理的深度，其实就是表示 effect 上下文的嵌套深度
 let batchDepth = 0
 
-// ✨分别指向当前 effectScope 的最后一个需要执行更新的 effect
-// ✨顺着这个 effect 的 next 向上执行 effect 的更新
+// ✨分别指向当前上下文的最后一个需要执行更新的 effect
+// ✨顺着 effect.next 向上遍历，通知父级 effect 的更新
 let batchedSub: Subscriber | undefined
 let batchedComputed: Subscriber | undefined
 
@@ -301,7 +300,7 @@ export function batch(sub: Subscriber, isComputed = false): void {
   sub.flags |= EffectFlags.NOTIFIED
 
   // ✨next 就是一条链路，表示下一个要更新的 effect
-  // ✨实际指向的是当前 effectScope 的上级 effectScope，类比函数的嵌套
+  // ✨指向的是当前 effectScope 的上级 effectScope，类比嵌套组件的更新流程
   if (isComputed) {
     sub.next = batchedComputed
     batchedComputed = sub
@@ -315,6 +314,7 @@ export function batch(sub: Subscriber, isComputed = false): void {
  * @internal
  */
 export function startBatch(): void {
+  // ✨嵌套 +1，需要与 endBatch 配合使用
   batchDepth++
 }
 
@@ -335,10 +335,11 @@ export function endBatch(): void {
       e.next = undefined
       e.flags &= ~EffectFlags.NOTIFIED
       e = next
-      // ✨计算属性不需要主要执行更新，因为计算属性本身还是一个 dep
+      // ✨计算属性不需要主动触发更新，因为计算属性本身还是一个 dep
     }
   }
 
+  // ✨向上遍历，依次触发对应 effect 更新
   let error: unknown
   while (batchedSub) {
     let e: Subscriber | undefined = batchedSub
@@ -411,7 +412,7 @@ function cleanupDeps(sub: Subscriber) {
     link = prev
   }
 
-  // ✨更新当前订阅者的首尾依赖节点
+  // ✨更新当前订阅者的首尾节点
   // set the new head & tail
   sub.deps = head
   sub.depsTail = tail
@@ -512,7 +513,7 @@ export function refreshComputed(computed: ComputedRefImpl): undefined {
 }
 
 /**
- * ✨从 dep 中删除 sub
+ * ✨通过链表节点从 dep 中删除 sub
  */
 function removeSub(link: Link, soft = false) {
   const { dep, prevSub, nextSub } = link
@@ -527,13 +528,13 @@ function removeSub(link: Link, soft = false) {
     link.nextSub = undefined
   }
 
-  // ✨dep.subsHead 指向 dep 的首个 effect，subsHead 只存在于开发环境
+  // ✨dep.subsHead 指向 dep 的首个订阅者，subsHead 只存在于开发环境
   if (__DEV__ && dep.subsHead === link) {
     // was previous head, point new head to next
     dep.subsHead = nextSub
   }
 
-  // ✨dep.subs 指向 dep 的最后一个 effect
+  // ✨dep.subs 指向 dep 的最后一个订阅者
   if (dep.subs === link) {
     // ✨断开当前 dep 和 effect 的链接
     // was previous tail, point new tail to prev
@@ -568,7 +569,7 @@ function removeSub(link: Link, soft = false) {
 }
 
 /**
- * ✨从 sub 中删除 dep
+ * ✨通过链表节点从 sub 中删除 dep
  */
 function removeDep(link: Link) {
   const { prevDep, nextDep } = link

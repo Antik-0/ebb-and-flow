@@ -17,6 +17,7 @@ import {
 } from './effect'
 
 /**
+ * ✨每当 trigger 一次 effect 的时候就自增一次
  * Incremented every time a reactive change happens
  * This is used to give computed a fast path to avoid re-compute when nothing
  * has changed.
@@ -24,7 +25,7 @@ import {
 export let globalVersion = 0
 
 /**
- * ✨Link 连接着一个dep和一个sub
+ * ✨双向链表的节点，一个 Link 节点连接着一个依赖和其对应的订阅者
  * Represents a link between a source (Dep) and a subscriber (Effect or Computed).
  * Deps and subs have a many-to-many relationship - each link between a
  * dep and a sub is represented by a Link instance.
@@ -65,28 +66,29 @@ export class Link {
 }
 
 /**
- * ✨Dep表示一个依赖，以前是通过一个数组来存储其订阅者，现在通过链表跟踪
+ * ✨Dep 表示一个依赖，以前是通过一个数组来存储其订阅者，现在通过链表跟踪
  * @internal
  */
 export class Dep {
   version = 0
   /**
+   * ✨当前活跃的 effect 上下文，保存着当前节点的订阅者
    * Link between this dep and the current active effect
    */
   activeLink?: Link = undefined
 
   /**
    * ✨该依赖的最后一个订阅者，也可以说是最近的订阅者，是触发 effect 更新用的
-   * ✨此 Link 节点的所有 prevSub 节点绑定的 dep 都是当前 dep 实例
-   * ✨顺着这个节点往前走，可以从内到外依次访问到当前 dep 的所有订阅者
+   * ✨此节点的所有 prevSub 节点绑定的 dep 都是当前 dep 实例
+   * ✨顺着这个节点往前走，可以从内到外依次访问到当前依赖的所有订阅者
    * Doubly linked list representing the subscribing effects (tail)
    */
   subs?: Link = undefined
 
   /**
    * ✨该依赖的首个订阅者，只在开发环境下存在，供调试使用
-   * ✨此 Link 节点的所有 nextSub 节点绑定的 dep 都是当前 dep 实例
-   * ✨顺着这个节点往后走，可以从外到内依次访问到当前 dep 的所有订阅者
+   * ✨此节点的所有 nextSub 节点绑定的 dep 都是当前 dep 实例
+   * ✨顺着这个节点往后走，可以从外到内依次访问到当前依赖的所有订阅者
    * Doubly linked list representing the subscribing effects (head)
    * DEV only, for invoking onTrigger hooks in correct order
    */
@@ -97,11 +99,13 @@ export class Dep {
   /**
    * For object property deps cleanup
    */
+  // ✨保存当前属性所在的整个对象的依赖映射，方便删除
   map?: KeyToDepMap = undefined
+  // ✨key 为当前依赖的追踪类型
   key?: unknown = undefined
 
   /**
-   * ✨订阅者总数
+   * ✨订阅者总数，脏状态计算使用
    * Subscriber counter
    */
   sc: number = 0
@@ -112,6 +116,9 @@ export class Dep {
     }
   }
 
+  /**
+   * ✨依赖收集
+   */
   track(debugInfo?: DebuggerEventExtraInfo): Link | undefined {
     if (!activeSub || !shouldTrack || activeSub === this.computed) {
       // ✨computed 实现了订阅者的接口，在计算属性中访问自身，不需要追踪自身
@@ -121,12 +128,12 @@ export class Dep {
     // ✨若一个 dep 在一个 effect 中被多次访问，那么从第二次开始 this.activeLink 就不为 undefined
     let link = this.activeLink
     if (link === undefined || link.sub !== activeSub) {
-      // ✨首次访问，或者切换 effect，就重新创建一个 Link
+      // ✨首次访问，或者切换了 effect 上下文，就重新创建一个 Link
       link = this.activeLink = new Link(activeSub, this)
 
       // add the link to the activeEffect as a dep (as tail)
       if (!activeSub.deps) {
-        // ✨activeSub.deps 代表双向链表的头节点，若头节点不存在，则说明这个 sub 是第一次运行
+        // ✨activeSub.deps 代表双向链表的头节点，若这里头节点不存在，则说明这个 effect 是第一次运行
         activeSub.deps = activeSub.depsTail = link
       } else {
         // ✨更新当前 sub 中的 dep 顺序
@@ -135,24 +142,30 @@ export class Dep {
         activeSub.depsTail = link
       }
 
-      // ✨更新当前 dep 和 activeEffect 的相关状态
+      // ✨建立依赖和对应订阅者的链接
       addSub(link)
     } else if (link.version === -1) {
-      // ✨在 track 之前会将当前 effect 中所有的 link 冻结，即设置 version = -1
-      // ✨若进入这里的逻辑，说明这个 link 可以复用
+      // ✨在收集依赖之前会将当前 effect 中所有的依赖冻结，即设置 link.version = -1
+      // ✨若进入这里的逻辑，说明这个依赖可以复用，直接同步版本号
       // reused from last run - already a sub, just sync version
       link.version = this.version
 
       // If this dep has a next, it means it's not at the tail - move it to the
       // tail. This ensures the effect's dep list is in the order they are
       // accessed during evaluation.
+      // ✨若 nextDeo 存在，说明当前依赖在之前不是 effect 中的最后一个依赖
+      // ✨那么将暂时当前依赖移动到链表的尾端
       if (link.nextDep) {
+        // ✨注意：这里 nextDep 是上一轮 effect 中当前依赖的下一个依赖
+
+        // ✨删除当前依赖原来的位置
         const next = link.nextDep
         next.prevDep = link.prevDep
         if (link.prevDep) {
           link.prevDep.nextDep = next
         }
 
+        // ✨移动当前依赖到尾端
         link.prevDep = activeSub.depsTail
         link.nextDep = undefined
         activeSub.depsTail!.nextDep = link
@@ -160,6 +173,7 @@ export class Dep {
 
         // this was the head - point to the new head
         if (activeSub.deps === link) {
+          // ✨如果当前依赖之前是头部节点，则更新头部节点
           activeSub.deps = next
         }
       }
@@ -183,11 +197,13 @@ export class Dep {
     // ✨更新 version，dep.version <= globalVersion
     this.version++
     globalVersion++
-    // ✨notify 触发响应式更新
+    // ✨通知更新
     this.notify(debugInfo)
   }
 
   notify(debugInfo?: DebuggerEventExtraInfo): void {
+    // ✨该方法只是记录了当前上下文的嵌套深度，因此需要与 endBatch 配合使用
+    // ✨类似嵌套函数的调用栈变化
     startBatch()
     try {
       if (__DEV__) {
@@ -195,7 +211,7 @@ export class Dep {
         // original order at the end of the batch, but onTrigger hooks should
         // be invoked in original order here.
         for (let head = this.subsHead; head; head = head.nextSub) {
-          // ✨由外到内，依次触发对应的 sub 的 onTrigger 调试钩子
+          // ✨由外到内，依次触发对应的订阅者的 onTrigger 调试钩子
           if (head.sub.onTrigger && !(head.sub.flags & EffectFlags.NOTIFIED)) {
             head.sub.onTrigger(
               extend(
@@ -209,12 +225,10 @@ export class Dep {
         }
       }
       for (let link = this.subs; link; link = link.prevSub) {
-        // ✨从内到外，依次触发对应 sub 的更新
-        // ✨为什么是从内到外？因为 effectScope 是存在嵌套的，就像函数作用域一样，内部嵌套的作用域优先级是大于外部的
-        // ✨并且组件的状态更新也是由内到外的
+        // ✨从内到外，依次通知对应订阅者更新
         if (link.sub.notify()) {
           // ✨如果一个 sub.notify() 返回 true，代表当前 sub 是一个计算属性
-          // ✨一个计算属性更新，需要通知该计算属性的其他 sub 同步更新
+          // ✨一个计算属性更新，需要通知该计算属性的其他订阅者同步更新
           // if notify() returns `true`, this is a computed. Also call notify
           // on its dep - it's called here instead of inside computed's notify
           // in order to reduce call stack depth.
@@ -222,6 +236,7 @@ export class Dep {
         }
       }
     } finally {
+      // ✨实际触发 effect 更新的方法，可能不会立即执行，详见内部实现
       endBatch()
     }
   }
@@ -243,22 +258,11 @@ function addSub(link: Link) {
       computed.flags |= EffectFlags.TRACKING | EffectFlags.DIRTY
       for (let l = computed.deps; l; l = l.nextDep) {
         // ✨将当前计算属性的所有依赖，绑定到当前的 activeSub 中
-        // ✨这里要明白一个东西，计算属性是一个 sub，但是其不会成为一个 activeSub
-        // ✨举个例子：
-        // ✨const count = ref(1)
-        // ✨const double = computed(() => count.value * 2)
-        // ✨count.value += 1
-        // ✨
-        // ✨上面 count 的变动并不会触发 double 这个计算属性的更新，因为代码没有在一个 effectScope 中访问 double.value
-        // ✨也就是说没有任何地方需要 double 这个依赖，既然这个依赖无人使用，那么即使 double 的依赖更新了，也并不需要更新 double 这个 effect
-        // ✨因而，如果需要用到一个计算属性，那么只需要将这个计算属性的内部依赖，全部绑定到需要用到这个计算属性的 effect 中即可
-        // ✨这样，如果计算属性中的某个依赖变动，只需通知一次真正的 effect 更新就行了，而不是先通知计算属性更新，再通知依赖计算属性的 effect 通信
-        // ✨而 effect 的更新也顺便重新运行了一次计算属性，从而减少了通信次数，达到优化
         addSub(l)
       }
     }
 
-    // ✨更新相应的 sub 顺序
+    // ✨更新相应的链表节点顺序
     const currentTail = link.dep.subs
     if (currentTail !== link) {
       link.prevSub = currentTail
