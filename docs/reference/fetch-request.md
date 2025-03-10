@@ -70,7 +70,9 @@ export function createErrorContext(
   return { type, cause, message }
 }
 
-export function isPureObject(value: unknown) {
+type PlainObject = Record<string, unknown>
+
+export function isPlainObject(value: unknown) {
   return Object.prototype.toString.call(value) === '[object Object]'
 }
 
@@ -93,12 +95,10 @@ export class FetchClient {
    * @internal
    */
   private _baseURL: string
-
   /**
    * @internal
    */
   private _timeout: number
-
   /**
    * @internal
    */
@@ -106,6 +106,7 @@ export class FetchClient {
 
   /**
    * hooks
+   * @internal
    */
   private fetchBeforeHooks: FetchBeforeHook[] = []
   private fetchAfterHooks: FetchAfterHook[] = []
@@ -255,13 +256,13 @@ export class FetchClient {
 
   public get<T = any>(
     url: string,
-    payload: any = null,
+    payload: PlainObject | URLSearchParams | null = null,
     options: FetchRequestOptions = {}
   ) {
-    if (isPureObject(payload)) {
-      url += `?${new URLSearchParams(payload)?.toString()}`
+    if (isPlainObject(payload)) {
+      url += `?${new URLSearchParams(payload as any).toString()}`
     } else if (payload instanceof URLSearchParams) {
-      url += `?${payload?.toString()}`
+      url += `?${payload.toString()}`
     }
 
     options.headers = {
@@ -276,7 +277,7 @@ export class FetchClient {
     payload: any = {},
     options: FetchRequestOptions = {}
   ) {
-    const isJSON = isPureObject(payload)
+    const isJSON = isPlainObject(payload)
     const defaultType = isJSON ? 'application/json' : 'text/plain'
 
     options.headers = {
@@ -378,7 +379,7 @@ import {
   type FetchAfterContext,
   type FetchErrorContext,
   FetchErrorType,
-  isPureObject,
+  isPlainObject,
   createErrorContext
 } from './request.ts'
 
@@ -392,7 +393,7 @@ export function createHeadersUpdateHook(tokenGetter: () => string) {
 
 export function responseInterceptorHook(ctx: FetchAfterContext) {
   const data = ctx.data
-  if (isPureObject(data) && data.msg) {
+  if (isPlainObject(data) && data.msg) {
     return Promise.reject(
       createErrorContext(FetchErrorType.SERVER, { cause: data })
     )
@@ -471,7 +472,7 @@ interface HttpResponseData<T = any> {
 }
 
 function handleServerErrorMessage(data: HttpResponseData) {
-  if (!isPureObject(data)) return ''
+  if (!isPlainObject(data)) return ''
   return data.msg || ''
 }
 ```
