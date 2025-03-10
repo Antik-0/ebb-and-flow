@@ -44,7 +44,8 @@ export default defineConfig({
           { text: 'computed', link: '/source/computed' },
           { text: 'dep', link: '/source/dep' },
           { text: 'effect', link: '/source/effect' },
-          { text: 'effectScope', link: '/source/effectScope' }
+          { text: 'effectScope', link: '/source/effectScope' },
+          { text: 'watch', link: '/source/watch' }
         ]
       },
       {
