@@ -32,8 +32,6 @@
 
   /* side-bar */
   .Layout .VPSidebar {
-    display: flex;
-    flex-direction: column;
     background-color: transparent;
   }
 
