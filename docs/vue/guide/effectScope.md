@@ -1,4 +1,4 @@
-# Vue 源码解析之-EffectScope
+# Vue 响应式系统 - EffectScope
 
 ## 摘要
 

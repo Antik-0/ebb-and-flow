@@ -1,4 +1,4 @@
-# Vue 源码解析之-BaseHandlers
+# Vue 响应式系统 - BaseHandlers
 
 在 `reactive.ts` 模块中从 `baseHandlers.ts` 模块导入了 4 个 `ProxyHandler` 类，这 4 个类分别对应了 `reactive、readonly、shallowReactive、shallowReadonly` 4 个响应式函数的 `handler` 参数。
 

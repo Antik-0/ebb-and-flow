@@ -1,18 +1,3 @@
-# CSS-毛玻璃效果
-
-<script setup>
-import CSSGlass from './components/css-glass.vue'
-</script>
-
-## 效果
-
-<CSSGlass />
-
-## 源码
-
-::: code-group
-
-```vue
 <script setup lang="ts">
 import { type ShallowRef, shallowRef, onMounted, reactive } from 'vue'
 
@@ -68,23 +53,22 @@ function useMove(target: ShallowRef<HTMLElement | undefined | null>) {
 
 useMove(glassEl)
 </script>
-```
 
-```html
-<div class="glass-container">
-  <div ref="glassEl" class="glass">
-    <div class="glass-text">Drag Me</div>
+<template>
+  <div class="glass-container">
+    <div ref="glassEl" class="glass">
+      <div class="glass-text">Drag Me</div>
+    </div>
   </div>
-</div>
-```
+</template>
 
-```css
+<style>
 .glass-container {
   position: relative;
-  width: 600px;
+  width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 12px;
-  background: url(./glass-bg.png) no-repeat;
+  background: url('../images/css-glass-bg.png') no-repeat;
   background-size: cover;
 }
 
@@ -112,7 +96,7 @@ useMove(glassEl)
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url('./glass-mask.png') no-repeat;
+  background: url('../images/css-glass-mask.png') no-repeat;
   background-size: cover;
   opacity: 0.05;
 }
@@ -126,6 +110,4 @@ useMove(glassEl)
   color: #b8bfbe;
   background-color: hsl(210 8% 5% /0.75);
 }
-```
-
-:::
+</style>

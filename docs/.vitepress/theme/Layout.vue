@@ -28,7 +28,7 @@ Object.assign(router, {
     // 主页滑出
     const base = site.value.base
     const isBase = route.path === base
-    if (isBase && to === withBase('/guide/reactive')) {
+    if (isBase && to === withBase('/vue/guide/reactive')) {
       viewTransitionStart(true)
       // 为了保证能正确获取当前路由的快照，延迟一点时间再进行路由跳转
       return await sleep(100)

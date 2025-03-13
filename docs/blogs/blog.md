@@ -227,11 +227,11 @@ titleTemplate: false
 
 最后定制的效果如下图：
 
-![主页](./images/preview-1.png)
+![主页](./images/blog-preview-1.png)
 
 <div style="text-align: center">主页效果</div>
 
-![文章](./images/preview-2.png)
+![文章](./images/blog-preview-2.png)
 
 <div style="text-align: center">内容效果</div>
 
@@ -247,7 +247,7 @@ titleTemplate: false
 
 然后到 `仓库/设置/GitHub Pages` 下打开 GitHub Pages，如下图：
 
-![文章](./images/github.png)
+![文章](./images/github-pages.png)
 
 ### CI 配置
 

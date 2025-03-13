@@ -1,4 +1,4 @@
-# Vue 源码解析之-Reactive
+# Vue 响应式系统 - Reactive
 
 ::: tip 前言
 本文解析的 vue 源码版本为 `3.4.27`，只涉及包 `packages/reactivity` 下的内容，一般文章的标题就是其对应的源码模块。

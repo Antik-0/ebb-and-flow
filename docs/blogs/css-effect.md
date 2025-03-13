@@ -1,4 +1,4 @@
-# CSS Effect 收集
+# CSS Effect
 
 ::: info
 本文记录一些有趣的 CSS 效果。
@@ -293,7 +293,7 @@
 ## 下拉 Loading
 
 <script setup>
-import SVGLoading from './components/svg-loading.vue'
+import SVGLoading from './components/SVGLoading.vue'
 </script>
 
 <div class="demo">

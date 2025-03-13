@@ -1,4 +1,4 @@
-# effectScope
+# vue 源码解析 - effectScope
 
 ## 源码
 

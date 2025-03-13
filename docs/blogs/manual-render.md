@@ -1,8 +1,8 @@
 # 手动渲染组件
 
 <script setup>
-import RenderCreateAppDemo from './components/render-createApp.vue'
-import RenderCreateVNodeDemo from './components/render-createVNode.vue'
+import RenderCreateAppDemo from './components/RenderCreateApp.vue'
+import RenderCreateVNodeDemo from './components/RenderCreateVNode.vue'
 </script>
 
 ## createApp

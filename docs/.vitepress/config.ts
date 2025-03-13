@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 
-// https://vitepress.dev/reference/site-config
+// https://vitepress.dev/blogs/site-config
 const webBase = '/ebb-and-flow/'
 export default defineConfig({
   title: '潮起潮落的站点',
@@ -17,59 +17,61 @@ export default defineConfig({
     nav: [{ text: '主页', link: '/' }],
     sidebar: [
       {
-        text: 'vue 源码解析',
+        text: 'vue 响应式系统',
         collapsed: false,
         items: [
-          { text: 'Reactive', link: '/guide/reactive' },
-          { text: 'BaseHandlers', link: '/guide/baseHandlers' },
-          { text: 'CollectionHandlers', link: '/guide/collectionHandlers' },
-          { text: 'Ref', link: '/guide/ref' },
-          { text: 'Effect', link: '/guide/effect' },
-          { text: 'Computed', link: '/guide/computed' },
-          { text: 'EffectScope', link: '/guide/effectScope' }
+          { text: 'Reactive', link: '/vue/guide/reactive' },
+          { text: 'BaseHandlers', link: '/vue/guide/baseHandlers' },
+          { text: 'CollectionHandlers', link: '/vue/guide/collectionHandlers' },
+          { text: 'Ref', link: '/vue/guide/ref' },
+          { text: 'Effect', link: '/vue/guide/effect' },
+          { text: 'Computed', link: '/vue/guide/computed' },
+          { text: 'EffectScope', link: '/vue/guide/effectScope' }
         ]
       },
       {
         text: 'vue 源码解析(3.5+)',
         collapsed: true,
         items: [
-          { text: 'reactive', link: '/source/reactive' },
-          { text: 'baseHandlers', link: '/source/baseHandlers' },
-          { text: 'collectionHandlers', link: '/source/collectionHandlers' },
+          { text: 'reactive', link: '/vue/source/reactive' },
+          { text: 'baseHandlers', link: '/vue/source/baseHandlers' },
+          {
+            text: 'collectionHandlers',
+            link: '/vue/source/collectionHandlers'
+          },
           {
             text: 'arrayInstrumentations',
-            link: '/source/arrayInstrumentations'
+            link: '/vue/source/arrayInstrumentations'
           },
-          { text: 'ref', link: '/source/ref' },
-          { text: 'computed', link: '/source/computed' },
-          { text: 'dep', link: '/source/dep' },
-          { text: 'effect', link: '/source/effect' },
-          { text: 'effectScope', link: '/source/effectScope' },
-          { text: 'watch', link: '/source/watch' }
+          { text: 'ref', link: '/vue/source/ref' },
+          { text: 'computed', link: '/vue/source/computed' },
+          { text: 'dep', link: '/vue/source/dep' },
+          { text: 'effect', link: '/vue/source/effect' },
+          { text: 'effectScope', link: '/vue/source/effectScope' },
+          { text: 'watch', link: '/vue/source/watch' }
         ]
       },
       {
-        text: '参考',
+        text: '杂谈',
         collapsed: false,
         items: [
-          { text: 'Receiver', link: '/reference/receiver' },
-          { text: 'CSS-@layer', link: '/reference/css-@layer' },
-          { text: 'Monorepos', link: '/reference/monorepos' },
-          { text: '视图过渡', link: '/reference/view-transitions' },
-          { text: '项目规范', link: '/reference/lint' },
-          { text: '博客搭建', link: '/reference/blog' },
-          { text: '网络文章', link: '/reference/links' },
-          { text: '图标之旅', link: '/reference/icon-travel' },
-          { text: 'node-版本管理', link: '/reference/node-version' },
-          { text: 'CSS-Effect', link: '/reference/css-effect' },
-          { text: 'fetch-请求类封装', link: '/reference/fetch-request' },
-          { text: '手动渲染组件', link: '/reference/manual-render' },
-          { text: 'CSS-毛玻璃', link: '/reference/css-glass' }
+          { text: 'Receiver', link: '/blogs/js-receiver' },
+          { text: 'CSS-@layer', link: '/blogs/css-@layer' },
+          { text: 'CSS-Effect', link: '/blogs/css-effect' },
+          { text: 'CSS-毛玻璃', link: '/blogs/css-glass' },
+          { text: 'CSS-视图过渡', link: '/blogs/view-transitions' },
+          { text: 'Monorepos', link: '/blogs/monorepos' },
+          { text: '项目规范', link: '/blogs/lint' },
+          { text: '博客搭建', link: '/blogs/blog' },
+          { text: '网络文章', link: '/blogs/links' },
+          { text: 'node-版本管理', link: '/blogs/node-version' },
+          { text: 'fetch-请求类封装', link: '/blogs/fetch-request' },
+          { text: '手动渲染组件', link: '/blogs/manual-render' }
         ]
       },
       {
         text: '算法基础',
-        collapsed: false,
+        collapsed: true,
         items: [{ text: '排序', link: '/algorithm/sort' }]
       }
     ],

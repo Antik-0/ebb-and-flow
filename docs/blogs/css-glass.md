@@ -1,3 +1,20 @@
+# CSS-毛玻璃效果
+
+<script setup>
+import CSSGlass from './components/CSSGlass.vue'
+</script>
+
+[原教程](https://www.tyleo.com/guides/html-glass#final-recipe-lookahead)
+
+## 效果
+
+<CSSGlass />
+
+## 源码
+
+::: code-group
+
+```vue
 <script setup lang="ts">
 import { type ShallowRef, shallowRef, onMounted, reactive } from 'vue'
 
@@ -53,25 +70,27 @@ function useMove(target: ShallowRef<HTMLElement | undefined | null>) {
 
 useMove(glassEl)
 </script>
+```
 
-<template>
-  <div class="glass-container">
-    <div ref="glassEl" class="glass">
-      <div class="glass-text">Drag Me</div>
-    </div>
+```html
+<div class="glass-container">
+  <div ref="glassEl" class="glass">
+    <div class="glass-text">Drag Me</div>
   </div>
-</template>
+</div>
+```
 
-<style>
+```css
 .glass-container {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 12px;
-  background: url(./glass-bg.png) no-repeat;
+  background: url('../images/css-glass-bg.png') no-repeat;
   background-size: cover;
 }
 
+/* prettier-ignore */
 .glass {
   position: absolute;
   top: 30%;
@@ -82,10 +101,12 @@ useMove(glassEl)
   overflow: hidden;
   z-index: 99;
   backdrop-filter: blur(10px);
-  box-shadow: 4px 2px 10px 2px hsl(0 0% 0% / 0.25),
+  box-shadow:
+    4px 2px 10px 2px hsl(0 0% 0% / 0.25),
     inset 0 0 10px 4px hsl(0 0% 100% / 0.025),
     inset 0 0 50px 4px hsl(0 0% 100% / 0.025),
-    inset -1px -1px hsl(0 0% 100% / 0.025), inset 1px 1px hsl(0 0% 100% / 0.025);
+    inset -1px -1px hsl(0 0% 100% / 0.025),
+    inset 1px 1px hsl(0 0% 100% / 0.025);
 }
 
 .glass::before {
@@ -93,7 +114,7 @@ useMove(glassEl)
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url('./glass-mask.png') no-repeat;
+  background: url('../images/css-glass-mask.png') no-repeat;
   background-size: cover;
   opacity: 0.05;
 }
@@ -107,4 +128,6 @@ useMove(glassEl)
   color: #b8bfbe;
   background-color: hsl(210 8% 5% /0.75);
 }
-</style>
+```
+
+:::
