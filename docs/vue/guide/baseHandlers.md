@@ -45,7 +45,7 @@ class ReadonlyReactiveHandler extends BaseReactiveHandler {
 > **_BaseReactiveHandler、MutableReactiveHandler、ReadonlyReactiveHandler_**
 
 ::: tip
-在 **_get_** 和 **_set_** 代理的逻辑中存在一个 `receiver` 对象，关于这个对象的知识可以参考这篇文章：[Receiver](../reference/receiver)
+在 **_get_** 和 **_set_** 代理的逻辑中存在一个 `receiver` 对象，关于这个对象的知识可以参考这篇文章：[Receiver](../../blogs/js-receiver)
 :::
 
 ## BaseReactiveHandler
@@ -82,8 +82,8 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
               ? shallowReadonlyMap
               : readonlyMap
             : isShallow
-            ? shallowReactiveMap
-            : reactiveMap
+              ? shallowReactiveMap
+              : reactiveMap
           ).get(target) ||
         // receiver is not the reactive proxy, but has the same prototype
         // this means the reciever is a user proxy of the reactive proxy
