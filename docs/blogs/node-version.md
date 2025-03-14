@@ -101,8 +101,8 @@ fnm env
 
 在使用之前可以配置一下 `node` 的安装目录，只需要修改配置文件中的环境变量即可，这里我选择放到 `document` 文件中，方便管理。
 
-```
-$env:FNM_DIR = "C:\Users\Antik\Documents\fnm" // [!code ++]
+```shell
+$env:FNM_DIR = "C:\Users\Antik\Documents\fnm"
 fnm env --use-on-cd --shell power-shell | Out-String | Invoke-Expression
 ```
 
