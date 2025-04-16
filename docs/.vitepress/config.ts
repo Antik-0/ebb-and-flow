@@ -66,7 +66,9 @@ export default defineConfig({
           { text: '网络文章', link: '/blogs/links' },
           { text: 'node-版本管理', link: '/blogs/node-version' },
           { text: 'fetch-请求类封装', link: '/blogs/fetch-request' },
-          { text: '手动渲染组件', link: '/blogs/manual-render' }
+          { text: '手动渲染组件', link: '/blogs/manual-render' },
+          { text: '防抖/节流', link: '/blogs/debounce' },
+          { text: '数字滚动', link: '/blogs/count-animation' }
         ]
       },
       {
