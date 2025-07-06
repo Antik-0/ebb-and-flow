@@ -1,0 +1,26 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "dev": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", ".vitepress/dist/**"]
+    },
+    "preview": {
+      "dependsOn": ["^preview"]
+    },
+    "stub": {
+      "dependsOn": [],
+      "outputs": ["dist/**"]
+    },
+    "check-types": {
+      "dependsOn": []
+    }
+  },
+  "cacheDir": ".turbo/cache"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "潮起潮落的个人博客",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./*"
+  },
+  "scripts": {
+    "build": "vitepress build",
+    "dev": "vitepress dev",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "@config/tsconfig": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "vite": "catalog:",
+    "vite-plugin-compression": "catalog:",
+    "vite-plugin-vue-devtools": "catalog:",
+    "vitepress": "catalog:",
+    "vue": "catalog:"
+  }
+}

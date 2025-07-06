@@ -1,24 +1,29 @@
 {
   "name": "ebb-and-flow",
-  "description": "潮起潮落的个人博客",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "packageManager": "pnpm@10.6.2",
   "scripts": {
-    "dev": "vitepress dev docs --port 8080",
-    "build": "vitepress build docs",
-    "preview": "vitepress preview docs"
+    "boot": "pnpm install && pnpm stub",
+    "build": "turbo run build --filter=blog",
+    "clean": "node ./scripts/cleanup.mjs --del-lock",
+    "dev": "turbo run dev --filter=blog",
+    "lint": "eslint --cache --cache-location=.temp/.eslintcache",
+    "lint:debug": "pnpm dlx @eslint/config-inspector@latest",
+    "lint:fix": "eslint --fix",
+    "preinstall": "pnpm dlx only-allow pnpm",
+    "preview": "turbo run preview --filter=blog",
+    "stub": "turbo run stub"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.17.24",
-    "lodash-es": "^4.17.21",
-    "prettier": "^3.5.3",
-    "vite": "^5.4.14",
-    "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-vue-devtools": "^7.7.2",
-    "vitepress": "^1.6.3",
-    "vue": "^3.5.13"
+    "@config/eslint": "workspace:*",
+    "@config/prettier": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "picocolors": "catalog:",
+    "prettier": "catalog:",
+    "turbo": "catalog:",
+    "unbuild": "catalog:"
   }
 }

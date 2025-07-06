@@ -1,0 +1,13 @@
+{
+  "name": "@config/tsconfig",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.app.json",
+    "tsconfig.node.json",
+    "tsconfig.repo.json"
+  ]
+}

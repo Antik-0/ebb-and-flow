@@ -1,5 +1,7 @@
 node_modules
 dist
-pnpm-lock.yaml
+public
 
-*.html
+.gitignore
+
+*.svg
