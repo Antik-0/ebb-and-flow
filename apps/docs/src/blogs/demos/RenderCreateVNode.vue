@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component, FunctionalComponent } from 'vue'
-import { createVNode, render, h } from 'vue'
+import { createVNode, h, render } from 'vue'
 
 interface Props {
   msg: string
@@ -21,11 +21,15 @@ interface Options {
 function createRender(component: Component, options: Options) {
   const { appendTo, props } = options
 
-  const container = document.createElement('div')
+  let container: HTMLElement | null = null
   let mounted = false
 
   const mount = () => {
     if (mounted) return
+
+    if (!container) {
+      container = document.createElement('div')
+    }
 
     const VNode = createVNode(component, props)
     render(VNode, container)
@@ -36,7 +40,7 @@ function createRender(component: Component, options: Options) {
   }
 
   const unmount = () => {
-    render(null, container)
+    container && render(null, container)
     mounted = false
   }
 
