@@ -9,7 +9,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".vitepress/dist/**"]
+      "outputs": ["dist/**"]
     },
     "preview": {
       "dependsOn": ["^preview"]

@@ -13,7 +13,6 @@ export default defineConfig(({ command }) => {
   }
 
   return {
-    base: './',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./assets', import.meta.url))

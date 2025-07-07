@@ -9,6 +9,8 @@ export default defineConfig({
   description: '潮起潮落的个人博客',
   lang: 'zh-cn',
   base: webBase,
+  srcDir: 'src',
+  outDir: 'dist',
   cleanUrls: true,
   lastUpdated: true,
   appearance: 'force-dark',
