@@ -5,8 +5,8 @@ import tsEslint from 'typescript-eslint'
  */
 export function typescript() {
   return tsEslint.config({
-    extends: [tsEslint.configs.recommended, tsEslint.configs.stylistic],
     files: ['**/*.ts', '**/*.tsx'],
+    extends: [tsEslint.configs.recommended, tsEslint.configs.stylistic],
     rules: {
       // recommended
       '@typescript-eslint/ban-ts-comment': [
@@ -15,29 +15,32 @@ export function typescript() {
           'ts-check': false,
           'ts-expect-error': 'allow-with-description',
           'ts-ignore': 'allow-with-description',
-          'ts-nocheck': 'allow-with-description',
-        },
+          'ts-nocheck': 'allow-with-description'
+        }
       ],
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-empty-object-type': [
         'error',
-        { allowInterfaces: 'with-single-extends' },
+        { allowInterfaces: 'with-single-extends' }
       ],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-this-alias': 'off',
+      'no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
           argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
+          varsIgnorePattern: '^_'
+        }
       ],
-      '@typescript-eslint/no-use-before-define': 'off',
-      '@typescript-eslint/no-var-requires': 'error',
-      'no-unused-expressions': 'off',
+      '@typescript-eslint/prefer-namespace-keyword': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' }
+      ],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
 
       // stylistic
       '@typescript-eslint/array-type': ['error', { default: 'array' }],
@@ -45,16 +48,9 @@ export function typescript() {
       '@typescript-eslint/consistent-indexed-object-style': 'off',
       '@typescript-eslint/consistent-type-assertions': [
         'error',
-        { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
+        { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }
       ],
-      '@typescript-eslint/consistent-type-definitions': 'off',
-      '@typescript-eslint/no-empty-function': 'error',
-      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
-      '@typescript-eslint/prefer-find': 'off',
-      '@typescript-eslint/prefer-includes': 'off',
-      '@typescript-eslint/prefer-optional-chain': 'off',
-      '@typescript-eslint/prefer-regexp-exec': 'off',
-      'no-empty-function': 'off',
-    },
+      '@typescript-eslint/consistent-type-definitions': 'off'
+    }
   })
 }

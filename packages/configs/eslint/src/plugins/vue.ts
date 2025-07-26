@@ -13,7 +13,7 @@ export function vue() {
       ...pluginVue.configs['flat/recommended'],
       ...pluginVue.configs['flat/strongly-recommended']
     ],
-    files: ['*.vue', '**/*.vue'],
+    files: ['**/*.vue'],
     languageOptions: {
       parser: parserVue,
       parserOptions: {
