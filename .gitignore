@@ -1,6 +1,6 @@
 node_modules
 dist
-apps/docs/.vitepress/cache
+cache
 
 .cache
 .temp
