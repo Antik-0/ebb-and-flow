@@ -31,7 +31,6 @@ export function javascript(): Linter.Config[] {
         'default-case-last': 'error',
         'dot-notation': 'error',
         eqeqeq: ['error', 'always'],
-        'new-cap': 'error',
         'no-alert': 'error',
         'no-array-constructor': 'error',
         'no-caller': 'error',

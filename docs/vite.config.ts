@@ -1,11 +1,13 @@
 import { URL, fileURLToPath } from 'node:url'
+import UnoCSS from 'unocss/vite'
 import type { PluginOption } from 'vite'
 import { defineConfig } from 'vite'
 import compression from 'vite-plugin-compression'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig(({ command }) => {
-  const plugins: PluginOption[] = []
+  const plugins: PluginOption[] = [UnoCSS()]
+
   if (command === 'serve') {
     plugins.push(vueDevTools())
   } else {

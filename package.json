@@ -16,14 +16,21 @@
     "preview": "turbo run preview --filter=blog",
     "stub": "turbo run stub"
   },
+  "lint-staged": {
+    "*.{ts,vue,json}": [
+      "pnpm run lint:fix"
+    ]
+  },
   "devDependencies": {
     "@config/eslint": "workspace:*",
     "@config/prettier": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
+    "lint-staged": "catalog:",
     "picocolors": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",
-    "unbuild": "catalog:"
+    "unbuild": "catalog:",
+    "unocss": "catalog:"
   }
 }

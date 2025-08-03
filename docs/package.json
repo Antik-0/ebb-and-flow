@@ -12,13 +12,16 @@
     "dev": "vitepress dev",
     "preview": "vitepress preview"
   },
+  "dependencies": {
+    "vitepress": "catalog:",
+    "vue": "catalog:"
+  },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@repo/utils": "workspace:*",
+    "unocss": "catalog:",
     "vite": "catalog:",
     "vite-plugin-compression": "catalog:",
-    "vite-plugin-vue-devtools": "catalog:",
-    "vitepress": "catalog:",
-    "vue": "catalog:"
+    "vite-plugin-vue-devtools": "catalog:"
   }
 }
