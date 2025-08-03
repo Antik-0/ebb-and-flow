@@ -13,24 +13,28 @@ function handleEnter() {
 </script>
 
 <template>
-  <div class="EAFHome">
-    <div class="EAFHome-cover">
+  <div class="flex-col h-screen w-screen">
+    <div class="px-10 pb-60px pt-120px flex-col items-center lg:pt-200px">
       <div class="avatar">
         <div class="avatar-bg"></div>
-        <img alt="avatar" class="avatar-src" src="@/EAF-avatar.png" />
+        <img
+          alt="avatar"
+          class="rounded-full inset-0 absolute z-20"
+          src="@/EAF-avatar.png"
+        />
       </div>
 
       <h1 class="name">{{ cover.name }}</h1>
       <p class="tagline">{{ cover.tagline }}</p>
     </div>
 
-    <div class="EAFHome-entry">
+    <div class="h-1px relative">
       <button class="entry-button" type="button" @click="handleEnter">
         点击进入
       </button>
     </div>
 
-    <div class="EAFHome-tide">
+    <div class="inset-0 fixed -z-1">
       <div class="tidewater"></div>
     </div>
   </div>
@@ -39,8 +43,8 @@ function handleEnter() {
 <style scoped>
 .avatar {
   position: relative;
-  width: var(--EAF-cover-avatar-size);
-  height: var(--EAF-cover-avatar-size);
+  width: 160px;
+  height: 160px;
 }
 
 .avatar-bg {
@@ -48,26 +52,14 @@ function handleEnter() {
   inset: 0;
   border-radius: 50%;
   opacity: 0.4;
-  background: var(--EAF-cover-avatar-background);
+  background: linear-gradient(45deg, #00dc82, #36e4da, #0047e1);
   filter: blur(60px);
   z-index: 10;
-  transition: all 1s ease-in;
+  transition: opacity 1s ease-in-out;
 }
 
 .avatar:hover .avatar-bg {
   opacity: 1;
-}
-
-.avatar-src {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  transition: all 1s ease-in;
-  z-index: 20;
-}
-
-.avatar:hover .avatar-src {
-  box-shadow: var(--EAF-cover-avatar-shadow--hover);
 }
 
 .name {
@@ -78,8 +70,8 @@ function handleEnter() {
   line-height: 60px;
   font-weight: 600;
   text-align: center;
-  color: var(--EAF-cover-name-color);
-  background: var(--EAF-cover-name-background);
+  color: transparent;
+  background: linear-gradient(135deg, #1c4c5f, #e3f6ff);
   background-clip: text;
 }
 
@@ -90,13 +82,13 @@ function handleEnter() {
   font-weight: 600;
   line-height: 2;
   text-align: center;
-  color: var(--EAF-cover-tagline-color);
+  color: transparent;
   opacity: 0;
-  background: var(--EAF-cover-tagline-background);
+  background: linear-gradient(90deg, #1c4c5f 50%, #a8a8b6 80%, #e3f6ff);
   background-size: 200% 100%;
   background-clip: text;
-  animation: var(--EAF-animation-tagline);
-  animation-fill-mode: forwards;
+  background-repeat: no-repeat;
+  animation: fade-in 4s ease-in-out forwards;
   animation-delay: 400ms;
 }
 
@@ -113,7 +105,7 @@ function handleEnter() {
   background-color: rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 8px 1px #12998d;
   transform: translateX(-50%);
-  animation: var(--EAF-animation-entryButton);
+  animation: bounce 1.4s ease-in-out infinite;
   animation-delay: 1s;
   cursor: pointer;
 }
@@ -123,5 +115,59 @@ function handleEnter() {
     inset 0 0 4px 1px #56b3ab,
     0 0 8px 1px #12998d;
   animation-play-state: paused;
+}
+
+.tidewater {
+  position: absolute;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle,
+    hsl(183 30% 75% / 0.1) 20%,
+    transparent 80%
+  );
+  animation: tidewater 6s ease-in-out infinite;
+}
+</style>
+
+<style>
+@keyframes fade-in {
+  from {
+    opacity: 1;
+    background-position: 200% 100%;
+  }
+
+  to {
+    opacity: 1;
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-40px);
+  }
+}
+
+@keyframes tidewater {
+  0%,
+  10% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.6);
+  }
+
+  90%,
+  100% {
+    transform: scale(0);
+  }
 }
 </style>

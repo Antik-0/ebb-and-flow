@@ -1,0 +1,66 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: url('@/EAF-home.png') center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#app {
+  position: relative;
+  z-index: 20;
+}
+
+#meteor-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.VPDoc .image {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Home View Transitions */
+::view-transition-group(root) {
+  --transition-duration: 1.6s;
+}
+
+.home-slide-out::view-transition-old(root) {
+  animation: slide-down var(--transition-duration) ease reverse;
+}
+
+.home-slide-out::view-transition-new(root) {
+  animation: slide-up var(--transition-duration) ease;
+}
+
+.home-slide-in::view-transition-old(root) {
+  animation: slide-up var(--transition-duration) ease reverse;
+}
+
+.home-slide-in::view-transition-new(root) {
+  animation: slide-down var(--transition-duration) ease;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}

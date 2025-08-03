@@ -1,7 +1,31 @@
 :root {
+  --EAF-c-h1: #cf206f;
+  --EAF-c-title: #11b6a8;
+  --EAF-c-outline-link: #a8b1ff;
   --EAF-gap: 32px;
   --EAF-radius: 10px;
-  --EAF-card-backgroun-color: rgba(27, 27, 31, 0.8);
+  --EAF-card-backgroun-color: hsl(240 7% 11% / 0.8);
+  --vp-c-text-1: #cfd8e0;
+}
+
+/* colors */
+.VPNavBar .title {
+  color: var(--EAF-c-title);
+}
+
+.vp-doc h1 {
+  color: var(--EAF-c-h1);
+}
+
+.VPDocOutlineItem .outline-link:hover,
+.VPDocOutlineItem .outline-link.active {
+  color: var(--EAF-c-outline-link);
+}
+
+@media (width < 960px) {
+  .VPContent .VPDoc {
+    background-color: var(--EAF-card-backgroun-color);
+  }
 }
 
 @media (width > 960px) {
@@ -69,28 +93,8 @@
   }
 }
 
-@media (width < 960px) {
-  .VPContent .VPDoc {
-    background-color: var(--EAF-card-backgroun-color);
-  }
-}
-
 @media (width > 1280px) {
   .VPNavBar .content-body {
     border-radius: 0 0 var(--EAF-radius) var(--EAF-radius);
   }
-}
-
-/* colors */
-.VPNavBar .title {
-  color: var(--EAF-c-title);
-}
-
-.vp-doc h1 {
-  color: var(--EAF-c-h1);
-}
-
-.VPDocOutlineItem .outline-link:hover,
-.VPDocOutlineItem .outline-link.active {
-  color: var(--EAF-c-outline-link);
 }
