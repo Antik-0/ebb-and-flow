@@ -21,17 +21,17 @@ const isCustom = computed(() => {
   return isRoot && layoutValue === 'EAF-HOME'
 })
 
-watch(
-  isCustom,
-  value => {
-    if (value === true) {
-      document.documentElement.setAttribute('data-isHome', 'true')
-    } else {
-      document.documentElement.removeAttribute('data-isHome')
-    }
-  },
-  { immediate: true }
-)
+const setDataIsHome = () => {
+  if (isCustom.value) {
+    document.documentElement.setAttribute('data-isHome', 'true')
+  } else {
+    document.documentElement.removeAttribute('data-isHome')
+  }
+}
+
+watch(isCustom, setDataIsHome)
+
+onMounted(setDataIsHome)
 
 const { viewTransitionStart } = useHomeViewTransition()
 const router = useRouter()
