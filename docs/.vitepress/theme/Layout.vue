@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { sleep } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import EAFHome from './components/EAFHome.vue'
-import { useMeteorAnimation, useViewTransition } from './hooks'
+import {
+  useHomeViewTransition,
+  useMeteorAnimation,
+  useToggleAppearance
+} from './hooks'
 
 defineOptions({ name: 'EAFLayout' })
 
@@ -16,7 +21,19 @@ const isCustom = computed(() => {
   return isRoot && layoutValue === 'EAF-HOME'
 })
 
-const { viewTransitionStart, sleep } = useViewTransition()
+watch(
+  isCustom,
+  value => {
+    if (value === true) {
+      document.documentElement.setAttribute('data-isHome', 'true')
+    } else {
+      document.documentElement.removeAttribute('data-isHome')
+    }
+  },
+  { immediate: true }
+)
+
+const { viewTransitionStart } = useHomeViewTransition()
 const router = useRouter()
 
 interface RouterGuard {
@@ -25,16 +42,15 @@ interface RouterGuard {
 
 Object.assign(router, {
   async onBeforeRouteChange(to) {
-    // 主页滑出
     const base = site.value.base
     const isBase = route.path === base
     if (isBase && to === withBase('/vue/guide/reactive')) {
+      // 主页滑出
       viewTransitionStart(true)
       // 为了保证能正确获取当前路由的快照，延迟一点时间再进行路由跳转
       await sleep(100)
-    }
-    // 主页滑入
-    else if (to === base) {
+    } else if (to === base) {
+      // 主页滑入
       viewTransitionStart(false)
       await sleep(100)
     }
@@ -45,6 +61,8 @@ onMounted(() => {
   // use 流星动画
   useMeteorAnimation()
 })
+
+useToggleAppearance()
 </script>
 
 <template>

@@ -1,0 +1,57 @@
+/* Home View Transitions */
+::view-transition-group(home) {
+  --transition-duration: 2s;
+}
+
+[data-slide='out']::view-transition-old(home) {
+  animation: slide-down var(--transition-duration) ease reverse;
+}
+
+[data-slide='out']::view-transition-new(home) {
+  animation: slide-up var(--transition-duration) ease;
+}
+
+[data-slide='in']::view-transition-old(home) {
+  animation: slide-up var(--transition-duration) ease reverse;
+}
+
+[data-slide='in']::view-transition-new(home) {
+  animation: slide-down var(--transition-duration) ease;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/*  Toggole Appearance View Transition */
+::view-transition-old(appearance),
+::view-transition-new(appearance) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(appearance),
+.dark::view-transition-new(appearance) {
+  z-index: 1;
+}
+
+::view-transition-new(appearance),
+.dark::view-transition-old(appearance) {
+  z-index: 9999;
+}

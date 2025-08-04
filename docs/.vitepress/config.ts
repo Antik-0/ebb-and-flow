@@ -13,7 +13,7 @@ export default defineConfig({
   outDir: 'dist',
   cleanUrls: true,
   lastUpdated: true,
-  appearance: 'force-dark',
+  appearance: 'dark',
   head: [['link', { rel: 'icon', href: webBase + 'logo.png' }]],
   themeConfig: {
     logo: '/logo.png',
