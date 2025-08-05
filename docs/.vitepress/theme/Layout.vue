@@ -7,6 +7,7 @@ import EAFHome from './components/EAFHome.vue'
 import {
   useHomeViewTransition,
   useMeteorAnimation,
+  useSakuraAnimation,
   useToggleAppearance
 } from './hooks'
 
@@ -63,6 +64,10 @@ onMounted(() => {
 })
 
 useToggleAppearance()
+
+const { install } = useSakuraAnimation()
+
+onMounted(install)
 </script>
 
 <template>

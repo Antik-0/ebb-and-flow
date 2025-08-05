@@ -22,13 +22,21 @@ body {
   z-index: 20;
 }
 
+.VPDoc .image {
+  display: block;
+  margin: 0 auto;
+}
+
 #meteor-animation {
   position: fixed;
   inset: 0;
   z-index: 10;
+  pointer-events: none;
 }
 
-.VPDoc .image {
-  display: block;
-  margin: 0 auto;
+#sakura-animation {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
 }
