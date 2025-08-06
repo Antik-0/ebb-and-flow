@@ -33,6 +33,10 @@
   display: none;
 }
 
+.VPSidebar::-webkit-scrollbar {
+  width: 0;
+}
+
 @media (width < 960px) {
   .VPContent .VPDoc {
     background-color: var(--EAF-card-backgroun-color);
