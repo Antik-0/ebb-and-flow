@@ -13,7 +13,7 @@ import {
 
 defineOptions({ name: 'EAFLayout' })
 
-const { frontmatter, site } = useData()
+const { frontmatter, site, isDark } = useData()
 const route = useRoute()
 
 const isCustom = computed(() => {
@@ -58,16 +58,29 @@ Object.assign(router, {
   }
 } as RouterGuard)
 
-onMounted(() => {
-  // use 流星动画
-  useMeteorAnimation()
-})
-
 useToggleAppearance()
 
-const { install } = useSakuraAnimation()
+const { mount: mountMeteorAnimation, unmount: unmountMeteorAnimation } =
+  useMeteorAnimation()
 
-onMounted(install)
+const { mount: mountSakuraAnimation, unmount: unmountSakuraAnimation } =
+  useSakuraAnimation()
+
+watch(
+  [isCustom, isDark],
+  ([isCustom, isDark]) => {
+    if (isCustom || isDark) {
+      unmountMeteorAnimation()
+      unmountSakuraAnimation()
+      mountMeteorAnimation()
+    } else {
+      unmountMeteorAnimation()
+      unmountSakuraAnimation()
+      mountSakuraAnimation()
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

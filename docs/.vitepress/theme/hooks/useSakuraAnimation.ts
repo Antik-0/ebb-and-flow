@@ -1,5 +1,5 @@
 import sakuraURL from '@/sakura.png'
-import { random } from '@repo/utils'
+import { random, range } from '@repo/utils'
 import { nextTick } from 'vue'
 
 interface Point {
@@ -15,21 +15,22 @@ interface SakuraOptions {
 }
 
 class Sakura {
+  /**
+   * 创建时间
+   */
   public createTime: number
-  public canvasWidth: number
-  public canvasHeight: number
   /**
    * 控制状态
    */
-  public d: number = undefined! // 动画时间: ms
-  public angle: number = undefined! // 旋转角度
-  public rotateSpeed: number = undefined! // 每帧旋转速度
+  public duration: number // 动画时间: ms
+  public angle: number // 旋转角度
+  public rotateSpeed: number // 旋转的变化速度
   /**
    * 贝塞尔曲线
    */
-  public cp: Point = undefined! // 控制点
-  public sp: Point = undefined! // 起点
-  public ep: Point = undefined! // 终点
+  public cp: Point // 控制点
+  public sp: Point // 起点
+  public ep: Point // 终点
   /**
    * 边界
    */
@@ -47,33 +48,23 @@ class Sakura {
   constructor(options: SakuraOptions) {
     const { createTime, canvasWidth, canvasHeight } = options
     this.createTime = createTime
-    this.canvasWidth = canvasWidth
-    this.canvasHeight = canvasHeight
 
     const sakura = options.source
     this.#source = sakura
     this.edgeX = 0 - sakura.width
     this.edgeY = canvasHeight + sakura.height
 
-    this.initState()
-  }
-
-  /**
-   * 初始化状态
-   */
-  public initState() {
-    this.d = random(10, 16) * 1000
+    // 持续时间 8s-16s
+    this.duration = random(8, 16) * 1000
     this.angle = Math.floor(Math.random() * Math.PI * 2)
     this.rotateSpeed = (Math.random() - 0.5) * 0.1
 
-    const width = this.canvasWidth
-
     // 贝塞尔曲线轨迹
     // 起点
-    const spx = random(0, width) + width * 0.5
+    const spx = random(0, canvasWidth) + canvasWidth * 0.25
     this.sp = { x: spx, y: 0 }
     // 终点
-    const epx = random(0, width) - width
+    const epx = random(0, canvasWidth) - canvasWidth * 0.5
     this.ep = { x: epx, y: this.edgeY }
     // 控制点
     // 为了保证轨迹是向下的弧线，控制点随机分布在下 x 轴差 [0.25, 0.5]
@@ -99,7 +90,7 @@ class Sakura {
    * 计算经过时间 `e`，贝塞尔曲线所在的坐标
    */
   #getNextPoint(e: number) {
-    const { d, cp, sp, ep } = this
+    const { duration: d, cp, sp, ep } = this
     const t = Math.min(e / d, 1)
 
     const x = (1 - t) * (1 - t) * sp.x + 2 * (1 - t) * t * cp.x + t * t * ep.x
@@ -119,7 +110,7 @@ class Sakura {
   /**
    * 樱花飘落动画
    */
-  animate(ctx: CanvasRenderingContext2D, t: number) {
+  public animate(ctx: CanvasRenderingContext2D, t: number) {
     const elapsed = t - this.createTime
     const point = this.#getNextPoint(elapsed)
 
@@ -158,11 +149,12 @@ async function createSakuraImageList() {
   const sakuraImage = await loadImage()
   const { width, height } = sakuraImage
 
-  const scaleLevels = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.4, 1.2, 1, 0.8, 0.6]
+  const scaleLevels = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
 
   const createImage = (level: number) => {
     const w = width * level
     const h = height * level
+
     const canvas = new OffscreenCanvas(w, h)
     const ctx = canvas.getContext('2d')
     if (ctx === null) return null
@@ -175,22 +167,20 @@ async function createSakuraImageList() {
   return scaleLevels.map(createImage).filter(item => item !== null)
 }
 
-export function useSakuraAnimation(canvasId = 'sakura-animation') {
-  let canvas: HTMLCanvasElement | null = null
+export function useSakuraAnimation() {
+  const canvasId = 'sakura-animation'
+  let canvas: HTMLCanvasElement
+  let canvasCtx: CanvasRenderingContext2D
   let cancelled = false
 
-  const state = {
-    ctx: null! as CanvasRenderingContext2D,
-    width: 0,
-    height: 0
-  }
-
-  // 樱花粒子集合
+  // 预生成不同尺寸的樱花粒子
   let sakuraImageList: ImageBitmap[] = []
+  // 樱花粒子集合
   let sakuraList: Sakura[] = []
 
-  const CREATE_INTERVAL = 1000
-  let lastCreateTime: number = undefined!
+  const createMaximum = 20
+  const createInterval = 1000
+  let lastCreateTime: DOMHighResTimeStamp
 
   function createSakura(time: number) {
     const length = sakuraImageList.length
@@ -198,8 +188,8 @@ export function useSakuraAnimation(canvasId = 'sakura-animation') {
     return new Sakura({
       source: sakuraImage,
       createTime: time,
-      canvasWidth: state.width,
-      canvasHeight: state.height
+      canvasWidth: canvas.width,
+      canvasHeight: canvas.height
     })
   }
 
@@ -207,48 +197,52 @@ export function useSakuraAnimation(canvasId = 'sakura-animation') {
     if (cancelled) return
 
     if (lastCreateTime === undefined) {
-      sakuraList = Array.from({ length: 4 }).map(() => createSakura(timestamp))
+      sakuraList = Array.from({ length: random(4, 8) }).map(() =>
+        createSakura(timestamp)
+      )
       lastCreateTime = timestamp
     }
 
-    if (timestamp - lastCreateTime > CREATE_INTERVAL) {
+    if (timestamp - lastCreateTime > createInterval) {
       sakuraList = sakuraList.filter(sakura => !sakura.finished)
-      sakuraList.push(createSakura(timestamp))
+      for (const _ of range(random(1, 3))) {
+        if (sakuraList.length >= createMaximum) {
+          break
+        }
+        sakuraList.push(createSakura(timestamp))
+      }
       lastCreateTime = timestamp
     }
 
-    const { ctx, width, height } = state
-    ctx.clearRect(0, 0, width, height)
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height)
     for (const sakura of sakuraList) {
       if (sakura.finished) continue
-      sakura.animate(ctx, timestamp)
+      sakura.animate(canvasCtx, timestamp)
     }
 
     requestAnimationFrame(animate)
   }
 
   async function requestAnimate() {
-    if (!canvas) return
-
     if (sakuraImageList.length === 0) {
-      // 创建樱花粒子
+      // 预先生成不同尺寸樱花粒子
       sakuraImageList = await createSakuraImageList()
     }
 
-    state.ctx = canvas.getContext('2d')!
-    state.width = canvas.width
-    state.height = canvas.height
+    // 获取上下文
+    canvasCtx = canvas.getContext('2d')!
 
-    // 开启动画
+    // 运行动画
     requestAnimationFrame(animate)
   }
 
-  function install() {
+  function mount() {
     canvas = document.getElementById(canvasId) as HTMLCanvasElement
     if (!canvas) {
       canvas = document.createElement('canvas')
+      canvas.setAttribute('id', canvasId)
     }
-    canvas.setAttribute('id', canvasId)
+
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     document.body.append(canvas)
@@ -257,11 +251,11 @@ export function useSakuraAnimation(canvasId = 'sakura-animation') {
     nextTick(requestAnimate)
   }
 
-  function uninstall() {
+  function unmount() {
     cancelled = true
     canvas?.remove()
-    canvas = null
+    canvas = null as any
   }
 
-  return { install, uninstall }
+  return { mount, unmount }
 }

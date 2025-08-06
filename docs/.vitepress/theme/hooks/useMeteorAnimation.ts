@@ -1,5 +1,3 @@
-import { debounce } from '@repo/utils'
-
 type MeteorState = 'appear' | 'vanish'
 
 interface MeteorAnimationOptions {
@@ -29,7 +27,7 @@ const meteorConfig: MeteorAnimationOptions = {
   velocity: [200, 300], // 流星的速率范围
   duration: [16, 20], // 流星的持续时间范围，单位：s
   interval: [1000, 1600], // 流星出现的间隔，单位：ms
-  maxCount: 4 // 最多同时出现的流星数量
+  maxCount: 8 // 最多同时出现的流星数量
 }
 
 class Meteor {
@@ -76,24 +74,29 @@ class Meteor {
     this.velocity_Y = (velocity * Math.sin(angle * rad)) / 1000
   }
 
-  // 计算流星当前的位置
+  /**
+   * 计算流星当前的位置
+   */
   calcPosition(elapsedTime: number) {
     // 时间周期经过的距离，时间单位是ms，速度单位是s
     const elapsedDistance = (elapsedTime * this.velocity) / 1000
     this.currDistance += elapsedDistance
     this.posX += elapsedTime * this.velocity_X
     this.posY += elapsedTime * this.velocity_Y
-    return [this.posX, this.posY]
   }
 
-  // 更新流星的状态
+  /**
+   * 更新流星的状态
+   */
   updateState() {
     if (this.currDistance >= this.totalDistance || this.#detectionBoundary()) {
       this.state = 'vanish'
     }
   }
 
-  // 边界检测：屏幕的宽度*设置的高度
+  /**
+   * 边界检测：屏幕的宽度 & 设置的高度
+   */
   #detectionBoundary() {
     const x = this.posX
     const y = this.posY
@@ -117,16 +120,11 @@ function createMeteor() {
   return new Meteor(x, y, angle, velocity, duration, boundary)
 }
 
+/**
+ * 绘制流行轨迹
+ */
 function drawMeteorTrack(ctx: CanvasRenderingContext2D, meteor: Meteor) {
-  ctx.save()
-
-  // 将画布中点移动到流星当前位置
-  const { posX, posY } = meteor
-  ctx.translate(posX, posY)
-  // 将画布顺时针旋转至流星轨迹的方向
-  ctx.rotate(meteor.angle * rad)
-
-  function drawMeteor() {
+  const drawMeteor = () => {
     ctx.save()
 
     // 下文会将画布转换为一个笛卡尔坐标系，其中Y轴正方向将与流星轨道垂直
@@ -171,60 +169,40 @@ function drawMeteorTrack(ctx: CanvasRenderingContext2D, meteor: Meteor) {
 
     ctx.restore()
   }
+
+  ctx.save()
+
+  // 将画布中点移动到流星当前位置
+  const { posX, posY } = meteor
+  ctx.translate(posX, posY)
+  // 将画布顺时针旋转至流星轨迹的方向
+  ctx.rotate(meteor.angle * rad)
+
   drawMeteor()
 
   ctx.restore()
 }
 
 export function useMeteorAnimation() {
-  // 创建画布
   const canvasId = 'meteor-animation'
-  let canvasDOM = document.getElementById(canvasId)
-  if (canvasDOM === null) {
-    canvasDOM = document.createElement('canvas')
-    canvasDOM.setAttribute('id', canvasId)
-    document.body.appendChild(canvasDOM)
-  }
-
-  const canvas = canvasDOM as HTMLCanvasElement
-  // html.clientWidth 不包含滚动条宽度
-  canvas.width = document.documentElement.clientWidth
-  canvas.height = document.documentElement.clientHeight
-
-  const ctx = canvas.getContext('2d')!
-
-  let width = 0
-  let height = 0
+  let canvas: HTMLCanvasElement
+  let canvasCtx: CanvasRenderingContext2D
+  let cancelled = false
 
   const { maxCount, interval: intervalRange } = meteorConfig
-  let meteorList: (Meteor | null)[] = new Array(maxCount).fill(null) // 流星集合
-  let insertIndex = 0 // 流星集合空闲的位置指针
+  // 流星集合
+  let meteorList: (Meteor | null)[] = new Array(maxCount).fill(null)
+  // 流星集合空闲的位置指针
+  let insertIndex = 0
 
   let interval = 0
   let countTime = 0
-  let prevAnimationTimeStamp: number | undefined
+  let prevAnimationTimeStamp: DOMHighResTimeStamp | undefined
   let rafId: number | undefined
 
-  function init() {
-    width = canvas.width
-    height = canvas.height
-
-    meteorConfig.initArea = [0, 0, width, 100]
-    meteorConfig.boundary = [0, width, height / 2]
-
-    meteorList = new Array(maxCount).fill(null)
-    insertIndex = 0
-
-    interval = rangeRandom(intervalRange)
-    countTime = 0
-    prevAnimationTimeStamp = undefined
-    rafId && cancelAnimationFrame(rafId)
-
-    // 运行动画
-    rafId = requestAnimationFrame(animate)
-  }
-
-  // 检查流星集合中是否有空闲的位置
+  /**
+   * 检查流星集合中是否有空闲的位置
+   */
   function isIdle() {
     if (insertIndex >= maxCount) return false
     if (meteorList[insertIndex] === null) return true
@@ -236,16 +214,19 @@ export function useMeteorAnimation() {
     return insertIndex < maxCount
   }
 
-  function animate(timeStamp: number) {
-    // 第一个动画周期不做任何事情
+  function animate(timeStamp: DOMHighResTimeStamp) {
+    if (cancelled) return
+
     if (prevAnimationTimeStamp === undefined) {
+      // 第一个动画周期不做任何事情
       prevAnimationTimeStamp = timeStamp
       requestAnimationFrame(animate)
       return
     }
 
-    ctx.save()
-    ctx.clearRect(0, 0, width, height)
+    canvasCtx.save()
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height)
+
     const elapsedTime = timeStamp - prevAnimationTimeStamp
     prevAnimationTimeStamp = timeStamp
 
@@ -270,24 +251,59 @@ export function useMeteorAnimation() {
 
       if ((meteor.state as MeteorState) !== 'vanish') {
         // 绘制流星轨迹
-        drawMeteorTrack(ctx, meteor)
+        drawMeteorTrack(canvasCtx, meteor)
       } else {
         insertIndex = index
       }
     })
 
-    ctx.restore()
+    canvasCtx.restore()
     rafId = requestAnimationFrame(animate)
   }
 
-  init()
+  function mount() {
+    canvas = document.getElementById(canvasId) as HTMLCanvasElement
+    if (!canvas) {
+      canvas = document.createElement('canvas')
+      canvas.setAttribute('id', canvasId)
+    }
+
+    const width = window.innerWidth
+    const height = window.innerHeight
+
+    canvas.width = width
+    canvas.height = height
+    document.body.append(canvas)
+    canvasCtx = canvas.getContext('2d')!
+
+    meteorConfig.initArea = [0, 0, width, 100]
+    meteorConfig.boundary = [0, width, height / 2]
+
+    meteorList = Array.from<null>({ length: maxCount }).fill(null)
+    insertIndex = 0
+
+    interval = rangeRandom(intervalRange)
+    countTime = 0
+    prevAnimationTimeStamp = undefined
+    rafId && cancelAnimationFrame(rafId)
+
+    cancelled = false
+    rafId = requestAnimationFrame(animate)
+  }
+
+  function unmount() {
+    cancelled = true
+    canvas?.remove()
+    canvas = null as any
+  }
 
   // resize handler
-  const resizeCallback = () => {
-    canvas.width = document.documentElement.clientWidth
-    canvas.height = document.documentElement.clientHeight
-    init()
-  }
-  const observer = new ResizeObserver(debounce(resizeCallback, 400))
-  observer.observe(document.documentElement)
+  // const resizeCallback = () => {
+  //   canvas.width = document.documentElement.clientWidth
+  //   canvas.height = document.documentElement.clientHeight
+  // }
+  // const observer = new ResizeObserver(debounce(resizeCallback, 400))
+  // observer.observe(document.documentElement)
+
+  return { mount, unmount }
 }
