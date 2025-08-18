@@ -2,6 +2,44 @@ import sakuraURL from '@/sakura.png'
 import { random, range } from '@repo/utils'
 import { nextTick } from 'vue'
 
+/**
+ * 樱花动画配置
+ */
+const SakuraConfig = {
+  /**
+   * 樱花画布ID
+   */
+  canvasId: 'sakura-animation',
+  /**
+   * 樱花最大数量
+   */
+  createMaximum: 20,
+  /**
+   * 樱花创建间隔: ms
+   */
+  createInterval: 1000,
+  /**
+   * 樱花首次创建数量
+   */
+  createFirstNumber: [4, 8],
+  /**
+   * 樱花每次创建数量
+   */
+  createEachNumber: [1, 3],
+  /**
+   * 樱花飘落时间: s
+   */
+  duration: [8, 16],
+  /**
+   * 樱花粒子大小
+   */
+  size: [24, 24],
+  /**
+   * 樱花粒子尺寸
+   */
+  scaleLevels: [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
+} as const
+
 interface Point {
   x: number
   y: number
@@ -54,8 +92,7 @@ class Sakura {
     this.edgeX = 0 - sakura.width
     this.edgeY = canvasHeight + sakura.height
 
-    // 持续时间 8s-16s
-    this.duration = random(8, 16) * 1000
+    this.duration = random(...SakuraConfig.duration) * 1000
     this.angle = Math.floor(Math.random() * Math.PI * 2)
     this.rotateSpeed = (Math.random() - 0.5) * 0.1
 
@@ -137,7 +174,7 @@ class Sakura {
 }
 
 async function loadImage() {
-  const image = new Image(24, 24)
+  const image = new Image(...SakuraConfig.size)
   await new Promise(resolve => {
     image.src = sakuraURL
     image.onload = () => resolve(true)
@@ -148,8 +185,6 @@ async function loadImage() {
 async function createSakuraImageList() {
   const sakuraImage = await loadImage()
   const { width, height } = sakuraImage
-
-  const scaleLevels = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
 
   const createImage = (level: number) => {
     const w = width * level
@@ -164,22 +199,20 @@ async function createSakuraImageList() {
     return canvas.transferToImageBitmap()
   }
 
+  const { scaleLevels } = SakuraConfig
   return scaleLevels.map(createImage).filter(item => item !== null)
 }
 
 export function useSakuraAnimation() {
-  const canvasId = 'sakura-animation'
   let canvas: HTMLCanvasElement
   let canvasCtx: CanvasRenderingContext2D
   let cancelled = false
 
-  // 预生成不同尺寸的樱花粒子
-  let sakuraImageList: ImageBitmap[] = []
   // 樱花粒子集合
   let sakuraList: Sakura[] = []
-
-  const createMaximum = 20
-  const createInterval = 1000
+  // 预生成不同尺寸的樱花粒子
+  let sakuraImageList: ImageBitmap[] = []
+  // 创建时间戳
   let lastCreateTime: DOMHighResTimeStamp
 
   function createSakura(time: number) {
@@ -196,16 +229,23 @@ export function useSakuraAnimation() {
   function animate(timestamp: DOMHighResTimeStamp) {
     if (cancelled) return
 
+    const {
+      createMaximum,
+      createInterval,
+      createFirstNumber,
+      createEachNumber
+    } = SakuraConfig
+
     if (lastCreateTime === undefined) {
-      sakuraList = Array.from({ length: random(4, 8) }).map(() =>
-        createSakura(timestamp)
-      )
+      sakuraList = Array.from({
+        length: random(...createFirstNumber)
+      }).map(() => createSakura(timestamp))
       lastCreateTime = timestamp
     }
 
     if (timestamp - lastCreateTime > createInterval) {
       sakuraList = sakuraList.filter(sakura => !sakura.finished)
-      for (const _ of range(random(1, 3))) {
+      for (const _ of range(random(...createEachNumber))) {
         if (sakuraList.length >= createMaximum) {
           break
         }
@@ -223,20 +263,10 @@ export function useSakuraAnimation() {
     requestAnimationFrame(animate)
   }
 
-  async function requestAnimate() {
-    if (sakuraImageList.length === 0) {
-      // 预先生成不同尺寸樱花粒子
-      sakuraImageList = await createSakuraImageList()
-    }
-
-    // 获取上下文
-    canvasCtx = canvas.getContext('2d')!
-
-    // 运行动画
-    requestAnimationFrame(animate)
-  }
-
   function mount() {
+    if (cancelled === false) return
+
+    const { canvasId } = SakuraConfig
     canvas = document.getElementById(canvasId) as HTMLCanvasElement
     if (!canvas) {
       canvas = document.createElement('canvas')
@@ -248,13 +278,28 @@ export function useSakuraAnimation() {
     document.body.append(canvas)
 
     cancelled = false
-    nextTick(requestAnimate)
+    nextTick(async () => {
+      if (sakuraImageList.length === 0) {
+        // 预先生成不同尺寸樱花粒子
+        sakuraImageList = await createSakuraImageList()
+      }
+
+      // 获取上下文
+      canvasCtx = canvas.getContext('2d')!
+
+      // 运行动画
+      requestAnimationFrame(animate)
+    })
   }
 
   function unmount() {
     cancelled = true
     canvas?.remove()
     canvas = null as any
+    canvasCtx = null as any
+    sakuraList = []
+    sakuraImageList = []
+    lastCreateTime = undefined as any
   }
 
   return { mount, unmount }
