@@ -58,20 +58,16 @@ export default defineConfig({
         text: '杂谈',
         collapsed: false,
         items: [
-          { text: 'Receiver', link: '/blogs/js-receiver' },
           { text: 'CSS-@layer', link: '/blogs/css-@layer' },
           { text: 'CSS-Effect', link: '/blogs/css-effect' },
           { text: 'CSS-毛玻璃', link: '/blogs/css-glass' },
           { text: 'CSS-视图过渡', link: '/blogs/view-transitions' },
-          { text: 'Monorepos', link: '/blogs/monorepos' },
-          { text: '项目规范', link: '/blogs/lint' },
-          { text: '博客搭建', link: '/blogs/blog' },
-          { text: '网络文章', link: '/blogs/links' },
           { text: 'node-版本管理', link: '/blogs/node-version' },
           { text: 'fetch-请求类封装', link: '/blogs/fetch-request' },
           { text: '手动渲染组件', link: '/blogs/manual-render' },
           { text: '防抖/节流', link: '/blogs/debounce' },
-          { text: '数字滚动', link: '/blogs/count-animation' }
+          { text: '数字滚动', link: '/blogs/count-animation' },
+          { text: '传送门', link: '/blogs/links' }
         ]
       },
       {
