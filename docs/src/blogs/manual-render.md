@@ -7,7 +7,7 @@ import RenderCreateVNodeDemo from './demos/RenderCreateVNode.vue'
 
 ## createApp
 
-<div class="demo">
+<div class="p-5">
   <RenderCreateAppDemo />
 </div>
 
@@ -69,7 +69,7 @@ const { mount, unmount } = createRender(ShowMessage, {
 
 ## createVNode
 
-<div class="demo">
+<div class="p-5">
   <RenderCreateVNodeDemo />
 </div>
 
@@ -130,9 +130,3 @@ const { mount, unmount } = createRender(ShowMessage, {
 })
 </script>
 ```
-
-<style>
-.demo {
-  padding: 20px
-}
-</style>

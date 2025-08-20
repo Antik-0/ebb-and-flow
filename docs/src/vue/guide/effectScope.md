@@ -187,6 +187,4 @@ constructor(
 
 ## 结语
 
-介绍完 `effectScope` 内容后，vue 的响应式系统源码，也就是 `reactivity` 这个包的内容就讲完了，可能还有一些边边角角的东西没有介绍，不过无伤大雅，不影响整体的理解。
-
-<img class="image" src="./images/reactive-module.png" alt="reactive-module" />
+介绍完 `effectScope` 内容后，vue 的响应式系统源码，也就是 `reactivity` 这个包的内容基本就讲完了。

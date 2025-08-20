@@ -59,29 +59,25 @@ const { mount, unmount } = createRender(ShowMessage, {
 </script>
 
 <template>
-  <div class="render-demo">
-    <div style="display: flex; gap: 20px">
-      <button type="button" @click="mount">手动挂载</button>
-      <button type="button" @click="unmount">手动卸载</button>
+  <div class="flex flex-col gap-5 items-center">
+    <div class="flex gap-5">
+      <button
+        class="text-black px-4 py-2 rounded-lg bg-[aliceblue]"
+        type="button"
+        @click="mount"
+      >
+        手动挂载
+      </button>
+      <button
+        class="text-black px-4 py-2 rounded-lg bg-[aliceblue]"
+        type="button"
+        @click="unmount"
+      >
+        手动卸载
+      </button>
     </div>
 
     <div>组件视图</div>
     <div id="render-vnode-view"></div>
   </div>
 </template>
-
-<style scoped>
-.render-demo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.render-demo button {
-  padding: 0.5em 1em;
-  border-radius: 8px;
-  color: #000;
-  background-color: aliceblue;
-}
-</style>
