@@ -67,6 +67,7 @@ export default defineConfig({
           { text: '手动渲染组件', link: '/blogs/manual-render' },
           { text: '防抖/节流', link: '/blogs/debounce' },
           { text: '数字滚动', link: '/blogs/count-animation' },
+          { text: 'Bimoe配置', link: '/blogs/biome' },
           { text: '传送门', link: '/blogs/links' }
         ]
       },
