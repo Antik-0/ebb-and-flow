@@ -12,6 +12,7 @@
     "lint": "eslint . --cache --cache-location=.temp/.eslintcache",
     "lint:debug": "pnpm dlx @eslint/config-inspector@latest",
     "lint:fix": "eslint . --fix",
+    "oxlint": "oxlint . --fix",
     "preinstall": "pnpm dlx only-allow pnpm",
     "preview": "turbo run preview --filter=blog",
     "stub": "turbo run stub"
@@ -27,6 +28,7 @@
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",
+    "oxlint": "catalog:",
     "picocolors": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",

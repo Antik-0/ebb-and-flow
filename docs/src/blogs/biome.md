@@ -42,7 +42,6 @@
           "fix": "safe"
         }
       },
-
       "style": {
         "noNonNullAssertion": "off",
         "useNumberNamespace": {
