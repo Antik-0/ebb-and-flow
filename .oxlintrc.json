@@ -12,5 +12,5 @@
     "typescript/no-this-alias": "off",
     "unicorn/numeric-separators-style": "error"
   },
-  "ignorePatterns": ["node_modules", ".temp", ".turbo"]
+  "ignorePatterns": ["**/node_modules/**", ".temp", ".turbo"]
 }
