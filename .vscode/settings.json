@@ -8,8 +8,8 @@
   "editor.codeActionsOnSave": {
     "source.addMissingImports.ts": "never",
     "source.organizeImports": "explicit",
-    "source.fixAll.eslint": "never",
+    "source.fixAll.eslint": "explicit",
     "source.sortImports": "explicit",
-    "source.fixAll.oxc": "never"
+    "source.fixAll.oxc": "explicit"
   }
 }

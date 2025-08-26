@@ -63,10 +63,6 @@ class Meteor {
     this.posX = x
     this.posY = y
 
-    this.angle = angle
-    this.velocity = velocity
-    this.duration = duration
-    this.boundary = boundary
     this.totalDistance = velocity * duration
 
     // 速率分量，单位转为：ms
@@ -191,7 +187,9 @@ export function useMeteorAnimation() {
 
   const { maxCount, interval: intervalRange } = meteorConfig
   // 流星集合
-  let meteorList: (Meteor | null)[] = new Array(maxCount).fill(null)
+  let meteorList: (Meteor | null)[] = Array.from<null>({
+    length: maxCount
+  }).fill(null)
   // 流星集合空闲的位置指针
   let insertIndex = 0
 
