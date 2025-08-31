@@ -94,7 +94,6 @@ useMove(glassEl)
   background-size: cover;
 }
 
-/* prettier-ignore */
 .glass {
   position: absolute;
   top: 30%;

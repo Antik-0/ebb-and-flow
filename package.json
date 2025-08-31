@@ -10,30 +10,24 @@
     "clean": "node ./scripts/cleanup.mjs --del-lock",
     "dev": "turbo run dev --filter=blog",
     "eslint": "eslint --fix --cache --cache-location=.temp/.eslintcache",
-    "lint": "pnpm run oxlint && pnpm run eslint",
+    "lint": "biome check --fix && pnpm run eslint",
     "lint:debug": "pnpm dlx @eslint/config-inspector@latest",
-    "oxlint": "oxlint --fix --no-ignore docs/.vitepress .",
     "preinstall": "pnpm dlx only-allow pnpm",
     "preview": "turbo run preview --filter=blog",
     "stub": "turbo run stub"
   },
   "lint-staged": {
-    "*.{ts,vue}": [
-      "oxlint --fix && pnpm run eslint"
-    ],
-    "*.{json}": [
-      "pnpm run eslint"
+    "*.{ts,vue,json}": [
+      "pnpm run lint"
     ]
   },
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@config/eslint": "workspace:*",
-    "@config/prettier": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",
-    "oxlint": "catalog:",
     "picocolors": "catalog:",
-    "prettier": "catalog:",
     "turbo": "catalog:",
     "unbuild": "catalog:",
     "unocss": "catalog:"

@@ -2,14 +2,30 @@
   "explorer.fileNesting.patterns": {
     "*.env": "$(capture).env.*",
     "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml, .npmrc, LICENSE, .node-version, .browserslistrc",
-    ".oxlintrc.json": "eslint.config.*, uno.config.*, postcss.config.*, .prettierignore, prettier.config.*",
+    "biome.json": "eslint.config.*, uno.config.*",
     "vite.config.ts": "vite.config.ts, vitest.config.ts, vitest.workspace.ts, vite-env.d.ts"
   },
   "editor.codeActionsOnSave": {
     "source.addMissingImports.ts": "never",
-    "source.organizeImports": "explicit",
+    "source.biome": "explicit",
+    "source.fixAll.biome": "explicit",
     "source.fixAll.eslint": "explicit",
-    "source.sortImports": "explicit",
-    "source.fixAll.oxc": "explicit"
+    "source.organizeImports": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
   }
 }

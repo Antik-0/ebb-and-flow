@@ -6,11 +6,11 @@ packages:
 catalog:
   '@types/lodash-es': ^4.17.12
   '@types/node': ^24.1.0
+  '@biomejs/biome': ^2.2.2
   eslint: ^9.32.0
   lint-staged: ^16.1.2
   lodash-es: ^4.17.21
   picocolors: ^1.1.1
-  prettier: ^3.6.2
   turbo: ^2.5.5
   unbuild: ^3.6.0
   unocss: ^66.4.0
@@ -19,4 +19,3 @@ catalog:
   vite-plugin-vue-devtools: ^7.7.7
   vitepress: ^1.6.3
   vue: ^3.5.18
-  oxlint: ^1.12.0

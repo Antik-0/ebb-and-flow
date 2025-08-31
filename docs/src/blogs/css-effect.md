@@ -189,7 +189,6 @@
     transparent 50%,
     #f8cde8 55%
   );
-  /* prettier-ignore */
   mask-image:
     linear-gradient(90deg, #000 2px, transparent 0),
     linear-gradient(180deg, #0002px, transparent 0);
