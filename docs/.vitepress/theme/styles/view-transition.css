@@ -1,3 +1,5 @@
+/* biome-ignore-all lint/correctness/noUnknownTypeSelector: no why */
+
 /* Home View Transitions */
 ::view-transition-group(home) {
   --transition-duration: 2s;

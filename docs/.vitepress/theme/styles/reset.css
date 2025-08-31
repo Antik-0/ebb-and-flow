@@ -64,6 +64,18 @@
     background-color: transparent;
   }
 
+  /* content */
+  .VPContent .VPDoc {
+    padding: var(--EAF-gap);
+    padding-left: 0;
+  }
+
+  .VPContent .container {
+    padding: 20px 0;
+    border-radius: var(--EAF-radius);
+    background-color: var(--EAF-card-backgroun-color);
+  }
+
   .VPLocalNav.has-sidebar .container {
     border-top: 1px solid var(--vp-c-gutter);
     border-radius: 0 0 var(--EAF-radius) var(--EAF-radius);
@@ -94,18 +106,6 @@
   .VPSidebar .nav .group {
     width: auto;
     border-top: 1px solid var(--vp-c-divider);
-  }
-
-  /* content */
-  .VPContent .VPDoc {
-    padding: var(--EAF-gap);
-    padding-left: 0;
-  }
-
-  .VPContent .container {
-    padding: 20px 0;
-    border-radius: var(--EAF-radius);
-    background-color: var(--EAF-card-backgroun-color);
   }
 }
 

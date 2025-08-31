@@ -1,6 +1,6 @@
-import sakuraURL from '@/sakura.png'
 import { random, range } from '@repo/utils'
 import { nextTick } from 'vue'
+import sakuraURL from '@/sakura.png'
 
 /**
  * 樱花动画配置

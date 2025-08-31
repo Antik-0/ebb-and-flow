@@ -9,9 +9,14 @@
     "baseUrl": "./",
     "paths": {
       "#/*": ["*"],
-      "@/*": ["assets/*"],
-    },
+      "@/*": ["assets/*"]
+    }
   },
   "files": ["vite-env.d.ts"],
-  "include": ["src/**/*.ts", "src/**/*.vue", ".vitepress/theme/**/*.ts", ".vitepress/theme/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    ".vitepress/theme/**/*.ts",
+    ".vitepress/theme/**/*.vue"
+  ]
 }
