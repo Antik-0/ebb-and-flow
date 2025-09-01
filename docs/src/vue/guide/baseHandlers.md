@@ -44,10 +44,6 @@ class ReadonlyReactiveHandler extends BaseReactiveHandler {
 
 > **_BaseReactiveHandler、MutableReactiveHandler、ReadonlyReactiveHandler_**
 
-::: tip
-在 **_get_** 和 **_set_** 代理的逻辑中存在一个 `receiver` 对象，关于这个对象的知识可以参考这篇文章：[Receiver](../../blogs/js-receiver)
-:::
-
 ## BaseReactiveHandler
 
 `BaseReactiveHandler` 只代理了 **_get_** 方法，其源码如下：

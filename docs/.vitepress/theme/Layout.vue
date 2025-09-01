@@ -66,21 +66,25 @@ const { mount: mountMeteorAnimation, unmount: unmountMeteorAnimation } =
 const { mount: mountSakuraAnimation, unmount: unmountSakuraAnimation } =
   useSakuraAnimation()
 
-watch(
-  [isCustom, isDark],
-  ([isCustom, isDark]) => {
-    if (isCustom || isDark) {
-      unmountMeteorAnimation()
-      unmountSakuraAnimation()
-      mountMeteorAnimation()
-    } else {
-      unmountMeteorAnimation()
-      unmountSakuraAnimation()
-      mountSakuraAnimation()
-    }
-  },
-  { immediate: true }
-)
+watch([isCustom, isDark], ([isCustom, isDark]) => {
+  if (isCustom || isDark) {
+    unmountMeteorAnimation()
+    unmountSakuraAnimation()
+    mountMeteorAnimation()
+  } else {
+    unmountMeteorAnimation()
+    unmountSakuraAnimation()
+    mountSakuraAnimation()
+  }
+})
+
+onMounted(() => {
+  if (isCustom.value || isDark.value) {
+    mountMeteorAnimation()
+  } else {
+    mountSakuraAnimation()
+  }
+})
 </script>
 
 <template>

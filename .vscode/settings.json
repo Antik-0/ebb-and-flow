@@ -8,10 +8,12 @@
   "editor.codeActionsOnSave": {
     "source.addMissingImports.ts": "never",
     "source.biome": "explicit",
+    "source.fixAll.ts": "explicit",
     "source.fixAll.biome": "explicit",
     "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit",
-    "source.organizeImports.biome": "explicit"
+    "source.organizeImports": "never",
+    "source.organizeImports.biome": "explicit",
+    "source.sortImports": "explicit",
   },
   "[vue]": {
     "editor.defaultFormatter": "biomejs.biome"
