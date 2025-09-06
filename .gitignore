@@ -6,7 +6,6 @@ cache
 .temp
 .turbo
 .eslintcache
-.stylelintcache
 
 *.log
 *.local

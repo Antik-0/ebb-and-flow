@@ -7,7 +7,7 @@
   "scripts": {
     "boot": "pnpm install && pnpm stub",
     "build": "turbo run build --filter=blog",
-    "clean": "node ./scripts/cleanup.mjs --del-lock",
+    "clean": "node ./scripts/clean.mjs",
     "dev": "turbo run dev --filter=blog",
     "eslint": "eslint --fix --cache --cache-location=.temp/.eslintcache",
     "lint": "biome check --fix && pnpm run eslint",
@@ -27,7 +27,9 @@
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",
+    "ora": "catalog:",
     "picocolors": "catalog:",
+    "prompts": "catalog:",
     "turbo": "catalog:",
     "unbuild": "catalog:",
     "unocss": "catalog:"

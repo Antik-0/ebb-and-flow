@@ -15,6 +15,9 @@
     "source.organizeImports.biome": "explicit",
     "source.sortImports": "explicit",
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
