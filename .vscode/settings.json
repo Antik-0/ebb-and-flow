@@ -15,13 +15,13 @@
     "source.organizeImports.biome": "explicit",
     "source.sortImports": "explicit",
   },
-  "[vue]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[vue]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
