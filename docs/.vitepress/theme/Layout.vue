@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Cursor } from '@repo/motion'
 import { sleep } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
@@ -90,4 +91,5 @@ onMounted(() => {
 <template>
   <EAFHome v-if="isCustom" />
   <DefaultTheme.Layout v-else />
+  <Cursor />
 </template>
