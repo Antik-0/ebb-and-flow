@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { Cursor } from '@repo/motion'
+import { Cursor, meteorAnimation, sakuraAnimation } from '@repo/motion'
 import { sleep } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import { computed, onMounted, watch } from 'vue'
+import sakuraURL from '@/sakura.png'
 import EAFHome from './components/EAFHome.vue'
-import {
-  useHomeViewTransition,
-  useMeteorAnimation,
-  useSakuraAnimation,
-  useToggleAppearance
-} from './hooks'
+import { useHomeViewTransition, useToggleAppearance } from './hooks'
 
 defineOptions({ name: 'EAFLayout' })
 
@@ -61,29 +57,40 @@ Object.assign(router, {
 
 useToggleAppearance()
 
-const { mount: mountMeteorAnimation, unmount: unmountMeteorAnimation } =
-  useMeteorAnimation()
+const { run: runMeteor, cleanup: cleanupMeteor } = meteorAnimation({
+  style: style => {
+    style.position = 'fixed'
+    style.inset = '0'
+    style.zIndex = '10'
+    style.pointerEvents = 'none'
+  }
+})
 
-const { mount: mountSakuraAnimation, unmount: unmountSakuraAnimation } =
-  useSakuraAnimation()
+const { run: runSakura, cleanup: cleanupSakura } = sakuraAnimation({
+  source: sakuraURL,
+  style: style => {
+    style.position = 'fixed'
+    style.inset = '0'
+    style.zIndex = '1000'
+    style.pointerEvents = 'none'
+  }
+})
 
 watch([isCustom, isDark], ([isCustom, isDark]) => {
   if (isCustom || isDark) {
-    unmountMeteorAnimation()
-    unmountSakuraAnimation()
-    mountMeteorAnimation()
+    cleanupSakura()
+    runMeteor()
   } else {
-    unmountMeteorAnimation()
-    unmountSakuraAnimation()
-    mountSakuraAnimation()
+    cleanupMeteor()
+    runSakura()
   }
 })
 
 onMounted(() => {
   if (isCustom.value || isDark.value) {
-    mountMeteorAnimation()
+    runMeteor()
   } else {
-    mountSakuraAnimation()
+    runSakura()
   }
 })
 </script>
