@@ -27,20 +27,6 @@ body {
   margin: 0 auto;
 }
 
-#meteor-animation {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-}
-
-#sakura-animation {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-}
-
 ::-webkit-scrollbar {
   width: 6px;
 }
