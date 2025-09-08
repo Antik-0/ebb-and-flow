@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Cursor, meteorAnimation, sakuraAnimation } from '@repo/motion'
+import { Cursor, useAnimation } from '@repo/motion'
 import { sleep } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
@@ -57,40 +57,16 @@ Object.assign(router, {
 
 useToggleAppearance()
 
-const { run: runMeteor, cleanup: cleanupMeteor } = meteorAnimation({
+const useSakuraAnimation = computed(() => !isCustom.value && !isDark.value)
+
+useAnimation({
+  useSakura: useSakuraAnimation,
+  sakuaraSource: sakuraURL,
   style: style => {
     style.position = 'fixed'
     style.inset = '0'
     style.zIndex = '10'
     style.pointerEvents = 'none'
-  }
-})
-
-const { run: runSakura, cleanup: cleanupSakura } = sakuraAnimation({
-  source: sakuraURL,
-  style: style => {
-    style.position = 'fixed'
-    style.inset = '0'
-    style.zIndex = '1000'
-    style.pointerEvents = 'none'
-  }
-})
-
-watch([isCustom, isDark], ([isCustom, isDark]) => {
-  if (isCustom || isDark) {
-    cleanupSakura()
-    runMeteor()
-  } else {
-    cleanupMeteor()
-    runSakura()
-  }
-})
-
-onMounted(() => {
-  if (isCustom.value || isDark.value) {
-    runMeteor()
-  } else {
-    runSakura()
   }
 })
 </script>

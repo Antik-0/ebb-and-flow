@@ -1,5 +1,5 @@
 import { random, range } from '@repo/utils'
-import { onWindowResize } from '../observer'
+import { onWindowResize } from './observer'
 
 type RangeNumber = [number, number]
 
