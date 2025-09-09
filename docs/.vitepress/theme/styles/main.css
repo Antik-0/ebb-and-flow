@@ -28,12 +28,13 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #9d174d;
+  border-radius: 24px;
+  background-color: #9b1a4e;
 }
 
 ::-webkit-scrollbar-track {
