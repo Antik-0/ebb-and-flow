@@ -6,14 +6,14 @@
   "packageManager": "pnpm@10.15.1",
   "scripts": {
     "boot": "pnpm install && pnpm stub",
-    "build": "turbo run build --filter=blog",
+    "build": "turbo run build --filter=website",
     "clean": "node ./scripts/clean.mjs",
-    "dev": "turbo run dev --filter=blog",
+    "dev": "turbo run dev --filter=website",
     "eslint": "eslint --fix --cache --cache-location=.temp/.eslintcache",
     "lint": "biome check --fix && pnpm run eslint",
     "lint:debug": "pnpm dlx @eslint/config-inspector@latest",
     "preinstall": "pnpm dlx only-allow pnpm",
-    "preview": "turbo run preview --filter=blog",
+    "preview": "turbo run preview --filter=website",
     "stub": "turbo run stub"
   },
   "lint-staged": {
