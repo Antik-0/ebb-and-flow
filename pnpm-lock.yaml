@@ -192,6 +192,9 @@ importers:
       lodash-es:
         specifier: 'catalog:'
         version: 4.17.21
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.21(typescript@5.9.2)
 
 packages:
 

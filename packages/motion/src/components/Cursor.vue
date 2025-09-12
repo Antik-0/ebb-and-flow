@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionTemplate, useMotionValue } from 'motion-v'
-import { onBeforeUnmount, onMounted, Teleport } from 'vue'
+import { onMounted, Teleport } from 'vue'
 
 const offsetX = useMotionValue(0)
 const offsetY = useMotionValue(0)
@@ -29,6 +30,8 @@ function onMouseMove(event: MouseEvent) {
   offsetY.set(clientY)
 }
 
+const { addEventListener } = useEventListener()
+
 onMounted(() => {
   animate(rotate, 360, {
     duration: 2,
@@ -36,15 +39,10 @@ onMounted(() => {
     repeat: Number.POSITIVE_INFINITY,
     repeatType: 'loop'
   })
-  window.addEventListener('pointermove', onMouseMove)
-  window.addEventListener('pointerdown', onPointerdown)
-  window.addEventListener('pointerup', onPointerup)
-})
 
-onBeforeUnmount(() => {
-  window.removeEventListener('pointermove', onMouseMove)
-  window.removeEventListener('pointerdown', onPointerdown)
-  window.removeEventListener('pointerup', onPointerup)
+  addEventListener(window, 'pointermove', onMouseMove)
+  addEventListener(window, 'pointerup', onPointerup)
+  addEventListener(window, 'pointerdown', onPointerdown)
 })
 </script>
 

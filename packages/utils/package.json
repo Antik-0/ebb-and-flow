@@ -8,11 +8,16 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./hooks": {
+      "types": "./src/hooks/index.ts",
+      "import": "./src/hooks/index.ts"
     }
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@types/lodash-es": "catalog:",
-    "lodash-es": "catalog:"
+    "lodash-es": "catalog:",
+    "vue": "catalog:"
   }
 }
