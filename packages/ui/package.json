@@ -1,0 +1,24 @@
+{
+  "name": "@repo/ui",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@repo/utils": "workspace:*",
+    "motion-v": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@config/tsconfig": "workspace:*"
+  }
+}
