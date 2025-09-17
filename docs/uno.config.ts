@@ -10,8 +10,7 @@ export default defineConfig({
   ],
   shortcuts: [
     ['flex-col', 'flex flex-col'],
-    ['flex-center', 'flex items-center justify-center'],
-    ['flex-col-center', 'flex-col items-center justify-center']
+    ['flex-center', 'items-center justify-center']
   ],
   content: {
     pipeline: {

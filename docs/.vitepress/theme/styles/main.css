@@ -1,9 +1,5 @@
 @import url(./view-transition.css);
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background-image: url('@/bg-light.jpg');
   background-position: center;
@@ -15,28 +11,4 @@ body {
 [data-isHome='true'] body,
 .dark body {
   background-image: url('@/EAF-home.png');
-}
-
-#app {
-  position: relative;
-  z-index: 20;
-}
-
-.VPDoc .image {
-  display: block;
-  margin: 0 auto;
-}
-
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 24px;
-  background-color: #9b1a4e;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #334155;
 }

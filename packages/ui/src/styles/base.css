@@ -1,0 +1,10 @@
+@import url('./vars.css');
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--eaf-c-text-1);
+  min-height: 100vh;
+}

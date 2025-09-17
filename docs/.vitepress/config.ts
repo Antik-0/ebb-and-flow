@@ -15,14 +15,14 @@ export default defineConfig({
   lastUpdated: true,
   appearance: 'dark',
   head: [
-    ['link', { rel: 'icon', href: webBase + 'logo.png' }],
-    [
-      'script',
-      {
-        async: 'true',
-        src: 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.7/dist/autoload.js'
-      }
-    ]
+    ['link', { rel: 'icon', href: webBase + 'logo.png' }]
+    // [
+    //   'script',
+    //   {
+    //     async: 'true',
+    //     src: 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.7/dist/autoload.js'
+    //   }
+    // ]
   ],
   themeConfig: {
     logo: '/logo.png',

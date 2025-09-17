@@ -1,0 +1,23 @@
+@layer theme {
+  :root {
+    --eaf-c-text-1: #3c3c43;
+    --vp-c-bg: #fff;
+  }
+
+  .dark {
+    --eaf-c-text-1: #dfdfd6;
+    --vp-c-bg: #1b1b1f;
+  }
+
+  :root {
+    --eaf-nav-height: 64px;
+    --eaf-nav-bg-color: var(--vp-c-bg);
+    --eaf-sidebar-bg-color: #161618;
+    --eaf-sidebar-mask-color: hsl(0 0 0 / 0.45);
+  }
+
+  :root {
+    --eaf-z-index-nav: 30;
+    --eaf-z-index-sidebar: 90;
+  }
+}
