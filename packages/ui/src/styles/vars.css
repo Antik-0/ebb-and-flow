@@ -1,23 +1,47 @@
+@layer theme, theme-dark;
+
+@layer theme-dark {
+  .dark {
+    --foreground: #fff;
+    --background: #000;
+
+    /**
+     * Colors: Text
+     *
+     * - `text-1`: Used for primary text.
+     *
+     * - `text-2`: Used for muted texts, such as "inactive menu" or "info texts".
+     *
+     * - `text-3`: Used for subtle texts, such as "placeholders" or "caret icon".
+     * --------------------------------------------------------------------------
+     */
+    --c-text-1: #dfdfd6;
+    --c-text-2: #98989f;
+    --c-text-3: #6a6a71;
+
+    --nav-bg-color: hsl(0 0% 20% / 0.1);
+    --content-bg-color: hsl(240 16% 10% / 0.8);
+    --sidebar-bg-color: hsl(0 0% 0% / 0.9);
+    --sidebar-mask-bg-color: hsl(0 0% 0% / 0.4);
+  }
+}
+
 @layer theme {
   :root {
-    --eaf-c-text-1: #3c3c43;
-    --vp-c-bg: #fff;
-  }
+    --foreground: #fff;
+    --background: #000;
 
-  .dark {
-    --eaf-c-text-1: #dfdfd6;
-    --vp-c-bg: #1b1b1f;
+    --c-text-1: #3c3c43;
+    --c-text-2: #67676c;
+    --c-text-3: #929295;
   }
+}
 
+@layer layout {
   :root {
-    --eaf-nav-height: 64px;
-    --eaf-nav-bg-color: var(--vp-c-bg);
-    --eaf-sidebar-bg-color: #161618;
-    --eaf-sidebar-mask-color: hsl(0 0 0 / 0.45);
-  }
+    --nav-height: 64px;
 
-  :root {
-    --eaf-z-index-nav: 30;
-    --eaf-z-index-sidebar: 90;
+    --z-index-nav: 30;
+    --z-index-sidebar: 40;
   }
 }

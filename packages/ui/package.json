@@ -17,6 +17,7 @@
     "@repo/utils": "workspace:*",
     "motion-v": "catalog:",
     "vite": "catalog:",
+    "vitepress": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {

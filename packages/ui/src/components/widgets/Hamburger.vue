@@ -8,7 +8,7 @@ const isOpen = defineModel<boolean>()
   <motion.button
     :animate="isOpen ? 'open' : 'closed'"
     aria-label="hamburger-button"
-    class="text-6 px-3 cursor-pointer"
+    class="text-5 px-3 cursor-pointer"
     initial="closed"
     type="button"
     :while-hover="isOpen ? 'open' : 'hover'"
@@ -16,7 +16,7 @@ const isOpen = defineModel<boolean>()
   >
     <svg
       height="1em"
-      style="pointer-events: none"
+      style="pointer-events: none;"
       viewBox="0 0 24 24"
       width="1em"
     >

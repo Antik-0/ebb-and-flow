@@ -1,29 +1,53 @@
 <script setup lang='ts'>
-import { motion } from 'motion-v'
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useSpring
+} from 'motion-v'
+import { computed, ref, watch } from 'vue'
 import { useSidebarControl } from '#/controller/sidebar.ts'
 
 const { isOpen, close } = useSidebarControl()
+
+const delayShow = ref(isOpen.value)
+const show = computed(() => isOpen.value || delayShow.value)
+
+const _x = useMotionValue(-100)
+const x = useSpring(_x, { duration: 2 })
+
+useMotionValueEvent(x, 'animationComplete', () => {
+  console.log('动画结束')
+})
+
+watch(
+  () => isOpen.value,
+  value => {
+    if (value) {
+      delayShow.value = true
+      _x.set(0)
+    } else {
+      _x.set(-100)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-  <div v-show="isOpen" class="inset-0 fixed z-[--eaf-z-index-sidebar]">
+  <div v-show="show" class="inset-0 fixed z-[--z-index-sidebar]">
     <motion.aside
-      :animate="isOpen ? 'show' : 'hidden'"
-      class="max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 fixed z-[calc(var(--eaf-z-index-sidebar)+2)] data-[show=true]:translate-x-0"
-      :data-show="isOpen"
-      initial="hidden"
-      :transition="{
-        type: 'spring',
-        duration: 1
-      }"
-      :variants="{
-        show: {x: 0},
-        hidden: {x: '-100%'}
-      }"
+      class="max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 absolute z-20"
+      :style="{ x }"
+      @animation-complete="() => delayShow = isOpen"
     >
-      <div class="p-8 bg-[--eaf-sidebar-bg-color] size-full">
+      <div class="p-8 bg-[--sidebar-bg-color] size-full">
       </div>
     </motion.aside>
-    <div class="bg-[--eaf-sidebar-mask-color] inset-0 fixed z-[calc(var(--eaf-z-index-sidebar)+1)]" @click="close"></div>
+
+    <motion.div
+      class="bg-[--sidebar-mask-bg-color] inset-0 absolute z-10"
+      @click="close"
+    />
   </div>
 </template>
