@@ -1,8 +1,10 @@
 <script setup lang='ts'>
-import { useIntersectionObserver } from '@repo/utils/hooks'
+import { useIntersectionObserver, useMediaQuery } from '@repo/utils/hooks'
 import { ref, Teleport, useTemplateRef } from 'vue'
 import EAFNavAvatar from './EAFNavAvatar.vue'
+import EAFNavMenu from './EAFNavMenu.vue'
 import EAFNavTitle from './EAFNavTitle.vue'
+import Avatar from './widgets/Avatar.vue'
 import Hamburger from './widgets/Hamburger.vue'
 import Search from './widgets/Search.vue'
 import SidebarTrigger from './widgets/SidebarTrigger.vue'
@@ -16,6 +18,11 @@ const { observe } = useIntersectionObserver()
 observe(sentry, entry => {
   showTitle.value = !entry.isIntersecting
 })
+
+// 媒体查询
+const isLargeScreen = useMediaQuery('(min-width: 400px)', {
+  ssrWidth: 1024
+})
 </script>
 
 <template>
@@ -24,12 +31,19 @@ observe(sentry, entry => {
 
     <div class="grid grid-cols-[100px_1fr_100px] size-full">
       <div class="flex justify-center">
-        <SidebarTrigger />
+        <div v-if="isLargeScreen" class="flex-center flex">
+          <Avatar />
+        </div>
+        <SidebarTrigger v-else />
       </div>
 
       <div class="relative">
-        <EAFNavAvatar :show="!showTitle" />
-        <EAFNavTitle :show="showTitle" />
+        <EAFNavAvatar v-if="!isLargeScreen" :show="!showTitle" />
+        <div v-else class="flex-center flex inset-0 absolute">
+          <EAFNavMenu />
+        </div>
+
+        <EAFNavTitle v-if="false" :show="showTitle" />
       </div>
 
       <div class="flex gap-1 justify-center">
@@ -40,9 +54,11 @@ observe(sentry, entry => {
   </header>
 
 
-  <Teleport to="body">
-    <div ref="sentry" aria-hidden="true" class="h-1 pointer-events-none inset-x-0 top-[100px] absolute -z-[10]"></div>
-  </Teleport>
+  <ClientOnly>
+    <Teleport to="body">
+      <div ref="sentry" aria-hidden="true" class="h-1 pointer-events-none inset-x-0 top-[100px] absolute -z-[10]"></div>
+    </Teleport>
+  </ClientOnly>
 </template>
 
 

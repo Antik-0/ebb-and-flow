@@ -1,4 +1,4 @@
-export * from './lodash'
+export * from './lodash.ts'
 
 /**
  * 判断是否支持 ViewTranstion API

@@ -1,14 +1,14 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { onBeforeUnmount, onMounted, toValue } from 'vue'
 
-type Callback = (entry: IntersectionObserverEntry, target: Element) => void
+type Callback = (entry: ResizeObserverEntry, target: Element) => void
 
-let observer: IntersectionObserver | null = null
+let observer: ResizeObserver | null = null
 let subscriber = 0
 const observeMap = new WeakMap<Element, Set<Callback>>()
 
-function createIntersectionObserver() {
-  const observer = new IntersectionObserver(entries => {
+function createResizeObserver() {
+  const observer = new ResizeObserver(entries => {
     for (const entry of entries) {
       const target = entry.target
       const cbs = observeMap.get(target) ?? []
@@ -22,7 +22,7 @@ function createIntersectionObserver() {
 
 function observe(target: Element, callback: Callback) {
   if (!observer) {
-    observer = createIntersectionObserver()
+    observer = createResizeObserver()
   }
   if (!observeMap.has(target)) {
     observeMap.set(target, new Set())
@@ -58,7 +58,7 @@ interface ObserveEntry {
   callback: Callback
 }
 
-export function useIntersectionObserver() {
+export function useResizeObserver() {
   const observeEntries: ObserveEntry[] = []
 
   const _observe = (
@@ -88,7 +88,13 @@ export function useIntersectionObserver() {
 
   onBeforeUnmount(clear)
 
+  const onWindowResize = (callback: Callback) => {
+    const root = document.documentElement
+    _observe(root, callback)
+  }
+
   return {
+    onWindowResize,
     observe: _observe,
     clear
   }

@@ -15,7 +15,7 @@ const cleanFiles = [
   'pnpm-lock.yaml'
 ]
 const ignoreFiles = ['.git', '.github', '.vscode', 'assets', 'src']
-const recursiveDepth = 3
+const recursiveDepth = 4
 
 try {
   log(`\n🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)

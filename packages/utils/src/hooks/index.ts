@@ -1,2 +1,5 @@
-export * from './useEventListener'
+export { useMediaQuery } from '@vueuse/core'
+export * from './useEventListener.ts'
 export * from './useIntersectionObserver.ts'
+export * from './useResizeObserver.ts'
+export * from './useSharedState.ts'

@@ -1,53 +1,50 @@
 <script setup lang='ts'>
-import {
-  motion,
-  useMotionValue,
-  useMotionValueEvent,
-  useSpring
-} from 'motion-v'
-import { computed, ref, watch } from 'vue'
+import { animate, motion, useMotionValue } from 'motion-v'
+import { ref, watch } from 'vue'
 import { useSidebarControl } from '#/controller/sidebar.ts'
 
 const { isOpen, close } = useSidebarControl()
+const show = ref(isOpen.value)
 
-const delayShow = ref(isOpen.value)
-const show = computed(() => isOpen.value || delayShow.value)
-
-const _x = useMotionValue(-100)
-const x = useSpring(_x, { duration: 2 })
-
-useMotionValueEvent(x, 'animationComplete', () => {
-  console.log('动画结束')
-})
+const x = useMotionValue('-100%')
 
 watch(
   () => isOpen.value,
   value => {
     if (value) {
-      delayShow.value = true
-      _x.set(0)
+      show.value = true
+      animate(x, '0%', { type: 'spring', duration: 0.6 })
     } else {
-      _x.set(-100)
+      animate(x, '-100%', {
+        ease: 'backIn',
+        duration: 0.6,
+        onComplete() {
+          show.value = false
+        }
+      })
     }
-  },
-  { immediate: true }
+  }
 )
 </script>
 
 <template>
-  <div v-show="show" class="inset-0 fixed z-[--z-index-sidebar]">
+  <div
+    v-show="show"
+    class="inset-0 fixed z-[--z-index-sidebar]"
+    :data-show="show"
+  >
     <motion.aside
-      class="max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 absolute z-20"
+      class="max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 absolute z-20 isolate"
       :style="{ x }"
-      @animation-complete="() => delayShow = isOpen"
     >
-      <div class="p-8 bg-[--sidebar-bg-color] size-full">
+      <div class="bg-[--sidebar-bg-color] inset-y-0 right-0 absolute -left-25 -z-1">
       </div>
+      <div class="p-8 size-full"></div>
     </motion.aside>
 
-    <motion.div
+    <div
       class="bg-[--sidebar-mask-bg-color] inset-0 absolute z-10"
       @click="close"
-    />
+    ></div>
   </div>
 </template>

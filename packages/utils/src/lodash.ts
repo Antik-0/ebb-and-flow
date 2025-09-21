@@ -1,1 +1,1 @@
-export { debounce } from 'lodash-es'
+export { debounce, throttle } from 'lodash-es'

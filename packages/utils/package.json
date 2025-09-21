@@ -17,6 +17,7 @@
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@types/lodash-es": "catalog:",
+    "@vueuse/core": "catalog:",
     "lodash-es": "catalog:",
     "vue": "catalog:"
   }
