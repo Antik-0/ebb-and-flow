@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { onBeforeUnmount, onMounted, toValue } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, toValue } from 'vue'
 
 type Callback = (entry: IntersectionObserverEntry, target: Element) => void
 
@@ -27,10 +27,10 @@ function observe(target: Element, callback: Callback) {
   if (!observeMap.has(target)) {
     observeMap.set(target, new Set())
     observer.observe(target)
+    subscriber += 1
   }
   const cbs = observeMap.get(target)!
   cbs.add(callback)
-  subscriber += 1
 }
 
 function unobserve(target: Element, callback: Callback) {
@@ -79,7 +79,8 @@ export function useIntersectionObserver() {
     }
   }
 
-  onMounted(() => {
+  onMounted(async () => {
+    await nextTick()
     for (const { target, callback } of observeEntries) {
       const element = toValue(target)
       element && observe(element, callback)

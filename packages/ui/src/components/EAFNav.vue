@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { useIntersectionObserver, useMediaQuery } from '@repo/utils/hooks'
+import { motion } from 'motion-v'
 import { ref, Teleport, useTemplateRef } from 'vue'
-import EAFNavAvatar from './EAFNavAvatar.vue'
 import EAFNavMenu from './EAFNavMenu.vue'
 import EAFNavTitle from './EAFNavTitle.vue'
 import Avatar from './widgets/Avatar.vue'
@@ -14,13 +14,11 @@ const menuOpen = ref(false)
 const showTitle = ref(false)
 const sentry = useTemplateRef('sentry')
 const { observe } = useIntersectionObserver()
-
 observe(sentry, entry => {
   showTitle.value = !entry.isIntersecting
 })
 
-// 媒体查询
-const isLargeScreen = useMediaQuery('(min-width: 400px)', {
+const showMenu = useMediaQuery('(min-width: 1024px)', {
   ssrWidth: 1024
 })
 </script>
@@ -30,20 +28,26 @@ const isLargeScreen = useMediaQuery('(min-width: 400px)', {
     <div class="navbar-background"></div>
 
     <div class="grid grid-cols-[100px_1fr_100px] size-full">
-      <div class="flex justify-center">
-        <div v-if="isLargeScreen" class="flex-center flex">
-          <Avatar />
-        </div>
+      <div class="flex-center flex">
+        <Avatar v-if="showMenu" />
         <SidebarTrigger v-else />
       </div>
 
-      <div class="relative">
-        <EAFNavAvatar v-if="!isLargeScreen" :show="!showTitle" />
-        <div v-else class="flex-center flex inset-0 absolute">
-          <EAFNavMenu />
-        </div>
+      <div class="relative isolate">
+        <motion.div
+          :animate="showTitle ? 'hidden' : 'show'"
+          class="flex-center flex inset-0 absolute"
+          :transition="{ duration: 1 }"
+          :variants="{
+            show: { opacity: 1 },
+            hidden: { opacity: 0 }
+          }"
+        >
+          <EAFNavMenu v-if="showMenu" />
+          <Avatar v-else />
+        </motion.div>
 
-        <EAFNavTitle v-if="false" :show="showTitle" />
+        <EAFNavTitle :show="showTitle" />
       </div>
 
       <div class="flex gap-1 justify-center">

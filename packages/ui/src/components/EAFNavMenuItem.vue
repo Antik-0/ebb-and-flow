@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type { MenuItem } from '#/controller/navMenu.ts'
+import type { MenuItem } from '#/controller/navbar.ts'
 
 interface Props {
   item: MenuItem
