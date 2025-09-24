@@ -2,8 +2,8 @@
 import { useIntersectionObserver, useMediaQuery } from '@repo/utils/hooks'
 import { motion } from 'motion-v'
 import { ref, Teleport, useTemplateRef } from 'vue'
-import EAFNavMenu from './EAFNavMenu.vue'
 import EAFNavTitle from './EAFNavTitle.vue'
+import Menubar from './menubar/Menubar.vue'
 import Avatar from './widgets/Avatar.vue'
 import Hamburger from './widgets/Hamburger.vue'
 import Search from './widgets/Search.vue'
@@ -18,7 +18,7 @@ observe(sentry, entry => {
   showTitle.value = !entry.isIntersecting
 })
 
-const showMenu = useMediaQuery('(min-width: 1024px)', {
+const showMenu = useMediaQuery('(min-width: 700px)', {
   ssrWidth: 1024
 })
 </script>
@@ -43,7 +43,7 @@ const showMenu = useMediaQuery('(min-width: 1024px)', {
             hidden: { opacity: 0 }
           }"
         >
-          <EAFNavMenu v-if="showMenu" />
+          <Menubar v-if="showMenu" />
           <Avatar v-else />
         </motion.div>
 

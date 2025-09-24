@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@repo/utils": "workspace:*",
+    "iconify-icon": "catalog:",
     "motion-v": "catalog:",
     "vite": "catalog:",
     "vitepress": "catalog:",

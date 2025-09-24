@@ -21,6 +21,9 @@ catalogs:
     eslint:
       specifier: ^9.35.0
       version: 9.36.0
+    iconify-icon:
+      specifier: ^3.0.1
+      version: 3.0.1
     lint-staged:
       specifier: ^16.1.6
       version: 16.1.6
@@ -192,6 +195,9 @@ importers:
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
+      iconify-icon:
+        specifier: 'catalog:'
+        version: 3.0.1
       motion-v:
         specifier: 'catalog:'
         version: 1.7.1(@vueuse/core@13.9.0(vue@3.5.21(typescript@5.9.2)))(vue@3.5.21(typescript@5.9.2))
@@ -2038,6 +2044,9 @@ packages:
   human-signals@8.0.1:
     resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
+
+  iconify-icon@3.0.1:
+    resolution: {integrity: sha512-M3/kH3C+e/ufhmQuOSYSb1Ri1ImJ+ZEQYcVRMKnlSc8Nrdoy+iY9YvFnplX8t/3aCRuo5wN4RVPtCSHGnbt8dg==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -5101,6 +5110,10 @@ snapshots:
   html-void-elements@3.0.0: {}
 
   human-signals@8.0.1: {}
+
+  iconify-icon@3.0.1:
+    dependencies:
+      '@iconify/types': 2.0.0
 
   ignore@5.3.2: {}
 

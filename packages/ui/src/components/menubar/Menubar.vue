@@ -1,16 +1,17 @@
 <script setup lang='ts'>
 import type { MenuItem } from '#/controller/navbar'
+import { LayoutGroup } from 'motion-v'
 import { ref } from 'vue'
+import FlowingLight from '#/components/widgets/FlowingLight.vue'
 import { useMenuHover } from '#/controller/navbar'
-import EAFNavMenuItem from './EAFNavMenuItem.vue'
-import FlowingLight from './widgets/FlowingLight.vue'
+import MenubarGroup from './MenubarGroup.vue'
 
 const menuList = ref<MenuItem[]>([
-  { text: '首页' },
-  { text: '编程' },
-  { text: '手记' },
-  { text: '时光' },
-  { text: '更多' }
+  { text: '首页', icon: 'lucide:circle-dot', href: '/' },
+  { text: '文稿', icon: 'lucide:pencil-line', href: '/', children: [] },
+  { text: '编程', icon: 'lucide:atom', href: '/', children: [] },
+  { text: '特效', icon: 'lucide:sparkles', href: '/', children: [] },
+  { text: '更多', icon: 'ic:twotone-signpost', href: '/', children: [] }
 ])
 
 const activeIndex = ref(0)
@@ -24,17 +25,24 @@ const { scope, offsetX } = useMenuHover()
     ref="scope"
     class="nav-menu"
   >
-    <menu class="text-[14px] px-4 flex" role="menu">
-      <EAFNavMenuItem
-        v-for="(item, index) in menuList"
-        :key="index"
-        :is-active="activeIndex === index"
-        :item="item"
-        @click="activeIndex = index"
-      />
+    <menu
+      class="text-[14px] px-4 flex"
+      role="menu"
+      :transition="{duration: 2}"
+    >
+      <LayoutGroup>
+        <MenubarGroup
+          v-for="(item, index) in menuList"
+          :key="index"
+          :is-active="activeIndex === index"
+          :item="item"
+          @click="activeIndex = index"
+        />
+      </LayoutGroup>
     </menu>
 
     <div
+      aria-hidden="true"
       class="nav-menu__bg"
       :style="{ '--offset-x': offsetX + 'px' }"
     ></div>

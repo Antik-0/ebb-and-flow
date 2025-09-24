@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { useSidebarControl } from '#/controller/sidebar.ts'
-import Menu from '../icons/Menu.vue'
+import Menu from '#/icons/Menu.vue'
 
 const { open } = useSidebarControl()
 </script>

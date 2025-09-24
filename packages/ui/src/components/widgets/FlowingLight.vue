@@ -1,5 +1,5 @@
 <template>
-  <div class="flowing-light">
+  <div aria-hidden="true" class="flowing-light">
     <div class="flowing-light__color" style="--flowing-light-angle: 180deg"></div>
     <div class="flowing-light__color" style="--flowing-light-angle: -180deg"></div>
   </div>
