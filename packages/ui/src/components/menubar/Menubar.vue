@@ -28,7 +28,7 @@ const { scope, offsetX } = useMenuHover()
     <menu
       class="text-[14px] px-4 flex"
       role="menu"
-      :transition="{duration: 2}"
+      :transition="{ duration: 2 }"
     >
       <LayoutGroup>
         <MenubarGroup

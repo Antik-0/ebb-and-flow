@@ -1,12 +1,25 @@
-import type { Linter } from 'eslint'
-import tsEslint from 'typescript-eslint'
-import { ignores, jsonc, unocss, vue } from './plugins/index.js'
+import Unocss from '@unocss/eslint-config/flat'
+import { defineConfig, globalIgnores } from 'eslint/config'
+import JSONC from './jsonc.js'
+import Vue from './vue.js'
 
 /**
  * reference: https://eslint.org/docs/latest/use/configure/configuration-files
  */
-export function defineConfig() {
-  const configs = [ignores(), jsonc(), vue(), unocss()].flat()
-
-  return tsEslint.config(...configs) as Linter.Config[]
-}
+export default defineConfig([
+  globalIgnores([
+    '**/node_modules',
+    '**/dist',
+    '**/.cache',
+    '**/.turbo',
+    '**/*.ttf',
+    '**/*.woff',
+    '**/.vitepress/cache/**',
+    '**/LICENSE*',
+    '**/auto-import?(s).d.ts',
+    '**/components.d.ts'
+  ]),
+  {
+    extends: [JSONC, Vue, Unocss as any]
+  }
+])

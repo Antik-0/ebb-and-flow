@@ -8,7 +8,7 @@ const { open } = useSidebarControl()
 <template>
   <button
     aria-label="sidebar-button"
-    class="flex-center text-6 p-4 flex cursor-pointer"
+    class="text-6 p-4 flex cursor-pointer flex-center"
     type="button"
     @click="open"
   >

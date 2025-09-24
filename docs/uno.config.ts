@@ -1,21 +1,6 @@
-import { defineConfig, presetWind4, transformerDirectives } from 'unocss'
+import { presetBase } from '@config/unocss'
+import { defineConfig } from 'unocss'
 
 export default defineConfig({
-  presets: [
-    presetWind4({
-      preflights: {
-        reset: true
-      }
-    })
-  ],
-  shortcuts: [
-    ['flex-col', 'flex flex-col'],
-    ['flex-center', 'items-center justify-center']
-  ],
-  content: {
-    pipeline: {
-      include: [/\.(vue|md)/]
-    }
-  },
-  transformers: [transformerDirectives()]
+  presets: [presetBase()]
 })

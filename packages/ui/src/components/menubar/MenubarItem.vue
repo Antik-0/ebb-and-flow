@@ -23,7 +23,7 @@ const { item, isActive } = defineProps<Props>()
     >
       <motion.span
         v-if="item.icon && isActive"
-        class="flex-center text-4 mr-1 inline-flex"
+        class="text-4 mr-1 inline-flex flex-center"
         layout-id="menuitem-icon"
       >
         <Icon :icon="item.icon" />

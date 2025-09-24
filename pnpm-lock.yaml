@@ -77,6 +77,9 @@ importers:
       '@config/eslint':
         specifier: workspace:*
         version: link:packages/configs/eslint
+      '@config/unocss':
+        specifier: workspace:*
+        version: link:packages/configs/unocss
       '@types/node':
         specifier: 'catalog:'
         version: 24.5.2
@@ -123,6 +126,9 @@ importers:
       '@config/tsconfig':
         specifier: workspace:*
         version: link:../packages/configs/tsconfig
+      '@config/unocss':
+        specifier: workspace:*
+        version: link:../packages/configs/unocss
       '@repo/utils':
         specifier: workspace:*
         version: link:../packages/utils
@@ -173,6 +179,15 @@ importers:
         version: 10.2.0(eslint@9.36.0(jiti@2.6.0))
 
   packages/configs/tsconfig: {}
+
+  packages/configs/unocss:
+    devDependencies:
+      '@config/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      unocss:
+        specifier: 'catalog:'
+        version: 66.5.2(postcss@8.5.6)(vite@7.1.7(@types/node@24.5.2)(jiti@2.6.0)(yaml@2.8.1))
 
   packages/motion:
     dependencies:
@@ -3484,7 +3499,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/generator': 7.28.3
-      '@babel/parser': 7.27.7
+      '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
       '@babel/types': 7.28.4
       debug: 4.4.3

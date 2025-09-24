@@ -1,3 +1,3 @@
-import { defineConfig } from '@config/eslint'
+import Config from '@config/eslint'
 
-export default defineConfig()
+export default Config

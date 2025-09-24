@@ -1,0 +1,17 @@
+{
+  "name": "@config/unocss",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "devDependencies": {
+    "@config/tsconfig": "workspace:*",
+    "unocss": "catalog:"
+  }
+}

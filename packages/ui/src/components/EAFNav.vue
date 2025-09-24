@@ -28,7 +28,7 @@ const showMenu = useMediaQuery('(min-width: 700px)', {
     <div class="navbar-background"></div>
 
     <div class="grid grid-cols-[100px_1fr_100px] size-full">
-      <div class="flex-center flex">
+      <div class="flex flex-center">
         <Avatar v-if="showMenu" />
         <SidebarTrigger v-else />
       </div>
@@ -36,7 +36,7 @@ const showMenu = useMediaQuery('(min-width: 700px)', {
       <div class="relative isolate">
         <motion.div
           :animate="showTitle ? 'hidden' : 'show'"
-          class="flex-center flex inset-0 absolute"
+          class="flex flex-center inset-0 absolute"
           :transition="{ duration: 1 }"
           :variants="{
             show: { opacity: 1 },

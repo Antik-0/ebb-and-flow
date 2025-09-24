@@ -5,6 +5,7 @@
       "packages/**/*",
       "docs/**/*",
       "scripts/*",
+      "uno.config.ts",
       "package.json",
       "tsconfig.json",
       "!**/node_modules",

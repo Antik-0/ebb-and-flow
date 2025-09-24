@@ -48,7 +48,7 @@ onMounted(() => {
 
 <template>
   <Teleport to="body">
-    <motion.div class="cursor" :style="{transform}">
+    <motion.div class="cursor" :style="{ transform }">
       <div class="cursor-arrow border-b-none border-r-none left-0 top-0"></div>
       <div class="cursor-arrow border-b-none border-l-none right-0 top-0"></div>
       <div class="cursor-arrow border-r-none border-t-none bottom-0 left-0"></div>
