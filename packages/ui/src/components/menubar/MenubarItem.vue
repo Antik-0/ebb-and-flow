@@ -13,7 +13,7 @@ const { item, isActive } = defineProps<Props>()
 
 <template>
   <motion.li
-    class="cursor-pointer relative data-[active=true]:text-[--c-brand] hover:text-[--c-brand]"
+    class="cursor-pointer relative data-[active=true]:text-[--c-brand-1] hover:text-[--c-brand-1]"
     role="menuitem"
     layout
   >
@@ -32,7 +32,7 @@ const { item, isActive } = defineProps<Props>()
     </a>
     <motion.span
       v-if="isActive"
-      class="h-1px inset-x-1px absolute from-transparent to-transparent via-[--c-brand]/70 bg-linear-to-r -bottom-1px"
+      class="h-1px inset-x-1px absolute from-transparent to-transparent via-[--c-brand-1]/70 bg-linear-to-r -bottom-1px"
       layout-id="menuitem-line"
     />
   </motion.li>

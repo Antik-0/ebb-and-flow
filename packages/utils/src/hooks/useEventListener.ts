@@ -24,7 +24,7 @@ type AddEventListener = {
   ): any
 
   (
-    el: EventTarget,
+    el: MaybeRefOrGetter<EventTarget | null>,
     type: string,
     listener: EventListenerOrEventListenerObject,
     options?: AddEventListenerOptions
@@ -60,7 +60,9 @@ export function useEventListener() {
     }
   }
 
-  const clearEventListener = controller.abort
+  const clearEventListener = () => {
+    controller.abort()
+  }
 
   onMounted(async () => {
     await nextTick()

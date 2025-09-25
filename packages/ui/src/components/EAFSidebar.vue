@@ -1,9 +1,12 @@
 <script setup lang='ts'>
+import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
-import { ref, watch } from 'vue'
-import { useSidebarControl } from '#/controller/sidebar.ts'
+import { ref, useTemplateRef, watch } from 'vue'
+import { useSidebarControl, useSidebarMenu } from '#/controller/sidebar.ts'
+import { SidebarGroup, SidebarItem } from './sidebar'
 
 const { isOpen, close } = useSidebarControl()
+
 const show = ref(isOpen.value)
 
 const x = useMotionValue('-100%')
@@ -23,6 +26,29 @@ watch(
         }
       })
     }
+  },
+  {
+    immediate: true
+  }
+)
+
+const { menus } = useSidebarMenu()
+
+const sidebar = useTemplateRef('sidebar')
+const { addEventListener } = useEventListener()
+
+addEventListener(
+  () => sidebar.value?.$el,
+  'click',
+  event => {
+    for (const path of event.composedPath()) {
+      const node = path as HTMLElement
+      if (node === document.body) break
+      if (node.getAttribute('data-role') === 'link') {
+        close()
+        break
+      }
+    }
   }
 )
 </script>
@@ -34,12 +60,22 @@ watch(
     :data-show="show"
   >
     <motion.aside
-      class="max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 absolute z-20 isolate"
+      ref="sidebar"
+      class="flex-col max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 absolute z-20 isolate"
       :style="{ x }"
     >
+      <slot name="sidebar-header"></slot>
+
+      <div class="p-8 flex-1 overflow-x-hidden overflow-y-auto">
+        <SidebarGroup v-for="(item, index) in menus" :key="index">
+          <SidebarItem :item="item" :level="1" />
+        </SidebarGroup>
+      </div>
+
+      <slot name="sidebar-footer"></slot>
+
       <div class="bg-[--sidebar-bg-color] inset-y-0 right-0 absolute -left-25 -z-1">
       </div>
-      <div class="p-8 size-full"></div>
     </motion.aside>
 
     <div

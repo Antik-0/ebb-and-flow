@@ -67,7 +67,7 @@ const { scope, offsetX } = useMenuHover()
 }
 
 .nav-menu__bg {
-  --bg-color: color-mix(in lch, var(--c-brand) 20%, transparent);
+  --bg-color: color-mix(in lch, var(--c-brand-1) 20%, transparent);
 
   contain: content;
   position: absolute;

@@ -18,7 +18,7 @@ observe(sentry, entry => {
   showTitle.value = !entry.isIntersecting
 })
 
-const showMenu = useMediaQuery('(min-width: 700px)', {
+const showMenu = useMediaQuery('(min-width: 1024px)', {
   ssrWidth: 1024
 })
 </script>

@@ -1,4 +1,7 @@
-import { ref } from 'vue'
+import type { SidebarItem, SidebarItemRaw } from '#/types'
+import { useData } from 'vitepress'
+import { onMounted, ref, shallowRef, watch } from 'vue'
+import { normalize } from '#/shared'
 
 const isOpen = ref(false)
 
@@ -16,4 +19,77 @@ export function useSidebarControl() {
     open,
     close
   }
+}
+
+export function useSidebarMenu() {
+  const { page, theme } = useData()
+
+  const sidebar = theme.value.sidebar as SidebarItemRaw[]
+  const menus = ref(buildMenuTree(sidebar))
+
+  const prevActiveNode = shallowRef<SidebarItem | null>(null)
+  const currActiveNode = shallowRef<SidebarItem | null>(null)
+
+  const updateNodeActive = (node: SidebarItem | null, value: boolean) => {
+    while (node) {
+      node.acitve = value
+      node = node.parent ?? null
+    }
+  }
+
+  const updateActiveLink = () => {
+    prevActiveNode.value = currActiveNode.value
+
+    const currentPath = normalize(`/${page.value.relativePath}`)
+    currActiveNode.value = matchActiveNode(menus.value, currentPath)
+
+    updateNodeActive(prevActiveNode.value, false)
+    updateNodeActive(currActiveNode.value, true)
+  }
+
+  watch(page, updateActiveLink)
+  onMounted(updateActiveLink)
+
+  return {
+    menus
+  }
+}
+
+function buildMenuTree(
+  menus: SidebarItemRaw[],
+  parent: SidebarItem | null = null,
+  depth = 0
+) {
+  if (depth === 3) return []
+
+  const tree: SidebarItem[] = []
+  for (const item of menus) {
+    const { items, ...restProps } = item
+    const node = {
+      ...restProps,
+      parent,
+      acitve: false
+    } as SidebarItem
+
+    if (Array.isArray(items) && items.length) {
+      node.items = buildMenuTree(items, node, depth + 1)
+    }
+    tree.push(node)
+  }
+  return tree
+}
+
+function matchActiveNode(menus: SidebarItem[], currentPath: string) {
+  const queue = [...menus]
+
+  while (queue.length) {
+    const node = queue.shift()!
+    if (node.link === currentPath) {
+      return node
+    }
+    if (node.items) {
+      queue.push(...node.items)
+    }
+  }
+  return null
 }

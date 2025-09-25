@@ -1,4 +1,9 @@
-import { definePreset, presetWind4, transformerDirectives } from 'unocss'
+import {
+  definePreset,
+  presetWind4,
+  transformerDirectives,
+  transformerVariantGroup
+} from 'unocss'
 
 export const presetBase = definePreset(() => {
   return {
@@ -19,6 +24,6 @@ export const presetBase = definePreset(() => {
         include: [/\.(vue|md)/]
       }
     },
-    transformers: [transformerDirectives()]
-  } as const
+    transformers: [transformerDirectives(), transformerVariantGroup()]
+  }
 })

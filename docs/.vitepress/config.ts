@@ -30,7 +30,7 @@ export default defineConfig({
     sidebar: [
       {
         text: 'vue 响应式系统',
-        collapsed: true,
+        collapsed: false,
         items: [
           { text: 'Reactive', link: '/vue/guide/reactive' },
           { text: 'BaseHandlers', link: '/vue/guide/baseHandlers' },
@@ -43,7 +43,7 @@ export default defineConfig({
       },
       {
         text: 'vue 源码解析(3.5+)',
-        collapsed: true,
+        collapsed: false,
         items: [
           { text: 'reactive', link: '/vue/source/reactive' },
           { text: 'baseHandlers', link: '/vue/source/baseHandlers' },

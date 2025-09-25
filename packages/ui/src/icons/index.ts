@@ -9,3 +9,8 @@ const Icon: FunctionalComponent<IconProps> = props => {
 }
 
 export { Icon }
+
+export { default as Atom } from './Atom.vue'
+export { default as ChevronRight } from './ChevronRight.vue'
+export { default as Menu } from './Menu.vue'
+export { default as Search } from './Search.vue'
