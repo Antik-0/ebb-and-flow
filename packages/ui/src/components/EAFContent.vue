@@ -4,25 +4,22 @@
 <template>
   <div class="pt-[--nav-height] flex-1 isolate">
     <div data-layout="doc">
+      <div></div>
       <main class="content">
         <Content class="vp-doc px-32px" />
       </main>
+      <div></div>
     </div>
   </div>
 </template>
 
 <style>
-[data-layout=doc] {
-  display: flex;
-}
-
 .content {
-  width: 100%;
   padding: 32px 24px 96px;
   background-color: var(--content-bg-color);
 }
 
-@media (width >= 960px) {
+@media (width >=960px) {
   [data-layout=doc] {
     padding: 24px 32px;
   }
@@ -32,13 +29,21 @@
   }
 }
 
-@media (width >= 1024px) {
+@media (width >=64rem) {
+  .content {
+    max-width: 64rem;
+  }
+}
+
+@media (width >=1024px) {
   [data-layout=doc] {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    gap: 20px;
   }
 
   .content {
-    max-width: 80rem;
+    grid-column: 2 / 2;
   }
 }
 </style>

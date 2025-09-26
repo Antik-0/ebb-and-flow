@@ -4,6 +4,8 @@ const HASH_OR_QUERY_RE = /[?#].*$/
 const INDEX_OR_EXT_RE = /(?:(^|\/)index)?\.(?:md|html)$/
 const EXTERNAL_URL_RE = /^(?:[a-z]+:|\/\/)/i
 
+export const HOME_PATH = withBase('/')
+
 export function isExternalLink(url: string) {
   return EXTERNAL_URL_RE.test(url)
 }

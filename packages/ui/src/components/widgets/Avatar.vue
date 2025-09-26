@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { useRouter } from 'vitepress'
+import { HOME_PATH } from '#/shared'
+
+const router = useRouter()
+
+function goHome() {
+  router.go(HOME_PATH)
+}
 </script>
 
 <template>
@@ -6,6 +14,7 @@
     aria-label="home-button"
     class="cursor-pointer drop-shadow-sm drop-shadow-color-cyan-300"
     type="button"
+    @click="goHome"
   >
     <div class="mask mask-squircle">
       <img

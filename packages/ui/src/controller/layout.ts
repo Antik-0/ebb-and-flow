@@ -1,5 +1,12 @@
-import { ref } from 'vue'
+import { useData } from 'vitepress'
+import { computed } from 'vue'
 
 export function useLayout() {
-  const isPc = ref(false)
+  const { page } = useData()
+
+  const layout = computed(() => page.value.frontmatter.layout ?? 'doc')
+
+  return {
+    layout
+  }
 }

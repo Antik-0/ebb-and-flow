@@ -1,10 +1,9 @@
 ---
-layout: EAF-HOME
+layout: home
 
-cover:
-  name: 潮起潮落
-  tagline: 月亮你为何，沉默不语，独留我一人面对，潮起潮落...
-
+author: 潮起潮落
+tagline: A Front-end Developer Skilled In
+skills: ['TypeScript', 'Node', 'Vue', 'React', 'Unocss']
 entryLink: /vue/guide/reactive
 
 titleTemplate: false
