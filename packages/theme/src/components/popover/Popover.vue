@@ -5,7 +5,7 @@ import type { PopoverProps } from './types.ts'
 import { useEventListener } from '@repo/utils/hooks'
 import { motion } from 'motion-v'
 import { computed, h, onMounted, ref } from 'vue'
-import Teleports from '#/core/Teleports.vue'
+import Teleports from '#/components/Teleports.vue'
 import { usePopoverMotion, usePopoverState } from './state.ts'
 
 const props = withDefaults(defineProps<PopoverProps>(), {

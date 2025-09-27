@@ -23,6 +23,7 @@ export function useInterval(handler: () => void, timerout: number) {
 
   function stop() {
     raf && window.cancelAnimationFrame(raf)
+    raf = null
     lastTime = undefined
   }
 

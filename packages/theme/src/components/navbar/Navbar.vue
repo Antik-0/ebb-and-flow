@@ -2,12 +2,12 @@
 import { useIntersectionObserver, useMediaQuery } from '@repo/utils/hooks'
 import { motion } from 'motion-v'
 import { ref, Teleport, useTemplateRef } from 'vue'
-import EAFNavTitle from './EAFNavTitle.vue'
-import Menubar from './menubar/Menubar.vue'
-import Avatar from './widgets/Avatar.vue'
-import Hamburger from './widgets/Hamburger.vue'
-import Search from './widgets/Search.vue'
-import SidebarTrigger from './widgets/SidebarTrigger.vue'
+import Menubar from '#/components/menubar/Menubar.vue'
+import Avatar from '../Avatar.vue'
+import Hamburger from './Hamburger.vue'
+import EAFNavTitle from './NavbarTitle.vue'
+import Search from './Search.vue'
+import SidebarTrigger from './SidebarTrigger.vue'
 
 const menuOpen = ref(false)
 

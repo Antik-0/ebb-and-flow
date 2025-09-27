@@ -2,7 +2,7 @@
 import type { MenuItem } from '#/controller/navbar'
 import { LayoutGroup } from 'motion-v'
 import { ref } from 'vue'
-import FlowingLight from '#/components/widgets/FlowingLight.vue'
+import FlowingLight from '#/components/FlowingLight.vue'
 import { useMenuHover } from '#/controller/navbar'
 import MenubarGroup from './MenubarGroup.vue'
 

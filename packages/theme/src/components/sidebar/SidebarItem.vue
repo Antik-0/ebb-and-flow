@@ -2,7 +2,7 @@
 import type { SidebarItem as SidebarItemProp } from '#/types'
 import { AnimatePresence, motion } from 'motion-v'
 import { computed, ref } from 'vue'
-import Link from '#/core/Link.vue'
+import Link from '#/components/Link.vue'
 import { ChevronRight } from '#/icons'
 
 interface Props {

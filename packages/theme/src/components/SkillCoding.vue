@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { useInterval } from '@repo/utils/hooks'
 import { shallowRef } from 'vue'
-import { useCodingMotion } from '#/motion/useCoding.ts'
+import { useCodingMotion } from '#/shared/useCoding'
 
 const props = defineProps<{
   skills: string[]

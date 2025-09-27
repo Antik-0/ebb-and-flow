@@ -1,13 +1,13 @@
 <script setup lang='ts'>
-import EAFContent from '#/components/EAFContent.vue'
-import EAFNav from '#/components/EAFNav.vue'
-import EAFSidebar from '#/components/EAFSidebar.vue'
+import DocContent from '#/components/DocContent.vue'
+import Navbar from '#/components/navbar/Navbar.vue'
+import Sidebar from '#/components/sidebar/Sidebar.vue'
 </script>
 
 <template>
   <div>
-    <EAFNav />
-    <EAFSidebar />
-    <EAFContent />
+    <Navbar />
+    <Sidebar />
+    <DocContent />
   </div>
 </template>

@@ -3,7 +3,8 @@ import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { ref, useTemplateRef, watch } from 'vue'
 import { useSidebarControl, useSidebarMenu } from '#/controller/sidebar.ts'
-import { SidebarGroup, SidebarItem } from './sidebar'
+import SidebarGroup from './SidebarGroup.vue'
+import SidebarItem from './SidebarItem.vue'
 
 const { isOpen, close } = useSidebarControl()
 

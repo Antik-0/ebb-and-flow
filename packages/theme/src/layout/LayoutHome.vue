@@ -2,8 +2,8 @@
 import { useData } from 'vitepress'
 import { ref, shallowRef } from 'vue'
 import FloatingText from '#/components/FloatingText.vue'
+import Link from '#/components/Link.vue'
 import SkillCoding from '#/components/SkillCoding.vue'
-import Link from '#/core/Link.vue'
 import { ArrowLeftToLine, ArrowRightToLine } from '#/icons'
 
 const { frontmatter } = useData()
