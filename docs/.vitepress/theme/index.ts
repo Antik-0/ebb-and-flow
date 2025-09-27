@@ -1,5 +1,5 @@
 import type { Theme } from 'vitepress'
-import { Layout } from '@repo/ui'
+import { Layout } from '@repo/theme'
 // import DefaultTheme from 'vitepress/theme'
 
 import 'virtual:uno.css'
