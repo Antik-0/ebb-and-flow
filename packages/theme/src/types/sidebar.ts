@@ -1,36 +1,12 @@
-export interface SidebarItemRaw {
-  /**
-   * The text label of the item.
-   */
-  text: string
+import type { MenuItemRaw } from './theme.ts'
 
+export interface SidebarItem extends MenuItemRaw {
   /**
-   * The link of the item.
-   */
-  link: string
-
-  /**
-   * If not specified, group is not collapsible.
-   *
-   * If `true`, group is collapsible and collapsed by default
-   *
-   * If `false`, group is collapsible but expanded by default
-   */
-  collapsed?: boolean
-
-  /**
-   * The children of the item.
-   */
-  items?: SidebarItemRaw[]
-}
-
-export interface SidebarItem extends SidebarItemRaw {
-  /**
-   * The active state of the item.
+   * 是否激活
    */
   acitve?: boolean
   /**
-   * The parent node of the item.
+   * 父节点
    */
   parent?: SidebarItem
 }

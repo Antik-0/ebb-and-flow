@@ -1,18 +1,13 @@
 <script setup lang='ts'>
-import type { MenuItem } from '#/controller/navbar'
+import type { NavbarItem } from '#/types'
 import { LayoutGroup } from 'motion-v'
 import { ref } from 'vue'
 import FlowingLight from '#/components/FlowingLight.vue'
 import { useMenuHover } from '#/controller/navbar'
+import { useNavbarMenus } from '#/controller/navbar.ts'
 import MenubarGroup from './MenubarGroup.vue'
 
-const menuList = ref<MenuItem[]>([
-  { text: '首页', icon: 'lucide:circle-dot', href: '/' },
-  { text: '文稿', icon: 'lucide:pencil-line', href: '/', children: [] },
-  { text: '编程', icon: 'lucide:atom', href: '/', children: [] },
-  { text: '特效', icon: 'lucide:sparkles', href: '/', children: [] },
-  { text: '更多', icon: 'ic:twotone-signpost', href: '/', children: [] }
-])
+const { menus } = useNavbarMenus()
 
 const activeIndex = ref(0)
 
@@ -32,7 +27,7 @@ const { scope, offsetX } = useMenuHover()
     >
       <LayoutGroup>
         <MenubarGroup
-          v-for="(item, index) in menuList"
+          v-for="(item, index) in menus"
           :key="index"
           :is-active="activeIndex === index"
           :item="item"

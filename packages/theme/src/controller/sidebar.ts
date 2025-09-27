@@ -1,9 +1,9 @@
-import type { SidebarItem, SidebarItemRaw } from '#/types'
+import type { MenuItemRaw, SidebarItem } from '#/types'
 import { useData } from 'vitepress'
 import { onMounted, ref, shallowRef, watch } from 'vue'
-import { normalize } from '#/shared'
+import { normalize, useTheme } from '#/shared'
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 
 export function useSidebarControl() {
   function open() {
@@ -21,11 +21,12 @@ export function useSidebarControl() {
   }
 }
 
-export function useSidebarMenu() {
-  const { page, theme } = useData()
+export function useSidebarMenus() {
+  const { page } = useData()
+  const theme = useTheme()
 
-  const sidebar = theme.value.sidebar as SidebarItemRaw[]
-  const menus = ref(buildMenuTree(sidebar))
+  const navMenus = theme.value.navMenus
+  const menus = ref(buildMenuTree(navMenus))
 
   const prevActiveNode = shallowRef<SidebarItem | null>(null)
   const currActiveNode = shallowRef<SidebarItem | null>(null)
@@ -56,7 +57,7 @@ export function useSidebarMenu() {
 }
 
 function buildMenuTree(
-  menus: SidebarItemRaw[],
+  menus: MenuItemRaw[],
   parent: SidebarItem | null = null,
   depth = 0
 ) {

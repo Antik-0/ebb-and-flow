@@ -1,11 +1,16 @@
+import type { NavbarItem } from '#/types'
 import { useResizeObserver } from '@repo/utils/hooks'
 import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
+import { useTheme } from '#/shared'
 
-export interface MenuItem {
-  text: string
-  href?: string
-  icon?: string
-  children?: MenuItem[]
+export function useNavbarMenus() {
+  const theme = useTheme()
+
+  const menus = theme.value.navMenus as NavbarItem[]
+
+  return {
+    menus
+  }
 }
 
 export function useMenuHover() {

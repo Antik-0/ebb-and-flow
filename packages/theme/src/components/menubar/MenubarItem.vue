@@ -1,10 +1,10 @@
 <script setup lang='ts'>
-import type { MenuItem } from '#/controller/navbar.ts'
+import type { NavbarItem } from '#/types'
 import { motion } from 'motion-v'
 import { Icon } from '#/icons'
 
 interface Props {
-  item: MenuItem
+  item: NavbarItem
   isActive?: boolean
 }
 
@@ -19,7 +19,7 @@ const { item, isActive } = defineProps<Props>()
   >
     <a
       class="px-4 py-2 flex items-center"
-      :href="item.href"
+      :href="item.link"
     >
       <motion.span
         v-if="item.icon && isActive"

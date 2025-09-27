@@ -1,12 +1,12 @@
 <script setup lang='ts'>
-import type { SidebarItem as SidebarItemProp } from '#/types'
+import type { SidebarItem as SidebarMenuItem } from '#/types'
 import { AnimatePresence, motion } from 'motion-v'
 import { computed, ref } from 'vue'
 import Link from '#/components/Link.vue'
-import { ChevronRight } from '#/icons'
+import { ChevronRight, Icon } from '#/icons'
 
 interface Props {
-  item: SidebarItemProp
+  item: SidebarMenuItem
   level?: number
 }
 
@@ -38,6 +38,11 @@ function toggle() {
       type="button"
       @click="toggle"
     >
+      <Icon
+        v-if="item.icon"
+        class="text-[--c-brand-3] mr-2 flex h-8"
+        :icon="item.icon"
+      />
       <span class="text-sm text-[--c-text-1] leading-8 font-700 flex-1 text-nowrap truncate">
         {{ item.text }}
       </span>
@@ -57,6 +62,11 @@ function toggle() {
       data-role="link"
       :href="item.link"
     >
+      <Icon
+        v-if="item.icon"
+        class="text-[--c-brand-3] mr-2 flex h-8"
+        :icon="item.icon"
+      />
       <span
         :class="[
           'flex-1',

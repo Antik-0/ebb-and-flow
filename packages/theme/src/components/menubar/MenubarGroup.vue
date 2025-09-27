@@ -1,11 +1,11 @@
 <script setup lang='ts'>
-import type { MenuItem } from '#/controller/navbar.ts'
+import type { NavbarItem } from '#/types'
 import { computed } from 'vue'
 import { Popover } from '#/components/popover'
 import MenubarItem from './MenubarItem.vue'
 
 interface Props {
-  item: MenuItem
+  item: NavbarItem
   isActive?: boolean
 }
 
@@ -15,7 +15,7 @@ const emit = defineEmits<{
   click: []
 }>()
 
-const hasChild = computed(() => !!item.children)
+const hasChild = computed(() => !!item.items)
 </script>
 
 <template>

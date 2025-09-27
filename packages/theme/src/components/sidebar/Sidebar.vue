@@ -2,9 +2,8 @@
 import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { ref, useTemplateRef, watch } from 'vue'
-import { useSidebarControl, useSidebarMenu } from '#/controller/sidebar.ts'
+import { useSidebarControl, useSidebarMenus } from '#/controller/sidebar.ts'
 import SidebarGroup from './SidebarGroup.vue'
-import SidebarItem from './SidebarItem.vue'
 
 const { isOpen, close } = useSidebarControl()
 
@@ -27,13 +26,10 @@ watch(
         }
       })
     }
-  },
-  {
-    immediate: true
   }
 )
 
-const { menus } = useSidebarMenu()
+const { menus } = useSidebarMenus()
 
 const sidebar = useTemplateRef('sidebar')
 const { addEventListener } = useEventListener()
@@ -68,9 +64,7 @@ addEventListener(
       <slot name="sidebar-header"></slot>
 
       <div class="p-8 flex-1 overflow-x-hidden overflow-y-auto">
-        <SidebarGroup v-for="(item, index) in menus" :key="index">
-          <SidebarItem :item="item" :level="1" />
-        </SidebarGroup>
+        <SidebarGroup v-for="(item, index) in menus" :key="index" :item="item" />
       </div>
 
       <slot name="sidebar-footer"></slot>
