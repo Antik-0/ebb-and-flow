@@ -11,7 +11,8 @@
       "!**/node_modules",
       "!**/dist",
       "!**/cache",
-      "!biome.json"
+      "!biome.json",
+      "!**/legacy"
     ]
   },
   "linter": {
@@ -59,7 +60,11 @@
         "organizeImports": {
           "level": "on",
           "options": {
-            "groups": [{ "type": true }]
+            "groups": [
+              {
+                "type": true
+              }
+            ]
           }
         },
         "useSortedAttributes": "on"
