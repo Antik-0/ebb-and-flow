@@ -21,7 +21,7 @@ watch(layout, () => {
 </script>
 
 <template>
-  <div class="flex-col min-h-[100vh]" :data-layout="layout">
+  <div class="flex-col min-h-[100vh]">
     <LayoutHome v-if="layout === 'home'" />
     <LayoutDoc v-else-if="layout === 'doc'" />
     <LayoutPage v-else />

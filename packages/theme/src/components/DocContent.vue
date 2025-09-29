@@ -29,16 +29,10 @@
   }
 }
 
-@media (width >=64rem) {
-  .content {
-    max-width: 64rem;
-  }
-}
-
 @media (width >=1024px) {
   [data-layout=doc] {
     display: grid;
-    grid-template-columns: 1fr max-content 1fr;
+    grid-template-columns: 1fr minmax(64rem, 1fr) 1fr;
     gap: 20px;
   }
 

@@ -2,13 +2,14 @@
 import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { ref, useTemplateRef, watch } from 'vue'
-import { useSidebarControl, useSidebarMenus } from '#/controller/sidebar.ts'
+import { useSharedMenus } from '#/controller/menus.ts'
+import { useSidebarControl } from '#/controller/sidebar.ts'
 import SidebarGroup from './SidebarGroup.vue'
 
 const { isOpen, close } = useSidebarControl()
 
 const show = ref(isOpen.value)
-
+const delayShow = ref(false)
 const x = useMotionValue('-100%')
 
 watch(
@@ -16,6 +17,9 @@ watch(
   value => {
     if (value) {
       show.value = true
+      if (!delayShow.value) {
+        delayShow.value = true
+      }
       animate(x, '0%', { type: 'spring', duration: 0.6 })
     } else {
       animate(x, '-100%', {
@@ -29,7 +33,7 @@ watch(
   }
 )
 
-const { menus } = useSidebarMenus()
+const { menus } = useSharedMenus()
 
 const sidebar = useTemplateRef('sidebar')
 const { addEventListener } = useEventListener()
@@ -57,8 +61,9 @@ addEventListener(
     :data-show="show"
   >
     <motion.aside
+      v-if="delayShow"
       ref="sidebar"
-      class="flex-col max-w-80 w-[calc(100vw-64px)] inset-y-0 left-0 absolute z-20 isolate"
+      class="flex-col w-80 inset-y-0 left-0 absolute z-20 isolate"
       :style="{ x }"
     >
       <slot name="sidebar-header"></slot>
@@ -69,12 +74,12 @@ addEventListener(
 
       <slot name="sidebar-footer"></slot>
 
-      <div class="bg-[--sidebar-bg-color] inset-y-0 right-0 absolute -left-25 -z-1">
+      <div class="bg-[--sidebar-bg-color] w-100 inset-y-0 right-0 absolute -z-1">
       </div>
     </motion.aside>
 
     <div
-      class="bg-[--sidebar-mask-bg-color] inset-0 absolute z-10"
+      class="bg-black/40 inset-0 absolute z-10"
       @click="close"
     ></div>
   </div>

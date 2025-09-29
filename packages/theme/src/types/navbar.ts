@@ -1,3 +1,3 @@
-import type { MenuItemRaw } from './theme.ts'
+import type { MenuItem } from './menu.ts'
 
-export interface NavbarItem extends MenuItemRaw {}
+export interface NavMenuItem extends MenuItem {}

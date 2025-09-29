@@ -19,18 +19,17 @@
     --c-text-2: #98989f;
     --c-text-3: #6a6a71;
 
-    --c-brand-1: #a8b1ff;
-    --c-brand-2: #5c73e7;
-    --c-brand-3: oklch(76.8% 0.1 206);
+    --c-brand-1: #62d9e9;
+    --c-brand-2: #ff637e;
+    --c-brand-3: #a8b1ff;
 
     --c-border: #3c3f44;
     --c-divider: #2e2e32;
-    --c-gutter: #000;
 
     --nav-bg-color: hsl(0 0% 20% / 0.1);
     --content-bg-color: hsl(240 16% 10% / 0.8);
     --sidebar-bg-color: hsl(240 4% 9% / 0.95);
-    --sidebar-mask-bg-color: hsl(0 0% 0% / 0.4);
+    --overlay-bg-color: hsl(0 0% 10% / 0.6);
   }
 }
 

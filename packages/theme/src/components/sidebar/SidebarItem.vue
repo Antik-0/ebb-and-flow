@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import type { SidebarItem as SidebarMenuItem } from '#/types'
-import { AnimatePresence, motion } from 'motion-v'
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import Link from '#/components/Link.vue'
 import { ChevronRight, Icon } from '#/icons'
 
@@ -12,48 +11,88 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { level: 1 })
 
-const hasChildren = computed(() => {
-  const items = props.item.items
-  return Array.isArray(items) && items.length
+const collapsed = ref(props.item.collapsed ?? true)
+const collapsiable = computed(() => {
+  const item = props.item
+  const hasChildren = Array.isArray(item.items) && item.items.length
+  return props.item.collapsed !== undefined && hasChildren
 })
 
-const collapsed = ref(props.item.collapsed ?? true)
-const collapsiable = computed(
-  () => props.item.collapsed !== undefined && hasChildren.value
-)
+const viewRef = useTemplateRef<HTMLElement>('view')
 
-function toggle() {
-  if (collapsiable.value) {
-    collapsed.value = !collapsed.value
+async function toggle() {
+  const element = viewRef.value!
+
+  if (collapsed.value) {
+    collapsed.value = false
+    element.style.removeProperty('display')
+    element.style.height = '0'
+    await nextTick()
+    element.style.height = element.scrollHeight + 'px'
+  } else {
+    collapsed.value = true
+    element.style.height = element.scrollHeight + 'px'
+    // 强制重排
+    void element.offsetHeight
+    element.style.height = '0px'
   }
 }
+
+function onTransitionend() {
+  if (collapsed.value) {
+    const element = viewRef.value!
+    element.style.setProperty('display', 'none')
+  }
+}
+
+onMounted(() => {
+  const element = viewRef.value
+  if (element && collapsed.value) {
+    element.style.display = 'none'
+    element.style.height = '0'
+  }
+})
 </script>
 
 <template>
   <section>
-    <button
-      v-if="collapsiable"
-      :aria-expanded="!collapsed"
-      class="group/sidebar-btn text-left flex w-full cursor-pointer"
-      type="button"
-      @click="toggle"
-    >
-      <Icon
-        v-if="item.icon"
-        class="text-[--c-brand-3] mr-2 flex h-8"
-        :icon="item.icon"
-      />
-      <span class="text-sm text-[--c-text-1] leading-8 font-700 flex-1 text-nowrap truncate">
-        {{ item.text }}
-      </span>
-      <span
-        class="text-(lg [--c-text-3]) flex size-8 flex-center group-hover/sidebar-btn:text-[--c-text-2] -mr-2"
+    <template v-if="collapsiable">
+      <button
+        :aria-expanded="!collapsed"
+        class="group/sidebar-btn text-left flex w-full cursor-pointer"
+        type="button"
+        @click="toggle"
       >
-        <ChevronRight
-          class="transition-transform duration-250 group-aria-[expanded=true]/sidebar-btn:rotate-90"
+        <Icon
+          v-if="item.icon"
+          class="text-brand mr-2 flex h-8"
+          :icon="item.icon"
         />
-      </span>
-    </button>
+        <span class="text-sm text-[--c-text-1] leading-8 font-700 flex-1 text-nowrap truncate">
+          {{ item.text }}
+        </span>
+        <span
+          class="text-(lg [--c-text-3]) flex size-8 flex-center group-hover/sidebar-btn:text-[--c-text-2] -mr-2"
+        >
+          <ChevronRight
+            class="transition-transform duration-250 group-aria-[expanded=true]/sidebar-btn:rotate-90"
+          />
+        </span>
+      </button>
+      <div
+        ref="view"
+        class="pl-5 border-l border-[--c-divider] transition-all duration-250 ease overflow-hidden"
+        :data-level="level"
+        @transitionend.self="onTransitionend"
+      >
+        <SidebarItem
+          v-for="(subItem, index) in item.items"
+          :key="index"
+          :item="subItem"
+          :level="level + 1"
+        />
+      </div>
+    </template>
 
     <Link
       v-else
@@ -64,7 +103,7 @@ function toggle() {
     >
       <Icon
         v-if="item.icon"
-        class="text-[--c-brand-3] mr-2 flex h-8"
+        class="text-brand mr-2 flex h-8"
         :icon="item.icon"
       />
       <span
@@ -72,32 +111,12 @@ function toggle() {
           'flex-1',
           'text-(sm [--c-text-2]) leading-8 font-500',
           'transition-color duration-250',
-          'hover:text-[--c-brand-1]',
-          'group-data-[active=true]/sidebar-link:text-[--c-brand-1]',
+          'hover:text-brand-3',
+          'group-data-[active=true]/sidebar-link:text-brand-2',
         ]"
       >
         {{ item.text }}
       </span>
     </Link>
-
-    <template v-if="hasChildren">
-      <AnimatePresence>
-        <motion.div
-          v-show="!collapsed"
-          :animate="{ height: 'auto' }"
-          class="mt-2 pl-5 border-l border-[--c-divider] overflow-hidden"
-          :exit="{ height: 0 }"
-          :style="{ '--level': level }"
-          :transition="{ ease: 'easeIn' }"
-        >
-          <SidebarItem
-            v-for="(subItem, index) in item.items"
-            :key="index"
-            :item="subItem"
-            :level="level + 1"
-          />
-        </motion.div>
-      </AnimatePresence>
-    </template>
   </section>
 </template>

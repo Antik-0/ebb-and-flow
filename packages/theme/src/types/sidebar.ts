@@ -1,12 +1,3 @@
-import type { MenuItemRaw } from './theme.ts'
+import type { MenuItem } from './menu.ts'
 
-export interface SidebarItem extends MenuItemRaw {
-  /**
-   * 是否激活
-   */
-  acitve?: boolean
-  /**
-   * 父节点
-   */
-  parent?: SidebarItem
-}
+export interface SidebarItem extends MenuItem {}

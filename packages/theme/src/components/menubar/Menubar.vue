@@ -1,17 +1,36 @@
 <script setup lang='ts'>
-import type { NavbarItem } from '#/types'
 import { LayoutGroup } from 'motion-v'
-import { ref } from 'vue'
+import { provide } from 'vue'
 import FlowingLight from '#/components/FlowingLight.vue'
-import { useMenuHover } from '#/controller/navbar'
-import { useNavbarMenus } from '#/controller/navbar.ts'
+import { useSharedMenus } from '#/controller/menus.ts'
+import {
+  MenubarCtx,
+  useMenuHover,
+  useMenuViewControl
+} from '#/controller/navbar'
 import MenubarGroup from './MenubarGroup.vue'
+import MenubarItem from './MenubarItem.vue'
+import MenuViewport from './MenuViewport.vue'
 
-const { menus } = useNavbarMenus()
-
-const activeIndex = ref(0)
+const { menus } = useSharedMenus()
 
 const { scope, offsetX } = useMenuHover()
+
+const {
+  contents,
+  prevHoverIndex,
+  currHoverIndex,
+  forwarItemContent,
+  onMenuItemHover
+} = useMenuViewControl()
+
+provide(MenubarCtx, {
+  contents,
+  prevHoverIndex,
+  currHoverIndex,
+  forwarItemContent,
+  onMenuItemHover
+})
 </script>
 
 <template>
@@ -21,20 +40,24 @@ const { scope, offsetX } = useMenuHover()
     class="nav-menu"
   >
     <menu
-      class="text-[14px] px-4 flex"
+      class="text-sm px-4 flex"
       role="menu"
-      :transition="{ duration: 2 }"
     >
       <LayoutGroup>
-        <MenubarGroup
+        <MenubarItem
           v-for="(item, index) in menus"
           :key="index"
-          :is-active="activeIndex === index"
+          :index="index"
           :item="item"
-          @click="activeIndex = index"
-        />
+        >
+          <template #content>
+            <MenubarGroup v-if="item.items" :items="item.items" />
+          </template>
+        </MenubarItem>
       </LayoutGroup>
     </menu>
+
+    <MenuViewport />
 
     <div
       aria-hidden="true"

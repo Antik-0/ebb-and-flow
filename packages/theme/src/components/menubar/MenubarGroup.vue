@@ -1,36 +1,73 @@
 <script setup lang='ts'>
-import type { NavbarItem } from '#/types'
-import { computed } from 'vue'
-import { Popover } from '#/components/popover'
-import MenubarItem from './MenubarItem.vue'
+import type { NavMenuItem } from '#/types'
+import { shallowRef } from 'vue'
+import Link from '#/components/Link.vue'
 
-interface Props {
-  item: NavbarItem
-  isActive?: boolean
-}
-
-const { item, isActive } = defineProps<Props>()
-
-const emit = defineEmits<{
-  click: []
+const props = defineProps<{
+  items: NavMenuItem[]
 }>()
 
-const hasChild = computed(() => !!item.items)
+interface Group {
+  label?: string
+  children: NavMenuItem[]
+}
+
+const groups = shallowRef<Group[]>(buildGroups())
+
+function buildGroups() {
+  const items = props.items ?? []
+
+  const groupMap: Group[] = []
+  let group: NavMenuItem[] = []
+
+  for (const item of items) {
+    if (item.items) {
+      group.length && groupMap.push({ children: group })
+      groupMap.push({ label: item.text, children: item.items })
+      group = []
+    } else {
+      group.push(item)
+    }
+  }
+  group.length && groupMap.push({ children: group })
+  return groupMap
+}
 </script>
 
 <template>
-  <Popover v-if="hasChild" :offset="20" trigger="hover">
-    <template #trigger>
-      <MenubarItem :is-active="isActive" :item="item" @click="emit('click')" />
-    </template>
-
-    <div class="rounded-4xl bg-rose-500 h-100 w-100">
+  <div class="p-6">
+    <div v-for="(group, index) in groups" :key="index" :class="{ 'mt-4': index !== 0 }">
+      <div
+        v-if="group.label"
+        class="text-sm text-brand-1 leading-8 font-600 mb-3"
+      >
+        {{ group.label }}
+      </div>
+      <section
+        class="gap-4 grid"
+      >
+        <Link
+          v-for="item in group.children"
+          :key="item.text"
+          :href="item.link"
+        >
+          <span
+            :class="[
+              'text-[--c-text-1] p-3 rounded-lg block',
+              'transition-colors duration-250 ease',
+              'hover:(text-brand-3 bg-brand-3/20)',
+            ]"
+          >
+            <span class="text-sm text-nowrap">{{ item.text }}</span>
+          </span>
+        </Link>
+      </section>
     </div>
-  </Popover>
-  <MenubarItem
-    v-else
-    :is-active="isActive"
-    :item="item"
-    @click="emit('click')"
-  />
+  </div>
 </template>
+
+<style scoped>
+.grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+</style>

@@ -1,5 +1,7 @@
 <script setup lang='ts'>
 import { AnimatePresence, motion } from 'motion-v'
+import { computed } from 'vue'
+import { useSharedMenus } from '#/controller/menus.ts'
 
 interface Props {
   show?: boolean
@@ -7,6 +9,20 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   show: false
+})
+
+const { currActiveNode } = useSharedMenus()
+
+const title = computed(() => currActiveNode.value?.text ?? '')
+
+const path = computed(() => {
+  let node = currActiveNode.value
+  const paths: string[] = []
+  while (node?.parent) {
+    node = node.parent
+    paths.push(node.text)
+  }
+  return paths.reverse().join('/')
 })
 </script>
 
@@ -23,9 +39,11 @@ const props = withDefaults(defineProps<Props>(), {
         duration: 0.8
       }"
     >
-      <span class="text-xs text-[--c-text-2] leading-snug">Vue 源码解析</span>
+      <span class="text-xs text-[--c-text-2] leading-snug">
+        {{ path }}
+      </span>
       <h2 class="text-lg truncate">
-        Vue 响应式系统 - Reactive
+        {{ title }}
       </h2>
     </motion.div>
   </AnimatePresence>
