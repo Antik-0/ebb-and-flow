@@ -30,6 +30,7 @@
     --content-bg-color: hsl(240 16% 10% / 0.8);
     --sidebar-bg-color: hsl(240 4% 9% / 0.95);
     --overlay-bg-color: hsl(0 0% 10% / 0.6);
+    --card-bg-color: hsl(240 16% 10% / 0.8);
   }
 }
 

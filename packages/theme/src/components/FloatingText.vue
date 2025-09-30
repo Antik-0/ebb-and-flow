@@ -10,7 +10,9 @@ const emit = defineEmits<{
   complete: []
 }>()
 
-const textList = computed(() => props.text.split(''))
+const textList = computed(() =>
+  props.text.split('').map(s => (s === ' ' ? '\u00A0' : s))
+)
 
 let count = 0
 
@@ -38,7 +40,7 @@ function onComplete() {
       :transition="{
         type: 'spring',
         duration: 1,
-        delay: index * 0.1
+        delay: index * 0.05
       }"
       @animation-complete="onComplete"
     >

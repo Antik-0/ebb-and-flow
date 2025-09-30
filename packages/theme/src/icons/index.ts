@@ -10,9 +10,8 @@ const Icon: FunctionalComponent<IconProps> = props => {
 
 export { Icon }
 
-export { default as ArrowLeftToLine } from './ArrowLeftToLine.vue'
-export { default as ArrowRightToLine } from './ArrowRightToLine.vue'
 export { default as Atom } from './Atom.vue'
 export { default as ChevronRight } from './ChevronRight.vue'
 export { default as Menu } from './Menu.vue'
+export { default as Power } from './Power.vue'
 export { default as Search } from './Search.vue'

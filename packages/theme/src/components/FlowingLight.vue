@@ -31,15 +31,4 @@
   background: conic-gradient(var(--color), transparent 40deg, transparent 320deg, var(--color));
   animation: flowing-light 2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite alternate;
 }
-
-@keyframes flowing-light {
-  to {
-    rotate: var(--flowing-light-angle);
-  }
-}
-
-@property --flowing-light-angle {
-  syntax: '<angle>';
-  inherits: false;
-}
 </style>

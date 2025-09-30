@@ -1,4 +1,5 @@
 @import url('./vars.css');
+@import url('./motion.css');
 @import url('./legacy/vars.css');
 @import url('./legacy/vp-doc.css');
 @import url('./legacy/custom-block.css');

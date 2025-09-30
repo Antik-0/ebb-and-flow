@@ -1,0 +1,57 @@
+@property --m-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #fff;
+}
+
+@keyframes breathing {
+  0%,
+  100% {
+    opacity: 0.4;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.2;
+  }
+}
+
+@keyframes site-owner-tide {
+  from {
+    background-position: 100% -100%;
+  }
+  to {
+    background-position: 100% 0%;
+  }
+}
+
+@keyframes site-owner-fade-in {
+  from {
+    clip-path: circle(0 at center);
+  }
+  to {
+    clip-path: circle(120px at center);
+  }
+}
+
+@keyframes tidewater {
+  0%,
+  10% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.6);
+  }
+
+  90%,
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes flowing-light {
+  to {
+    rotate: var(--flowing-light-angle);
+  }
+}

@@ -20,7 +20,7 @@ useInterval(() => {
 </script>
 
 <template>
-  <span class="text-[--c-brand-3] font-mono px-2 rounded-lg bg-zinc-600/40 inline-flex contain-content items-center">
+  <span class="text-brand-3 font-mono px-2 rounded-lg bg-zinc-600/40 inline-flex contain-content items-center">
     {{ coding }}
     <span class="text-white">{{ spinner }}</span>
   </span>

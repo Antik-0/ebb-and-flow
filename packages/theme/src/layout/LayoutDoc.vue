@@ -5,9 +5,7 @@ import Sidebar from '#/components/sidebar/Sidebar.vue'
 </script>
 
 <template>
-  <div>
-    <Navbar />
-    <Sidebar />
-    <DocContent />
-  </div>
+  <Navbar />
+  <Sidebar />
+  <DocContent />
 </template>
