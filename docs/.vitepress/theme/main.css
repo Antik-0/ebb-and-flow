@@ -1,23 +1,39 @@
-/* biome-ignore-all lint/correctness/noUnknownTypeSelector: no why */
+/* biome-ignore-all lint/correctness/noUnknownTypeSelector: not supported */
 
-/* Home View Transitions */
-::view-transition-group(home) {
+html {
+  view-transition-name: layout;
+}
+
+body {
+  background-image: url('@/bg-light.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+[data-isHome='true'] body,
+.dark body {
+  background-image: url('@/EAF-home.png');
+}
+
+::view-transition-group(layout) {
   --transition-duration: 2s;
 }
 
-[data-slide='out']::view-transition-old(home) {
+html[data-slide='exit']::view-transition-old(layout) {
   animation: slide-down var(--transition-duration) ease reverse;
 }
 
-[data-slide='out']::view-transition-new(home) {
+html[data-slide='exit']::view-transition-new(layout) {
   animation: slide-up var(--transition-duration) ease;
 }
 
-[data-slide='in']::view-transition-old(home) {
+html[data-slide='enter']::view-transition-old(layout) {
   animation: slide-up var(--transition-duration) ease reverse;
 }
 
-[data-slide='in']::view-transition-new(home) {
+html[data-slide='enter']::view-transition-new(layout) {
   animation: slide-down var(--transition-duration) ease;
 }
 

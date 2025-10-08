@@ -1,38 +1,28 @@
 <script setup lang="ts">
-import { Cursor, useAnimation } from '@repo/motion'
-import { sleep } from '@repo/utils'
+import { Layout as ThemeLayout } from '@repo/theme'
+import { enableTransitions } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import { computed, onMounted, watch } from 'vue'
-import sakuraURL from '@/sakura.png'
-import EAFHome from './components/EAFHome.vue'
-import { useHomeViewTransition, useToggleAppearance } from './hooks'
+
+// import { useAnimation } from '@repo/motion'
+// import { computed } from 'vue'
+// import sakuraURL from '@/sakura.png'
 
 defineOptions({ name: 'EAFLayout' })
 
-const { frontmatter, site, isDark } = useData()
-const route = useRoute()
+async function viewTransitionStart(type: 'enter' | 'exit') {
+  if (!enableTransitions()) return
 
-const isCustom = computed(() => {
-  const isRoot = route.path === site.value.base
-  const layoutValue = frontmatter.value.layout
-  return isRoot && layoutValue === 'EAF-HOME'
-})
+  const html = document.documentElement
+  const transition = document.startViewTransition(() => {
+    html.setAttribute('data-slide', type)
+  })
 
-const setDataIsHome = () => {
-  if (isCustom.value) {
-    document.documentElement.setAttribute('data-isHome', 'true')
-  } else {
-    document.documentElement.removeAttribute('data-isHome')
-  }
+  await transition.finished
 }
 
-watch(isCustom, setDataIsHome)
-
-onMounted(setDataIsHome)
-
-const { viewTransitionStart } = useHomeViewTransition()
+const route = useRoute()
 const router = useRouter()
+const { site, isDark } = useData()
 
 interface RouterGuard {
   onBeforeRouteChange: typeof router.onBeforeRouteChange
@@ -43,36 +33,24 @@ Object.assign(router, {
     const base = site.value.base
     const isBase = route.path === base
     if (isBase && to === withBase('/vue/guide/reactive')) {
-      // 主页滑出
-      viewTransitionStart(true)
-      // 为了保证能正确获取当前路由的快照，延迟一点时间再进行路由跳转
-      await sleep(100)
+      viewTransitionStart('exit')
     } else if (to === base) {
-      // 主页滑入
-      viewTransitionStart(false)
-      await sleep(100)
+      viewTransitionStart('enter')
     }
   }
 } as RouterGuard)
 
-useToggleAppearance()
-
-const useSakuraAnimation = computed(() => !isCustom.value && !isDark.value)
-
-useAnimation({
-  useSakura: useSakuraAnimation,
-  sakuaraSource: sakuraURL,
-  style: style => {
-    style.position = 'fixed'
-    style.inset = '0'
-    style.zIndex = '10'
-    style.pointerEvents = 'none'
-  }
-})
+// useAnimation({
+//   useSakura: computed(() => !isDark.value),
+//   sakuaraSource: sakuraURL,
+//   style: style => {
+//     style.position = 'fixed'
+//     style.inset = '0'
+//     style.zIndex = '10'
+//   }
+// })
 </script>
 
 <template>
-  <EAFHome v-if="isCustom" />
-  <DefaultTheme.Layout v-else />
-  <Cursor />
+  <ThemeLayout />
 </template>
