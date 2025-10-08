@@ -1,10 +1,7 @@
 @import url('./vars.css');
 @import url('./motion.css');
-@import url('./legacy/vars.css');
-@import url('./legacy/vp-doc.css');
-@import url('./legacy/custom-block.css');
-@import url('./legacy/vp-code-group.css');
-@import url('./legacy/vp-code.css');
+@import url('./component.css');
+@import url('./markdown.css');
 
 html {
   scroll-behavior: smooth;

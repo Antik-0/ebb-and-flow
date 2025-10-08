@@ -1,6 +1,7 @@
-export { onClickOutside, useMediaQuery } from '@vueuse/core'
+export { onClickOutside } from '@vueuse/core'
 export * from './useEventListener.ts'
 export * from './useIntersectionObserver.ts'
 export * from './useInterval.ts'
+export * from './useMediaQuery.ts'
 export * from './useResizeObserver.ts'
 export * from './useSharedState.ts'

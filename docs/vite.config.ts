@@ -9,7 +9,7 @@ export default defineConfig(({ command }) => {
   const plugins: PluginOption[] = [UnoCSS()]
 
   if (command === 'serve') {
-    plugins.push(vueDevTools())
+    plugins.push(vueDevTools({ componentInspector: false }))
   } else {
     plugins.push((compression as any)())
   }

@@ -11,8 +11,7 @@
       "!**/node_modules",
       "!**/dist",
       "!**/cache",
-      "!biome.json",
-      "!**/legacy"
+      "!biome.json"
     ]
   },
   "linter": {

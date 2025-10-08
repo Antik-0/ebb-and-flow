@@ -9,7 +9,6 @@ import SidebarGroup from './SidebarGroup.vue'
 const { isOpen, close } = useSidebarControl()
 
 const show = ref(isOpen.value)
-const delayShow = ref(false)
 const x = useMotionValue('-100%')
 
 watch(
@@ -17,9 +16,6 @@ watch(
   value => {
     if (value) {
       show.value = true
-      if (!delayShow.value) {
-        delayShow.value = true
-      }
       animate(x, '0%', { type: 'spring', duration: 0.6 })
     } else {
       animate(x, '-100%', {
@@ -58,26 +54,17 @@ addEventListener(
   <div
     v-show="show"
     class="inset-0 fixed z-[--z-index-sidebar]"
-    :data-show="show"
   >
     <motion.aside
-      v-if="delayShow"
       ref="sidebar"
       class="flex-col w-80 inset-y-0 left-0 absolute z-20 isolate"
       :style="{ x }"
     >
-      <slot name="sidebar-header"></slot>
-
       <div class="p-8 flex-1 overflow-x-hidden overflow-y-auto">
         <SidebarGroup v-for="(item, index) in menus" :key="index" :item="item" />
       </div>
-
-      <slot name="sidebar-footer"></slot>
-
-      <div class="bg-[--sidebar-bg-color] w-100 inset-y-0 right-0 absolute -z-1">
-      </div>
+      <div class="bg-[--c-bg-sidebar] w-100 inset-y-0 right-0 absolute -z-1"></div>
     </motion.aside>
-
     <div
       class="bg-black/40 inset-0 absolute z-10"
       @click="close"

@@ -52,6 +52,50 @@
 
 @keyframes flowing-light {
   to {
-    rotate: var(--flowing-light-angle);
+    rotate: var(--angle-to);
+  }
+}
+
+@keyframes enter-from-start {
+  from {
+    opacity: 0.6;
+    transform: translateX(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes enter-from-end {
+  from {
+    opacity: 0.6;
+    transform: translateX(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes exit-to-start {
+  from {
+    opacity: 0.4;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+}
+
+@keyframes exit-to-end {
+  from {
+    opacity: 0.4;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(200px);
   }
 }

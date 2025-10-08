@@ -1,9 +1,8 @@
 <script setup lang='ts'>
 import type { NavMenuItem } from '#/types'
 import { motion } from 'motion-v'
-import { inject } from 'vue'
 import Link from '#/components/Link.vue'
-import { MenubarCtx } from '#/controller/navbar.ts'
+import { useMenuViewCtx } from '#/controller/navbar.ts'
 import { Icon } from '#/icons'
 
 const props = defineProps<{
@@ -15,7 +14,7 @@ const slots = defineSlots<{
   content: () => any
 }>()
 
-const { forwarItemContent, onMenuItemHover } = inject(MenubarCtx)!
+const { forwarItemContent, onMenuItemHover } = useMenuViewCtx()
 
 forwarItemContent(props.item, slots.content)
 </script>

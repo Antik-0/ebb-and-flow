@@ -65,9 +65,3 @@ function buildGroups() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.grid {
-  grid-template-columns: repeat(3, 1fr);
-}
-</style>

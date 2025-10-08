@@ -1,62 +1,65 @@
 <script setup lang='ts'>
-import { useIntersectionObserver, useMediaQuery } from '@repo/utils/hooks'
+import { useIntersectionObserver } from '@repo/utils/hooks'
 import { motion } from 'motion-v'
-import { ref, Teleport, useTemplateRef } from 'vue'
+import { ref, shallowRef, Teleport, useTemplateRef } from 'vue'
 import Menubar from '#/components/menubar/Menubar.vue'
+import { useLayoutCtx } from '#/controller/layout.ts'
 import Avatar from '../Avatar.vue'
 import Hamburger from './Hamburger.vue'
 import EAFNavTitle from './NavbarTitle.vue'
 import Search from './Search.vue'
 import SidebarTrigger from './SidebarTrigger.vue'
 
+const { isMobile } = useLayoutCtx()
+
 const menuOpen = ref(false)
 
-const showTitle = ref(false)
+const showTitle = shallowRef(false)
 const sentry = useTemplateRef('sentry')
+
 const { observe } = useIntersectionObserver()
 observe(sentry, entry => {
   showTitle.value = !entry.isIntersecting
 })
-
-const showMenu = useMediaQuery('(min-width: 1024px)', {
-  ssrWidth: 1024
-})
 </script>
 
 <template>
-  <header class="h-[--nav-height] inset-x-0 top-0 fixed z-[--z-index-nav]">
-    <div class="navbar-background"></div>
-
-    <div class="grid grid-cols-[100px_1fr_100px] size-full">
-      <div class="flex flex-center">
-        <Avatar v-if="showMenu" />
-        <SidebarTrigger v-else />
-      </div>
-
-      <div class="relative isolate">
-        <motion.div
-          :animate="showTitle ? 'hidden' : 'show'"
-          class="flex flex-center inset-0 absolute"
-          :transition="{ duration: 1 }"
-          :variants="{
-            show: { opacity: 1 },
-            hidden: { opacity: 0 }
-          }"
-        >
-          <Menubar v-if="showMenu" />
+  <div
+    class="flex flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
+    :data-state="isMobile ? 'mobile' : 'desktop'"
+  >
+    <header class="h-[--navbar-height] max-w-1280px w-full relative isolate">
+      <div class="grid grid-cols-[100px_1fr_100px] size-full">
+        <div class="flex flex-center">
+          <SidebarTrigger v-if="isMobile" />
           <Avatar v-else />
-        </motion.div>
+        </div>
 
-        <EAFNavTitle :show="showTitle" />
+        <div class="relative isolate">
+          <motion.div
+            :animate="showTitle ? 'hidden' : 'show'"
+            class="flex flex-center inset-0 absolute"
+            :transition="{ duration: 0.6 }"
+            :variants="{
+              show: { opacity: 1, scale: 1 },
+              hidden: { opacity: 0, scale: 0.8 }
+            }"
+          >
+            <Avatar v-if="isMobile" />
+            <Menubar v-else />
+          </motion.div>
+
+          <EAFNavTitle :show="showTitle" />
+        </div>
+
+        <div class="flex gap-1 justify-center">
+          <Search />
+          <Hamburger v-model="menuOpen" />
+        </div>
       </div>
-
-      <div class="flex gap-1 justify-center">
-        <Search />
-        <Hamburger v-model="menuOpen" />
-      </div>
-    </div>
-  </header>
-
+      <div aria-hidden="true" class="navbar-background"></div>
+    </header>
+  </div>
 
   <ClientOnly>
     <Teleport to="body">
@@ -64,18 +67,3 @@ const showMenu = useMediaQuery('(min-width: 1024px)', {
     </Teleport>
   </ClientOnly>
 </template>
-
-
-<style>
-.navbar-background {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--nav-bg-color);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 10px 1px hsl(0 0% 67% / 0.1),
-              inset 0 0 10px 4px hsl(0 0% 80% / 0.1),
-              inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
-              inset -1px -1px 4px hsl(0 0% 100% / 0.1)
-}
-</style>

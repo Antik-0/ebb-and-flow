@@ -1,42 +1,27 @@
-import type { InjectionKey, Ref, ShallowRef, VNode } from 'vue'
-import type { NavMenuItem } from '#/types'
+import type { InjectionKey, MaybeRefOrGetter, ShallowRef, VNode } from 'vue'
+import type { NavMenuItem, Timer } from '#/types'
 import { useResizeObserver } from '@repo/utils/hooks'
-import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
+import { inject, onMounted, provide, shallowRef, toValue } from 'vue'
 
-export function useMenuHover() {
-  const scope = shallowRef<HTMLElement | null>(null)
-  const offsetX = ref(0)
-
+export function useMenubarHover(scope: MaybeRefOrGetter<HTMLElement | null>) {
+  const offsetX = shallowRef(0)
   let scopeOffsetLeft = 0
 
   const onMousemove = (event: MouseEvent) => {
     offsetX.value = event.clientX - scopeOffsetLeft
   }
 
-  watch(
-    () => scope.value,
-    target => {
-      if (!target) return
-      target.addEventListener('pointermove', onMousemove)
-      scopeOffsetLeft = target.getBoundingClientRect().left
-    }
-  )
-
   const { onWindowResize } = useResizeObserver()
 
   onMounted(() => {
     onWindowResize(() => {
-      const element = scope.value
+      const element = toValue(scope)
       if (!element) return
       scopeOffsetLeft = element.getBoundingClientRect().left
     })
   })
 
-  onBeforeUnmount(() => {
-    scope.value?.removeEventListener('pointermove', onMousemove)
-  })
-
-  return { scope, offsetX }
+  return { offsetX, onMousemove }
 }
 
 export interface Content {
@@ -44,20 +29,38 @@ export interface Content {
   render: () => VNode[]
 }
 
-interface MenubarContext {
+interface MenuViewContent {
+  visible: ShallowRef<boolean>
   contents: ShallowRef<Content[]>
-  prevHoverIndex: Ref<number>
-  currHoverIndex: Ref<number>
+  prevHoverIndex: ShallowRef<number>
+  currHoverIndex: ShallowRef<number>
+  arrowOffsetX: ShallowRef<number>
   forwarItemContent: (item: NavMenuItem, contentRender: () => VNode[]) => void
   onMenuItemHover: (event: MouseEvent, index: number) => void
 }
 
-export const MenubarCtx = Symbol('menubar') as InjectionKey<MenubarContext>
+export const MenuViewCtx = Symbol('menubar') as InjectionKey<MenuViewContent>
 
-export function useMenuViewControl() {
-  const prevHoverIndex = ref(-1)
-  const currHoverIndex = ref(-1)
-  const arrowOffsetX = ref(0)
+export function useMenuViewCtx() {
+  return inject(MenuViewCtx)!
+}
+
+export function useMenuViewControl(
+  scope: MaybeRefOrGetter<HTMLElement | null>
+) {
+  const visible = shallowRef(false)
+  let timer: Timer | null = null
+
+  function onMouseenter() {
+    visible.value = true
+    timer && clearTimeout(timer)
+  }
+
+  function onMouseleave() {
+    timer = setTimeout(() => {
+      visible.value = false
+    }, 200)
+  }
 
   const contents = shallowRef<Content[]>([])
 
@@ -67,6 +70,10 @@ export function useMenuViewControl() {
       render: contentRender
     })
   }
+
+  const prevHoverIndex = shallowRef(-1)
+  const currHoverIndex = shallowRef(-1)
+  const arrowOffsetX = shallowRef(0)
 
   function onMenuItemHover(event: MouseEvent, index: number) {
     prevHoverIndex.value = currHoverIndex.value
@@ -80,24 +87,41 @@ export function useMenuViewControl() {
   function computeArrowOffsetX(target: HTMLElement, index: number) {
     if (arrowOffsetXCache.length === 0) {
       const length = contents.value.length
-      arrowOffsetXCache = Array.from<number>({ length }).fill(0)
+      arrowOffsetXCache = Array.from<number>({ length })
     }
 
-    if (arrowOffsetXCache[index] !== 0) {
-      return arrowOffsetXCache[index]!
+    if (arrowOffsetXCache[index] !== undefined) {
+      return arrowOffsetXCache[index]
     }
 
     // 缓存未命中
-    // 设计上下文，全部都走缓存
-    // const parent = target.offsetParent!.offsetWidth
-    return 0
+    let offsetLeft = 0
+    const targetWidth = target.offsetWidth
+
+    const root = toValue(scope)!
+    while (target !== root) {
+      offsetLeft += target.offsetLeft
+      target = target.offsetParent as HTMLElement
+    }
+
+    const offsetX = offsetLeft + targetWidth / 2 - root.offsetWidth / 2
+    arrowOffsetXCache[index] = offsetX
+
+    return offsetX
   }
 
-  return {
+  provide(MenuViewCtx, {
+    visible,
     contents,
     prevHoverIndex,
     currHoverIndex,
+    arrowOffsetX,
     forwarItemContent,
     onMenuItemHover
+  })
+
+  return {
+    onMouseenter,
+    onMouseleave
   }
 }

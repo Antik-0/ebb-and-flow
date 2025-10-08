@@ -18,14 +18,19 @@ function enter() {
 </script>
 
 <template>
-  <div class="flex-col h-screen w-screen">
-    <div class="px-10 pb-60px pt-200px flex-col items-center lg:pt-200px">
-      <div class="size-200px cursor-pointer relative isolate">
+  <div class="flex-col h-screen w-screen isolate">
+    <div class="px-10 pb-60px pt-200px flex-col flex-1 items-center lg:pt-200px">
+      <div class="avatar size-200px cursor-pointer relative isolate">
+        <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
+          <img
+            alt="site owner avatar"
+            class="transition-transform duration-600 ease-in-out"
+            role="avatar"
+            src="@/EAF-avatar.png"
+          />
+        </div>
         <div class="avatar-bg"></div>
         <div class="avatar-mask"></div>
-        <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
-          <img alt="site owner avatar" src="@/EAF-avatar.png" />
-        </div>
       </div>
 
       <h1 class="mt-5 py-8 text-center w-full">
@@ -69,6 +74,10 @@ function enter() {
 </template>
 
 <style scoped>
+.avatar:hover img {
+  scale: 1.2;
+}
+
 .avatar-bg {
   position: absolute;
   inset: 0;
@@ -127,7 +136,7 @@ function enter() {
 
 .entry-button {
   --m-color: transparent;
-   --rounded: 999px;
+  --rounded: 999px;
 
   position: relative;
   display: flex;
@@ -136,22 +145,16 @@ function enter() {
   padding: 10px;
   border-radius: var(--rounded);
   color: #12998d;
+  opacity: 0.4;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 8px 1px var(--m-color);
-  transition: --m-color 250ms ease-in;
-
-  svg {
-    animation: breathing 6s ease-in-out  infinite  ;
-  }
+  transition: all 250ms ease-in;
 }
 
 .entry-button:hover {
   --m-color: #12998d;
-
-  svg {
-    animation-play-state: paused;
-  }
+  opacity: 1;
 }
 
 .tidewater {
@@ -164,5 +167,4 @@ function enter() {
       transparent 80%);
   animation: tidewater 6s ease-in-out infinite;
 }
-
 </style>
