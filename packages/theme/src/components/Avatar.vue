@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vitepress'
+import { useLayoutCtx } from '#/controller/layout.ts'
 import { HOME_PATH } from '#/shared'
+
+const { avatar } = useLayoutCtx()
 
 const router = useRouter()
 
@@ -21,7 +24,7 @@ function goHome() {
         alt="site owner avatar"
         class="size-[44px]"
         decoding="async"
-        src="https://antik-0.github.io/ebb-and-flow/assets/EAF-avatar.CHiAdHFK.png"
+        :src="avatar"
       />
     </div>
   </button>

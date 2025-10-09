@@ -19,6 +19,7 @@ export function useLayout() {
 }
 
 interface LayoutContext {
+  avatar: string
   isMobile: ShallowRef<boolean>
   isDesktop: ShallowRef<boolean>
 }

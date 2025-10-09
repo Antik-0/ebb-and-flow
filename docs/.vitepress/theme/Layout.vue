@@ -2,6 +2,10 @@
 import { Layout as ThemeLayout } from '@repo/theme'
 import { enableTransitions } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
+import AvatarURL from '@/avatar.png'
+import LightBgURL1 from '@/wallhaven-6lq3m7.png'
+import DarkBgURL2 from '@/wallhaven-8g3gkk.png'
+import DarkBgURL1 from '@/wallhaven-rrwvdq.png'
 
 // import { useAnimation } from '@repo/motion'
 // import { computed } from 'vue'
@@ -52,5 +56,9 @@ Object.assign(router, {
 </script>
 
 <template>
-  <ThemeLayout />
+  <ThemeLayout
+    :avatar="AvatarURL"
+    :dark-background="[DarkBgURL1]"
+    :light-background="[LightBgURL1]"
+  />
 </template>

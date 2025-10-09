@@ -1,26 +1,27 @@
 <script setup lang='ts'>
 import { useIntersectionObserver } from '@repo/utils/hooks'
 import { motion } from 'motion-v'
-import { ref, shallowRef, Teleport, useTemplateRef } from 'vue'
+import { shallowRef, useTemplateRef } from 'vue'
 import Menubar from '#/components/menubar/Menubar.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import Avatar from '../Avatar.vue'
-import Hamburger from './Hamburger.vue'
+import TeleportToBody from '../TeleportToBody.vue'
 import EAFNavTitle from './NavbarTitle.vue'
-import Search from './Search.vue'
+import NavbarWidget from './NavbarWidget.vue'
 import SidebarTrigger from './SidebarTrigger.vue'
 
 const { isMobile } = useLayoutCtx()
 
-const menuOpen = ref(false)
-
 const showTitle = shallowRef(false)
-const sentry = useTemplateRef('sentry')
+const sentry = useTemplateRef<HTMLElement>('sentry')
 
 const { observe } = useIntersectionObserver()
-observe(sentry, entry => {
-  showTitle.value = !entry.isIntersecting
-})
+
+function onSentryMounted() {
+  observe(sentry, entry => {
+    showTitle.value = !entry.isIntersecting
+  })
+}
 </script>
 
 <template>
@@ -52,18 +53,21 @@ observe(sentry, entry => {
           <EAFNavTitle :show="showTitle" />
         </div>
 
-        <div class="flex gap-1 justify-center">
-          <Search />
-          <Hamburger v-model="menuOpen" />
+        <div class="relative">
+          <NavbarWidget />
         </div>
       </div>
       <div aria-hidden="true" class="navbar-background"></div>
     </header>
   </div>
 
-  <ClientOnly>
-    <Teleport to="body">
-      <div ref="sentry" aria-hidden="true" class="h-1 pointer-events-none inset-x-0 top-[100px] absolute -z-[10]"></div>
-    </Teleport>
-  </ClientOnly>
+  <TeleportToBody id="navbar-sentry">
+    <component
+      :is="`div`"
+      ref="sentry"
+      aria-hidden="true"
+      class="h-1 inset-x-0 top-100px absolute z-1"
+      @vue:mounted="onSentryMounted"
+    />
+  </TeleportToBody>
 </template>

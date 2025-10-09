@@ -4,7 +4,10 @@ import { ref } from 'vue'
 import FloatingText from '#/components/FloatingText.vue'
 import FlowingLight from '#/components/FlowingLight.vue'
 import SkillCoding from '#/components/SkillCoding.vue'
+import { useLayoutCtx } from '#/controller/layout.ts'
 import { Power } from '#/icons'
+
+const { avatar } = useLayoutCtx()
 
 const { frontmatter } = useData()
 
@@ -26,7 +29,7 @@ function enter() {
             alt="site owner avatar"
             class="transition-transform duration-600 ease-in-out"
             role="avatar"
-            src="@/EAF-avatar.png"
+            :src="avatar"
           />
         </div>
         <div class="avatar-bg"></div>

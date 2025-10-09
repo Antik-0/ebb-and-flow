@@ -4,19 +4,6 @@ html {
   view-transition-name: layout;
 }
 
-body {
-  background-image: url('@/bg-light.jpg');
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-[data-isHome='true'] body,
-.dark body {
-  background-image: url('@/EAF-home.png');
-}
-
 ::view-transition-group(layout) {
   --transition-duration: 2s;
 }
