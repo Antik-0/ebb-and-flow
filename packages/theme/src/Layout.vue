@@ -8,6 +8,7 @@ import LayoutPage from './layout/LayoutPage.vue'
 
 interface Props {
   avatar: string
+  homeBackground?: string[]
   darkBackground?: string[]
   lightBackground?: string[]
 }
@@ -33,7 +34,9 @@ onErrorCaptured((error, instance, info) => {
   <LayoutPage v-else-if="layout === 'page'" />
   <LayoutDoc v-else />
   <Background
-    :dark-background="props.darkBackground"
-    :light-background="props.lightBackground"
+    :dark-background="darkBackground"
+    :home-background="homeBackground"
+    :is-home="layout === 'home'"
+    :light-background="lightBackground"
   />
 </template>

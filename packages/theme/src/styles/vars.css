@@ -51,6 +51,7 @@
 
     --z-index-navbar: 30;
     --z-index-sidebar: 40;
+    --z-index-toolpanel: 50;
   }
 }
 

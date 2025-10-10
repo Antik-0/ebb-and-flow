@@ -1,4 +1,4 @@
-import { shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 const isOpen = shallowRef(false)
 
@@ -11,9 +11,14 @@ export function useSidebarControl() {
     isOpen.value = false
   }
 
+  function toggle() {
+    isOpen.value = !isOpen.value
+  }
+
   return {
-    isOpen,
+    isOpen: computed(() => isOpen.value),
     open,
-    close
+    close,
+    toggle
   }
 }

@@ -2,13 +2,13 @@ import type { MenuItem, MenuItemRaw } from '#/types'
 import { createSharedState } from '@repo/utils/hooks'
 import { useData } from 'vitepress'
 import { onMounted, ref, shallowRef, watch } from 'vue'
-import { normalize, useTheme } from '#/shared'
+import { isExternalLink, normalize, useThemeConfig } from '#/shared'
 
 export const useSharedMenus = createSharedState(() => {
   const { page } = useData()
-  const theme = useTheme()
+  const themeConfig = useThemeConfig()
 
-  const navMenus = theme.value.navMenus
+  const navMenus = themeConfig.value.navMenus
   const menus = ref(buildMenuTree(navMenus))
 
   const prevActiveNode = shallowRef<MenuItem | null>(null)
@@ -40,6 +40,8 @@ export const useSharedMenus = createSharedState(() => {
   }
 })
 
+let prevNavNode: MenuItem | undefined
+
 function buildMenuTree(
   menus: MenuItemRaw[],
   parent: MenuItem | null = null,
@@ -50,11 +52,22 @@ function buildMenuTree(
   const tree: MenuItem[] = []
   for (const item of menus) {
     const { items, ...restProps } = item
+
     const node = {
       ...restProps,
       parent,
       acitve: false
     } as MenuItem
+
+    const link = node.link
+    // 建立导航链接
+    if (link && link !== '/' && !isExternalLink(link)) {
+      if (prevNavNode) {
+        prevNavNode.nextNav = node
+      }
+      node.prevNav = prevNavNode
+      prevNavNode = node
+    }
 
     if (Array.isArray(items) && items.length) {
       node.items = buildMenuTree(items, node, depth + 1)

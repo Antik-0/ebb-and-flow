@@ -1,24 +1,24 @@
 import { onBeforeUnmount, onMounted } from 'vue'
 
-export function useInterval(handler: () => void, timerout: number) {
+export function useMotionFrame(callback: () => void, timeout: number) {
   let raf: number | null = null
   let lastTime: number | undefined
 
-  function interval(timestamp: DOMHighResTimeStamp) {
+  function handle(timestamp: DOMHighResTimeStamp) {
     if (!lastTime) {
-      lastTime = timerout
-    }
-
-    if (timestamp - lastTime > timerout) {
-      handler()
       lastTime = timestamp
     }
 
-    raf = window.requestAnimationFrame(interval)
+    if (timestamp - lastTime > timeout) {
+      callback()
+      lastTime = timestamp
+    }
+
+    raf = window.requestAnimationFrame(handle)
   }
 
   function start() {
-    raf = window.requestAnimationFrame(interval)
+    raf = window.requestAnimationFrame(handle)
   }
 
   function stop() {

@@ -1,5 +1,6 @@
 <template>
   <svg
+    class="sun"
     height="1em"
     viewBox="0 0 24 24"
     width="1em"
@@ -12,44 +13,19 @@
       stroke-linejoin="round"
       stroke-width="2"
     >
-      <path d="M12 19v1M19 12h1M12 5v-1M5 12h-1" stroke-dasharray="2" stroke-dashoffset="2">
-        <animate
-          attributeName="d"
-          begin="0.6s"
-          dur="0.2s"
-          fill="freeze"
-          values="M12 19v1M19 12h1M12 5v-1M5 12h-1;M12 21v1M21 12h1M12 3v-1M3 12h-1"
-        />
-        <animate
-          attributeName="stroke-dashoffset"
-          begin="0.6s"
-          dur="0.2s"
-          fill="freeze"
-          values="2;0"
-        />
-      </path>
-      <path d="M17 17l0.5 0.5M17 7l0.5 -0.5M7 7l-0.5 -0.5M7 17l-0.5 0.5" stroke-dasharray="2" stroke-dashoffset="2">
-        <animate
-          attributeName="d"
-          begin="0.8s"
-          dur="0.2s"
-          fill="freeze"
-          values="M17 17l0.5 0.5M17 7l0.5 -0.5M7 7l-0.5 -0.5M7 17l-0.5 0.5;M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"
-        />
-        <animate
-          attributeName="stroke-dashoffset"
-          begin="0.8s"
-          dur="0.2s"
-          fill="freeze"
-          values="2;0"
-        />
-      </path>
-      <animateTransform
-        attributeName="transform"
-        dur="30s"
-        repeatCount="indefinite"
-        type="rotate"
-        values="0 12 12;360 12 12"
+      <path
+        class="sun-light"
+        d="M12 21v1M21 12h1M12 3v-1M3 12h-1"
+        stroke-dasharray="2"
+        stroke-dashoffset="2"
+        style="--delay: 0.6s"
+      />
+      <path
+        class="sun-light"
+        d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"
+        stroke-dasharray="2"
+        stroke-dashoffset="2"
+        style="--delay: 0.8s"
       />
     </g>
     <mask id="SVGu6kfobeu">
@@ -106,18 +82,53 @@
       </circle>
     </mask>
     <circle
+      class="sun-body"
       cx="12"
       cy="12"
       fill="currentColor"
       mask="url(#SVGu6kfobeu)"
       r="10"
-    >
-      <animate
-        attributeName="r"
-        dur="0.4s"
-        fill="freeze"
-        values="10;6"
-      />
-    </circle>
+    />
   </svg>
 </template>
+
+<style>
+.sun {
+  animation: sun-rotate 10s linear 0.2s infinite;
+}
+
+.sun-body {
+  animation: sun-body 0.4s ease forwards;
+}
+
+.sun-light {
+  animation: sun-light 0.2s ease forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes sun-body {
+  from {
+    r: 10
+  }
+
+  to {
+    r: 6
+  }
+}
+
+@keyframes sun-light {
+  from {
+    stroke-dashoffset: 2;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes sun-rotate {
+  to {
+    rotate: 1turn;
+  }
+}
+</style>

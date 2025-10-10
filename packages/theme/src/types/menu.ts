@@ -9,4 +9,9 @@ export interface MenuItem extends MenuItemRaw {
    * 父节点
    */
   parent?: MenuItem
+  /**
+   * 导航
+   */
+  prevNav?: MenuItem
+  nextNav?: MenuItem
 }

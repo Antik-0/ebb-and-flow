@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useInterval } from '@repo/utils/hooks'
+import { useMotionFrame } from '@repo/utils/hooks'
 import { shallowRef } from 'vue'
 import { useCodingMotion } from '#/shared/useCoding'
 
@@ -13,7 +13,7 @@ const spinner = shallowRef('/')
 const spinnerState = ['|', '/', '-', '\\', '|', '/', '-', '\\']
 let spinnerIndex = 0
 
-useInterval(() => {
+useMotionFrame(() => {
   spinnerIndex = (spinnerIndex + 1) % spinnerState.length
   spinner.value = spinnerState[spinnerIndex]!
 }, 200)

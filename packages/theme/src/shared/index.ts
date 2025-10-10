@@ -24,7 +24,7 @@ export function normalize(path: string): string {
     .replace(INDEX_OR_EXT_RE, '$1')
 }
 
-export function useTheme() {
-  const { theme } = useData<ThemeConfig>()
-  return theme
+export function useThemeConfig() {
+  const { theme: themeConfig } = useData<ThemeConfig>()
+  return themeConfig
 }

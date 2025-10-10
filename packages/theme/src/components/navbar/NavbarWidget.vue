@@ -5,11 +5,13 @@ import { h, shallowRef } from 'vue'
 import Link from '#/components/Link.vue'
 import ThemeToggle from '#/components/ThemeToggle.vue'
 import { Github } from '#/icons'
-import { useTheme } from '#/shared'
+import { useThemeConfig } from '#/shared'
 
-const theme = useTheme()
+const themeConfig = useThemeConfig()
 
-const socialLinks = shallowRef(buildSocialLinks(theme.value.socialLinks ?? []))
+const socialLinks = shallowRef(
+  buildSocialLinks(themeConfig.value.socialLinks ?? [])
+)
 
 function buildSocialLinks(themeSocialLinks: SocialLink[]) {
   const logoMap: Record<string, Component> = {
