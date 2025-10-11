@@ -1,5 +1,6 @@
 import type { ComponentPublicInstance, ShallowRef } from 'vue'
-import type { DomOrComponentRef, Fn, PopoverProps } from './types.ts'
+import type { Fn } from '#/types'
+import type { DomOrComponentRef, PopoverProps } from './types.ts'
 import { animate, useMotionValue } from 'motion-v'
 import { ref, shallowRef } from 'vue'
 
@@ -22,7 +23,7 @@ const CrossVectors = {
   end: -1
 } as const
 
-function calcPostion(
+function calcFixedPosition(
   tRect: DOMRect,
   vRect: DOMRect,
   axis: string,
@@ -32,7 +33,8 @@ function calcPostion(
   const [halfWidthT, halfHeightT] = [tRect.width / 2, tRect.height / 2]
   const [halfWidthV, halfHeightV] = [vRect.width / 2, vRect.height / 2]
 
-  // 计算 view 移动到 trigger 中心的偏移量
+  // 计算 view 移动到 trigger 中心的位置
+  // ✨ 这里减去 (halfWidthV/halfHeightV) 是因为 view 初始位置位于左上角
   const cx = tRect.left + halfWidthT - halfWidthV
   const cy = tRect.top + halfHeightT - halfHeightV
 
@@ -128,7 +130,7 @@ export function usePopoverState(props: Required<PopoverProps>) {
   const readyCallbacks: Fn[] = []
 
   function onViewMounted() {
-    const { placement, offset } = props
+    const { placement, offset, fixed } = props
 
     const [tEle, vEle] = [unref(tRef), unref(vRef)]
     const tRect = tEle.getBoundingClientRect()
@@ -137,9 +139,17 @@ export function usePopoverState(props: Required<PopoverProps>) {
     const axisState = placement.split('-') as [string, string]
     const [axis, crossAxis = 'center'] = axisState
 
-    const [x, y] = calcPostion(tRect, vRect, axis, crossAxis, offset)
-    posX.value = x
-    posY.value = y
+    const [x, y] = calcFixedPosition(tRect, vRect, axis, crossAxis, offset)
+
+    let [scrollX, scrollY] = [0, 0]
+    if (!fixed) {
+      const html = document.documentElement
+      scrollX = html.scrollLeft
+      scrollY = html.scrollTop
+    }
+
+    posX.value = x + scrollX
+    posY.value = y + scrollY
 
     for (const fn of readyCallbacks) {
       fn()

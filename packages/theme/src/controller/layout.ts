@@ -1,4 +1,4 @@
-import type { InjectionKey, ShallowRef } from 'vue'
+import type { ComputedRef, InjectionKey } from 'vue'
 import { useMediaQuery } from '@repo/utils/hooks'
 import { useData } from 'vitepress'
 import { computed, inject } from 'vue'
@@ -20,8 +20,9 @@ export function useLayout() {
 
 interface LayoutContext {
   avatar: string
-  isMobile: ShallowRef<boolean>
-  isDesktop: ShallowRef<boolean>
+  isMobile: ComputedRef<boolean>
+  isDesktop: ComputedRef<boolean>
+  showToolPanel: ComputedRef<boolean>
 }
 
 export const LayoutCtxKey = Symbol('layout') as InjectionKey<LayoutContext>

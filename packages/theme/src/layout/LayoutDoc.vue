@@ -5,13 +5,16 @@ import Navbar from '#/components/navbar/Navbar.vue'
 import Sidebar from '#/components/sidebar/Sidebar.vue'
 import ToolPanel from '#/components/toolPanel/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
+import { useOutline } from '#/controller/outline.ts'
 
-const { isMobile, isDesktop } = useLayoutCtx()
+useOutline()
+
+const { isDesktop } = useLayoutCtx()
 </script>
 
 <template>
   <Navbar />
-  <Sidebar v-if="isMobile" />
+  <Sidebar />
   <div class="pt-[--navbar-height]">
     <div class="layout-doc">
       <main id="content" class="doc-content">
@@ -20,17 +23,16 @@ const { isMobile, isDesktop } = useLayoutCtx()
           <DocFooter />
         </div>
 
-        <template v-if="isDesktop">
-          <div class="pl-8 w-64">
-            <aside class="doc-aside">
-              <div class="aside-content">
-                <DocOutline />
-                <div class="flex-1"></div>
-              </div>
-            </aside>
-          </div>
-          <div id="bottom-sentry" class="h-px inset-x-0 bottom-px absolute"></div>
-        </template>
+        <div v-if="isDesktop" class="pl-8 w-64">
+          <aside class="doc-aside">
+            <div class="aside-content">
+              <DocOutline />
+              <div class="flex-1"></div>
+            </div>
+          </aside>
+        </div>
+
+        <div id="bottom-sentry" class="h-px inset-x-0 bottom-px absolute"></div>
       </main>
     </div>
   </div>

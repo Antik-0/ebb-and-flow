@@ -267,3 +267,59 @@
 .background-image[data-motion='exit'] {
   animation: cross-fade-exit 2s ease-out;
 }
+
+/**
+ * ==================================================
+ * toolpanel
+ * ==================================================
+ */
+.toolpanel {
+  position: fixed;
+  top: 50%;
+  right: 8px;
+  padding: 4px;
+  z-index: var(--z-index-toolpanel);
+  opacity: 0;
+  translate: 100%;
+  transition: all 600ms ease-in-out;
+}
+
+.toolpanel[data-show='true'] {
+  opacity: 1;
+  translate: 0;
+}
+
+.action-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--c-text-2);
+  cursor: pointer;
+  transition: color 200ms ease;
+
+  &:hover {
+    color: var(--c-brand-3);
+  }
+}
+
+.panle-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: hsl(0 0% 0% / 0.1);
+  box-shadow:
+    0 2px 10px 1px hsl(0 0% 60% / 0.2),
+    inset 0 0 10px 4px hsl(0 0% 80% / 0.2),
+    inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
+    inset -1px -1px 4px hsl(0 0% 100% / 0.1);
+}
+
+.outline-viewport {
+  min-width: 240px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: hsl(0, 0%, 10%);
+}

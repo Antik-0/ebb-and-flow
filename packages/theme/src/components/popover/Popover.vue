@@ -11,6 +11,7 @@ import { usePopoverMotion, usePopoverState } from './state.ts'
 const props = withDefaults(defineProps<PopoverProps>(), {
   trigger: 'click',
   placement: 'bottom',
+  fixed: false,
   width: 150,
   offset: 10,
   closeDelay: 200
@@ -110,8 +111,9 @@ onMounted(() => {
       :style="{
         '--x': `${posX}px`,
         '--y': `${posY}px`,
-        y: translateY,
-        opacity
+        position: fixed ? 'fixed' : 'absolute',
+        opacity,
+        y: translateY
       }"
       @pointerenter="clearTimer"
       @pointerleave="triggerEvents.onPointerleave"
@@ -125,7 +127,6 @@ onMounted(() => {
 <style>
 .popover {
   contain: layout;
-  position: absolute;
   top: 0;
   left: 0;
   transform-origin: center;

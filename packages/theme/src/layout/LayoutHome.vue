@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useData, useRouter, withBase } from 'vitepress'
 import { ref } from 'vue'
+import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
-import FlowingLight from '#/components/FlowingLight.vue'
 import SkillCoding from '#/components/SkillCoding.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { Power } from '#/icons'
@@ -22,7 +22,7 @@ function enter() {
 
 <template>
   <div class="flex-col h-screen w-screen isolate">
-    <div class="px-10 pb-60px pt-200px flex-col flex-1 items-center lg:pt-200px">
+    <div class="px-10 pb-60px pt-160px flex-col flex-1 items-center">
       <div class="avatar size-200px cursor-pointer relative isolate">
         <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
           <img
@@ -59,15 +59,19 @@ function enter() {
         </div>
       </h2>
 
-      <button
-        aria-label="entry"
-        class="entry-button"
-        type="button"
-        @click="enter"
-      >
-        <FlowingLight />
-        <Power class="text-44px" />
-      </button>
+      <div class="relative animate-bounce isolate">
+        <button
+          aria-label="entry"
+          class="entry-button"
+          type="button"
+          @click="enter"
+        >
+          <Power class="text-44px" />
+        </button>
+        <div aria-hidden="true" class="entry-button__bg"></div>
+      </div>
+
+      <CubeAvatar size="large" />
     </div>
 
     <div class="inset-0 fixed -z-1">
@@ -138,26 +142,29 @@ function enter() {
 }
 
 .entry-button {
-  --m-color: transparent;
-  --rounded: 999px;
-
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border-radius: var(--rounded);
+  border-radius: 999px;
   color: #12998d;
-  opacity: 0.4;
+  opacity: 0.6;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0 8px 1px var(--m-color);
-  transition: all 250ms ease-in;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: opacity 250ms ease-in;
 }
 
 .entry-button:hover {
-  --m-color: #12998d;
   opacity: 1;
+}
+
+.entry-button__bg {
+  position: absolute;
+  inset: 10px;
+  z-index: -1;
+  border-radius: 999px;
+  box-shadow: 0 0 16px 2px #12998d;
+  animation: breathing 4s ease-in-out infinite;
 }
 
 .tidewater {
