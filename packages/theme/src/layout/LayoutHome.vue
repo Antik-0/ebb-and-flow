@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { useData, useRouter, withBase } from 'vitepress'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
+import MoonAvatar from '#/components/MoonAvatar.vue'
 import SkillCoding from '#/components/SkillCoding.vue'
-import { useLayoutCtx } from '#/controller/layout.ts'
 import { Power } from '#/icons'
 
-const { avatar } = useLayoutCtx()
+defineProps<{
+  avatar: string
+}>()
 
 const { frontmatter } = useData()
 
-const showTitle = ref(false)
-const showTagline = ref(false)
+const titleMotion = shallowRef('tide')
+const taglineMotion = shallowRef('')
 
 const router = useRouter()
-function enter() {
+function handleEnter() {
   router.go(withBase(frontmatter.value.entryLink))
 }
 </script>
@@ -23,52 +25,47 @@ function enter() {
 <template>
   <div class="flex-col h-screen w-screen isolate">
     <div class="px-10 pb-60px pt-160px flex-col flex-1 items-center">
-      <div class="avatar size-200px cursor-pointer relative isolate">
-        <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
-          <img
-            alt="site owner avatar"
-            class="transition-transform duration-600 ease-in-out"
-            role="avatar"
-            :src="avatar"
-          />
-        </div>
-        <div class="avatar-bg"></div>
-        <div class="avatar-mask"></div>
-      </div>
+      <MoonAvatar :avatar="avatar" />
 
-      <h1 class="mt-5 py-8 text-center w-full">
+      <h1 class="mt-4 py-8 text-center w-full">
         <span
-          class="site-owner"
-          :data-fade-in="showTitle"
-          @animationend="showTitle = true"
+          class="site-title"
+          :data-motion="titleMotion"
+          @animationend="titleMotion = 'fade'"
         >
           {{ frontmatter.author }}
         </span>
       </h1>
 
-      <h2 class="text-6 mb-8 p-4">
-        <div
-          class="tagline flex-col gap-1 items-center"
-          :data-fade-in="showTagline"
+      <h2 class="text-6 mb-8 py-4">
+        <p
+          class="tagline flex gap-2 items-center"
+          :data-motion="taglineMotion"
         >
           <FloatingText
             :text="frontmatter.tagline"
-            @complete="showTagline = true"
+            @motion-end="taglineMotion = 'fade'"
           />
-          <SkillCoding :skills="frontmatter.skills" />
-        </div>
+          <SkillCoding
+            :paused="taglineMotion !== 'fade'"
+            :skills="frontmatter.skills"
+          />
+        </p>
       </h2>
 
       <div class="relative animate-bounce isolate">
         <button
           aria-label="entry"
-          class="entry-button"
+          :class="[
+            'text-teal p-3 rounded-999 bg-black/10 opacity-60 flex cursor-pointer flex-center',
+            'transition-opacity duration-200 hover:opacity-100'
+          ]"
           type="button"
-          @click="enter"
+          @click="handleEnter"
         >
-          <Power class="text-44px" />
+          <Power class="text-10" />
         </button>
-        <div aria-hidden="true" class="entry-button__bg"></div>
+        <div aria-hidden="true" class="entry-background"></div>
       </div>
 
       <CubeAvatar size="large" />
@@ -80,32 +77,8 @@ function enter() {
   </div>
 </template>
 
-<style scoped>
-.avatar:hover img {
-  scale: 1.2;
-}
-
-.avatar-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #00dc82, #36e4da, #0047e1);
-  filter: blur(80px);
-  animation: breathing 6s ease-in-out infinite;
-}
-
-.avatar-mask {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  border-radius: 50%;
-  box-shadow: inset 0 0 40px 0px hsl(175 78% 90% / 0.4),
-              inset 0 10px 20px 0px hsl(175 78% 80% / 0.8),
-              0 2px 10px 1px hsl(175 30% 40% / 0.8);
-}
-
-.site-owner {
+<style>
+.site-title {
   display: inline-flex;
   font-size: 48px;
   line-height: 60px;
@@ -116,11 +89,11 @@ function enter() {
   background-clip: text;
   background-size: 100% 200%;
   background-repeat: no-repeat;
-  animation: site-owner-tide 1s ease-out 2 alternate;
+  animation: title-tide 2s ease-out;
 }
 
-.site-owner[data-fade-in='true'] {
-  animation: site-owner-fade-in 2s ease-in;
+.site-title[data-motion='fade'] {
+  animation: title-fade 2s ease-out;
 }
 
 .tagline {
@@ -131,34 +104,16 @@ function enter() {
   color: var(--m-color);
 }
 
-.tagline[data-fade-in='true'] {
+.tagline[data-motion='fade'] {
   --m-color: #12998d;
-  --rounded: 999px;
 
   color: transparent;
-  background: linear-gradient(to right, var(--m-color) 40%, #b9e4f8);
+  background: linear-gradient(to right, var(--m-color) 10%, #b9e4f8);
   background-clip: text;
-  transition: --m-color 600ms ease-in;
+  transition: --m-color 600ms ease-out;
 }
 
-.entry-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  border-radius: 999px;
-  color: #12998d;
-  opacity: 0.6;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1);
-  transition: opacity 250ms ease-in;
-}
-
-.entry-button:hover {
-  opacity: 1;
-}
-
-.entry-button__bg {
+.entry-background {
   position: absolute;
   inset: 10px;
   z-index: -1;
@@ -172,9 +127,11 @@ function enter() {
   top: 50%;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle,
-      hsl(183 30% 75% / 0.1) 20%,
-      transparent 80%);
+  background: radial-gradient(
+    circle,
+    hsl(183 30% 75% / 0.1) 20%,
+    transparent 80%
+  );
   animation: tidewater 6s ease-in-out infinite;
 }
 </style>

@@ -16,16 +16,17 @@
   }
 }
 
-@keyframes site-owner-tide {
-  from {
+@keyframes title-tide {
+  0%,
+  100% {
     background-position: 100% -100%;
   }
-  to {
+  50% {
     background-position: 100% 0%;
   }
 }
 
-@keyframes site-owner-fade-in {
+@keyframes title-fade {
   from {
     clip-path: circle(0 at center);
   }

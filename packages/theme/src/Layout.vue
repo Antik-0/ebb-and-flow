@@ -33,7 +33,7 @@ provide(LayoutCtxKey, {
 </script>
 
 <template>
-  <LayoutHome v-if="layout === 'home'" />
+  <LayoutHome v-if="layout === 'home'" :avatar="avatar" />
   <LayoutPage v-else-if="layout === 'page'" />
   <LayoutDoc v-else />
   <Background

@@ -5,11 +5,11 @@ import { defineConfigWithTheme } from 'vitepress'
 const webBase = '/ebb-and-flow/'
 
 export default defineConfigWithTheme<ThemeConfig>({
-  title: '潮起潮落的站点',
+  title: '潮起潮落',
   titleTemplate: '潮起潮落',
   description: '潮起潮落的个人博客',
-  lang: 'zh-cn',
   base: webBase,
+  lang: 'zh-cn',
   srcDir: 'src',
   outDir: 'dist',
   cleanUrls: true,

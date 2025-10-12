@@ -7,7 +7,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  complete: []
+  motionEnd: []
 }>()
 
 const textList = computed(() =>
@@ -19,7 +19,7 @@ let count = 0
 function onComplete() {
   count += 1
   if (count === textList.value.length) {
-    emit('complete')
+    emit('motionEnd')
   }
 }
 </script>
