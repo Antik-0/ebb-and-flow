@@ -4,7 +4,7 @@ export interface MenuItem extends MenuItemRaw {
   /**
    * 是否激活
    */
-  acitve?: boolean
+  active?: boolean
   /**
    * 父节点
    */

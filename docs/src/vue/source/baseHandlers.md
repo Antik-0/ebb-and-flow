@@ -93,7 +93,7 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
 
         // ✨条件二说明：
         // ✨const raw = {}
-        // ✨const vueProxy = reacitve(raw)
+        // ✨const vueProxy = reactive(raw)
         // ✨const userProxy = new Proxy(vueProxy, { get(...) }) // 这里需要一个能触发 vueProxy get拦截的二次拦截，若使用 Reflect.get 要确保 receiver 指向 userProxy
         // ✨toRaw(userProxy) === raw // true
         return target
@@ -204,7 +204,7 @@ class MutableReactiveHandler extends BaseReactiveHandler {
     )
 
     // ✨这里 receiver 代表 set 最初的操作对象，可能是一个代理对象或者是一个普通对象，但其原型链上存在响应式代理对象
-    // ✨const bar = reacitve({})
+    // ✨const bar = reactive({})
     // ✨const foo = Object.create(bar)
     // ✨foo.x = 1 // 此时 receiver 指向 foo，调用 toRaw(foo) 返回 foo 而不是 bar，因而不进行 trigger 操作
     // ✨这个 if 判断的意义在于：对于上述例子，foo.x = 1 的本意是对 foo 对象自身赋值，而 foo 本身并不是响应式代理对象

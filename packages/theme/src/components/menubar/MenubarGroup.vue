@@ -1,15 +1,15 @@
 <script setup lang='ts'>
-import type { NavMenuItem } from '#/types'
+import type { MenuItem } from '#/types'
 import { shallowRef } from 'vue'
 import Link from '#/components/Link.vue'
 
 const props = defineProps<{
-  items: NavMenuItem[]
+  items: MenuItem[]
 }>()
 
 interface Group {
   label?: string
-  children: NavMenuItem[]
+  children: MenuItem[]
 }
 
 const groups = shallowRef<Group[]>(buildGroups())
@@ -18,7 +18,7 @@ function buildGroups() {
   const items = props.items ?? []
 
   const groupMap: Group[] = []
-  let group: NavMenuItem[] = []
+  let group: MenuItem[] = []
 
   for (const item of items) {
     if (item.items) {
@@ -39,7 +39,7 @@ function buildGroups() {
     <div v-for="(group, index) in groups" :key="index" :class="{ 'mt-4': index !== 0 }">
       <div
         v-if="group.label"
-        class="text-sm text-brand-1 leading-8 font-600 mb-3"
+        class="text-14px text-brand-1 leading-8 font-600 mb-3"
       >
         {{ group.label }}
       </div>
@@ -58,7 +58,7 @@ function buildGroups() {
               'hover:(text-brand-3 bg-brand-3/20)',
             ]"
           >
-            <span class="text-sm text-nowrap">{{ item.text }}</span>
+            <span class="text-14px text-nowrap">{{ item.text }}</span>
           </span>
         </Link>
       </section>

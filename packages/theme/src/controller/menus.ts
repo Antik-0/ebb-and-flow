@@ -16,7 +16,7 @@ export const useSharedMenus = createSharedState(() => {
 
   const updateNodeActive = (node: MenuItem | null, value: boolean) => {
     while (node) {
-      node.acitve = value
+      node.active = value
       node = node.parent ?? null
     }
   }
@@ -56,7 +56,7 @@ function buildMenuTree(
     const node = {
       ...restProps,
       parent,
-      acitve: false
+      active: false
     } as MenuItem
 
     const link = node.link

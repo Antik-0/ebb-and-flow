@@ -22,7 +22,7 @@ watch(
       class="outline-marker"
       :style="{ translate: `0 ${marketOffset}px` }"
     ></div>
-    <div class="text-sm text-[--c-text-1] leading-8 font-600">页面导航</div>
+    <div class="text-14px text-[--c-text-1] leading-8 font-600">页面导航</div>
     <ul>
       <li
         v-for="(anchor, index) in anchors"

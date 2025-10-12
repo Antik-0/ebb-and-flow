@@ -1,12 +1,12 @@
 <script setup lang='ts'>
-import type { NavMenuItem } from '#/types'
+import type { MenuItem } from '#/types'
 import { motion } from 'motion-v'
 import Link from '#/components/Link.vue'
 import { useMenuViewCtx } from '#/controller/navbar.ts'
 import { Icon } from '#/icons'
 
 const props = defineProps<{
-  item: NavMenuItem
+  item: MenuItem
   index: number
 }>()
 
@@ -22,7 +22,7 @@ forwarItemContent(props.item, slots.content)
 <template>
   <motion.li
     class="cursor-pointer relative data-[active=true]:text-brand hover:text-brand"
-    :data-active="item.acitve"
+    :data-active="item.active"
     role="menuitem"
     layout
     @pointerenter="($event) => onMenuItemHover($event, index)"
@@ -32,16 +32,18 @@ forwarItemContent(props.item, slots.content)
       :href="item.link"
     >
       <motion.span
-        v-if="item.icon && item.acitve"
+        v-if="item.icon && item.active"
         class="text-4 mr-1 inline-flex flex-center"
         layout-id="menuitem-icon"
       >
         <Icon :icon="item.icon" />
       </motion.span>
-      <motion.span layout>{{ item.text }}</motion.span>
+      <motion.span class="text-14px leading-5" layout>
+        {{ item.text }}
+      </motion.span>
     </Link>
     <motion.span
-      v-if="item.acitve"
+      v-if="item.active"
       class="h-px inset-x-px absolute from-transparent to-transparent via-brand/70 bg-linear-to-r -bottom-px"
       layout-id="menuitem-line"
     />

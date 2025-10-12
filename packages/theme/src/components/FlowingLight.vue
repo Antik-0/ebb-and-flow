@@ -7,15 +7,14 @@
 
 <style>
 .flowing-light {
-  --width: 2px;
   --color: #67e8f9;
 
   contain: content;
   position: absolute;
   inset: 0;
   z-index: -1;
-  padding: var(--width);
-  border-radius: var(--rounded);
+  padding: 2px;
+  border-radius: 999px;
   mask-image: linear-gradient(#fff), linear-gradient(#fff);
   mask-clip: content-box, border-box;
   mask-composite: exclude;

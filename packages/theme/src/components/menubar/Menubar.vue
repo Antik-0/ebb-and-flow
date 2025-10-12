@@ -19,15 +19,20 @@ const { onMouseenter, onMouseleave } = useMenuViewControl(scope)
 
 <template>
   <nav
-    id="nav-menu"
     ref="scope"
-    class="nav-menu"
+    class="menubar"
     @pointerenter="onMouseenter"
     @pointerleave="onMouseleave"
     @pointermove="onMousemove"
   >
+    <div
+      aria-hidden="true"
+      class="menubar-background"
+      :style="{ '--offset-x': offsetX + 'px' }"
+    ></div>
+
     <menu
-      class="text-sm px-4 flex"
+      class="px-4 flex"
       role="menu"
     >
       <LayoutGroup>
@@ -43,13 +48,8 @@ const { onMouseenter, onMouseleave } = useMenuViewControl(scope)
         </MenubarItem>
       </LayoutGroup>
     </menu>
-    <MenuViewport />
 
     <FlowingLight />
-    <div
-      aria-hidden="true"
-      class="menu-background"
-      :style="{ '--offset-x': offsetX + 'px' }"
-    ></div>
+    <MenuViewport />
   </nav>
 </template>

@@ -6,7 +6,7 @@ const { avatar } = useLayoutCtx()
 
 <template>
   <button
-    aria-label="home-button"
+    aria-label="avatar"
     class="cursor-pointer drop-shadow-sm drop-shadow-color-cyan-300"
     type="button"
   >

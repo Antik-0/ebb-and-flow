@@ -1,17 +1,16 @@
 <script setup lang='ts'>
 import { useSidebarControl } from '#/controller/sidebar.ts'
-import Menu from '#/icons/Menu.vue'
 
-const { open } = useSidebarControl()
+const { isOpen, toggle } = useSidebarControl()
 </script>
 
 <template>
   <button
     aria-label="sidebar-button"
-    class="text-6 p-4 flex cursor-pointer flex-center"
+    class="flex cursor-pointer flex-center"
     type="button"
-    @click="open"
+    @click="toggle"
   >
-    <Menu />
+    <slot v-bind="{ isOpen }"></slot>
   </button>
 </template>

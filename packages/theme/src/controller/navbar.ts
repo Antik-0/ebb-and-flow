@@ -1,5 +1,5 @@
 import type { InjectionKey, MaybeRefOrGetter, ShallowRef, VNode } from 'vue'
-import type { NavMenuItem, Timer } from '#/types'
+import type { MenuItem } from '#/types'
 import { useResizeObserver } from '@repo/utils/hooks'
 import { inject, onMounted, provide, shallowRef, toValue } from 'vue'
 
@@ -25,21 +25,21 @@ export function useMenubarHover(scope: MaybeRefOrGetter<HTMLElement | null>) {
 }
 
 export interface Content {
-  item: NavMenuItem
+  item: MenuItem
   render: () => VNode[]
 }
 
-interface MenuViewContent {
+interface MenuViewContext {
   visible: ShallowRef<boolean>
   contents: ShallowRef<Content[]>
   prevHoverIndex: ShallowRef<number>
   currHoverIndex: ShallowRef<number>
   arrowOffsetX: ShallowRef<number>
-  forwarItemContent: (item: NavMenuItem, contentRender: () => VNode[]) => void
+  forwarItemContent: (item: MenuItem, contentRender: () => VNode[]) => void
   onMenuItemHover: (event: MouseEvent, index: number) => void
 }
 
-export const MenuViewCtx = Symbol('menubar') as InjectionKey<MenuViewContent>
+const MenuViewCtx = Symbol('menubar') as InjectionKey<MenuViewContext>
 
 export function useMenuViewCtx() {
   return inject(MenuViewCtx)!
@@ -49,22 +49,18 @@ export function useMenuViewControl(
   scope: MaybeRefOrGetter<HTMLElement | null>
 ) {
   const visible = shallowRef(false)
-  let timer: Timer | null = null
 
   function onMouseenter() {
     visible.value = true
-    timer && clearTimeout(timer)
   }
 
   function onMouseleave() {
-    timer = setTimeout(() => {
-      visible.value = false
-    }, 200)
+    visible.value = false
   }
 
   const contents = shallowRef<Content[]>([])
 
-  function forwarItemContent(item: NavMenuItem, contentRender: () => VNode[]) {
+  function forwarItemContent(item: MenuItem, contentRender: () => VNode[]) {
     contents.value.push({
       item,
       render: contentRender

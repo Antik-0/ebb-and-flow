@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import type { SetupContext, VNode } from 'vue'
 import type { Content as ContentRecord } from '#/controller/navbar.ts'
+import { AnimatePresence, motion } from 'motion-v'
 import { computed, h, ref, watch } from 'vue'
 import { useMenuViewCtx } from '#/controller/navbar.ts'
 
@@ -64,25 +65,41 @@ function onAnimationend(event: AnimationEvent) {
 </script>
 
 <template>
-  <div v-if="visible" class="menu-viewport" @pointermove.stop="void undefined">
-    <div class="menu-viewport__arrow">
+  <AnimatePresence>
+    <motion.div
+      v-if="visible"
+      :animate="{ y: 0 }"
+      class="menu-viewport"
+      :exit="{ opacity: 0, y: 40 }"
+      :initial="{ y: 40 }"
+      :transition="{
+        type: 'spring',
+        duration: 0.6
+      }"
+      @pointermove.stop="() => {}"
+    >
+      <div class="flex w-full justify-center">
+        <div
+          v-show="showArrow"
+          class="menu-viewport__arrow"
+          :style="{ translate: `${arrowOffsetX}px 50%` }"
+        ></div>
+      </div>
       <div
-        v-show="showArrow"
-        class="arrow"
-        :style="{ translate: `${arrowOffsetX}px 50%` }"
-      ></div>
-    </div>
-    <div class="menu-viewport__overlay" @animationend="onAnimationend">
-      <Content
-        v-for="(item, index) in contentList"
-        v-show="item.show"
-        :key="index"
-        class="menu-content"
-        :data-active="currHoverIndex === index"
-        :data-index="index"
-        :data-motion="item.motion"
-        :render="item.render"
-      />
-    </div>
-  </div>
+        class="glass-mask rounded-4 relative overflow-hidden"
+        @animationend="onAnimationend"
+      >
+        <Content
+          v-for="(item, index) in contentList"
+          v-show="item.show"
+          :key="index"
+          class="menu-content"
+          :data-active="currHoverIndex === index"
+          :data-index="index"
+          :data-motion="item.motion"
+          :render="item.render"
+        />
+      </div>
+    </motion.div>
+  </AnimatePresence>
 </template>

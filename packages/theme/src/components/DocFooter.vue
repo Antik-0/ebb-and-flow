@@ -33,7 +33,7 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
 <template>
   <footer class="mt-16">
     <div class="pb-4 flex items-center justify-between">
-      <p v-if="hasLastUpdated" class="text-sm text-[--c-text-2] leading-8 font-500">
+      <p v-if="hasLastUpdated" class="text-14px text-[--c-text-2] leading-8 font-500">
         <span>最后更新于: </span>
         <time :datetime="ISODatetime">{{ datetime }}</time>
       </p>

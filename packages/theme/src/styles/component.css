@@ -43,40 +43,25 @@
 
 /**
  * ==================================================
- * navbar
+ * menubar
  * ==================================================
  */
-.navbar-background {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-color: var(--c-bg-navbar);
-  backdrop-filter: blur(10px);
-  box-shadow:
-    0 2px 10px 1px hsl(0 0% 67% / 0.1),
-    inset 0 0 10px 4px hsl(0 0% 80% / 0.1),
-    inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
-    inset -1px -1px 4px hsl(0 0% 100% / 0.1);
-}
-
-.nav-menu {
-  --rounded: 999px;
-
+.menubar {
   isolation: isolate;
   position: relative;
-  border-radius: var(--rounded);
+  border-radius: 999px;
   box-shadow:
     0 1px 10px 0 hsl(214 93% 73% / 0.4),
     inset 0 0 40px 2px hsl(187 92% 69% / 0.1);
 }
 
-.menu-background {
-  --bg-color: color-mix(in lch, var(--c-brand-1) 20%, transparent);
+.menubar-background {
+  --bg-color: color-mix(in hsl, var(--c-brand-1) 20%, transparent);
 
   position: absolute;
   inset: 0;
   z-index: -2;
-  border-radius: var(--rounded);
+  border-radius: 999px;
   opacity: 0;
   transition: opacity ease-in 200ms;
   background: radial-gradient(
@@ -86,7 +71,7 @@
   );
 }
 
-.nav-menu:hover .menu-background {
+.menubar:hover .menubar-background {
   opacity: 1;
 }
 
@@ -102,33 +87,13 @@
 }
 
 .menu-viewport__arrow {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.arrow {
   width: 12px;
   height: 12px;
   border-radius: 4px;
-  color: hsl(0 0% 26%);
-  background: linear-gradient(45deg, transparent 50%, currentColor 50%);
   rotate: -45deg;
   translate: 0 50%;
-  transition: translate 250ms ease;
-}
-
-.menu-viewport__overlay {
-  position: relative;
-  border-radius: 16px;
-  background-color: var(--c-bg-overlay);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  box-shadow:
-    0 2px 10px 1px hsl(0 0% 67% / 0.1),
-    inset 0 0 10px 4px hsl(0 0% 80% / 0.1),
-    inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
-    inset -1px -1px 4px hsl(0 0% 100% / 0.1);
+  transition: translate 250ms ease-in;
+  background: linear-gradient(45deg, transparent 50%, hsl(0 0% 26% / 0.6) 50%);
 }
 
 .menu-content {
@@ -151,12 +116,15 @@
 .menu-content[data-motion='from-start'] {
   animation-name: enter-from-start;
 }
+
 .menu-content[data-motion='from-end'] {
   animation-name: enter-from-end;
 }
+
 .menu-content[data-motion='to-start'] {
   animation-name: exit-to-start;
 }
+
 .menu-content[data-motion='to-end'] {
   animation-name: exit-to-end;
 }
