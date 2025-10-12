@@ -15,8 +15,14 @@ const isGrouped = computed(() => !!props.item.grouped)
   <section class="sidebar-group" role="group">
     <template v-if="isGrouped">
       <div class="mb-2 flex">
-        <Icon v-if="item.icon" class="text-18px text-brand mr-2 flex h-8" :icon="item.icon" />
-        <span class="text-sm text-[--c-text-3] leading-8 font-700">{{ item.text }}</span>
+        <Icon
+          v-if="item.icon"
+          class="text-18px text-brand mr-2 flex h-8"
+          :icon="item.icon"
+        />
+        <span class="text-14px text-[--c-text-3] leading-8 font-700">
+          {{ item.text }}
+        </span>
       </div>
       <section
         v-for="(subItem, index) in item.items"

@@ -67,7 +67,7 @@ onMounted(() => {
         class="text-brand mr-2 flex h-8"
         :icon="item.icon"
       />
-      <span class="text-sm text-[--c-text-1] leading-8 font-700 flex-1 text-nowrap truncate">
+      <span class="text-14px text-[--c-text-1] leading-8 font-700 flex-1 text-nowrap truncate">
         {{ item.text }}
       </span>
       <span
@@ -94,7 +94,7 @@ onMounted(() => {
   <Link
     v-else
     class="sidebar-item"
-    :data-active="item.acitve"
+    :data-active="item.active"
     data-role="link"
     :href="item.link"
   >
@@ -106,7 +106,7 @@ onMounted(() => {
     <span
       :class="[
         'flex-1',
-        'text-(sm [--c-text-2]) leading-8 font-500',
+        'text-(14px [--c-text-2]) leading-8 font-500',
         'transition-color duration-250',
         'hover:text-brand-3'
       ]"

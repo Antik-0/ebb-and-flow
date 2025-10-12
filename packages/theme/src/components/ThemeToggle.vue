@@ -19,7 +19,7 @@ function toggle() {
     aria-label="dark-toggle"
     :class="[
       'text-5 border border-divider bg-[--c-bg-mutate]/20',
-      'flex items-center p-0.5 rounded-2xl w-12 cursor-pointer',
+      'flex items-center p-0.5 rounded-4 w-12 cursor-pointer',
     ]"
     :data-state="isDark ? 'dark' : 'light'"
     role="switch"

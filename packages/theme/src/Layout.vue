@@ -1,8 +1,8 @@
 <script setup lang='ts'>
-import { computed, provide, shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import Background from './components/Background.vue'
 import ViewportSentinel from './components/ViewportSentinel.vue'
-import { LayoutCtxKey, useLayout } from './controller/layout'
+import { provideLayoutCtx, useLayout } from './controller/layout'
 import LayoutDoc from './layout/LayoutDoc.vue'
 import LayoutHome from './layout/LayoutHome.vue'
 import LayoutPage from './layout/LayoutPage.vue'
@@ -16,7 +16,7 @@ interface Props {
   lightBackground?: string[]
 }
 
-const { layout, isMobile, isDesktop } = useLayout()
+const { layout, isMobile, isDesktop, isLargeScreen } = useLayout()
 
 const showToolPanel = shallowRef(false)
 
@@ -24,10 +24,11 @@ function onSentinelChange(visible: boolean) {
   showToolPanel.value = !visible
 }
 
-provide(LayoutCtxKey, {
+provideLayoutCtx({
   avatar: props.avatar,
   isMobile,
   isDesktop,
+  isLargeScreen,
   showToolPanel: computed(() => showToolPanel.value)
 })
 </script>

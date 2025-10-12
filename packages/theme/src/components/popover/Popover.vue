@@ -1,16 +1,17 @@
 <script setup lang='ts'>
 import type { ComponentPublicInstance } from 'vue'
 import type { Timer } from '#/types'
-import type { PopoverProps } from './types.ts'
+import type { PopoverProps } from '.'
 import { useEventListener } from '@repo/utils/hooks'
 import { motion } from 'motion-v'
-import { computed, h, onMounted, ref } from 'vue'
+import { computed, h, onMounted, ref, watch } from 'vue'
 import TeleportToBody from '#/components/TeleportToBody.vue'
 import { usePopoverMotion, usePopoverState } from './state.ts'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   trigger: 'click',
   placement: 'bottom',
+  maskClosable: true,
   fixed: false,
   width: 150,
   offset: 10,
@@ -31,16 +32,33 @@ const { posX, posY, tRef, vRef, onViewReady, onViewMounted } =
 onViewReady(startOpenMotion)
 
 const visible = ref(false)
+const model = defineModel<boolean>('open')
 
 function handleOpen() {
+  if (visible.value === true) return
   visible.value = true
+  model.value = true
   startOpenMotion()
 }
 
 async function handleClose() {
+  if (visible.value === false) return
   await startCloseMotion()
   visible.value = false
+  model.value = false
 }
+
+watch(
+  () => model.value,
+  open => {
+    if (open) {
+      handleOpen()
+    } else {
+      handleClose()
+    }
+  },
+  { immediate: true }
+)
 
 let timer: Timer | null = null
 const clearTimer = () => timer && clearTimeout(timer)
@@ -97,7 +115,9 @@ function onClickOutside(event: PointerEvent) {
 
 const { addEventListener } = useEventListener()
 onMounted(() => {
-  addEventListener(window, 'pointerdown', onClickOutside)
+  if (props.maskClosable) {
+    addEventListener(window, 'pointerdown', onClickOutside)
+  }
 })
 </script>
 

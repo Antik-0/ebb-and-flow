@@ -1,6 +1,6 @@
 import type { ComponentPublicInstance, ShallowRef } from 'vue'
 import type { Fn } from '#/types'
-import type { DomOrComponentRef, PopoverProps } from './types.ts'
+import type { DomOrComponentRef, PopoverProps } from '.'
 import { animate, useMotionValue } from 'motion-v'
 import { ref, shallowRef } from 'vue'
 
@@ -129,7 +129,7 @@ export function usePopoverState(props: Required<PopoverProps>) {
 
   const readyCallbacks: Fn[] = []
 
-  function onViewMounted() {
+  async function onViewMounted() {
     const { placement, offset, fixed } = props
 
     const [tEle, vEle] = [unref(tRef), unref(vRef)]

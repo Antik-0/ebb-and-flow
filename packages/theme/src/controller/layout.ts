@@ -1,7 +1,7 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import { useMediaQuery } from '@repo/utils/hooks'
 import { useData } from 'vitepress'
-import { computed, inject } from 'vue'
+import { computed, inject, provide } from 'vue'
 
 export function useLayout() {
   const { page } = useData()
@@ -11,10 +11,13 @@ export function useLayout() {
   const isDesktop = useMediaQuery('(width >= 1024px)')
   const isMobile = computed(() => !isDesktop.value)
 
+  const isLargeScreen = useMediaQuery('(width >= 1536px)')
+
   return {
     layout,
     isMobile,
-    isDesktop
+    isDesktop,
+    isLargeScreen
   }
 }
 
@@ -22,11 +25,16 @@ interface LayoutContext {
   avatar: string
   isMobile: ComputedRef<boolean>
   isDesktop: ComputedRef<boolean>
+  isLargeScreen: ComputedRef<boolean>
   showToolPanel: ComputedRef<boolean>
 }
 
-export const LayoutCtxKey = Symbol('layout') as InjectionKey<LayoutContext>
+const LayoutCtx = Symbol('layout') as InjectionKey<LayoutContext>
 
 export function useLayoutCtx() {
-  return inject(LayoutCtxKey)!
+  return inject(LayoutCtx)!
+}
+
+export function provideLayoutCtx(context: LayoutContext) {
+  provide(LayoutCtx, context)
 }

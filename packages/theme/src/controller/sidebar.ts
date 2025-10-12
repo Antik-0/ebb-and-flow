@@ -1,4 +1,6 @@
-import { computed, shallowRef } from 'vue'
+import type { SidebarItem } from '#/types'
+import { computed, ref, shallowRef } from 'vue'
+import { useSharedMenus } from './menus'
 
 const isOpen = shallowRef(false)
 
@@ -21,4 +23,14 @@ export function useSidebarControl() {
     close,
     toggle
   }
+}
+
+export function useSidebar() {
+  const { menus } = useSharedMenus()
+
+  const sidebarMenus = ref<SidebarItem[]>(
+    menus.value.filter(item => item.link !== '/')
+  )
+
+  return { menus: sidebarMenus }
 }

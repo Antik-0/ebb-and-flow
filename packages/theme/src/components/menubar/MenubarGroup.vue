@@ -53,7 +53,7 @@ function buildGroups() {
         >
           <span
             :class="[
-              'text-[--c-text-1] p-3 rounded-lg block',
+              'text-[--c-text-1] p-3 rounded-2 block',
               'transition-colors duration-250 ease',
               'hover:(text-brand-3 bg-brand-3/20)',
             ]"

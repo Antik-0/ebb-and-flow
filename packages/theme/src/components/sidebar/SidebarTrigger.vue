@@ -6,11 +6,13 @@ const { isOpen, toggle } = useSidebarControl()
 
 <template>
   <button
+    :aria-checked="isOpen"
     aria-label="sidebar-button"
     class="flex cursor-pointer flex-center"
+    role="switch"
     type="button"
     @click="toggle"
   >
-    <slot v-bind="{ isOpen }"></slot>
+    <slot></slot>
   </button>
 </template>

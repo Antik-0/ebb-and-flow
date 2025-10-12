@@ -10,14 +10,14 @@ import SocialLinks from '#/components/SocialLinks.vue'
 import Sidebar from '#/components/sidebar/Sidebar.vue'
 import SidebarTrigger from '#/components/sidebar/SidebarTrigger.vue'
 import ThemeToggle from '#/components/ThemeToggle.vue'
-import ToolPanel from '#/components/toolPanel/ToolPanel.vue'
+import ToolPanel from '#/components/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { useOutline } from '#/controller/outline.ts'
 import { Menu } from '#/icons'
 
 useOutline()
 
-const { isDesktop, isMobile, showToolPanel } = useLayoutCtx()
+const { isDesktop, isMobile, isLargeScreen, showToolPanel } = useLayoutCtx()
 
 const router = useRouter()
 
@@ -78,8 +78,12 @@ function backToHome() {
 
         <div id="bottom-sentry" class="h-px inset-x-0 bottom-px absolute"></div>
       </main>
+
+      <div v-if="isLargeScreen" class="pl-2">
+        <ToolPanel aside />
+      </div>
     </div>
   </div>
 
-  <ToolPanel />
+  <ToolPanel v-if="!isLargeScreen" />
 </template>

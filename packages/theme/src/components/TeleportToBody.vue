@@ -11,7 +11,6 @@ onMounted(async () => {
   if (!document.getElementById(props.id)) {
     const div = document.createElement('div')
     div.setAttribute('id', props.id)
-    div.setAttribute('aria-hidden', 'true')
     document.body.append(div)
     await nextTick()
   }
