@@ -4,6 +4,7 @@ import Avatar from '#/components/Avatar.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import DocFooter from '#/components/DocFooter.vue'
 import DocOutline from '#/components/DocOutline.vue'
+import ImageViewer from '#/components/ImageViewer.vue'
 import Menubar from '#/components/menubar/Menubar.vue'
 import Navbar from '#/components/Navbar.vue'
 import SocialLinks from '#/components/SocialLinks.vue'
@@ -86,4 +87,5 @@ function backToHome() {
   </div>
 
   <ToolPanel v-if="!isLargeScreen" />
+  <ImageViewer />
 </template>
