@@ -126,3 +126,14 @@
     transform: rotate3d(0, 1, 0, -1turn);
   }
 }
+
+@keyframes motion-image {
+  from {
+    opacity: 0;
+    clip-path: inset(0 40% round 20px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 round 0);
+  }
+}

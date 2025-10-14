@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { nextTick, onBeforeUnmount, onMounted, shallowRef, toValue } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, toValue } from 'vue'
 
 type AddEventListener = {
   <E extends keyof WindowEventMap>(
@@ -32,7 +32,7 @@ type AddEventListener = {
 }
 
 interface EventEntry {
-  el: Element
+  el: MaybeRefOrGetter<Element | null>
   type: string
   listener: (...args: any[]) => void
   options: AddEventListenerOptions
@@ -40,7 +40,7 @@ interface EventEntry {
 
 export function useEventListener() {
   const controller = new AbortController()
-  const eventQueue = shallowRef<EventEntry[]>([])
+  const eventQueue: EventEntry[] = []
 
   const addEventListener: AddEventListener = (
     el: any,
@@ -49,14 +49,13 @@ export function useEventListener() {
     options: AddEventListenerOptions = {}
   ) => {
     const element = toValue(el)
-    const _options = {
-      signal: controller.signal,
-      ...options
-    }
     if (element) {
-      element.addEventListener(type, listener, _options)
+      element.addEventListener(type, listener, {
+        signal: controller.signal,
+        ...options
+      })
     } else {
-      eventQueue.value.push({ el, type, listener, options })
+      eventQueue.push({ el, type, listener, options })
     }
   }
 
@@ -66,15 +65,16 @@ export function useEventListener() {
 
   onMounted(async () => {
     await nextTick()
-    for (const { el, type, listener, options } of eventQueue.value) {
+    for (const { el, type, listener, options } of eventQueue) {
       const element = toValue(el)
       if (!element) continue
+
       element.addEventListener(type, listener, {
         signal: controller.signal,
         ...options
       })
     }
-    eventQueue.value.length = 0
+    eventQueue.length = 0
   })
 
   onBeforeUnmount(clearEventListener)

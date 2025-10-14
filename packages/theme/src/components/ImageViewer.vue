@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { useAnimation } from '@repo/utils/hooks'
 import { useData } from 'vitepress'
 import {
   nextTick,
@@ -9,13 +10,9 @@ import {
   watchEffect
 } from 'vue'
 
-const props = defineProps<{
-  container?: HTMLElement
-}>()
-
 let controller: AbortController | null = null
 
-function removeEvents() {
+function removeImageEvent() {
   controller?.abort()
 }
 
@@ -29,9 +26,8 @@ async function handlePreview(event: MouseEvent) {
   triggerDOM.value = image
   previewURL.value = image.src
 
-  const { scaleX, scaleY, offsetX, offsetY } = computedMotionState(image)
-
-  enterEffect.setKeyframes([
+  const { scaleX, scaleY, offsetX, offsetY } = computeEffectState(image)
+  enterEffect.value.setKeyframes([
     { translate: `${offsetX}px ${offsetY}px`, scale: `${scaleX} ${scaleY}` },
     { translate: '0 0', scale: '1 1' }
   ])
@@ -39,7 +35,7 @@ async function handlePreview(event: MouseEvent) {
   handleOpen()
 }
 
-function computedMotionState(image: HTMLImageElement) {
+function computeEffectState(image: HTMLImageElement) {
   const { naturalWidth, naturalHeight } = image
   const { clientWidth, clientHeight } = document.documentElement
   const rect = image.getBoundingClientRect()
@@ -72,12 +68,12 @@ const { frontmatter } = useData()
 
 onMounted(() => {
   watchEffect(() => {
-    removeEvents()
+    removeImageEvent()
 
     const { imageViewerOpen = true } = frontmatter.value
     if (imageViewerOpen === false) return
 
-    const container = props.container ?? document.getElementById('content')
+    const container = document.getElementById('content')
     const imageList = container?.querySelectorAll('img') ?? []
 
     controller = new AbortController()
@@ -85,59 +81,48 @@ onMounted(() => {
       element.addEventListener('click', handlePreview, {
         signal: controller.signal
       })
+      element.classList.add('motion-image')
     }
   })
 })
 
 onBeforeMount(() => {
-  removeEvents()
+  removeImageEvent()
 })
 
-let enterEffect: KeyframeEffect
-let enterAnimation: Animation
-let leaveAnimation: Animation
+const effectOption: KeyframeEffectOptions = {
+  duration: 400,
+  easing: 'ease-in-out'
+}
+
+const [enterAnimation, enterEffect] = useAnimation(
+  pictureDOM,
+  null,
+  effectOption
+)
+
+const [leaveAnimation] = useAnimation(
+  pictureDOM,
+  [{ opacity: '1' }, { opacity: '0' }],
+  effectOption,
+  {
+    onFinish() {
+      show.value = false
+      triggerDOM.value?.removeAttribute('data-hidden')
+    }
+  }
+)
 
 async function handleOpen() {
   show.value = true
-  triggerDOM.value?.style.setProperty('opacity', '0')
+  triggerDOM.value?.setAttribute('data-hidden', 'true')
   await nextTick()
-  enterAnimation.play()
+  enterAnimation.value.play()
 }
 
 function handleClose() {
-  leaveAnimation?.play()
+  leaveAnimation.value.play()
 }
-
-function onLeaveMotionEnd() {
-  show.value = false
-  triggerDOM.value?.style.removeProperty('opacity')
-}
-
-onMounted(() => {
-  const target = pictureDOM.value!
-
-  const effectOption: KeyframeEffectOptions = {
-    duration: 600,
-    easing: 'ease-in-out'
-  }
-
-  enterEffect = new KeyframeEffect(target, null, effectOption)
-  enterAnimation = new Animation(enterEffect)
-
-  const leaveEffect = new KeyframeEffect(
-    target,
-    [{ opacity: '1' }, { opacity: '0' }],
-    effectOption
-  )
-  leaveAnimation = new Animation(leaveEffect)
-  leaveAnimation.addEventListener('finish', onLeaveMotionEnd)
-})
-
-onBeforeMount(() => {
-  leaveAnimation?.removeEventListener('finish', onLeaveMotionEnd)
-  enterAnimation = null as any
-  leaveAnimation = null as any
-})
 </script>
 
 <template>

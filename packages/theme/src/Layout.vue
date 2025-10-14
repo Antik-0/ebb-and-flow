@@ -1,8 +1,8 @@
 <script setup lang='ts'>
-import { computed, shallowRef } from 'vue'
+import { computed, provide, shallowRef } from 'vue'
 import Background from './components/Background.vue'
 import ViewportSentinel from './components/ViewportSentinel.vue'
-import { provideLayoutCtx, useLayout } from './controller/layout'
+import { LayoutCtx, useLayout } from './controller/layout'
 import LayoutDoc from './layout/LayoutDoc.vue'
 import LayoutHome from './layout/LayoutHome.vue'
 import LayoutPage from './layout/LayoutPage.vue'
@@ -24,7 +24,7 @@ function onSentinelChange(visible: boolean) {
   showToolPanel.value = !visible
 }
 
-provideLayoutCtx({
+provide(LayoutCtx, {
   avatar: props.avatar,
   isMobile,
   isDesktop,

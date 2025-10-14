@@ -1,7 +1,7 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import { useMediaQuery } from '@repo/utils/hooks'
 import { useData } from 'vitepress'
-import { computed, inject, provide } from 'vue'
+import { computed, inject } from 'vue'
 
 export function useLayout() {
   const { page } = useData()
@@ -29,12 +29,8 @@ interface LayoutContext {
   showToolPanel: ComputedRef<boolean>
 }
 
-const LayoutCtx = Symbol('layout') as InjectionKey<LayoutContext>
+export const LayoutCtx = Symbol('layout') as InjectionKey<LayoutContext>
 
 export function useLayoutCtx() {
   return inject(LayoutCtx)!
-}
-
-export function provideLayoutCtx(context: LayoutContext) {
-  provide(LayoutCtx, context)
 }

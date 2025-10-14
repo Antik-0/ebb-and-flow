@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { nextTick, onBeforeUnmount, onMounted, toValue } from 'vue'
 
-type Callback = (entry: ResizeObserverEntry, target: Element) => void
+type Callback = (entry: ResizeObserverEntry) => void
 
 let observer: ResizeObserver | null = null
 let subscriber = 0
@@ -10,10 +10,9 @@ const observeMap = new WeakMap<Element, Set<Callback>>()
 function createResizeObserver() {
   const observer = new ResizeObserver(entries => {
     for (const entry of entries) {
-      const target = entry.target
-      const cbs = observeMap.get(target) ?? []
+      const cbs = observeMap.get(entry.target) ?? []
       for (const cb of cbs) {
-        cb(entry, target)
+        cb(entry)
       }
     }
   })

@@ -1,4 +1,4 @@
-export * from './lodash.ts'
+export { debounce, throttle } from './debounce.ts'
 
 /**
  * 判断是否支持 ViewTranstion API
@@ -33,4 +33,13 @@ export function range(min: number, max?: number) {
   if (min > max) return []
   const length = max - min + 1
   return Array.from({ length }).map((_, i) => min + i)
+}
+
+export function tryOnIdle(callback: () => void) {
+  const idle = window.requestIdleCallback
+  if (typeof idle === 'function') {
+    window.requestIdleCallback(callback, { timeout: 2000 })
+  } else {
+    window.requestAnimationFrame(callback)
+  }
 }

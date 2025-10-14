@@ -5,13 +5,11 @@ packages:
 
 catalog:
   '@biomejs/biome': ^2.2.4
-  '@types/lodash-es': ^4.17.12
   '@types/node': ^24.5.2
   '@vueuse/core': ^13.9.0
   eslint: ^9.36.0
   iconify-icon: ^3.0.1
   lint-staged: ^16.2.1
-  lodash-es: ^4.17.21
   motion-v: ^1.7.1
   ora: ^9.0.0
   picocolors: ^1.1.1

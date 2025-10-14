@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useMotionFrame } from '@repo/utils/hooks'
+import { useAnimationFrame } from '@repo/utils/hooks'
 import { nextTick, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 
 const props = defineProps<{
@@ -129,7 +129,7 @@ const spinner = shallowRef('|')
 const spinners = ['|', '/', '-', '\\', '|', '/', '-', '\\']
 let spinnerIndex = 0
 
-useMotionFrame(() => {
+useAnimationFrame(() => {
   spinnerIndex = (spinnerIndex + 1) % spinners.length
   spinner.value = spinners[spinnerIndex]!
 }, 200)

@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { useFPS } from '@repo/utils/hooks'
 import { shallowRef, watch } from 'vue'
 import DocOutline from '#/components/DocOutline.vue'
 import { Popover } from '#/components/popover'
@@ -6,6 +7,7 @@ import { useLayoutCtx } from '#/controller/layout.ts'
 import { useSidebarControl } from '#/controller/sidebar.ts'
 import { BookOpen, PanelLeftClose, PanelLeftOpen } from '#/icons'
 import BackToTop from './BackToTop.vue'
+import ScrollIndicator from './ScrollIndicator.vue'
 import SidebarTrigger from './sidebar/SidebarTrigger.vue'
 
 defineProps<{
@@ -34,6 +36,8 @@ function onOutlineClick(event: MouseEvent) {
     outlineOpened.value = false
   }
 }
+
+const { fps } = useFPS()
 </script>
 
 <template>
@@ -75,6 +79,17 @@ function onOutlineClick(event: MouseEvent) {
           <DocOutline />
         </div>
       </Popover>
+
+
+      <div class="text-6 text-teal flex size-10 flex-center">
+        <ScrollIndicator />
+      </div>
+
+      <div class="text-teal flex-col size-10 items-center justify-between">
+        <span class="text-3 leading-[1]">fps</span>
+        <span class="text-14px leading-6">{{ fps }}</span>
+      </div>
+
 
       <BackToTop />
     </div>

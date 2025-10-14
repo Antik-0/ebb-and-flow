@@ -55,3 +55,20 @@ iconify-icon {
     inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
     inset -1px -1px 4px hsl(0 0% 100% / 0.1);
 }
+
+.motion-image {
+  transition: opacity 200ms ease-in;
+}
+
+.motion-image[data-hidden='true'] {
+  opacity: 0;
+}
+
+@supports (animation-timeline: view(block)) {
+  .motion-image {
+    animation-name: motion-image;
+    animation-timing-function: ease-in-out;
+    animation-timeline: view(block);
+    animation-range: entry 0% cover 40%;
+  }
+}
