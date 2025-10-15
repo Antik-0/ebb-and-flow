@@ -15,7 +15,8 @@ import ToolPanel from '#/components/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { Menu } from '#/icons'
 
-const { isDesktop, isMobile, isLargeScreen, showToolPanel } = useLayoutCtx()
+const { isDesktop, isMobile, isLargeScreen, showToolPanel, avatar } =
+  useLayoutCtx()
 
 const router = useRouter()
 
@@ -36,14 +37,23 @@ function backToHome() {
         </SidebarTrigger>
         <CubeAvatar
           v-else
+          :avatar="avatar"
           class="mx-auto"
+          :style="{
+            '--size': '40px',
+            '--rounded': '4px'
+          }"
           @click="backToHome"
         />
       </div>
     </template>
 
     <template #menu>
-      <Avatar v-if="isMobile" @click="backToHome" />
+      <Avatar
+        v-if="isMobile"
+        :avatar="avatar"
+        @click="backToHome"
+      />
       <Menubar v-else />
     </template>
 

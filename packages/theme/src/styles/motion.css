@@ -128,12 +128,6 @@
   }
 }
 
-@keyframes cube-rotate {
-  to {
-    transform: rotate3d(0, 1, 0, -1turn);
-  }
-}
-
 @keyframes motion-image {
   from {
     opacity: 0;

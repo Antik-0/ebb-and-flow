@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLayoutCtx } from '#/controller/layout.ts'
-
-const { avatar } = useLayoutCtx()
+defineProps<{
+  avatar: string
+}>()
 </script>
 
 <template>
