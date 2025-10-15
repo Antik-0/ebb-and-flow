@@ -94,41 +94,23 @@
 
 <style>
 .sun {
-  animation: sun-rotate 10s linear 0.2s infinite;
+  rotate: var(--m-angle);
+  animation: motion-angle 10s linear 0.2s infinite;
 }
 
 .sun-body {
-  animation: sun-body 0.4s ease forwards;
+  --value-from: 10;
+  --value-to: 6;
+  r: var(--m-value);
+  animation: motion-value 1s ease forwards;
 }
 
 .sun-light {
-  animation: sun-light 0.2s ease forwards;
+  --m-value: 2;
+  --value-from: 2;
+  --value-to: 0;
+  stroke-dashoffset: var(--m-value);
+  animation: motion-value 0.2s ease forwards;
   animation-delay: var(--delay);
-}
-
-@keyframes sun-body {
-  from {
-    r: 10
-  }
-
-  to {
-    r: 6
-  }
-}
-
-@keyframes sun-light {
-  from {
-    stroke-dashoffset: 2;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes sun-rotate {
-  to {
-    rotate: 1turn;
-  }
 }
 </style>

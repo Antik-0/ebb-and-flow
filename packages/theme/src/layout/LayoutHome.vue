@@ -71,7 +71,7 @@ function handleEnter() {
       <CubeAvatar size="large" />
     </div>
 
-    <div class="inset-0 fixed -z-1">
+    <div class="flex items-end inset-0 fixed -z-1">
       <div class="tidewater"></div>
     </div>
   </div>
@@ -79,6 +79,9 @@ function handleEnter() {
 
 <style>
 .site-title {
+  --length-from: -100%;
+  --length-to: 0%;
+
   display: inline-flex;
   font-size: 48px;
   line-height: 60px;
@@ -89,7 +92,8 @@ function handleEnter() {
   background-clip: text;
   background-size: 100% 200%;
   background-repeat: no-repeat;
-  animation: title-tide 2s ease-out;
+  background-position: 100% var(--m-length);
+  animation: motion-length 2s ease-out 2 alternate;
 }
 
 .site-title[data-motion='fade'] {
@@ -119,19 +123,22 @@ function handleEnter() {
   z-index: -1;
   border-radius: 999px;
   box-shadow: 0 0 16px 2px #12998d;
-  animation: breathing 4s ease-in-out infinite;
+  opacity: var(--m-opacity);
+  animation: motion-opacity 2s infinite alternate;
 }
 
 .tidewater {
-  position: absolute;
-  top: 50%;
+  --value-to: 1.6;
+
   width: 100vw;
-  height: 100vh;
+  height: 50vh;
   background: radial-gradient(
     circle,
     hsl(183 30% 75% / 0.1) 20%,
     transparent 80%
   );
-  animation: tidewater 6s ease-in-out infinite;
+  transform-origin: bottom center;
+  scale: 1 var(--m-value);
+  animation: motion-value 3s infinite alternate;
 }
 </style>

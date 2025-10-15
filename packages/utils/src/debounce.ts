@@ -1,6 +1,7 @@
 interface DebounceOptions {
   maxWait?: number
-  immediate?: boolean
+  leading?: boolean
+  trailing?: boolean
 }
 
 export function debounce<T extends (...args: any[]) => void>(
@@ -9,9 +10,10 @@ export function debounce<T extends (...args: any[]) => void>(
   options: DebounceOptions = {}
 ) {
   const maxWait = options?.maxWait
-  const immediate = options?.immediate ?? false
+  const leading = options?.leading ?? false
+  const trailing = options?.trailing ?? true
 
-  let timerId: number | undefined
+  let timerId: NodeJS.Timeout | number | undefined
   let lastArgs: any[] = []
   let lastInvokeTime!: number
   let lastTriggerTime!: number
@@ -21,7 +23,7 @@ export function debounce<T extends (...args: any[]) => void>(
 
     const timeSinceLastTrigger = time - lastTriggerTime
     if (timeSinceLastTrigger >= timeout) {
-      invokeFunc(time)
+      trailing && invokeFunc(time)
       timerId = undefined
       return
     }
@@ -45,7 +47,7 @@ export function debounce<T extends (...args: any[]) => void>(
     if (!timerId) {
       lastInvokeTime = time
       lastTriggerTime = time
-      immediate && invokeFunc(time)
+      leading && invokeFunc(time)
       timerId = setTimeout(timerExpired, timeout)
     }
 

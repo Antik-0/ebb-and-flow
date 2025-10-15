@@ -13,10 +13,7 @@ import SidebarTrigger from '#/components/sidebar/SidebarTrigger.vue'
 import ThemeToggle from '#/components/ThemeToggle.vue'
 import ToolPanel from '#/components/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
-import { useOutline } from '#/controller/outline.ts'
 import { Menu } from '#/icons'
-
-useOutline()
 
 const { isDesktop, isMobile, isLargeScreen, showToolPanel } = useLayoutCtx()
 
@@ -76,8 +73,6 @@ function backToHome() {
             </div>
           </aside>
         </div>
-
-        <div id="bottom-sentry" class="h-px inset-x-0 bottom-px absolute"></div>
       </main>
 
       <div v-if="isLargeScreen" class="pl-2">

@@ -6,7 +6,6 @@ packages:
 catalog:
   '@biomejs/biome': ^2.2.4
   '@types/node': ^24.5.2
-  '@vueuse/core': ^13.9.0
   eslint: ^9.36.0
   iconify-icon: ^3.0.1
   lint-staged: ^16.2.1

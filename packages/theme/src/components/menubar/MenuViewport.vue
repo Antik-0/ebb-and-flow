@@ -86,7 +86,7 @@ function onAnimationend(event: AnimationEvent) {
         ></div>
       </div>
       <div
-        class="glass-mask rounded-4 relative overflow-hidden"
+        class="mask-glass rounded-4 relative overflow-hidden"
         @animationend="onAnimationend"
       >
         <Content

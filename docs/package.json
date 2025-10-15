@@ -13,7 +13,6 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "@repo/motion": "workspace:*",
     "@repo/theme": "workspace:*",
     "vitepress": "catalog:",
     "vue": "catalog:"

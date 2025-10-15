@@ -1,25 +1,25 @@
 <script setup lang='ts'>
 import { shallowRef, watch } from 'vue'
-import { useOutlineCtx } from '#/controller/outline.ts'
+import { useOutline } from '#/controller/outline.ts'
 
-const { anchors, activeIndex } = useOutlineCtx()
+const { anchors, activeIndex } = useOutline()
 
 const marketOffset = shallowRef(0)
 
 watch(
   activeIndex,
   index => {
-    marketOffset.value = (index + 1) * 32 + 6
+    marketOffset.value = (index + 1) * 32
   },
   { flush: 'post' }
 )
 </script>
 
 <template>
-  <nav aria-label="outline" class="pl-4 border-l-2 border-divider relative">
+  <nav aria-label="outline" class="pl-4 border-l-2 border-divider relative isolate">
     <div
       v-show="activeIndex !== -1"
-      class="outline-marker"
+      class="bg-brand-3/20 h-8 transition-transform duration-200 inset-x-0 absolute -ml-[2px] -z-1"
       :style="{ translate: `0 ${marketOffset}px` }"
     ></div>
     <div class="text-14px text-[--c-text-1] leading-8 font-600">页面导航</div>

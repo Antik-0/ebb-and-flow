@@ -12,8 +12,8 @@
       stroke-linejoin="round"
       stroke-width="1"
     >
-      <path class="moon-star" d="M13 4h1.5M13 4h-1.5M13 4v1.5M13 4v-1.5" style="--delay: 0.6s" />
-      <path class="moon-star" d="M19 11h1.5M19 11h-1.5M19 11v1.5M19 11v-1.5" style="--delay: 1.2s" />
+      <path class="moon-star" d="M13 4h1.5M13 4h-1.5M13 4v1.5M13 4v-1.5" style="--delay: 1s" />
+      <path class="moon-star" d="M19 11h1.5M19 11h-1.5M19 11v1.5M19 11v-1.5" style="--delay: 2s" />
       <path class="moon-star" d="M19 4h1.5M19 4h-1.5M19 4v1.5M19 4v-1.5" style="--delay: 0" />
     </g>
     <path
@@ -31,42 +31,13 @@
 
 <style>
 .moon-body {
-  animation: moon-body 0.8s ease-in 0.6s forwards;
+  fill-opacity: var(--m-value);
+  animation: motion-value 0.8s ease 0.6s forwards;
 }
 
 .moon-star {
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: moon-star 4s ease infinite;
+  opacity: var(--m-opacity);
+  animation: motion-opacity 4s ease infinite;
   animation-delay: var(--delay);
-}
-
-@keyframes moon-body {
-  from {
-    fill-opacity: 0;
-  }
-
-  to {
-    fill-opacity: 1;
-  }
-}
-
-@keyframes moon-star {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-
-  20%,
-  80% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(0);
-  }
 }
 </style>

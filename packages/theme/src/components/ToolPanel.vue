@@ -20,6 +20,8 @@ const { isOpen: sidebarOpened, close: closeSidebar } = useSidebarControl()
 
 const outlineOpened = shallowRef(false)
 
+watch(isMobile, () => (outlineOpened.value = false))
+
 watch(
   () => showToolPanel.value,
   value => {
@@ -47,7 +49,7 @@ const { fps } = useFPS()
     :data-show="showToolPanel"
   >
     <div class="rounded-5 flex flex-col gap-1">
-      <SidebarTrigger class="tool-button">
+      <SidebarTrigger class="tool-button" title="侧边导航">
         <PanelLeftOpen v-if="sidebarOpened" />
         <PanelLeftClose v-else />
       </SidebarTrigger>
@@ -66,6 +68,7 @@ const { fps } = useFPS()
             aria-label="outline-button"
             class="tool-button"
             role="switch"
+            title="本地导航"
             type="button"
           >
             <BookOpen />
@@ -73,7 +76,7 @@ const { fps } = useFPS()
         </template>
 
         <div
-          class="glass-mask p-4 rounded-4 min-w-60"
+          class="mask-glass p-4 rounded-4 min-w-60"
           @click="onOutlineClick"
         >
           <DocOutline />
@@ -94,6 +97,6 @@ const { fps } = useFPS()
       <BackToTop />
     </div>
 
-    <div class="glass-mask rounded-5 inset-0 absolute -z-1"></div>
+    <div class="mask-glass rounded-5 inset-0 absolute -z-1"></div>
   </div>
 </template>

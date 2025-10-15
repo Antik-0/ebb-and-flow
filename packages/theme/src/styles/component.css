@@ -184,8 +184,14 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  opacity: 0.4;
   overflow: hidden auto;
   scrollbar-width: none;
+  transition: opacity 600ms;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .outline-item {
@@ -198,17 +204,6 @@
   &:is(:hover, .is-active) {
     color: var(--c-brand-3);
   }
-}
-
-.outline-marker {
-  position: absolute;
-  top: 0;
-  left: -1px;
-  width: 2px;
-  height: 20px;
-  background-color: var(--c-brand-3);
-  transform-origin: center;
-  transition: translate 100ms linear;
 }
 
 /**

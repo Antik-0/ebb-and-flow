@@ -1,8 +1,6 @@
 <script setup lang='ts'>
-import { useAnimation, useScroll } from '@repo/utils/hooks'
+import { useScroll } from '@repo/utils/hooks'
 import { computed } from 'vue'
-
-// 用 animation 不要用 useScroll
 
 const { progress } = useScroll()
 

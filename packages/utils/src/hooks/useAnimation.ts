@@ -1,5 +1,11 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { onBeforeUnmount, onMounted, shallowRef, toValue } from 'vue'
+import {
+  onBeforeUnmount,
+  onMounted,
+  shallowRef,
+  toValue,
+  watchEffect
+} from 'vue'
 
 interface AnimationOptions {
   timeline?: AnimationTimeline | null
@@ -18,13 +24,17 @@ export function useAnimation(
   const { timeline, onFinish } = animationOptions ?? {}
 
   onMounted(() => {
-    const element = toValue(target)
-    effect.value = new KeyframeEffect(element, keyframes, effectOptions)
-    animation.value = new Animation(effect.value, timeline)
+    watchEffect(() => {
+      const element = toValue(target)
+      if (element === null) return
 
-    if (onFinish) {
-      animation.value.addEventListener('finish', onFinish)
-    }
+      effect.value = new KeyframeEffect(element, keyframes, effectOptions)
+      animation.value = new Animation(effect.value, timeline)
+
+      if (onFinish) {
+        animation.value.addEventListener('finish', onFinish)
+      }
+    })
   })
 
   onBeforeUnmount(() => {

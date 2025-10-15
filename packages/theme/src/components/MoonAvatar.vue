@@ -24,13 +24,19 @@ defineProps<{
 }
 
 .moon-bg {
+  --value-from: 1;
+  --value-to: 1.2;
+  --opacity-from: 0.4;
   position: absolute;
   inset: 0;
   z-index: 10;
   border-radius: 999px;
   background: linear-gradient(45deg, #00dc82, #36e4da, #0047e1);
   filter: blur(80px);
-  animation: breathing 6s ease-in-out infinite;
+  scale: var(--m-value);
+  opacity: var(--m-opacity);
+  animation: 4s infinite alternate;
+  animation-name: motion-value, motion-opacity;
 }
 
 .moon-mask {

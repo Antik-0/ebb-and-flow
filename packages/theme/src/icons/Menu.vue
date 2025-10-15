@@ -23,17 +23,11 @@
 
 <style>
 .menu-line {
-  animation: menu-line 0.2s ease forwards;
+  --m-value: 16;
+  --value-from: 16;
+  --value-to: 0;
+  stroke-dashoffset: var(--m-value);
+  animation: motion-value 0.2s ease forwards;
   animation-delay: var(--delay, 0);
-}
-
-@keyframes menu-line {
-  from {
-    stroke-dashoffset: 16;
-  }
-
-  to {
-    stroke-dashoffset: 0;
-  }
 }
 </style>

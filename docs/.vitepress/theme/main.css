@@ -8,19 +8,19 @@ html {
   --transition-duration: 2s;
 }
 
-html[data-slide='exit']::view-transition-old(layout) {
+html[data-home='exit']::view-transition-old(layout) {
   animation: slide-down var(--transition-duration) ease reverse;
 }
 
-html[data-slide='exit']::view-transition-new(layout) {
+html[data-home='exit']::view-transition-new(layout) {
   animation: slide-up var(--transition-duration) ease;
 }
 
-html[data-slide='enter']::view-transition-old(layout) {
+html[data-home='enter']::view-transition-old(layout) {
   animation: slide-up var(--transition-duration) ease reverse;
 }
 
-html[data-slide='enter']::view-transition-new(layout) {
+html[data-home='enter']::view-transition-new(layout) {
   animation: slide-down var(--transition-duration) ease;
 }
 
@@ -42,21 +42,4 @@ html[data-slide='enter']::view-transition-new(layout) {
   to {
     transform: translateY(0);
   }
-}
-
-/*  Toggole Appearance View Transition */
-::view-transition-old(appearance),
-::view-transition-new(appearance) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(appearance),
-.dark::view-transition-new(appearance) {
-  z-index: 1;
-}
-
-::view-transition-new(appearance),
-.dark::view-transition-old(appearance) {
-  z-index: 9999;
 }

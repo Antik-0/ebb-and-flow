@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
-    "@vueuse/core": "catalog:",
     "vue": "catalog:"
   }
 }

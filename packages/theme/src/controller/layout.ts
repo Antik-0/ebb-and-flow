@@ -6,7 +6,9 @@ import { computed, inject } from 'vue'
 export function useLayout() {
   const { page } = useData()
 
-  const layout = computed(() => page.value.frontmatter.layout ?? 'doc')
+  const layout = computed<'home' | 'doc'>(
+    () => page.value.frontmatter.layout ?? 'doc'
+  )
 
   const isDesktop = useMediaQuery('(width >= 1024px)')
   const isMobile = computed(() => !isDesktop.value)

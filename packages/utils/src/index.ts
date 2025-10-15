@@ -35,6 +35,9 @@ export function range(min: number, max?: number) {
   return Array.from({ length }).map((_, i) => min + i)
 }
 
+/**
+ * 尝试在线程空闲的时候运行回调
+ */
 export function tryOnIdle(callback: () => void) {
   const idle = window.requestIdleCallback
   if (typeof idle === 'function') {

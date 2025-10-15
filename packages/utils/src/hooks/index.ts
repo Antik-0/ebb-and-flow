@@ -1,4 +1,3 @@
-export { onClickOutside } from '@vueuse/core'
 export * from './useAnimation.ts'
 export * from './useAnimationFrame.ts'
 export * from './useEventListener.ts'

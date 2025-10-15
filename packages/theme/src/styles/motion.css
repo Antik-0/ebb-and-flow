@@ -1,59 +1,66 @@
+@property --m-value {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
 @property --m-color {
   syntax: '<color>';
   inherits: false;
-  initial-value: #fff;
+  initial-value: transparent;
 }
 
-@keyframes breathing {
-  0%,
-  100% {
-    opacity: 0.4;
-    scale: 1;
-  }
-  50% {
-    opacity: 1;
-    scale: 1.2;
-  }
+@property --m-length {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 0;
 }
 
-@keyframes title-tide {
-  0%,
-  100% {
-    background-position: 100% -100%;
-  }
-  50% {
-    background-position: 100% 0%;
-  }
+@property --m-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
 }
 
-@keyframes title-fade {
+@property --m-opacity {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+@keyframes motion-value {
   from {
-    clip-path: circle(0 at center);
+    --m-value: var(--value-from, 0);
   }
   to {
-    clip-path: circle(120px at center);
+    --m-value: var(--value-to, 1);
   }
 }
 
-@keyframes tidewater {
-  0%,
-  10% {
-    transform: scale(0);
+@keyframes motion-length {
+  from {
+    --m-length: var(--length-from, 0);
   }
-
-  50% {
-    transform: scale(1.6);
-  }
-
-  90%,
-  100% {
-    transform: scale(0);
+  to {
+    --m-length: var(--length-to, 0);
   }
 }
 
-@keyframes flowing-light {
+@keyframes motion-angle {
+  from {
+    --m-angle: var(--angle-from, 0deg);
+  }
   to {
-    rotate: var(--angle-to);
+    --m-angle: var(--angle-to, 360deg);
+  }
+}
+
+@keyframes motion-opacity {
+  from {
+    --m-opacity: var(--opacity-from, 0);
+  }
+  to {
+    --m-opacity: var(--opacity-to, 1);
   }
 }
 
@@ -135,5 +142,14 @@
   to {
     opacity: 1;
     clip-path: inset(0 0 round 0);
+  }
+}
+
+@keyframes title-fade {
+  from {
+    clip-path: circle(0 at center);
+  }
+  to {
+    clip-path: circle(120px at center);
   }
 }

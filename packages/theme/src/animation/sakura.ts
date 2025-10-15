@@ -1,5 +1,4 @@
-import { random, range } from '@repo/utils'
-import { onWindowResize } from './observer'
+import { random, range, tryOnIdle } from '@repo/utils'
 
 type RangeNumber = [number, number]
 
@@ -88,8 +87,8 @@ class Sakura {
   #source: ImageBitmap
 
   constructor(options: SakuraOptions) {
-    const cw = canvas!.width
-    const ch = canvas!.height
+    const cw = canvas.width
+    const ch = canvas.height
 
     this.createTime = options.createTime
     const sakura = options.source
@@ -181,8 +180,8 @@ class Sakura {
 
 function generateSakuraStartPoint(): [number, number] {
   const { startXRange, startYRange } = SakuraConfig
-  const w = canvas!.width
-  const h = canvas!.height
+  const w = canvas.width
+  const h = canvas.height
 
   let [x, y] = [random(w * startXRange[0], w * startXRange[1]), 0]
   if (x >= w) {
@@ -223,10 +222,10 @@ async function createSakuraImageList(source: string) {
   return scaleLevels.map(createImage).filter(item => item !== null)
 }
 
-let canvas: HTMLCanvasElement | null = null
-let canvasCtx: CanvasRenderingContext2D = undefined!
+let canvas!: HTMLCanvasElement
+let canvasCtx!: CanvasRenderingContext2D
 let lastCreateTime: DOMHighResTimeStamp | undefined
-let cancled = false
+let isCancled = false
 
 let sakuraImageList: ImageBitmap[] = []
 const sakuraList: Set<Sakura> = new Set()
@@ -260,9 +259,7 @@ function clearSakura(sakura: Sakura) {
 }
 
 function animate(timestamp: DOMHighResTimeStamp) {
-  if (cancled) {
-    return
-  }
+  if (isCancled) return
 
   if (!lastCreateTime) {
     const n = random(...SakuraConfig.initCount)
@@ -276,7 +273,7 @@ function animate(timestamp: DOMHighResTimeStamp) {
     lastCreateTime = timestamp
   }
 
-  canvasCtx.clearRect(0, 0, canvas!.width, canvas!.height)
+  canvasCtx.clearRect(0, 0, canvas.width, canvas.height)
 
   for (const sakura of sakuraList.values()) {
     if (sakura.active) {
@@ -286,57 +283,41 @@ function animate(timestamp: DOMHighResTimeStamp) {
     }
   }
 
-  requestAnimationFrame(animate)
+  window.requestAnimationFrame(animate)
 }
 
-interface SakuraAnimationOptions {
-  source: string
-  style: (CSSStyle: CSSStyleDeclaration) => void
-}
+export function createSakuraAnimation(
+  source: string,
+  canvasElement?: HTMLCanvasElement,
+  options: Partial<SakuraConfig> = {}
+) {
+  Object.assign(SakuraConfig, options)
 
-export function sakuraAnimation(options: SakuraAnimationOptions) {
-  const { source, style: setStyle } = options
+  function start(canvasEle?: HTMLCanvasElement) {
+    const _canvas = canvasEle ?? canvasElement
+    if (!_canvas) return
 
-  let cleanupResizeCallback: (() => void) | null = null
-
-  const run = () => {
-    if (canvas !== null) {
-      return
-    }
-    cancled = false
-
-    canvas = document.createElement('canvas')
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-    setStyle(canvas.style)
-    document.body.append(canvas)
-
+    canvas = _canvas
     canvasCtx = canvas.getContext('2d')!
+    isCancled = false
 
-    queueMicrotask(async () => {
-      if (sakuraImageList.length === 0) {
-        // 预先生成不同尺寸樱花粒子
-        sakuraImageList = await createSakuraImageList(source)
-      }
-
-      requestAnimationFrame(animate)
-      cleanupResizeCallback = onWindowResize(() => {
-        canvas!.width = window.innerWidth
-        canvas!.height = window.innerHeight
-      })
+    tryOnIdle(async () => {
+      // 预先生成不同尺寸樱花粒子
+      sakuraImageList = await createSakuraImageList(source)
+      window.requestAnimationFrame(animate)
     })
   }
 
-  const cleanup = () => {
-    canvas?.remove()
-    canvas = null
-    lastCreateTime = undefined
-    sakuraList.clear()
+  function stop() {
+    canvasCtx?.clearRect(0, 0, canvas.width, canvas.height)
+    canvas = undefined as any
+    canvasCtx = undefined as any
+    isCancled = true
     sakuraImageList = []
+    sakuraList.clear()
     waitingClearList.length = 0
-    cancled = true
-    cleanupResizeCallback?.()
+    lastCreateTime = undefined
   }
 
-  return { run, cleanup }
+  return { start, stop }
 }

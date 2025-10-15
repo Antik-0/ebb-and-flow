@@ -1,5 +1,4 @@
-import { random, range } from '@repo/utils'
-import { onWindowResize } from './observer'
+import { random, range, tryOnIdle } from '@repo/utils'
 
 type RangeNumber = [number, number]
 
@@ -39,7 +38,7 @@ interface MeteorConfig {
   yieldCount: RangeNumber
 }
 
-const meteorConfig: MeteorConfig = {
+const MeteorConfig: MeteorConfig = {
   startXRange: [0.2, 1.4],
   startYRange: [0, 0.2],
   endYRange: [0.4, 0.7],
@@ -72,12 +71,12 @@ class Meteor {
   public state: MeteorState
 
   constructor() {
-    const { angle, length, velocityRange, endYRange } = meteorConfig
+    const { angle, length, velocityRange, endYRange } = MeteorConfig
 
     const [startX, startY] = generateMeteorStartPoint()
     this.x = startX
     this.y = startY
-    const h = canvas!.height
+    const h = canvas.height
     this.fadeY = random(h * endYRange[0], h * endYRange[1])
 
     const velocity = random(...velocityRange)
@@ -151,9 +150,9 @@ class Meteor {
 }
 
 function generateMeteorStartPoint(): [number, number] {
-  const { startXRange, startYRange } = meteorConfig
-  const w = canvas!.width
-  const h = canvas!.height
+  const { startXRange, startYRange } = MeteorConfig
+  const w = canvas.width
+  const h = canvas.height
 
   let [x, y] = [random(w * startXRange[0], w * startXRange[1]), 0]
   if (x >= w) {
@@ -164,21 +163,21 @@ function generateMeteorStartPoint(): [number, number] {
   return [x, y]
 }
 
-let canvas: HTMLCanvasElement | null = null
-let canvasCtx: CanvasRenderingContext2D = undefined!
+let canvas: HTMLCanvasElement
+let canvasCtx: CanvasRenderingContext2D
 let lastCreateTime: DOMHighResTimeStamp | undefined
-let cancled = false
+let isCancled = false
 
 const meteorList: Set<Meteor> = new Set()
 const waitingClearList: Meteor[] = []
 
-function generateMeteors(n: number) {
+function generateMeteor(n: number) {
   for (const _ of range(n)) {
     meteorList.add(new Meteor())
   }
 }
 
-function clearMeteors(meteor: Meteor) {
+function clearMeteor(meteor: Meteor) {
   waitingClearList.push(meteor)
   if (waitingClearList.length === 1) {
     queueMicrotask(() => {
@@ -191,73 +190,60 @@ function clearMeteors(meteor: Meteor) {
 }
 
 function animate(timestamp: DOMHighResTimeStamp) {
-  if (cancled) {
-    return
-  }
+  if (isCancled) return
 
   if (!lastCreateTime) {
-    generateMeteors(random(...meteorConfig.initCount))
     lastCreateTime = timestamp
   }
 
-  if (timestamp - lastCreateTime >= meteorConfig.interval) {
-    generateMeteors(random(...meteorConfig.yieldCount))
+  if (timestamp - lastCreateTime >= MeteorConfig.interval) {
+    generateMeteor(random(...MeteorConfig.yieldCount))
     lastCreateTime = timestamp
   }
 
-  canvasCtx.clearRect(0, 0, canvas!.width, canvas!.height)
+  canvasCtx.clearRect(0, 0, canvas.width, canvas.height)
   for (const meteor of meteorList.values()) {
     if (meteor.state === MeteorState.Inactive) {
-      clearMeteors(meteor)
+      clearMeteor(meteor)
     } else {
       meteor.animate(canvasCtx)
     }
   }
 
-  requestAnimationFrame(animate)
+  window.requestAnimationFrame(animate)
 }
 
-interface MeteorAnimationOptions {
-  style: (CSSStyle: CSSStyleDeclaration) => void
-}
+export function createMeteorAnimation(
+  canvasElement?: HTMLCanvasElement,
+  options: Partial<MeteorConfig> = {}
+) {
+  Object.assign(MeteorConfig, options)
 
-export function meteorAnimation(options: MeteorAnimationOptions) {
-  const { style: setStyle } = options
+  function start(canvasEle?: HTMLCanvasElement) {
+    const _canvas = canvasEle ?? canvasElement
+    if (!_canvas) return
 
-  let cleanupResizeCallback: (() => void) | null = null
-
-  const run = () => {
-    if (canvas !== null) {
-      return
-    }
-    cancled = false
-
-    canvas = document.createElement('canvas')
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-    setStyle(canvas.style)
-    document.body.append(canvas)
-
+    canvas = _canvas
     canvasCtx = canvas.getContext('2d')!
+    isCancled = false
 
-    queueMicrotask(() => {
-      requestAnimationFrame(animate)
-      cleanupResizeCallback = onWindowResize(() => {
-        canvas!.width = window.innerWidth
-        canvas!.height = window.innerHeight
-      })
+    console.log('????? 开始了')
+
+    tryOnIdle(() => {
+      generateMeteor(random(...MeteorConfig.initCount))
+      window.requestAnimationFrame(animate)
     })
   }
 
-  const cleanup = () => {
-    canvas?.remove()
-    canvas = null
-    lastCreateTime = undefined
+  function stop() {
+    canvasCtx?.clearRect(0, 0, canvas.width, canvas.height)
+    canvas = undefined as any
+    canvasCtx = undefined as any
+    isCancled = true
     meteorList.clear()
     waitingClearList.length = 0
-    cancled = true
-    cleanupResizeCallback?.()
+    lastCreateTime = undefined
   }
 
-  return { run, cleanup }
+  return { start, stop }
 }

@@ -1,14 +1,7 @@
-import type { InjectionKey, ShallowRef } from 'vue'
+import { throttle } from '@repo/utils'
+import { useEventListener } from '@repo/utils/hooks'
 import { useData } from 'vitepress'
-import {
-  inject,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  provide,
-  shallowRef,
-  watch
-} from 'vue'
+import { onMounted, shallowRef, watch } from 'vue'
 
 interface Anchor {
   text: string
@@ -17,83 +10,34 @@ interface Anchor {
   offsetTop: number
 }
 
-interface OutlineContext {
-  anchors: ShallowRef<Anchor[]>
-  activeIndex: ShallowRef<number>
+function calcOffsetTop(node: HTMLElement) {
+  let offsetTop = 0
+  while (node) {
+    offsetTop += node.offsetTop
+    node = node.offsetParent as HTMLElement
+  }
+  return offsetTop
 }
 
-const OutlineCtx = Symbol() as InjectionKey<OutlineContext>
-
 export function useOutline() {
-  let observer: IntersectionObserver
-
   const anchors = shallowRef<Anchor[]>([])
   const activeIndex = shallowRef(-1)
-
-  function createOutlineAnchors() {
-    const content = document.getElementById('content')
-    if (!content) return
-
-    observer.disconnect()
-    const elements = content.querySelectorAll<HTMLElement>('h2,h3')
-
-    const data: Anchor[] = []
-    for (const element of elements) {
-      const offsetTop = calcOffsetTop(element)
-      data.push({
-        text: element.id,
-        to: `#${element.id}`,
-        level: Number(element.tagName.at(-1)) - 2,
-        offsetTop
-      })
-
-      observer.observe(element)
-    }
-    const bottomSentry = document.getElementById('bottom-sentry')
-    observer.observe(bottomSentry!)
-
-    anchors.value = data
-  }
-
-  function calcOffsetTop(node: HTMLElement) {
-    let offsetTop = 0
-    while (node) {
-      offsetTop += node.offsetTop
-      node = node.offsetParent as HTMLElement
-    }
-    return offsetTop
-  }
 
   const { page } = useData()
 
   watch(page, createOutlineAnchors, { flush: 'post' })
 
-  onMounted(async () => {
-    await nextTick()
-    createObserver()
-    createOutlineAnchors()
-  })
+  const { addEventListener } = useEventListener()
 
-  onBeforeUnmount(() => {
-    observer.disconnect()
-    observer = null as any
-  })
+  const computeActivedAnchor = throttle(() => {
+    const root = document.documentElement
+    const scrollTop = root.scrollTop
+    const scrollHeight = root.scrollHeight
 
-  function createObserver() {
-    observer = new IntersectionObserver(computeActivedAnchor, {
-      rootMargin: '-200px 0px 0px 0px'
-    })
-  }
-
-  function computeActivedAnchor(entries: IntersectionObserverEntry[]) {
-    for (const entry of entries) {
-      if (entry.target.id === 'bottom-sentry' && entry.isIntersecting) {
-        activeIndex.value = anchors.value.length - 1
-        return
-      }
+    if (scrollTop + window.innerHeight + 10 > scrollHeight) {
+      activeIndex.value = anchors.value.length - 1
+      return
     }
-
-    const scrollTop = document.documentElement.scrollTop
 
     let activated = -1
     for (const [index, anchor] of anchors.value.entries()) {
@@ -105,11 +49,38 @@ export function useOutline() {
     }
 
     activeIndex.value = activated
+  }, 200)
+
+  onMounted(() => {
+    addEventListener(window, 'scroll', computeActivedAnchor)
+    createOutlineAnchors()
+  })
+
+  function createOutlineAnchors() {
+    window.requestAnimationFrame(() => {
+      const content = document.getElementById('content')
+      if (!content) {
+        anchors.value = []
+        activeIndex.value = 0
+        return
+      }
+
+      const elements = content.querySelectorAll<HTMLElement>('h2,h3')
+
+      const data: Anchor[] = []
+      for (const element of elements) {
+        const offsetTop = calcOffsetTop(element)
+        data.push({
+          text: element.id,
+          to: `#${element.id}`,
+          level: Number(element.tagName.at(-1)) - 2,
+          offsetTop
+        })
+      }
+
+      anchors.value = data
+    })
   }
 
-  provide(OutlineCtx, { anchors, activeIndex })
-}
-
-export function useOutlineCtx() {
-  return inject(OutlineCtx)!
+  return { anchors, activeIndex }
 }

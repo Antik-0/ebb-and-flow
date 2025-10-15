@@ -67,7 +67,7 @@ const nodePath = computed(() => {
 
         <slot name="end-action"></slot>
       </div>
-      <div aria-hidden="true" class="glass-mask bg-[--c-bg-navbar] inset-0 absolute -z-1"></div>
+      <div aria-hidden="true" class="mask-glass bg-[--c-bg-navbar] inset-0 absolute -z-1"></div>
     </header>
   </div>
 </template>

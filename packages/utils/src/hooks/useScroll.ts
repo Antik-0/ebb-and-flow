@@ -33,6 +33,8 @@ export function useScroll() {
   const { onWindowResize } = useResizeObserver()
 
   const animationFrame = () => {
+    if (!stl || !stl.currentTime) return
+
     progress.value = (stl.currentTime as any).value / 100
     y.value = offsetTop * progress.value
     window.requestAnimationFrame(animationFrame)
