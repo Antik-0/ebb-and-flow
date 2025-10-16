@@ -27,7 +27,7 @@ async function handlePreview(event: MouseEvent) {
   previewURL.value = image.src
 
   const { scaleX, scaleY, offsetX, offsetY } = computeEffectState(image)
-  enterEffect.value.setKeyframes([
+  enterEffect.value?.setKeyframes([
     { translate: `${offsetX}px ${offsetY}px`, scale: `${scaleX} ${scaleY}` },
     { translate: '0 0', scale: '1 1' }
   ])
@@ -95,17 +95,16 @@ const effectOption: KeyframeEffectOptions = {
   easing: 'ease-in-out'
 }
 
-const [enterAnimation, enterEffect] = useAnimation(
-  pictureDOM,
-  null,
-  effectOption
-)
+const { animation: enterAnimation, effect: enterEffect } = useAnimation(null, {
+  target: pictureDOM,
+  effect: effectOption
+})
 
-const [leaveAnimation] = useAnimation(
-  pictureDOM,
+const { animation: leaveAnimation } = useAnimation(
   [{ opacity: '1' }, { opacity: '0' }],
-  effectOption,
   {
+    target: pictureDOM,
+    effect: effectOption,
     onFinish() {
       show.value = false
       triggerDOM.value?.removeAttribute('data-hidden')
@@ -117,11 +116,11 @@ async function handleOpen() {
   show.value = true
   triggerDOM.value?.setAttribute('data-hidden', 'true')
   await nextTick()
-  enterAnimation.value.play()
+  enterAnimation.value?.play()
 }
 
 function handleClose() {
-  leaveAnimation.value.play()
+  leaveAnimation.value?.play()
 }
 </script>
 

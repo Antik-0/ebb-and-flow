@@ -65,7 +65,7 @@ function backToHome() {
     </template>
   </Navbar>
 
-  <Sidebar />
+  <Sidebar :glass-mask="isDesktop" />
 
   <div class="pt-[--navbar-height]">
     <div class="layout-doc">

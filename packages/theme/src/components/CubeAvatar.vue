@@ -21,7 +21,6 @@ defineProps<{
 .cube-avatar {
   --size: 100px;
   --rounded: 10px;
-
   isolation: isolate;
   perspective: 400px;
   cursor: pointer;
@@ -38,8 +37,7 @@ defineProps<{
 }
 
 .cube-face {
-  --m-length: calc(var(--size) / 2);
-
+  --m-value-u: calc(var(--size) / 2);
   grid-area: 1 / 1;
   opacity: 0.6;
   border-radius: var(--rounded);
@@ -48,30 +46,30 @@ defineProps<{
   background-size: cover;
   filter: drop-shadow(0 0 var(--rounded) var(--c-brand-1));
   transition: 400ms ease-in;
-  transition-property: --m-length, opacity;
+  transition-property: --m-value-u, opacity;
 }
 
 .cube-face[data-state='front'] {
-  transform: translateZ(var(--m-length));
+  transform: translateZ(var(--m-value-u));
 }
 
 .cube-face[data-state='back'] {
-  transform: rotateY(180deg) translateZ(var(--m-length));
+  transform: rotateY(180deg) translateZ(var(--m-value-u));
 }
 
 .cube-face[data-state='top'] {
-  transform: rotateX(90deg) translateZ(var(--m-length));
+  transform: rotateX(90deg) translateZ(var(--m-value-u));
 }
 
 .cube-face[data-state='bottom'] {
-  transform: rotateX(-90deg) translateZ(var(--m-length));
+  transform: rotateX(-90deg) translateZ(var(--m-value-u));
 }
 
 .cube-face[data-state='left'] {
-  transform: rotateY(-90deg) translateZ(var(--m-length));
+  transform: rotateY(-90deg) translateZ(var(--m-value-u));
 }
 
 .cube-face[data-state='right'] {
-  transform: rotateY(90deg) translateZ(var(--m-length));
+  transform: rotateY(90deg) translateZ(var(--m-value-u));
 }
 </style>

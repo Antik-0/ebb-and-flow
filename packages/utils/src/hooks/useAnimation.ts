@@ -1,46 +1,45 @@
 import type { MaybeRefOrGetter } from 'vue'
-import {
-  onBeforeUnmount,
-  onMounted,
-  shallowRef,
-  toValue,
-  watchEffect
-} from 'vue'
+import { onBeforeUnmount, onMounted, shallowRef, toValue, watch } from 'vue'
 
-interface AnimationOptions {
+interface Options {
+  target?: MaybeRefOrGetter<Element | null>
+  effect?: KeyframeEffectOptions
   timeline?: AnimationTimeline | null
   onFinish?: (event: AnimationPlaybackEvent) => void
 }
 
 export function useAnimation(
-  target: MaybeRefOrGetter<Element | null>,
   keyframes: Keyframe[] | PropertyIndexedKeyframes | null,
-  effectOptions?: KeyframeEffectOptions,
-  animationOptions?: AnimationOptions
+  options: Options = {}
 ) {
-  const animation = shallowRef<Animation>(undefined!)
-  const effect = shallowRef<KeyframeEffect>(undefined!)
+  const scope = shallowRef<Element | null>(null)
+  const effect = shallowRef<KeyframeEffect>()
+  const animation = shallowRef<Animation>()
 
-  const { timeline, onFinish } = animationOptions ?? {}
+  const { effect: effectOptions, timeline, onFinish } = options
+
+  watch(
+    scope,
+    () => {
+      if (!effect.value) return
+      effect.value.target = scope.value
+    },
+    { flush: 'sync' }
+  )
 
   onMounted(() => {
-    watchEffect(() => {
-      const element = toValue(target)
-      if (element === null) return
+    const target = toValue(options.target) ?? null
+    target && (scope.value = target)
+    effect.value = new KeyframeEffect(target, keyframes, effectOptions)
+    animation.value = new Animation(effect.value, timeline)
 
-      effect.value = new KeyframeEffect(element, keyframes, effectOptions)
-      animation.value = new Animation(effect.value, timeline)
-
-      if (onFinish) {
-        animation.value.addEventListener('finish', onFinish)
-      }
-    })
+    onFinish && animation.value.addEventListener('finish', onFinish)
   })
 
   onBeforeUnmount(() => {
-    animation.value.cancel()
-    onFinish && animation.value.removeEventListener('finish', onFinish)
+    animation.value?.cancel()
+    onFinish && animation.value?.removeEventListener('finish', onFinish)
   })
 
-  return [animation, effect] as const
+  return { scope, animation, effect }
 }

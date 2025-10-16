@@ -11,7 +11,7 @@ watch(
   index => {
     marketOffset.value = (index + 1) * 32
   },
-  { flush: 'post' }
+  { flush: 'post', immediate: true }
 )
 </script>
 

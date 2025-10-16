@@ -3,6 +3,7 @@ import type { SetupContext, VNode } from 'vue'
 import type { Content as ContentRecord } from '#/controller/navbar.ts'
 import { AnimatePresence, motion } from 'motion-v'
 import { computed, h, ref, watch } from 'vue'
+import GlassMask from '#/components/GlassMask.vue'
 import { useMenuViewCtx } from '#/controller/navbar.ts'
 
 interface ContentProps {
@@ -85,20 +86,23 @@ function onAnimationend(event: AnimationEvent) {
           :style="{ translate: `${arrowOffsetX}px 50%` }"
         ></div>
       </div>
-      <div
-        class="mask-glass rounded-4 relative overflow-hidden"
-        @animationend="onAnimationend"
-      >
-        <Content
-          v-for="(item, index) in contentList"
-          v-show="item.show"
-          :key="index"
-          class="menu-content"
-          :data-active="currHoverIndex === index"
-          :data-index="index"
-          :data-motion="item.motion"
-          :render="item.render"
-        />
+      <div class="relative isolate">
+        <div
+          class="rounded-4 relative overflow-hidden"
+          @animationend="onAnimationend"
+        >
+          <Content
+            v-for="(item, index) in contentList"
+            v-show="item.show"
+            :key="index"
+            class="menu-content"
+            :data-active="currHoverIndex === index"
+            :data-index="index"
+            :data-motion="item.motion"
+            :render="item.render"
+          />
+        </div>
+        <GlassMask class="rounded-4 inset-0 absolute -z-1" />
       </div>
     </motion.div>
   </AnimatePresence>

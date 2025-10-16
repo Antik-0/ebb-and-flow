@@ -13,7 +13,7 @@ defineProps<{
 
 const { frontmatter } = useData()
 
-const titleMotion = shallowRef('tide')
+const titleAnimating = shallowRef(true)
 const taglineMotion = shallowRef('')
 
 const router = useRouter()
@@ -30,8 +30,8 @@ function handleEnter() {
       <h1 class="mt-4 py-8 text-center w-full">
         <span
           class="site-title"
-          :data-motion="titleMotion"
-          @animationend="titleMotion = 'fade'"
+          :data-animating="titleAnimating"
+          @animationend="titleAnimating = false"
         >
           {{ frontmatter.author }}
         </span>
@@ -82,9 +82,6 @@ function handleEnter() {
 
 <style>
 .site-title {
-  --length-from: -100%;
-  --length-to: 0%;
-
   display: inline-flex;
   font-size: 48px;
   line-height: 60px;
@@ -92,20 +89,18 @@ function handleEnter() {
   letter-spacing: 10px;
   color: transparent;
   background-image: linear-gradient(135deg, #12998d, #d5e6ff);
+  background-size: cover;
   background-clip: text;
-  background-size: 100% 200%;
-  background-repeat: no-repeat;
-  background-position: 100% var(--m-length);
-  animation: motion-length 2s ease-out 2 alternate;
 }
 
-.site-title[data-motion='fade'] {
-  animation: title-fade 2s ease-out;
+.site-title[data-animating='true'] {
+  --value-u-to: 120px;
+  clip-path: circle(var(--m-value-u) at center);
+  animation: motion-value-u 2s ease-out;
 }
 
 .tagline {
   --m-color: #b9e4f8;
-
   font-weight: 600;
   line-height: 2;
   color: var(--m-color);
@@ -113,7 +108,6 @@ function handleEnter() {
 
 .tagline[data-motion='fade'] {
   --m-color: #12998d;
-
   color: transparent;
   background: linear-gradient(to right, var(--m-color) 10%, #b9e4f8);
   background-clip: text;
@@ -121,13 +115,12 @@ function handleEnter() {
 }
 
 .entry-button {
-  --length-from: 0;
-  --length-to: -25%;
+  --value-u-to: -25%;
   position: absolute;
   z-index: -1;
-  translate: 0 var(--m-length);
-  transition: transform 400ms ease-in;
-  animation: motion-length 1s linear infinite alternate;
+  translate: 0 var(--m-value-u);
+  transition: transform 400ms ease-out;
+  animation: motion-value-u 1s linear infinite alternate;
 }
 
 .entry-background {
@@ -142,7 +135,7 @@ function handleEnter() {
 
 .cube-motion:hover {
   .cube-face {
-    --m-length: 100px;
+    --m-value-u: 100px;
   }
 
   .cube-face[data-state='top'] {
@@ -153,11 +146,15 @@ function handleEnter() {
     animation-play-state: paused;
     transform: translateY(-90px);
   }
+
+  svg {
+    rotate: y var(--m-angle);
+    animation: motion-angle 2s linear infinite;
+  }
 }
 
 .tidewater {
   --value-to: 1.6;
-
   width: 100vw;
   height: 50vh;
   background: radial-gradient(

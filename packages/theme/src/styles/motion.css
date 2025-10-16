@@ -4,13 +4,7 @@
   initial-value: 0;
 }
 
-@property --m-color {
-  syntax: '<color>';
-  inherits: false;
-  initial-value: transparent;
-}
-
-@property --m-length {
+@property --m-value-u {
   syntax: '<length-percentage>';
   inherits: false;
   initial-value: 0;
@@ -28,6 +22,12 @@
   initial-value: 1;
 }
 
+@property --m-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
 @keyframes motion-value {
   from {
     --m-value: var(--value-from, 0);
@@ -37,12 +37,12 @@
   }
 }
 
-@keyframes motion-length {
+@keyframes motion-value-u {
   from {
-    --m-length: var(--length-from, 0);
+    --m-value-u: var(--value-u-from, 0);
   }
   to {
-    --m-length: var(--length-to, 0);
+    --m-value-u: var(--value-u-to, 0);
   }
 }
 
@@ -136,14 +136,5 @@
   to {
     opacity: 1;
     clip-path: inset(0 0 round 0);
-  }
-}
-
-@keyframes title-fade {
-  from {
-    clip-path: circle(0 at center);
-  }
-  to {
-    clip-path: circle(120px at center);
   }
 }

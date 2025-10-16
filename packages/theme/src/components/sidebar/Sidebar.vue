@@ -2,8 +2,13 @@
 import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { ref, useTemplateRef, watch } from 'vue'
+import GlassMask from '#/components/GlassMask.vue'
 import { useSidebar, useSidebarControl } from '#/controller/sidebar.ts'
 import SidebarGroup from './SidebarGroup.vue'
+
+defineProps<{
+  glassMask?: boolean
+}>()
 
 const { isOpen, close } = useSidebarControl()
 
@@ -66,10 +71,19 @@ addEventListener(
           :item="item"
         />
       </div>
-      <div class="bg-[--c-bg-sidebar] w-100 inset-y-0 right-0 absolute -z-1"></div>
+      <div
+        class="sidebar-background"
+        :data-glass-mask="glassMask"
+      >
+        <GlassMask
+          v-if="glassMask"
+          class="inset-0 absolute"
+          style="--size: contain"
+        />
+      </div>
     </motion.aside>
     <div
-      class="bg-black/40 inset-0 absolute z-10"
+      class="bg-black/20 inset-0 absolute z-10"
       @click="close"
     ></div>
   </div>

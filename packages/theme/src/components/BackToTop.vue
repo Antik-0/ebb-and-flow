@@ -1,17 +1,19 @@
 <script setup lang='ts'>
 import { useAnimation } from '@repo/utils/hooks'
-import { useTemplateRef } from 'vue'
 import { Rocket } from '#/icons'
 
-const scope = useTemplateRef('scope')
-const [animation] = useAnimation(
-  scope,
-  [{ translate: '0 20px' }, { translate: '0 -40px' }],
-  { duration: 1000, easing: 'cubic-bezier(0.6, -0.28, 0.74, 0.05)' }
+const { animation, scope } = useAnimation(
+  [{ translate: '0 10px' }, { translate: '0 -100px' }],
+  {
+    effect: {
+      duration: 1000,
+      easing: 'cubic-bezier(0.6, -0.28, 0.74, 0.05)'
+    }
+  }
 )
 
 function backToTop() {
-  animation.value.play()
+  animation.value?.play()
   document.documentElement.scrollIntoView()
 }
 </script>

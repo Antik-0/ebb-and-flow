@@ -7,6 +7,7 @@ import { useLayoutCtx } from '#/controller/layout.ts'
 import { useSidebarControl } from '#/controller/sidebar.ts'
 import { BookOpen, PanelLeftClose, PanelLeftOpen } from '#/icons'
 import BackToTop from './BackToTop.vue'
+import GlassMask from './GlassMask.vue'
 import ScrollIndicator from './ScrollIndicator.vue'
 import SidebarTrigger from './sidebar/SidebarTrigger.vue'
 
@@ -57,6 +58,7 @@ const { fps } = useFPS()
       <Popover
         v-if="isMobile"
         v-model:open="outlineOpened"
+        :keep-alive="true"
         :mask-closable="false"
         :offset="20"
         placement="left"
@@ -76,10 +78,11 @@ const { fps } = useFPS()
         </template>
 
         <div
-          class="mask-glass p-4 rounded-4 min-w-60"
+          class="p-4 min-w-60 relative isolate"
           @click="onOutlineClick"
         >
           <DocOutline />
+          <GlassMask class="rounded-4 inset-0 absolute -z-1" />
         </div>
       </Popover>
 
@@ -93,10 +96,8 @@ const { fps } = useFPS()
         <span class="text-14px leading-6">{{ fps }}</span>
       </div>
 
-
       <BackToTop />
     </div>
-
-    <div class="mask-glass rounded-5 inset-0 absolute -z-1"></div>
+    <GlassMask class="rounded-5 inset-0 absolute -z-1" />
   </div>
 </template>

@@ -52,8 +52,9 @@ export function useOutline() {
   }, 200)
 
   onMounted(() => {
-    addEventListener(window, 'scroll', computeActivedAnchor)
     createOutlineAnchors()
+    computeActivedAnchor()
+    addEventListener(window, 'scroll', computeActivedAnchor)
   })
 
   function createOutlineAnchors() {
