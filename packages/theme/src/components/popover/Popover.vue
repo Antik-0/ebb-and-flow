@@ -3,19 +3,20 @@ import type { ComponentPublicInstance } from 'vue'
 import type { Timer } from '#/types'
 import type { PopoverProps } from '.'
 import { useEventListener } from '@repo/utils/hooks'
-import { motion } from 'motion-v'
-import { computed, h, onMounted, ref, watch } from 'vue'
+import { computed, h, onMounted, watch } from 'vue'
 import TeleportToBody from '#/components/TeleportToBody.vue'
-import { usePopoverMotion, usePopoverState } from './state.ts'
+import { usePopoverState } from './state.ts'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   trigger: 'click',
   placement: 'bottom',
   maskClosable: true,
+  keepAlive: false,
   fixed: false,
   width: 150,
   offset: 10,
-  closeDelay: 200
+  closeDelay: 200,
+  onClose: () => {}
 })
 
 const slots = defineSlots<{
@@ -23,29 +24,19 @@ const slots = defineSlots<{
   trigger(): any[]
 }>()
 
-const { opacity, translateY, animating, startOpenMotion, startCloseMotion } =
-  usePopoverMotion()
-
-const { posX, posY, tRef, vRef, onViewReady, onViewMounted } =
+const { isActive, show, visible, tRef, vRef, translate, open, close } =
   usePopoverState(props)
 
-onViewReady(startOpenMotion)
-
-const visible = ref(false)
 const model = defineModel<boolean>('open')
 
-function handleOpen() {
-  if (visible.value === true) return
-  visible.value = true
+const handleOpen = () => {
   model.value = true
-  startOpenMotion()
+  open()
 }
 
-async function handleClose() {
-  if (visible.value === false) return
-  await startCloseMotion()
-  visible.value = false
+const handleClose = () => {
   model.value = false
+  close()
 }
 
 watch(
@@ -56,39 +47,40 @@ watch(
     } else {
       handleClose()
     }
-  },
-  { immediate: true }
+  }
 )
 
 let timer: Timer | null = null
 const clearTimer = () => timer && clearTimeout(timer)
 
-function createEvents() {
+function createEvents(): {
+  onClick?: () => void
+  onPointerenter?: () => void
+  onPointerleave?: () => void
+} {
   const onClick = () => {
-    if (props.trigger !== 'click') return
-    if (animating.value) return
-    visible.value ? handleClose() : handleOpen()
+    show.value ? handleClose() : handleOpen()
   }
 
   const onMouseEnter = () => {
-    if (props.trigger !== 'hover') return
     clearTimer()
     handleOpen()
   }
 
   const onMouseLeave = () => {
-    if (props.trigger !== 'hover') return
     timer = setTimeout(handleClose, props.closeDelay)
   }
 
+  if (props.trigger === 'click') {
+    return { onClick }
+  }
   return {
-    onClick,
     onPointerenter: onMouseEnter,
     onPointerleave: onMouseLeave
   }
 }
 
-const triggerEvents = createEvents()
+const events = createEvents()
 
 const TriggerElement = () => {
   const elements = slots.trigger()
@@ -98,15 +90,21 @@ const TriggerElement = () => {
 
   return h(elements[0], {
     ref: value => (tRef.value = value),
-    ...triggerEvents
+    ...events
   })
 }
 
-const viewDom = computed(() => (vRef.value as ComponentPublicInstance)?.$el)
+const triggerDOM = computed(() => {
+  const value = tRef.value
+  return (value as ComponentPublicInstance)?.$el ?? value
+})
+
 function onClickOutside(event: PointerEvent) {
   const elements = event.composedPath()
+  const tDOM = triggerDOM.value
+  const vDOM = vRef.value
   for (const ele of elements) {
-    if (ele === viewDom.value || ele === tRef.value) {
+    if (ele === tDOM || ele === vDOM) {
       return
     }
   }
@@ -124,23 +122,22 @@ onMounted(() => {
 <template>
   <TriggerElement />
   <TeleportToBody id="popover">
-    <motion.div
-      v-if="visible"
+    <div
+      v-if="isActive"
+      v-show="show"
       ref="vRef"
       class="popover"
       :style="{
-        '--x': `${posX}px`,
-        '--y': `${posY}px`,
+        '--x': `${translate.x}px`,
+        '--y': `${translate.y}px`,
         position: fixed ? 'fixed' : 'absolute',
-        opacity,
-        y: translateY
+        opacity: visible ? undefined : 0
       }"
       @pointerenter="clearTimer"
-      @pointerleave="triggerEvents.onPointerleave"
-      @vue:mounted="onViewMounted"
+      @pointerleave="events.onPointerleave"
     >
       <slot></slot>
-    </motion.div>
+    </div>
   </TeleportToBody>
 </template>
 
@@ -152,6 +149,6 @@ onMounted(() => {
   transform-origin: center;
   pointer-events: auto;
   translate: var(--x) var(--y);
-  z-index: 9999;
+  z-index: 1000;
 }
 </style>
