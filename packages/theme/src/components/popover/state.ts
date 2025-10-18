@@ -1,62 +1,74 @@
 import type { ComponentPublicInstance, ShallowRef } from 'vue'
-import type { DomOrComponentRef, Placement, PopoverProps } from '.'
+import type { EffectKeyframe, Placement, PopoverProps } from '.'
+import { nextAnimationFrame } from '@repo/utils'
 import { useAnimation } from '@repo/utils/hooks'
-import { computed, nextTick, reactive, ref, shallowRef, watch } from 'vue'
+import { computed, reactive, ref, shallowRef, watch } from 'vue'
 
-export function usePopoverState(props: Required<PopoverProps>) {
+type PartialProps = 'effectEnter' | 'effectLeave' | 'onOpen' | 'onClose'
+
+type Props = Required<Omit<PopoverProps, PartialProps>> &
+  Partial<Pick<PopoverProps, PartialProps>>
+
+export function usePopoverState(props: Props) {
   const isOpend = props.open ?? false
 
   const isActive = ref(isOpend)
-  const show = ref(isOpend)
-  const visible = ref(false)
+  const visible = ref(isOpend)
   let requestOpen = isOpend
 
-  const tRef = shallowRef<DomOrComponentRef>(null)
-  const vRef = shallowRef<DomOrComponentRef>(null)
+  const isHidden = ref(false)
 
+  const tRef = shallowRef<ComponentPublicInstance | Element | null>(null)
+  const vRef = shallowRef<Element | null>(null)
+
+  const { effectEnter, effectLeave } = props
   const { isAnimating, playEnterAnimation, playLeaveAnimation } =
-    usePopoverAnimation(onAnimationEnd)
+    usePopoverAnimation({ enter: effectEnter, leave: effectLeave })
 
   async function open() {
-    if (show.value || isAnimating.value) {
+    if (visible.value || isAnimating.value) {
       return
     }
 
+    props.onOpen?.()
     isActive.value = true
-    show.value = true
-    visible.value = false
+    visible.value = true
+    isHidden.value = true
 
-    await nextTick()
-    if (!unref(vRef)) {
+    await nextAnimationFrame(props.delayOpenFrame)
+
+    const target = unref(vRef)
+    if (!target) {
       requestOpen = true
       return
     }
 
-    await computeTranslate()
-    visible.value = true
-    playEnterAnimation(unref(vRef))
+    computeTranslate()
+    playEnterAnimation(target)
+    isHidden.value = false
   }
 
-  function close() {
+  async function close() {
     if (isAnimating.value) return
-    playLeaveAnimation(unref(vRef))
-  }
 
-  function onAnimationEnd() {
+    const target = unref(vRef)!
+    await playLeaveAnimation(target)
+
     if (!props.keepAlive) {
       isActive.value = false
     }
-    show.value = false
+    visible.value = false
+    props.onClose?.()
   }
 
   watch(
     vRef,
-    async value => {
-      if (value && requestOpen) {
-        await computeTranslate()
-        visible.value = true
+    async viewRef => {
+      if (viewRef && requestOpen) {
         requestOpen = false
-        playEnterAnimation(unref(vRef))
+        computeTranslate()
+        playEnterAnimation(viewRef)
+        isHidden.value = false
       }
     },
     { flush: 'post' }
@@ -64,10 +76,10 @@ export function usePopoverState(props: Required<PopoverProps>) {
 
   const translate = reactive({ x: 0, y: 0 })
 
-  async function computeTranslate() {
+  function computeTranslate() {
     const { placement, offset, fixed } = props
 
-    const [tEle, vEle] = [unref(tRef), unref(vRef)]
+    const [tEle, vEle] = [unref(tRef)!, unref(vRef)!]
     const [x, y] = calcPosition(tEle, vEle, offset, placement)
 
     let [scrollX, scrollY] = [0, 0]
@@ -83,8 +95,8 @@ export function usePopoverState(props: Required<PopoverProps>) {
 
   return {
     isActive,
-    show,
     visible,
+    isHidden,
     tRef,
     vRef,
     translate,
@@ -93,43 +105,45 @@ export function usePopoverState(props: Required<PopoverProps>) {
   }
 }
 
-function usePopoverAnimation(onClose: () => void) {
-  const isAnimating = ref(false)
-
-  const keyframes = [
-    { opacity: 0, transform: 'translateY(40px)' },
-    { opacity: 1, transform: 'translateY(0)' }
+function usePopoverAnimation(keyframes: {
+  enter?: EffectKeyframe
+  leave?: EffectKeyframe
+}) {
+  const defaultMotion = [
+    { transform: 'translateY(20px)' },
+    { transform: 'translateY(0)' }
   ]
-  const options: KeyframeEffectOptions = {
-    duration: 600,
-    easing: 'ease-in-out'
+  const defaultOption: KeyframeEffectOptions = {
+    duration: 200
   }
 
-  const { scope: enterScope, animation: enterAnimation } = useAnimation(
-    keyframes,
-    { effect: options, onFinish: () => (isAnimating.value = false) }
+  const enterEffect = keyframes.enter
+  const leaveEffect = keyframes.leave
+
+  const isAnimating = ref(false)
+  const [enterAnimation, enterScope] = useAnimation(
+    enterEffect?.effect ?? defaultMotion,
+    enterEffect?.option ?? defaultOption
   )
-  const { scope: leaveScope, animation: leaveAnimation } = useAnimation(
-    keyframes.reverse(),
-    {
-      effect: options,
-      onFinish: () => {
-        isAnimating.value = false
-        onClose()
-      }
-    }
+  const [leaveAnimation, leaveScope] = useAnimation(
+    leaveEffect?.effect ?? defaultMotion.toReversed(),
+    leaveEffect?.option ?? defaultOption
   )
 
-  const playEnterAnimation = (target: Element) => {
+  const playEnterAnimation = async (target: Element) => {
     isAnimating.value = true
     enterScope.value = target
-    enterAnimation.value?.play()
+    enterAnimation.play()
+    await enterAnimation.finished
+    isAnimating.value = false
   }
 
-  const playLeaveAnimation = (target: Element) => {
+  const playLeaveAnimation = async (target: Element) => {
     isAnimating.value = true
     leaveScope.value = target
-    leaveAnimation.value?.play()
+    leaveAnimation.play()
+    await leaveAnimation.finished
+    isAnimating.value = false
   }
 
   return {
@@ -139,12 +153,13 @@ function usePopoverAnimation(onClose: () => void) {
   }
 }
 
-function unref(ref: ShallowRef<DomOrComponentRef>): Element {
-  const value = ref.value
-  if (!value) {
-    throw new ReferenceError('Popover slots is not a Element')
+function unref(value: ShallowRef<ComponentPublicInstance | Element | null>) {
+  const _value = value.value
+  if (_value === null) return null
+  if (Reflect.has(_value, '$el')) {
+    return Reflect.get(_value, '$el') as Element | null
   }
-  return (value as ComponentPublicInstance)?.$el ?? value
+  return _value as Element | null
 }
 
 /**

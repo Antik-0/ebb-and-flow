@@ -58,6 +58,7 @@ const { fps } = useFPS()
       <Popover
         v-if="isMobile"
         v-model:open="outlineOpened"
+        :delay-open-frame="2"
         :keep-alive="true"
         :mask-closable="false"
         :offset="20"

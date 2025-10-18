@@ -22,6 +22,11 @@ export const random = (min: number, max: number) => {
 }
 
 /**
+ * 空函数
+ */
+export const noop = () => {}
+
+/**
  * 返回指定闭区间数列，若只提供一个参数 n，则返回 [0, n] 数列
  */
 export function range(n: number): number[]
@@ -45,4 +50,15 @@ export function tryOnIdle(callback: () => void) {
   } else {
     window.requestAnimationFrame(callback)
   }
+}
+
+/**
+ * 等待下一个动画帧或者指定动画帧
+ */
+export function nextAnimationFrame(n = 1) {
+  return new Promise(resolve => {
+    const step = () =>
+      --n === 0 ? resolve(true) : window.requestAnimationFrame(step)
+    window.requestAnimationFrame(step)
+  })
 }

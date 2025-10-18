@@ -2,18 +2,16 @@
 import { useAnimation } from '@repo/utils/hooks'
 import { Rocket } from '#/icons'
 
-const { animation, scope } = useAnimation(
-  [{ translate: '0 10px' }, { translate: '0 -100px' }],
+const [animation, scope] = useAnimation(
+  [{ transform: 'translateY(10px)' }, { transform: 'translateY(-100px)' }],
   {
-    effect: {
-      duration: 1000,
-      easing: 'cubic-bezier(0.6, -0.28, 0.74, 0.05)'
-    }
+    duration: 1000,
+    easing: 'cubic-bezier(0.6, -0.28, 0.74, 0.05)'
   }
 )
 
 function backToTop() {
-  animation.value?.play()
+  animation.play()
   document.documentElement.scrollIntoView()
 }
 </script>

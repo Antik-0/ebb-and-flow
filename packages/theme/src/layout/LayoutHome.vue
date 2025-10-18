@@ -165,5 +165,6 @@ function handleEnter() {
   transform-origin: bottom center;
   scale: 1 var(--m-value);
   animation: motion-value 3s infinite alternate;
+  animation-timing-function: cubic-bezier(0.4, -0.4, 0.36, 1);
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { Timer } from '#/types'
 import type { PopoverProps } from '.'
 import { useEventListener } from '@repo/utils/hooks'
@@ -15,8 +15,8 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   fixed: false,
   width: 150,
   offset: 10,
-  closeDelay: 200,
-  onClose: () => {}
+  delayOpenFrame: 1,
+  delayClose: 200
 })
 
 const slots = defineSlots<{
@@ -24,8 +24,13 @@ const slots = defineSlots<{
   trigger(): any[]
 }>()
 
-const { isActive, show, visible, tRef, vRef, translate, open, close } =
+const { isActive, visible, isHidden, tRef, vRef, translate, open, close } =
   usePopoverState(props)
+
+const hiddenStyle = computed(() => {
+  if (!isHidden.value) return undefined
+  return { opacity: 0, visibility: 'hidden' } as StyleValue
+})
 
 const model = defineModel<boolean>('open')
 
@@ -59,7 +64,7 @@ function createEvents(): {
   onPointerleave?: () => void
 } {
   const onClick = () => {
-    show.value ? handleClose() : handleOpen()
+    visible.value ? handleClose() : handleOpen()
   }
 
   const onMouseEnter = () => {
@@ -68,7 +73,7 @@ function createEvents(): {
   }
 
   const onMouseLeave = () => {
-    timer = setTimeout(handleClose, props.closeDelay)
+    timer = setTimeout(handleClose, props.delayClose)
   }
 
   if (props.trigger === 'click') {
@@ -124,15 +129,18 @@ onMounted(() => {
   <TeleportToBody id="popover">
     <div
       v-if="isActive"
-      v-show="show"
+      v-show="visible"
       ref="vRef"
       class="popover"
-      :style="{
-        '--x': `${translate.x}px`,
-        '--y': `${translate.y}px`,
-        position: fixed ? 'fixed' : 'absolute',
-        opacity: visible ? undefined : 0
-      }"
+      :data-show="visible"
+      :style="[
+        {
+          '--x': `${translate.x}px`,
+          '--y': `${translate.y}px`,
+          position: fixed ? 'fixed' : 'absolute',
+        },
+        hiddenStyle
+      ]"
       @pointerenter="clearTimer"
       @pointerleave="events.onPointerleave"
     >
@@ -146,7 +154,6 @@ onMounted(() => {
   contain: layout;
   top: 0;
   left: 0;
-  transform-origin: center;
   pointer-events: auto;
   translate: var(--x) var(--y);
   z-index: 1000;

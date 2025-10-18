@@ -2,6 +2,7 @@
 import { AnimatePresence, motion } from 'motion-v'
 import { computed } from 'vue'
 import { useSharedMenus } from '#/controller/menus.ts'
+import GlassMask from './GlassMask.vue'
 
 defineProps<{
   showTitle?: boolean
@@ -67,7 +68,7 @@ const nodePath = computed(() => {
 
         <slot name="end-action"></slot>
       </div>
-      <div aria-hidden="true" class="mask-glass bg-[--c-bg-navbar] inset-0 absolute -z-1"></div>
+      <GlassMask class="inset-0 absolute -z-1" />
     </header>
   </div>
 </template>

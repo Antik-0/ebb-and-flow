@@ -1,45 +1,89 @@
-import type { MaybeRefOrGetter } from 'vue'
-import { onBeforeUnmount, onMounted, shallowRef, toValue, watch } from 'vue'
+import type { MaybeRefOrGetter, ShallowRef } from 'vue'
+import { onBeforeMount, onMounted, shallowRef, toValue } from 'vue'
 
-interface Options {
+interface Options extends KeyframeEffectOptions {
   target?: MaybeRefOrGetter<Element | null>
-  effect?: KeyframeEffectOptions
   timeline?: AnimationTimeline | null
-  onFinish?: (event: AnimationPlaybackEvent) => void
+}
+
+type AnimationProxy = Omit<Animation, 'effect'> & {
+  effect: KeyframeEffect | null
+  isReady: boolean
+  isRunning: boolean
 }
 
 export function useAnimation(
   keyframes: Keyframe[] | PropertyIndexedKeyframes | null,
-  options: Options = {}
+  options: Options
 ) {
+  const { target, timeline, ...effectOptions } = options
+
+  let motionRaw: Animation | null = null
+  const animation = createAnimationProxy(() => motionRaw)
+
   const scope = shallowRef<Element | null>(null)
-  const effect = shallowRef<KeyframeEffect>()
-  const animation = shallowRef<Animation>()
-
-  const { effect: effectOptions, timeline, onFinish } = options
-
-  watch(
-    scope,
-    () => {
-      if (!effect.value) return
-      effect.value.target = scope.value
-    },
-    { flush: 'sync' }
-  )
+  const scopeProxy = createScopeProxy(scope, target => {
+    const effect = animation.effect
+    effect && (effect.target = target)
+  })
 
   onMounted(() => {
-    const target = toValue(options.target) ?? null
-    target && (scope.value = target)
-    effect.value = new KeyframeEffect(target, keyframes, effectOptions)
-    animation.value = new Animation(effect.value, timeline)
+    // 只绑定一次 target，后续 target 变更，手动更新
+    const _target = toValue(target) ?? null
+    _target && (scope.value = _target)
 
-    onFinish && animation.value.addEventListener('finish', onFinish)
+    // 创建动画对象原型
+    const effect = new KeyframeEffect(scope.value, keyframes, effectOptions)
+    motionRaw = new Animation(effect, timeline)
   })
 
-  onBeforeUnmount(() => {
-    animation.value?.cancel()
-    onFinish && animation.value?.removeEventListener('finish', onFinish)
+  onBeforeMount(() => {
+    motionRaw = null
   })
 
-  return { scope, animation, effect }
+  return [animation, scopeProxy] as const
+}
+
+function createAnimationProxy(getter: () => Animation | null) {
+  return new Proxy({} as AnimationProxy, {
+    get(_, p) {
+      const animation = getter()
+      if (p === 'isReady') {
+        return animation !== null
+      }
+      if (animation === null) return null
+
+      if (p === 'isRunning') {
+        return animation.playState === 'running'
+      }
+
+      const value = Reflect.get(animation, p)
+      if (typeof value === 'function') {
+        return value.bind(animation)
+      }
+      return value
+    },
+    set(_, p, newValue) {
+      const animation = getter()
+      if (animation === null) {
+        console.warn('[useAnimation] The animation object is not ready yet.')
+        return false
+      }
+      return Reflect.set(animation, p, newValue)
+    }
+  })
+}
+
+function createScopeProxy<T extends Element | null>(
+  scope: ShallowRef<T>,
+  setValue: (value: T) => void
+) {
+  return new Proxy(scope, {
+    set(target, p, newValue, receiver) {
+      if (p === 'value') {
+        setValue(newValue)
+      }
+      return Reflect.set(target, p, newValue, receiver)
+    }
+  })
 }
