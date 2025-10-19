@@ -15,12 +15,12 @@ import ThemeToggle from '#/components/ThemeToggle.vue'
 import ToolPanel from '#/components/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { Menu } from '#/icons'
-import { useThemeConfig } from '#/shared'
+import { parseImageURL, useThemeConfig } from '#/shared'
 
 const { isDesktop, isMobile, isLargeScreen, showToolPanel } = useLayoutCtx()
 
 const themeConfig = useThemeConfig()
-const avatar = computed(() => themeConfig.value.avatar)
+const avatar = computed(() => parseImageURL(themeConfig.value.avatar))
 
 const router = useRouter()
 

@@ -69,7 +69,7 @@ provide(LayoutCtx, {
 </script>
 
 <template>
-  <LayoutHome v-if="layout === 'home'" :avatar="themeConfig.avatar" />
+  <LayoutHome v-if="layout === 'home'" />
   <LayoutDoc v-else />
   <Background :is-home="layout === 'home'" />
   <ViewportSentinel :top="200" @visible-change="onSentinelChange" />

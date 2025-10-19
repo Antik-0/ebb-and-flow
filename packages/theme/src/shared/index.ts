@@ -26,3 +26,10 @@ export function useThemeConfig() {
   const { theme: themeConfig } = useData<ThemeConfig>()
   return themeConfig
 }
+
+export function parseImageURL(url: string) {
+  if (url.startsWith('/')) {
+    return withBase(url)
+  }
+  return url
+}

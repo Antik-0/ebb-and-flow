@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useData, useRouter, withBase } from 'vitepress'
-import { shallowRef } from 'vue'
+import { computed, shallowRef } from 'vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
 import MoonAvatar from '#/components/MoonAvatar.vue'
 import SkillCoding from '#/components/SkillCoding.vue'
 import { Power } from '#/icons'
+import { parseImageURL, useThemeConfig } from '#/shared'
 
-defineProps<{
-  avatar: string
-}>()
+const themeConfig = useThemeConfig()
+const avatar = computed(() => parseImageURL(themeConfig.value.avatar))
 
 const { frontmatter } = useData()
 

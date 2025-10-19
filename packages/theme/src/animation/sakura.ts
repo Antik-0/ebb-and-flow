@@ -1,4 +1,5 @@
 import { random, range, tryOnIdle } from '@repo/utils'
+import { parseImageURL } from '#/shared'
 
 type RangeNumber = [number, number]
 
@@ -303,7 +304,8 @@ export function createSakuraAnimation(
 
     tryOnIdle(async () => {
       // 预先生成不同尺寸樱花粒子
-      sakuraImageList = await createSakuraImageList(source)
+      const sourceURL = parseImageURL(source)
+      sakuraImageList = await createSakuraImageList(sourceURL)
       window.requestAnimationFrame(animate)
     })
   }

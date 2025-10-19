@@ -2,7 +2,7 @@
 import type { Timer } from '#/types'
 import { useData } from 'vitepress'
 import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from 'vue'
-import { useThemeConfig } from '#/shared'
+import { parseImageURL, useThemeConfig } from '#/shared'
 import TeleportToBody from './TeleportToBody.vue'
 
 const props = defineProps<{
@@ -33,7 +33,10 @@ watch(
     if (props.isHome) {
       result = result.slice(0, 1)
     }
-    backgrounds.value = result.map(src => ({ src, motion: '' }))
+    backgrounds.value = result.map(url => ({
+      src: parseImageURL(url),
+      motion: ''
+    }))
   },
   { immediate: true }
 )
