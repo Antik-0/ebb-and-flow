@@ -38,7 +38,7 @@ interface SakuraConfig {
 const SakuraConfig: SakuraConfig = {
   startXRange: [0.2, 1.4],
   startYRange: [0, 0.2],
-  initCount: [4, 8],
+  initCount: [2, 6],
   interval: 1000,
   yieldCount: [1, 3],
   duration: [8, 16],

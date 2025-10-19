@@ -227,8 +227,6 @@ export function createMeteorAnimation(
     canvasCtx = canvas.getContext('2d')!
     isCancled = false
 
-    console.log('????? 开始了')
-
     tryOnIdle(() => {
       generateMeteor(random(...MeteorConfig.initCount))
       window.requestAnimationFrame(animate)

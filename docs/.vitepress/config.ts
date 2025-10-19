@@ -13,16 +13,7 @@ export default defineConfigWithTheme<ThemeConfig>({
   cleanUrls: true,
   lastUpdated: true,
   appearance: 'dark',
-  head: [
-    ['link', { rel: 'icon', href: webBase + 'logo.png' }]
-    // [
-    //   'script',
-    //   {
-    //     async: 'true',
-    //     src: 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.7/dist/autoload.js'
-    //   }
-    // ]
-  ],
+  head: [['link', { rel: 'icon', href: webBase + 'logo.png' }]],
   themeConfig: {
     avatar: '/avatar.png',
     sakura: '/sakura.png',
