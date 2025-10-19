@@ -172,7 +172,7 @@ export function trackEffect(
 
 `trackEffect` 不会对重复的依赖进行追踪，其第一个 if 语句会过滤掉在当前活跃副作用中重复的依赖，`dep.get(effect) === effect._trackId` 的情况如下图所示：
 
-![trackEffect](./images/trackEffect.png)
+![trackEffect](../../images/trackEffect.png)
 
 可以看到，在 `watchEffect` 中第二次和第三次调用 `foo.id`，是不会重复执行 `trackEffect` 内的逻辑了。
 

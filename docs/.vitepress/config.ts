@@ -5,7 +5,6 @@ const webBase = '/ebb-and-flow/'
 
 export default defineConfigWithTheme<ThemeConfig>({
   title: '潮起潮落',
-  titleTemplate: '潮起潮落',
   description: '潮起潮落的个人博客',
   base: webBase,
   lang: 'zh-cn',
@@ -43,16 +42,16 @@ export default defineConfigWithTheme<ThemeConfig>({
         icon: 'lucide:pencil-line',
         collapsed: false,
         items: [
-          { text: 'CSS-@layer', link: '/blogs/css-@layer' },
-          { text: 'node-版本管理', link: '/blogs/node-version' },
-          { text: 'fetch-请求类封装', link: '/blogs/fetch-request' },
-          { text: '手动渲染组件', link: '/blogs/manual-render' },
-          { text: '防抖/节流', link: '/blogs/debounce' },
-          { text: '数字滚动', link: '/blogs/count-animation' }
+          { text: 'CSS-@layer', link: '/article/css-@layer' },
+          { text: 'node-版本管理', link: '/article/node-version' },
+          { text: 'fetch-封装', link: '/article/fetch-request' },
+          { text: '手动渲染组件', link: '/article/manual-render' },
+          { text: '防抖/节流', link: '/article/debounce' },
+          { text: '数字滚动', link: '/article/count-animation' }
         ]
       },
       {
-        text: '编程',
+        text: '探索',
         icon: 'lucide:atom',
         grouped: true,
         items: [
@@ -93,22 +92,17 @@ export default defineConfigWithTheme<ThemeConfig>({
               { text: 'effectScope', link: '/vue/source/effectScope' },
               { text: 'watch', link: '/vue/source/watch' }
             ]
-          },
-          {
-            text: '算法基础',
-            collapsed: true,
-            items: [{ text: '排序', link: '/algorithm/sort' }]
           }
         ]
       },
       {
-        text: '特效',
+        text: '动效',
         icon: 'lucide:sparkles',
         collapsed: false,
         items: [
-          { text: 'CSS-Effect', link: '/blogs/css-effect' },
-          { text: 'CSS-毛玻璃', link: '/blogs/css-glass' },
-          { text: 'CSS-视图过渡', link: '/blogs/view-transitions' }
+          { text: 'CSS-Effect', link: '/article/css-effect' },
+          { text: 'CSS-毛玻璃', link: '/article/css-glass' },
+          { text: 'CSS-视图过渡', link: '/article/view-transitions' }
         ]
       },
       {
@@ -116,8 +110,9 @@ export default defineConfigWithTheme<ThemeConfig>({
         icon: 'ic:twotone-signpost',
         collapsed: false,
         items: [
-          { text: 'Bimoe配置', link: '/blogs/biome' },
-          { text: '传送门', link: '/blogs/links' }
+          { text: 'Bimoe配置', link: '/article/biome' },
+          { text: '传送门', link: '/article/links' },
+          { text: '排序算法', link: '/algorithm/sort' }
         ]
       }
     ],

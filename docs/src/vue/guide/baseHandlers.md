@@ -493,7 +493,7 @@ const handler = {
 const proxy = new Proxy([1, 2, 3], handler)
 ```
 
-![代理数组的方法调用](./images/array-proxy.png)
+![代理数组的方法调用](../../images/array-proxy.png)
 
 通过上图可以看到，当在一个数组的代理对象上调用相关的方法时，除了触发方法函数的 `get` 之外，还会触发 `length` 属性以及对应数组下标的 `get` 代理。这是因为数组的任何操作，其底层都要依赖一个 for 循环，因此绕不开对 `length` 属性的访问。
 
