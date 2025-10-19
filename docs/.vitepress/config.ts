@@ -28,7 +28,7 @@ export default defineConfigWithTheme<ThemeConfig>({
     avatar: '/avatar.png',
     sakura: '/sakura.png',
     backgrounds: {
-      dark: ['/wallhaven-rrwvdq.webp', '/wallhaven-8g3gkk.webp'],
+      dark: ['/wallhaven-rrwvdq.webp'],
       light: ['/wallhaven-6lq3m7.webp']
     },
     navMenus: [

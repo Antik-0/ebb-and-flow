@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useRouter, withBase } from 'vitepress'
+import { useData, useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
 import Avatar from '#/components/Avatar.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
@@ -16,11 +16,14 @@ import ToolPanel from '#/components/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { Menu } from '#/icons'
 import { parseImageURL, useThemeConfig } from '#/shared'
+import NotFound from '../NotFound.vue'
 
 const { isDesktop, isMobile, isLargeScreen, showToolPanel } = useLayoutCtx()
 
 const themeConfig = useThemeConfig()
 const avatar = computed(() => parseImageURL(themeConfig.value.avatar))
+
+const { page } = useData()
 
 const router = useRouter()
 
@@ -74,19 +77,25 @@ function backToHome() {
   <div class="pt-[--navbar-height]">
     <div class="layout-doc">
       <main id="content" class="doc-content">
-        <div class="px-8 pb-24 flex-1 min-w-0">
-          <Content class="vp-doc" />
-          <DocFooter />
-        </div>
+        <slot v-if="page.isNotFound" name="not-found">
+          <NotFound />
+        </slot>
 
-        <div v-if="isDesktop" class="pl-8 w-64">
-          <aside class="doc-aside">
-            <div class="aside-content">
-              <DocOutline />
-              <div class="flex-1"></div>
-            </div>
-          </aside>
-        </div>
+        <template v-else>
+          <div class="px-8 pb-24 flex-1 min-w-0">
+            <Content class="vp-doc" />
+            <DocFooter />
+          </div>
+
+          <div v-if="isDesktop" class="pl-8 w-64">
+            <aside class="doc-aside">
+              <div class="aside-content">
+                <DocOutline />
+                <div class="flex-1"></div>
+              </div>
+            </aside>
+          </div>
+        </template>
       </main>
 
       <div v-if="isLargeScreen" class="pl-2">
