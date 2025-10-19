@@ -1,10 +1,7 @@
 {
   "editor.formatOnPaste": false,
   "explorer.fileNesting.patterns": {
-    "*.env": "$(capture).env.*",
-    "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml, .npmrc, LICENSE, .node-version, .browserslistrc",
-    "biome.json": "eslint.config.*, uno.config.*",
-    "vite.config.ts": "vite.config.ts, vitest.config.ts, vitest.workspace.ts"
+    "biome.json": "eslint.config.*",
   },
   "editor.codeActionsOnSave": {
     "source.addMissingImports.ts": "never",
@@ -29,9 +26,6 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
   }
 }

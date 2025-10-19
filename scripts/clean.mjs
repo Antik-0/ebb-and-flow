@@ -12,7 +12,7 @@ const cleanFiles = [
   'cache',
   'dist',
   'node_modules',
-  'pnpm-lock.yaml'
+  'bun.lock'
 ]
 const ignoreFiles = ['.git', '.github', '.vscode', 'assets', 'src']
 const recursiveDepth = 4
