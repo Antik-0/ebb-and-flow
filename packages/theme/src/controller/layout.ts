@@ -24,7 +24,6 @@ export function useLayout() {
 }
 
 interface LayoutContext {
-  avatar: string
   isMobile: ComputedRef<boolean>
   isDesktop: ComputedRef<boolean>
   isLargeScreen: ComputedRef<boolean>

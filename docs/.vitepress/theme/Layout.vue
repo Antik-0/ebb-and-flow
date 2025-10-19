@@ -2,11 +2,6 @@
 import { Layout as ThemeLayout } from '@repo/theme'
 import { enableTransitions } from '@repo/utils'
 import { useData, useRoute, useRouter, withBase } from 'vitepress'
-import AvatarURL from '@/avatar.png'
-import SakuraURL from '@/sakura.png'
-import lightBg1 from '@/wallhaven-6lq3m7.webp'
-import darkBg2 from '@/wallhaven-8g3gkk.webp'
-import darkBg1 from '@/wallhaven-rrwvdq.webp'
 
 defineOptions({ name: 'EAFLayout' })
 
@@ -43,11 +38,5 @@ Object.assign(router, {
 </script>
 
 <template>
-  <ThemeLayout
-    :avatar="AvatarURL"
-    :dark-background="[darkBg1]"
-    :home-background="[darkBg1]"
-    :light-background="[lightBg1]"
-    :sakura="SakuraURL"
-  />
+  <ThemeLayout />
 </template>

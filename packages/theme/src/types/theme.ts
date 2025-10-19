@@ -3,14 +3,14 @@
  */
 export interface ThemeConfig {
   /**
-   * Logo 图片
-   */
-  logo?: string
-
-  /**
    * 头像图片
    */
-  avatar?: string
+  avatar: string
+
+  /**
+   * 樱花动效图片
+   */
+  sakura?: string
 
   /**
    * 导航菜单
@@ -21,6 +21,11 @@ export interface ThemeConfig {
    * 社交链接
    */
   socialLinks?: SocialLink[]
+
+  /**
+   * 背景图片
+   */
+  backgrounds?: Backgrounds
 }
 
 export interface MenuItemRaw {
@@ -65,4 +70,15 @@ export interface SocialLink {
    * 链接
    */
   link: string
+}
+
+export interface Backgrounds {
+  dark?: string[]
+  light?: string[]
+
+  /**
+   * 背景切换间隔时间
+   * @default 60_000
+   */
+  interval?: number
 }

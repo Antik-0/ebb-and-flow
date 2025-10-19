@@ -287,7 +287,7 @@ function animate(timestamp: DOMHighResTimeStamp) {
 }
 
 export function createSakuraAnimation(
-  source: string,
+  source?: string,
   canvasElement?: HTMLCanvasElement,
   options: Partial<SakuraConfig> = {}
 ) {
@@ -295,7 +295,7 @@ export function createSakuraAnimation(
 
   function start(canvasEle?: HTMLCanvasElement) {
     const _canvas = canvasEle ?? canvasElement
-    if (!_canvas) return
+    if (!source || !_canvas) return
 
     canvas = _canvas
     canvasCtx = canvas.getContext('2d')!

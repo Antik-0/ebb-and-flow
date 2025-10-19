@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { useRouter, withBase } from 'vitepress'
+import { computed } from 'vue'
 import Avatar from '#/components/Avatar.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import DocFooter from '#/components/DocFooter.vue'
@@ -14,9 +15,12 @@ import ThemeToggle from '#/components/ThemeToggle.vue'
 import ToolPanel from '#/components/ToolPanel.vue'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { Menu } from '#/icons'
+import { useThemeConfig } from '#/shared'
 
-const { isDesktop, isMobile, isLargeScreen, showToolPanel, avatar } =
-  useLayoutCtx()
+const { isDesktop, isMobile, isLargeScreen, showToolPanel } = useLayoutCtx()
+
+const themeConfig = useThemeConfig()
+const avatar = computed(() => themeConfig.value.avatar)
 
 const router = useRouter()
 

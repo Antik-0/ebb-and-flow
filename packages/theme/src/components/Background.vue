@@ -1,49 +1,45 @@
 <script setup lang='ts'>
 import type { Timer } from '#/types'
 import { useData } from 'vitepress'
-import {
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  shallowRef,
-  watch,
-  watchEffect
-} from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from 'vue'
+import { useThemeConfig } from '#/shared'
 import TeleportToBody from './TeleportToBody.vue'
 
 const props = defineProps<{
   isHome?: boolean
-  homeBackground?: string[]
-  darkBackground?: string[]
-  lightBackground?: string[]
 }>()
 
-interface BackgroundImage {
+interface Background {
   src: string
   motion: string
 }
 
+const themeConfig = useThemeConfig()
+
+const ThemeBg = themeConfig.value.backgrounds ?? {}
+
 const { isDark } = useData()
-const backgrounds = ref<BackgroundImage[]>([])
+const backgrounds = ref<Background[]>([])
 
 watch(
   [() => isDark.value, () => props.isHome],
   () => {
-    let result = []
-    if (props.isHome) {
-      result = props.homeBackground ?? []
+    let result: string[] = []
+    if (isDark.value || props.isHome) {
+      result = ThemeBg.dark ?? []
     } else {
-      result =
-        (isDark.value ? props.darkBackground : props.lightBackground) ?? []
+      result = ThemeBg.light ?? []
+    }
+    if (props.isHome) {
+      result = result.slice(0, 1)
     }
     backgrounds.value = result.map(src => ({ src, motion: '' }))
   },
   { immediate: true }
 )
 
-const activeIndex = shallowRef(0)
+const activeIndex = ref(0)
 let timer: Timer | null = null
-const IntervalTime = 60_000
 
 function onMotionFrame() {
   const length = backgrounds.value.length
@@ -58,13 +54,13 @@ function onMotionFrame() {
 onMounted(() => {
   watchEffect(() => {
     const length = backgrounds.value.length
-    const enableMotion = length > 1
+    const enableMotion = length > 1 && !props.isHome
 
     activeIndex.value = 0
     timer && window.clearInterval(timer)
 
     if (enableMotion) {
-      timer = window.setInterval(onMotionFrame, IntervalTime)
+      timer = window.setInterval(onMotionFrame, ThemeBg.interval ?? 60_000)
     }
   })
 })

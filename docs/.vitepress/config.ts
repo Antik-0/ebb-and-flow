@@ -1,8 +1,8 @@
 import type { ThemeConfig } from '@repo/theme'
 import { defineConfigWithTheme } from 'vitepress'
 
-// https://vitepress.dev/blogs/site-config
 const webBase = '/ebb-and-flow/'
+const wb = (url: string) => webBase + url
 
 export default defineConfigWithTheme<ThemeConfig>({
   title: '潮起潮落',
@@ -26,7 +26,12 @@ export default defineConfigWithTheme<ThemeConfig>({
     // ]
   ],
   themeConfig: {
-    logo: '/logo.png',
+    avatar: wb('/avatar.png'),
+    sakura: wb('/sakura.png'),
+    backgrounds: {
+      dark: ['/wallhaven-rrwvdq.webp', '/wallhaven-8g3gkk.webp'].map(wb),
+      light: ['/wallhaven-6lq3m7.webp'].map(wb)
+    },
     navMenus: [
       {
         text: '首页',

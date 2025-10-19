@@ -10,6 +10,7 @@ import {
   watch,
   watchEffect
 } from 'vue'
+import { useThemeConfig } from '#/shared'
 import { createMeteorAnimation } from './animation/meteor'
 import { createSakuraAnimation } from './animation/sakura'
 import Background from './components/Background.vue'
@@ -19,23 +20,8 @@ import { LayoutCtx, useLayout } from './controller/layout'
 import LayoutDoc from './layout/LayoutDoc.vue'
 import LayoutHome from './layout/LayoutHome.vue'
 
-interface Props {
-  avatar: string
-  sakura: string
-  homeBackground?: string[]
-  darkBackground?: string[]
-  lightBackground?: string[]
-}
-
-const props = defineProps<Props>()
-
 const { layout, isMobile, isDesktop, isLargeScreen } = useLayout()
-
-const showToolPanel = shallowRef(false)
-
-function onSentinelChange(visible: boolean) {
-  showToolPanel.value = !visible
-}
+const themeConfig = useThemeConfig()
 
 const { isDark } = useData()
 
@@ -51,7 +37,7 @@ onWindowResize(() => {
 })
 
 const meteorAnimation = createMeteorAnimation()
-const sakuraAnimation = createSakuraAnimation(props.sakura)
+const sakuraAnimation = createSakuraAnimation(themeConfig.value.sakura)
 
 watch(animationCanvas, animationHandle, { once: true })
 onMounted(watchEffect(animationHandle))
@@ -69,8 +55,12 @@ function animationHandle() {
   }
 }
 
+const showToolPanel = shallowRef(false)
+function onSentinelChange(visible: boolean) {
+  showToolPanel.value = !visible
+}
+
 provide(LayoutCtx, {
-  avatar: props.avatar,
   isMobile,
   isDesktop,
   isLargeScreen,
@@ -79,14 +69,9 @@ provide(LayoutCtx, {
 </script>
 
 <template>
-  <LayoutHome v-if="layout === 'home'" :avatar="avatar" />
+  <LayoutHome v-if="layout === 'home'" :avatar="themeConfig.avatar" />
   <LayoutDoc v-else />
-  <Background
-    :dark-background="darkBackground"
-    :home-background="homeBackground"
-    :is-home="layout === 'home'"
-    :light-background="lightBackground"
-  />
+  <Background :is-home="layout === 'home'" />
   <ViewportSentinel :top="200" @visible-change="onSentinelChange" />
 
   <TeleportToBody id="animation">
