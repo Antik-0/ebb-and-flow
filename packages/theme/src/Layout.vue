@@ -48,10 +48,10 @@ function animationHandle() {
 
   if (isDark.value || layout.value === 'home') {
     sakuraAnimation.stop()
-    sakuraAnimation.start(canvas)
+    meteorAnimation.start(canvas)
   } else {
     meteorAnimation.stop()
-    meteorAnimation.start(canvas)
+    sakuraAnimation.start(canvas)
   }
 }
 
