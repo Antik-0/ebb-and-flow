@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "bun@1.3.1",
   "scripts": {
-    "boot": "bun install && bun stub",
+    "boot": "bun install && bun stub && bun simple-git-hooks",
     "build": "turbo run build --filter=website",
     "clean": "bun run ./scripts/cleanup.ts",
     "dev": "turbo run dev --filter=website",
@@ -16,9 +16,12 @@
     "stub": "turbo run stub",
     "up-deps": "bun run ./scripts/upgrade.ts"
   },
+  "simple-git-hooks": {
+    "pre-commit": "bun lint-staged"
+  },
   "lint-staged": {
     "*.{ts,vue,json}": [
-      "bun run lint"
+      "bun biome check --fix"
     ]
   },
   "devDependencies": {
@@ -32,6 +35,7 @@
     "ora": "catalog:",
     "picocolors": "catalog:",
     "prompts": "catalog:",
+    "simple-git-hooks": "catalog:",
     "turbo": "catalog:",
     "unbuild": "catalog:",
     "unocss": "catalog:"
@@ -52,6 +56,7 @@
       "ora": "^9.0.0",
       "picocolors": "^1.1.1",
       "prompts": "^2.4.2",
+      "simple-git-hooks": "^2.13.1",
       "turbo": "^2.5.8",
       "unbuild": "^3.6.1",
       "unocss": "^66.5.4",
