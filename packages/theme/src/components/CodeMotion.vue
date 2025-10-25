@@ -6,7 +6,7 @@ const props = defineProps<{
   /**
    * 技能列表
    */
-  skills?: string[]
+  codes?: string[]
   /**
    * 是否暂停
    */
@@ -42,7 +42,7 @@ const props = defineProps<{
 }>()
 
 const {
-  skills = [],
+  codes = [],
   speedGap = 40,
   pauseGap = 4000,
   prefix = '[',
@@ -51,7 +51,7 @@ const {
   cycle = true
 } = props
 
-const maxLength = props.maxLength ?? Math.max(...skills.map(s => s.length))
+const maxLength = props.maxLength ?? Math.max(...codes.map(s => s.length))
 const buffer = Array.from<string>({ length: maxLength }).fill(placeholder)
 
 const coding = shallowRef(`${prefix}${placeholder.repeat(maxLength)}${suffix}`)
@@ -63,7 +63,7 @@ let lastAnimationTime: number
 let p1 = 0 // 当前显示的字符位置
 let p2 = 0 // 当前字符的遍历位置
 let vector = 1 // 当前字符的遍历方向
-let currCode = skills[p1]!
+let currCode = codes[p1]!
 
 function animationFrame(timestamp: DOMHighResTimeStamp) {
   if (!lastAnimationTime) {
@@ -83,8 +83,8 @@ function animationFrame(timestamp: DOMHighResTimeStamp) {
     if (p2 === -1) {
       p2 = 0
       vector = 1
-      p1 = (p1 + 1) % skills.length
-      currCode = skills[p1]!
+      p1 = (p1 + 1) % codes.length
+      currCode = codes[p1]!
     }
 
     // 右边界
@@ -93,7 +93,7 @@ function animationFrame(timestamp: DOMHighResTimeStamp) {
       vector = -1
       isAnimating = false
 
-      if (p1 === skills.length - 1 && !cycle) {
+      if (p1 === codes.length - 1 && !cycle) {
         return window.cancelAnimationFrame(raf)
       }
     }
@@ -116,7 +116,7 @@ watch(
 )
 
 onMounted(async () => {
-  if (skills.length === 0 || props.paused) return
+  if (codes.length === 0 || props.paused) return
   await nextTick()
   raf = window.requestAnimationFrame(animationFrame)
 })

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useData, useRouter, withBase } from 'vitepress'
 import { computed, shallowRef } from 'vue'
+import CodeMotion from '#/components/CodeMotion.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
 import MoonAvatar from '#/components/MoonAvatar.vue'
-import SkillCoding from '#/components/SkillCoding.vue'
 import { Power } from '#/icons'
 import { parseImageURL, useThemeConfig } from '#/shared'
 
@@ -46,9 +46,9 @@ function handleEnter() {
             :text="frontmatter.tagline"
             @motion-end="taglineMotion = 'fade'"
           />
-          <SkillCoding
+          <CodeMotion
+            :codes="frontmatter.codes"
             :paused="taglineMotion !== 'fade'"
-            :skills="frontmatter.skills"
           />
         </p>
       </h2>
