@@ -1,24 +1,25 @@
-import { log } from 'node:console'
 import fs from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 import ora from 'ora'
 import pc from 'picocolors'
+// @ts-expect-error: no types
 import prompts from 'prompts'
 
 const cleanFiles = [
+  'node_modules',
+  'bun.lock',
   '.temp',
   '.turbo',
   'cache',
-  'dist',
-  'node_modules',
-  'bun.lock'
+  'dist'
 ]
 const ignoreFiles = ['.git', '.github', '.vscode', 'assets', 'src']
 const recursiveDepth = 4
+const spinner = ora({ indent: 2 })
 
 try {
-  log(`\n🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)
+  console.log(`\n\n🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)
 
   const response = await prompts(
     [
@@ -47,46 +48,48 @@ try {
   )
 
   const rootPath = fileURLToPath(new URL('../', import.meta.url))
-  const cleanSet = new Set(response.files)
-  const spinner = ora({ indent: 2 })
+  const cleanSet = new Set<string>(response.files)
   const depth = response.recursive ? recursiveDepth : 1
 
-  log('\n')
-  await cleanupRecursive(rootPath, cleanSet, spinner, depth)
-  spinner.stop()
+  console.log('\n')
+  await cleanupRecursive(rootPath, cleanSet, depth)
 
-  log(`\n🧹${pc.green('---------- 清 理 完 成 ----------')}🧹\n\n`)
+  console.log(`\n\n🧹${pc.green('---------- 清 理 完 成 ----------')}🧹\n\n`)
 } catch {
-  log(`\n🧹${pc.red('---------- 清 理 取 消 ----------')}🧹\n\n`)
+  console.log(`\n\n🧹${pc.red('---------- 清 理 取 消 ----------')}🧹\n\n`)
+} finally {
+  spinner.stop()
 }
 
-async function cleanupRecursive(root, cleanSet, spinner, depth = 1) {
+async function cleanupRecursive(
+  dirPath: string,
+  cleanSet: Set<string>,
+  depth = 1
+) {
   if (depth === 0 || cleanSet.size === 0) return
 
-  spinner.start('Loading...')
-
   const subDirs = []
-  const dir = await fs.opendir(root)
-  for await (const dirent of dir) {
-    const path = resolve(root, dirent.name)
+  const currDir = await fs.opendir(dirPath)
+  for await (const dirent of currDir) {
+    const filePath = resolve(dirPath, dirent.name)
 
     if (cleanSet.has(dirent.name)) {
       try {
-        spinner.start(`正在清理 => ${path}`)
-        await fs.rm(path, { force: true, recursive: true })
-        spinner.succeed(pc.green(`清理成功 => ${path}`))
+        spinner.start(`正在清理 => ${filePath}`)
+        await fs.rm(filePath, { force: true, recursive: true })
+        spinner.succeed(pc.green(`清理成功 => ${filePath}`))
       } catch {
-        spinner.fail(pc.red(`清理失败 => ${path}`))
+        spinner.fail(pc.red(`清理失败 => ${filePath}`))
       }
       continue
     }
 
     if (dirent.isDirectory() && !ignoreFiles.includes(dirent.name)) {
-      subDirs.push(path)
+      subDirs.push(filePath)
     }
   }
 
   for (const dir of subDirs) {
-    await cleanupRecursive(dir, cleanSet, spinner, depth - 1)
+    await cleanupRecursive(dir, cleanSet, depth - 1)
   }
 }

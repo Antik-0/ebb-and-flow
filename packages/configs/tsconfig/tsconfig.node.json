@@ -5,11 +5,12 @@
     "lib": ["ESNext"],
     "moduleDetection": "force",
 
-    "target": "ESNext",
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
 
-    "types": ["node"],
+    "types": ["bun"],
     "noEmit": false,
     "skipLibCheck": true,
     "esModuleInterop": true

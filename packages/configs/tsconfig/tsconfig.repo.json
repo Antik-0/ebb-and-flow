@@ -10,8 +10,7 @@
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
 
-    "types": ["node"],
-
+    "types": ["bun"],
     "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

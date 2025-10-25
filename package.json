@@ -3,17 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.3.0",
+  "packageManager": "bun@1.3.1",
   "scripts": {
     "boot": "bun install && bun stub",
     "build": "turbo run build --filter=website",
-    "clean": "node ./scripts/clean.mjs",
+    "clean": "bun run ./scripts/cleanup.ts",
     "dev": "turbo run dev --filter=website",
     "eslint": "eslint --fix --cache --cache-location=.temp/.eslintcache",
     "lint": "biome check --fix && bun run eslint",
     "lint:debug": "bunx @eslint/config-inspector@latest",
     "preview": "turbo run preview --filter=website",
-    "stub": "turbo run stub"
+    "stub": "turbo run stub",
+    "up-deps": "bun run ./scripts/upgrade.ts"
   },
   "lint-staged": {
     "*.{ts,vue,json}": [
@@ -23,8 +24,9 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@config/eslint": "workspace:*",
+    "@config/tsconfig": "workspace:*",
     "@config/unocss": "workspace:*",
-    "@types/node": "catalog:",
+    "@types/bun": "catalog:",
     "eslint": "catalog:",
     "lint-staged": "catalog:",
     "ora": "catalog:",
@@ -41,19 +43,19 @@
       "packages/configs/*"
     ],
     "catalog": {
-      "@biomejs/biome": "^2.2.6",
-      "@types/node": "^24.5.2",
+      "@biomejs/biome": "^2.3.0",
+      "@types/bun": "^1.3.1",
       "eslint": "^9.38.0",
-      "iconify-icon": "^3.0.1",
-      "lint-staged": "^16.2.4",
-      "motion-v": "^1.7.2",
+      "iconify-icon": "^3.0.2",
+      "lint-staged": "^16.2.6",
+      "motion-v": "^1.7.4",
       "ora": "^9.0.0",
       "picocolors": "^1.1.1",
       "prompts": "^2.4.2",
       "turbo": "^2.5.8",
       "unbuild": "^3.6.1",
       "unocss": "^66.5.4",
-      "vite": "^7.1.10",
+      "vite": "^7.1.12",
       "vite-plugin-compression": "^0.5.1",
       "vite-plugin-vue-devtools": "7.7.7",
       "vitepress": "^1.6.4",
