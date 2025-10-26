@@ -45,8 +45,8 @@ function onInput(event: Event) {
 </script>
 
 <template>
-  <div class="canvas">
-    <div class="label">
+  <div class="flex-col gap-4 flex-center">
+    <div class="text-zinc text-center">
       <input
         :max="maxValue"
         min="0"
@@ -92,18 +92,6 @@ function onInput(event: Event) {
 </template>
 
 <style scoped>
-.canvas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.canvas .label {
-  margin-bottom: 20px;
-  color: oklch(0.645 0.246 16.439);
-  text-align: center;
-}
-
 .svg-loading {
   border-radius: 50%;
   padding: 10px;
@@ -115,15 +103,5 @@ function onInput(event: Event) {
 
 .svg-loading[data-loading='true'] {
   animation: rotate 1s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(1turn);
-  }
 }
 </style>

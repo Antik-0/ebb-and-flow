@@ -2,11 +2,37 @@
 
 ## demo
 
-<script setup>
-import DebounceDemo from '../components/debounce.vue'
+<script setup lang="ts">
+import { debounce, throttle } from '@repo/utils'
+import { ref } from 'vue'
+
+const count = ref(0)
+const countDebounce = ref(0)
+const countThrottle = ref(0)
+
+const debounceFn = debounce(() => (countDebounce.value += 1))
+
+const throttleFn = throttle(() => (countThrottle.value += 1))
+
+function onClick() {
+  count.value += 1
+  debounceFn()
+  throttleFn()
+}
 </script>
 
-<DebounceDemo></DebounceDemo>
+<div class="flex-col flex-center gap-3">
+  <button
+    class="text-5 p-2 rounded-2 bg-indigo-600"
+    type="button"
+    @click="onClick"
+  >
+    Click Me
+  </button>
+  <div>点击次数: {{ count }}</div>
+  <div>防抖执行次数: {{ countDebounce }}</div>
+  <div>节流执行次数: {{ countThrottle }}</div>
+</div>
 
 ## source
 

@@ -1,30 +1,24 @@
 # Biome 配置
 
-## source
+:::info
 
-[reference](https://biomejs.dev/zh-cn/guides/getting-started/)
+[传送门](https://biomejs.dev/zh-cn/guides/getting-started/)
+
+:::
+
+## source
 
 ```json
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "ignoreUnknown": true,
     "includes": [
-      ".vscode/*",
-      "src/**/*",
-      "scripts/*",
       "package.json",
       "tsconfig.json",
-      "!**/dist",
       "!**/node_modules",
+      "!**/dist",
       "!biome.json"
     ]
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 80
   },
   "linter": {
     "enabled": true,
@@ -56,13 +50,11 @@
             "ignoreHtmlElements": true
           }
         },
-        "useTemplate": {
-          "level": "info",
-          "fix": "safe"
-        }
+        "useTemplate": "off"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noAssignInExpressions": "off"
       }
     }
   },
@@ -73,25 +65,54 @@
         "organizeImports": {
           "level": "on",
           "options": {
-            "groups": [{ "type": true }]
+            "groups": [
+              {
+                "type": true
+              }
+            ]
           }
         },
         "useSortedAttributes": "on"
       }
     }
   },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
       "trailingCommas": "none",
-      "semicolons": "asNeeded"
+      "semicolons": "asNeeded",
+      "arrowParentheses": "asNeeded"
     }
   },
-  "graphql": {
+  "css": {
     "formatter": {
-      "enabled": true,
-      "indentStyle": "tab"
+      "quoteStyle": "single"
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.vue"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    }
+  ]
 }
+
 ```

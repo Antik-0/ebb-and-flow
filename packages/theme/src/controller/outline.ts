@@ -72,7 +72,7 @@ export function useOutline() {
       for (const element of elements) {
         const offsetTop = calcOffsetTop(element)
         data.push({
-          text: element.id,
+          text: element.textContent.trim(),
           to: `#${element.id}`,
           level: Number(element.tagName.at(-1)) - 2,
           offsetTop

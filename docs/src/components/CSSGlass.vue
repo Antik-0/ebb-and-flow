@@ -65,6 +65,7 @@ useMove(glassEl)
 <style scoped>
 .glass-container {
   position: relative;
+  isolation: isolate;
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 12px;

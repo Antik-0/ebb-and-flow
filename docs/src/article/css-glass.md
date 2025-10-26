@@ -6,7 +6,7 @@ import CSSGlass from '../components/CSSGlass.vue'
 
 ::: info
 
-[原教程](https://www.tyleo.com/guides/html-glass#final-recipe-lookahead)
+[传送门](https://www.tyleo.com/guides/html-glass#final-recipe-lookahead)
 
 :::
 
@@ -87,6 +87,7 @@ useMove(glassEl)
 ```css
 .glass-container {
   position: relative;
+  isolation: isolate;
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 12px;

@@ -4,7 +4,7 @@
 
 这个 CSS 特效出自 [Making SVG Loading Spinners: An Interactive Guide](https://www.fffuel.co/svg-spinner/)
 
-<div class="demo ">
+<div class="flex flex-center h-60">
   <svg width="200" height="200" viewBox="-200 -200 400 400">
     <circle
       class="svg-spinner"
@@ -24,33 +24,37 @@
 ::: code-group
 
 ```html
-<div class="demo">
-  <svg width="200" height="200" viewBox="-200 -200 400 400">
-    <circle
-      class="svg-spinner"
-      cx="0"
-      cy="0"
-      r="100"
-      fill="none"
-      stroke="#59AFFF"
-      stroke-width="24"
-      stroke-linecap="round"
-      stroke-dasharray="1 314"
-      stroke-dashoffset="0"
-    />
-  </svg>
-</div>
+<svg width="200" height="200" viewBox="-200 -200 400 400">
+  <circle
+    class="svg-spinner"
+    cx="0"
+    cy="0"
+    r="100"
+    fill="none"
+    stroke="#59AFFF"
+    stroke-width="24"
+    stroke-linecap="round"
+    stroke-dasharray="1 314"
+    stroke-dashoffset="0"
+  />
+</svg>
 ```
 
 ```css
 .svg-spinner {
   animation:
-    spin2 1s linear infinite,
-    spin1 2s ease-in-out infinite alternate;
+    spin1 1s linear infinite,
+    spin2 2s ease-in-out infinite alternate;
 }
 
 @keyframes spin1 {
-  0% {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@keyframes spin2 {
+  0%, 100% {
     stroke-dasharray: 1 314;
     stroke-dashoffset: 0;
   }
@@ -58,17 +62,6 @@
   50% {
     stroke-dasharray: 310 2;
     stroke-dashoffset: -155;
-  }
-
-  100% {
-    stroke-dasharray: 1 314;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes spin2 {
-  0% {
-    transform: rotate(360deg);
   }
 }
 ```
@@ -79,7 +72,7 @@
 
 这个 CSS 特效出自 [turbo 官网](https://turbo.build/)。
 
-<div class="demo">
+<div class="flex flex-center h-60">
   <div class="border-container">
     <div class="colorful-border"></div>
   </div>
@@ -88,10 +81,8 @@
 ::: code-group
 
 ```html
-<div class="demo">
-  <div class="border-container">
-    <div class="colorful-border"></div>
-  </div>
+<div class="border-container">
+  <div class="colorful-border"></div>
 </div>
 ```
 
@@ -102,7 +93,6 @@
   height: 200px;
   border-radius: 10px;
   overflow: hidden;
-  z-index: 0;
 }
 
 .colorful-border {
@@ -116,14 +106,13 @@
 }
 
 .colorful-border::before {
-  --size: 200%;
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: var(--size);
-  padding-bottom: var(--size);
+  translate: -50% -50%;
+  width: 200%;
+  padding-bottom: 200%;
   background: conic-gradient(
     #e92a67 0deg,
     #a853ba 135deg,
@@ -134,8 +123,8 @@
 }
 
 @keyframes ring-flow {
-  0% {
-    transform: translate(-50%, -50%) rotate(360deg);
+  to {
+    rotate: 1turn;
   }
 }
 ```
@@ -146,7 +135,7 @@
 
 这个 CSS 特效出自 [turbo 官网](https://turbo.build/)。
 
-<div class="demo">
+<div class="flex flex-center">
   <div class="grid-view">
     <div class="grid-stage">
       <div class="grid-flat"></div>
@@ -182,16 +171,14 @@
 .grid-flat {
   position: absolute;
   inset: -100% 0;
-  transform: translateY(0);
   background: linear-gradient(
     to right,
     #b9ddff 45%,
     transparent 50%,
     #f8cde8 55%
   );
-  mask-image:
-    linear-gradient(90deg, #000 2px, transparent 0),
-    linear-gradient(180deg, #0002px, transparent 0);
+  mask-image: linear-gradient(90deg, #000 2px, transparent 0),
+    linear-gradient(180deg, #000 2px, transparent 0);
   mask-size: 60px 60px;
   mask-repeat: repeat;
   mask-position: 50% 0;
@@ -199,11 +186,7 @@
 }
 
 @keyframes grid-flow {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
+  to {
     transform: translateY(50%);
   }
 }
@@ -213,7 +196,7 @@
 
 ## playon
 
-<div class="demo">
+<div class="flex flex-center h-60">
   <svg
     viewBox="0 0 32 32"
     width="1em"
@@ -291,20 +274,20 @@
 import SVGLoading from '../components/SVGLoading.vue'
 </script>
 
-<div class="demo">
+<div class="flex flex-center h-60">
   <SVGLoading />
 </div>
 
 ::: code-group
 
 ```html
-<div class="canvas">
-  <div class="label">
+<div class="flex flex-col gap-4 flex-center">
+  <div class="text-zinc text-center">
     <input
+      :max="maxValue"
+      min="0"
       name="range"
       type="range"
-      min="0"
-      :max="maxValue"
       :value="scrollValue"
       @input="onInput"
     />
@@ -317,12 +300,12 @@ import SVGLoading from '../components/SVGLoading.vue'
   <svg
     class="svg-loading"
     :data-loading="loading"
-    viewBox="0 0 32 32"
-    width="1em"
-    height="1em"
     fill="none"
+    height="1em"
     stroke="currentColor"
     stroke-width="3"
+    viewBox="0 0 32 32"
+    width="1em"
   >
     <g
       :opacity="opacitValue"
@@ -330,33 +313,21 @@ import SVGLoading from '../components/SVGLoading.vue'
       transform-origin="16 16"
     >
       <circle
-        r="12"
         cx="16"
         cy="16"
-        stroke-linecap="round"
+        r="12"
         stroke-dasharray="100"
         :stroke-dashoffset="dashoffset"
+        stroke-linecap="round"
         transform="rotate(-45)"
         transform-origin="16 16"
-      ></circle>
+      />
     </g>
   </svg>
 </div>
 ```
 
 ```css
-.canvas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.canvas .label {
-  margin-bottom: 20px;
-  color: oklch(0.645 0.246 16.439);
-  text-align: center;
-}
-
 .svg-loading {
   border-radius: 50%;
   padding: 10px;
@@ -368,16 +339,6 @@ import SVGLoading from '../components/SVGLoading.vue'
 
 .svg-loading[data-loading='true'] {
   animation: rotate 1s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(1turn);
-  }
 }
 ```
 
@@ -427,27 +388,22 @@ function onInput(event: Event) {
 
 :::
 
-<style>
-.demo {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 240px;
-}
-</style>
-
 <!-- svg spiner -->
 <style>
 .svg-spinner {
   animation:
-    spin2 1s linear infinite,
-    spin1 2s ease-in-out infinite alternate;
+    rotate 1s linear infinite,
+    motion 2s ease-in-out infinite alternate;
 }
 
-@keyframes spin1 {
-  0% {
+@keyframes rotate {
+ to {
+  rotate: 1turn;
+ }
+}
+
+@keyframes motion {
+  0%, 100% {
     stroke-dasharray: 1 314;
     stroke-dashoffset: 0;
   }
@@ -455,17 +411,6 @@ function onInput(event: Event) {
   50% {
     stroke-dasharray: 310 2;
     stroke-dashoffset: -155;
-  }
-
-  100% {
-    stroke-dasharray: 1 314;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes spin2 {
-  0% {
-    transform: rotate(360deg);
   }
 }
 </style>
@@ -478,7 +423,6 @@ function onInput(event: Event) {
   height: 200px;
   border-radius: 10px;
   overflow: hidden;
-  z-index: 0;
 }
 
 .colorful-border {
@@ -492,27 +436,20 @@ function onInput(event: Event) {
 }
 
 .colorful-border::before {
-  --size: 200%;
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: var(--size);
-  padding-bottom: var(--size);
+  translate: -50% -50%;
+  width: 200%;
+  padding-bottom: 200%;
   background: conic-gradient(
     #e92a67 0deg,
     #a853ba 135deg,
     #2a8af6 215deg,
     hsla(0, 0%, 100%, 0.1) 360deg
   );
-  animation: ring-flow 2s linear infinite;
-}
-
-@keyframes ring-flow {
-  0% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  animation: rotate 2s linear infinite;
 }
 </style>
 
@@ -535,7 +472,6 @@ function onInput(event: Event) {
 .grid-flat {
   position: absolute;
   inset: -100% 0;
-  transform: translateY(0);
   background: linear-gradient(
     to right,
     #b9ddff 45%,
@@ -551,11 +487,7 @@ function onInput(event: Event) {
 }
 
 @keyframes grid-flow {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
+  to {
     transform: translateY(50%);
   }
 }
