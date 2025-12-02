@@ -1,3 +1,4 @@
+import type { PresetFactory } from 'unocss'
 import {
   definePreset,
   presetWind4,
@@ -38,4 +39,4 @@ export const presetBase = definePreset(() => {
     },
     transformers: [transformerDirectives(), transformerVariantGroup()]
   }
-})
+}) as PresetFactory<any>

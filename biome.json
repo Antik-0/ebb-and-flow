@@ -2,6 +2,7 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "includes": [
+      "blog/**/*",
       "packages/**/*",
       "docs/**/*",
       "scripts/*",
@@ -11,6 +12,10 @@
       "!**/node_modules",
       "!**/dist",
       "!**/cache",
+      "!**/output",
+      "!**/data",
+      "!**/nuxt",
+      "!**/nitro",
       "!biome.json"
     ]
   },
@@ -92,7 +97,9 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.vue"],
+      "includes": [
+        "**/*.vue"
+      ],
       "linter": {
         "rules": {
           "style": {

@@ -1,0 +1,28 @@
+{
+  "name": "blog",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./app/*"
+  },
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "prepare": "nuxt prepare",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@config/unocss": "workspace:*",
+    "@nuxt/content": "catalog:",
+    "@unocss/nuxt": "catalog:",
+    "nuxt": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "trustedDependencies": [
+    "esbuild",
+    "nuxt"
+  ]
+}

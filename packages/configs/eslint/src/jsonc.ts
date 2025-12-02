@@ -80,6 +80,10 @@ export default defineConfig([
         {
           order: { type: 'asc' },
           pathPattern: '^(dependencies|devDependencies).*$'
+        },
+        {
+          order: { type: 'asc' },
+          pathPattern: '^workspaces.catalog.*$'
         }
       ]
     }

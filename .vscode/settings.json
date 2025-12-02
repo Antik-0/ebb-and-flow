@@ -2,6 +2,7 @@
   "editor.formatOnPaste": false,
   "explorer.fileNesting.patterns": {
     "biome.json": "eslint.config.*",
+    "bunfig.toml": "bun.lock"
   },
   "editor.codeActionsOnSave": {
     "source.addMissingImports.ts": "never",
@@ -27,5 +28,8 @@
   },
   "[css]": {
     "editor.defaultFormatter": "biomejs.biome"
-  }
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
 }
