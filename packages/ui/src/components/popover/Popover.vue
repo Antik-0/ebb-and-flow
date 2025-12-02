@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { Timer } from '#/types'
-import type { PopoverProps } from '.'
+import type { PopoverProps } from './index.ts'
 import { useEventListener } from '@repo/utils/hooks'
 import { computed, h, onMounted, watch } from 'vue'
 import TeleportToBody from '#/components/TeleportToBody.vue'
