@@ -16,6 +16,7 @@
   "dependencies": {
     "@config/unocss": "workspace:*",
     "@nuxt/content": "catalog:",
+    "@repo/theme": "workspace:*",
     "@unocss/nuxt": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",

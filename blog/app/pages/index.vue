@@ -1,6 +1,5 @@
 <script setup lang='ts'>
+definePageMeta({
+  layout: 'home'
+})
 </script>
-
-<template>
-  <div>hello,world</div>
-</template>

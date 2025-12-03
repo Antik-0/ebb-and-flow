@@ -1,0 +1,27 @@
+{
+  "name": "@repo/theme",
+  "version": "2.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@repo/utils": "workspace:*",
+    "iconify-icon": "catalog:",
+    "motion-v": "catalog:",
+    "nuxt": "catalog:",
+    "vite": "catalog:",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@config/tsconfig": "workspace:*"
+  }
+}

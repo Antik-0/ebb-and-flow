@@ -1,0 +1,45 @@
+@layer theme-light, theme-dark, layout;
+
+@layer theme-dark {
+  .dark {
+    --foreground: #dfdfd6;
+    --background: #1b1b1f;
+
+    /**
+     * Colors: Text
+     *
+     * - `text-1`: Used for primary text.
+     *
+     * - `text-2`: Used for muted texts, such as "inactive menu" or "info texts".
+     *
+     * - `text-3`: Used for subtle texts, such as "placeholders" or "caret icon".
+     * --------------------------------------------------------------------------
+     */
+    --c-text-1: #dfdfd6;
+    --c-text-2: #98989f;
+    --c-text-3: #6a6a71;
+
+    --c-brand-1: #62d9e9;
+    --c-brand-2: #ff637e;
+    --c-brand-3: #a8b1ff;
+
+    --c-border: #3c3f44;
+    --c-divider: #2e2e32;
+
+    --c-bg-mutate: #2f2f2f;
+    --c-bg-navbar: hsl(0 0% 20% / 0.1);
+    --c-bg-sidebar: hsl(240 16% 10% / 0.9);
+    --c-bg-overlay: hsl(240 16% 10% / 0.6);
+    --c-bg-content: hsl(240 16% 10% / 0.8);
+  }
+}
+
+@layer layout {
+  :root {
+    --navbar-height: 64px;
+
+    --z-index-navbar: 30;
+    --z-index-sidebar: 40;
+    --z-index-toolpanel: 50;
+  }
+}
