@@ -7,8 +7,8 @@
     "jsxImportSource": "vue",
     "moduleDetection": "force",
 
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
 
