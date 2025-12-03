@@ -13,6 +13,8 @@ export default defineNuxtConfig({
     }
   },
 
+  css: ['@repo/theme/style/main.css'],
+
   alias: {
     '@': fileURLToPath(new URL('./app/assets', import.meta.url))
   },
@@ -31,6 +33,19 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/content', '@unocss/nuxt'],
   content: {
+    build: {
+      markdown: {
+        toc: {
+          depth: 2
+        },
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'github-dark'
+          }
+        }
+      }
+    },
     experimental: { sqliteConnector: 'native' }
   }
 })

@@ -3,5 +3,9 @@ import { LayoutPage } from '@repo/theme'
 </script>
 
 <template>
-  <LayoutPage />
+  <LayoutPage>
+    <template #content>
+      <NuxtPage />
+    </template>
+  </LayoutPage>
 </template>

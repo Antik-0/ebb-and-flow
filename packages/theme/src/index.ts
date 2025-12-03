@@ -1,5 +1,3 @@
-import './styles/main.css'
-
 import 'iconify-icon'
 
 export type { ThemeConfig } from './types'

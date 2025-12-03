@@ -17,7 +17,7 @@ const taglineMotion = shallowRef('')
 
 const router = useRouter()
 function handleEnter() {
-  router.push(theme.entryLink)
+  router.push(theme.defaultActiveLink)
 }
 </script>
 

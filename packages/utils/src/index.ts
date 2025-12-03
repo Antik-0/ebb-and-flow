@@ -1,5 +1,19 @@
 export { debounce, throttle } from './debounce.ts'
 
+const HASH_OR_QUERY_RE = /[?#].*$/
+const INDEX_OR_EXT_RE = /(?:(^|\/)index)?\.(?:md|html)$/
+const EXTERNAL_URL_RE = /^(?:[a-z]+:|\/\/)/i
+
+export function isExternalLink(url: string) {
+  return EXTERNAL_URL_RE.test(url)
+}
+
+export function normalizeLink(path: string): string {
+  return decodeURI(path)
+    .replace(HASH_OR_QUERY_RE, '')
+    .replace(INDEX_OR_EXT_RE, '$1')
+}
+
 /**
  * 判断是否支持 ViewTranstion API
  */
