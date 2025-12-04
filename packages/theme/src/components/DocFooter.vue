@@ -1,14 +1,15 @@
 <script setup lang='ts'>
-import { useData } from 'vitepress'
 import { computed, onMounted, shallowRef, watchEffect } from 'vue'
 import { useSharedMenus } from '#/controller/menus.ts'
 import Link from './Link.vue'
 
-const { page } = useData()
+const props = defineProps<{
+  lastUpdated?: string
+}>()
 
 const datetime = shallowRef('')
 const ISODatetime = shallowRef('')
-const hasLastUpdated = computed(() => !!page.value.lastUpdated)
+const hasLastUpdated = computed(() => !!props.lastUpdated)
 
 onMounted(() => {
   const DateTimeFormater = new Intl.DateTimeFormat('zh-CN', {
@@ -18,7 +19,8 @@ onMounted(() => {
   })
 
   watchEffect(() => {
-    const date = new Date(page.value.lastUpdated!)
+    if (!props.lastUpdated) return
+    const date = new Date(props.lastUpdated)
     datetime.value = DateTimeFormater.format(date)
     ISODatetime.value = date.toISOString()
   })

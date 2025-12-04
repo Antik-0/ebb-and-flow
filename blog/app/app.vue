@@ -1,11 +1,11 @@
 <script setup lang='ts'>
 import { Background, ThemeProvider } from '@repo/theme'
-import { themeCofig } from './theme.config'
+import { themeConfig } from './theme.config'
 </script>
 
 <template>
-  <ThemeProvider theme="dark" :value="themeCofig">
-    <NuxtLayout />
+  <ThemeProvider theme="dark" :value="themeConfig">
+    <NuxtPage />
   </ThemeProvider>
   <Background :backgrounds="['/wallhaven-rrwvdq.webp']" />
 </template>

@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineNuxtConfig({
@@ -47,5 +48,22 @@ export default defineNuxtConfig({
       }
     },
     experimental: { sqliteConnector: 'native' }
+  },
+  hooks: {
+    'content:file:afterParse': ctx => {
+      const { file, content } = ctx
+      content.lastUpdated = getGitUpdated(file.path)
+    }
   }
 })
+
+function getGitUpdated(filepath: string) {
+  try {
+    const lastUpdated = execSync(
+      `git log -1 --pretty=format:%cI -- ${filepath}`
+    ).toString()
+    return lastUpdated
+  } catch {
+    return undefined
+  }
+}

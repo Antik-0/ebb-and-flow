@@ -3,7 +3,7 @@ import { useMediaQuery } from '@repo/utils/hooks'
 import { computed, inject, provide } from 'vue'
 
 export function useLayout() {
-  const isDesktop = useMediaQuery('(width >= 1024px)')
+  const isDesktop = useMediaQuery('(width >= 1024px)', { initialValue: true })
   const isMobile = computed(() => !isDesktop.value)
   const isLargeScreen = useMediaQuery('(width >= 1536px)')
 

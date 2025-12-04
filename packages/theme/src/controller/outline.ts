@@ -1,31 +1,25 @@
+import type { ComputedRef, InjectionKey } from 'vue'
+import type { OutlineAnchor } from '#/types'
 import { throttle } from '@repo/utils'
 import { useEventListener } from '@repo/utils/hooks'
-import { useData } from 'vitepress'
-import { onMounted, shallowRef, watch } from 'vue'
+import { inject, onMounted, provide, shallowRef, watch } from 'vue'
 
-interface Anchor {
-  text: string
-  to: string
-  level: number
-  offsetTop: number
+interface PageTocContext {
+  value: ComputedRef<OutlineAnchor[]>
 }
 
-function calcOffsetTop(node: HTMLElement) {
-  let offsetTop = 0
-  while (node) {
-    offsetTop += node.offsetTop
-    node = node.offsetParent as HTMLElement
-  }
-  return offsetTop
+const PageTocKey = Symbol('toc') as InjectionKey<PageTocContext>
+
+export function providePageToc(value: PageTocContext) {
+  provide(PageTocKey, value)
 }
 
 export function useOutline() {
-  const anchors = shallowRef<Anchor[]>([])
+  const context = inject(PageTocKey, {} as PageTocContext)
+  const anchors = context.value
   const activeIndex = shallowRef(-1)
 
-  const { page } = useData()
-
-  watch(page, createOutlineAnchors, { flush: 'post' })
+  let offsetTopMap: number[] = []
 
   const { addEventListener } = useEventListener()
 
@@ -40,8 +34,8 @@ export function useOutline() {
     }
 
     let activated = -1
-    for (const [index, anchor] of anchors.value.entries()) {
-      if (anchor.offsetTop - scrollTop <= 200) {
+    for (const [index, offsetTop] of offsetTopMap.entries()) {
+      if (offsetTop - scrollTop <= 200) {
         activated = index
       } else {
         break
@@ -51,37 +45,41 @@ export function useOutline() {
     activeIndex.value = activated
   }, 200)
 
+  function createOffsetTopMap() {
+    const container = document.getElementById('content')
+    if (!container) return []
+
+    const result: number[] = []
+    for (const anchor of anchors.value) {
+      const id = anchor.to
+      const node = container.querySelector(id)
+      if (node) {
+        result.push(calcOffsetTop(node as HTMLElement))
+      }
+    }
+    return result
+  }
+
   onMounted(() => {
-    createOutlineAnchors()
-    computeActivedAnchor()
+    watch(
+      () => anchors.value,
+      () => {
+        offsetTopMap = createOffsetTopMap()
+        computeActivedAnchor()
+      },
+      { immediate: true }
+    )
     addEventListener(window, 'scroll', computeActivedAnchor)
   })
 
-  function createOutlineAnchors() {
-    window.requestAnimationFrame(() => {
-      const content = document.getElementById('content')
-      if (!content) {
-        anchors.value = []
-        activeIndex.value = 0
-        return
-      }
-
-      const elements = content.querySelectorAll<HTMLElement>('h2,h3')
-
-      const data: Anchor[] = []
-      for (const element of elements) {
-        const offsetTop = calcOffsetTop(element)
-        data.push({
-          text: element.textContent.trim(),
-          to: `#${element.id}`,
-          level: Number(element.tagName.at(-1)) - 2,
-          offsetTop
-        })
-      }
-
-      anchors.value = data
-    })
-  }
-
   return { anchors, activeIndex }
+}
+
+function calcOffsetTop(node: HTMLElement) {
+  let offsetTop = 0
+  while (node) {
+    offsetTop += node.offsetTop
+    node = node.offsetParent as HTMLElement
+  }
+  return offsetTop
 }

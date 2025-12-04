@@ -14,13 +14,16 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@config/unocss": "workspace:*",
     "@nuxt/content": "catalog:",
     "@repo/theme": "workspace:*",
-    "@unocss/nuxt": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@config/unocss": "workspace:*",
+    "@unocss/nuxt": "catalog:",
+    "zod": "catalog:"
   },
   "trustedDependencies": [
     "esbuild",

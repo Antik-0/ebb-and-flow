@@ -19,9 +19,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ClientOnly>
-    <Teleport v-if="ready" :to="`#${id}`" defer>
-      <slot></slot>
-    </Teleport>
-  </ClientOnly>
+  <Teleport v-if="ready" :to="`#${id}`" defer>
+    <slot></slot>
+  </Teleport>
 </template>
