@@ -110,11 +110,11 @@ fnm env --use-on-cd --shell power-shell | Out-String | Invoke-Expression
 fnm default v20
 ```
 
-:::tip
+::custom-block{title='TIP'}
 如果习惯了使用 `CMD` 命令工具，则可以将安装目录中的某个 `node` 版本添加到环境变量中，这样就可以在 `CMD` 中执行 `node npm` 等命令了。
 
 推荐将 `~\aliases\default` 这个默认版本添加到环境变量中。
-:::
+::
 
 ### fnm 特性
 

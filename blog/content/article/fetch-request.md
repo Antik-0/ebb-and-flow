@@ -326,7 +326,7 @@ export class FetchClient {
 
 ## 导出与预设
 
-::: code-group
+::code-group
 
 ```ts [index.ts]
 import { FetchClient } from './request.ts'
@@ -477,4 +477,4 @@ function handleServerErrorMessage(data: HttpResponseData) {
 }
 ```
 
-:::
+::

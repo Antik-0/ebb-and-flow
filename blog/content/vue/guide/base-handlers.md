@@ -164,7 +164,7 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
 
 作者的注释指出这一条件成立的情况就是用户对 vue 的响应式对象添加了自己的代理操作。如果将用户代理对象传入 `toRaw` 方法，那么当执行到 `get` 代理时，内部的 `target` 指向了 vue 的响应式对象，`receiver` 指向了用户创建的 proxy 实例，而 `but has the same prototype` 说的是两者都属于 proxy 类的实例，从而两者的原型对象也一致，因此条件成立。如果用户定义了 `getPrototypeOf` 代理而改变了原型对象的返回，那么条件就不一定成立。
 
-::: info get 特性
+::custom-block{title='get 特性'}
 
 对 vue 的 `reactive` 代理对象进行 `get` 访问，如果访问的属性是一个普通对象，那么将返回这个对象的 `reactive` 版本，即 `reactive` 的深层代理特性。
 
@@ -182,7 +182,7 @@ console.log(proxy.raw === proxy.reactive) // true
 // ✨同时对于每个原始对象的代理版本会缓存在相应的 map 中，因此反复转换也只会返回同一个代理对象
 ```
 
-:::
+::
 
 ## MutableReactiveHandler
 
@@ -312,7 +312,7 @@ bar.v = 200
 // v.value = 100，此处赋值后bar.v的type是number，对bar.v的赋值断开了对v的引用，变为一个纯number类型，不会影响v.value
 ```
 
-::: info set 特性
+::custom-block{title='set 特性'}
 
 对 vue 的 `reactive` 代理对象进行 `set` 赋值，如果赋值的 `value` 是一个被 `reactive` 函数包装的值，那么实际绑定的是 `reactive` 代理的原始对象。
 
@@ -329,7 +329,7 @@ console.log(target.raw === target.reactive) // true
 console.log(target.raw === target.readonly) // false
 ```
 
-:::
+::
 
 ### Proxy.has
 
@@ -493,7 +493,7 @@ const handler = {
 const proxy = new Proxy([1, 2, 3], handler)
 ```
 
-![代理数组的方法调用](../../images/array-proxy.png)
+![代理数组的方法调用](/docs/array-proxy.png)
 
 通过上图可以看到，当在一个数组的代理对象上调用相关的方法时，除了触发方法函数的 `get` 之外，还会触发 `length` 属性以及对应数组下标的 `get` 代理。这是因为数组的任何操作，其底层都要依赖一个 for 循环，因此绕不开对 `length` 属性的访问。
 

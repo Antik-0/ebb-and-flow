@@ -126,9 +126,9 @@ export enum TrackOpTypes {
 }
 ```
 
-::: tip
+::custom-block
 触发 `TrackOpTypes.ITERATE` 的操作有 ownKeys 代理、集合的.size 访问、集合的.forEach 方法，以及涉及到集合的迭代器的方法：keys，values，entries，forof 循环以及数组/集合解构。
-:::
+::
 
 ### trackEffect
 
@@ -172,7 +172,7 @@ export function trackEffect(
 
 `trackEffect` 不会对重复的依赖进行追踪，其第一个 if 语句会过滤掉在当前活跃副作用中重复的依赖，`dep.get(effect) === effect._trackId` 的情况如下图所示：
 
-![trackEffect](../../images/trackEffect.png)
+![trackEffect](/docs/trackEffect.png)
 
 可以看到，在 `watchEffect` 中第二次和第三次调用 `foo.id`，是不会重复执行 `trackEffect` 内的逻辑了。
 
@@ -209,9 +209,9 @@ export function trackRefValue(ref: RefBase<any>) {
 
 并且，可以看到对于 `ref` 的 track 是只跟踪了其 `.value` 属性，如果 `.value` 的值是一个对象，那么对其的响应性跟踪则由 `reactive` 接管，见下文。
 
-:::tip
+::custom-block
 对于 `ref` 而言，不需要像 `reactive` 那样将每个追踪的 key 都缓存在一个 `map` 中，因为只追踪了其 `.value` 一个属性，因而在 `ref` 类有一个 `dep` 属性用来保存 `.value` 这个依赖，方便访问。
-:::
+::
 
 ### reactive
 

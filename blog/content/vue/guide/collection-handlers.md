@@ -113,9 +113,9 @@ function get() {
 
 如果是 `readonlyProxy = readonly(raw)` 这样创建的 `readonly` 代理版本是不会触发任何依赖的收集的，因为无法为其增加或修改任何属性。
 
-::: tip
+::custom-block
 特别注意的是，最后一个 if 语句没有经过 wrap 包装，也没有进行 return，原因是由于这个 if 条件就是针对 `readonly(reactive(Map))` 这个情况，此时条件中的 `target` 已经是一个 `reactive` 代理了，如果再进行一层 readonly wrap，那么就破坏了 `reactive` 的特性。而没有 return 是因为此条件的前置条件是 key 不存在 rawTarget Map 中，`target.get(key)` 的结果为 undefined，是否显示 return 都是返回 undefined。
-:::
+::
 
 综上所述：对于 `Map/Set` 对象的 `get` 拦截，如果是 `readonly(Map)` 代理，则不会进行任何 `key` 的依赖追踪，但如果是 `readonly(reactive(Map))` 情况，则需要返回一个 readonly + reactive 版本的代理对象。
 

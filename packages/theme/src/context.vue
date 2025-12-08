@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import type { ThemeConfig } from '#/types'
-import { onMounted, watch } from 'vue'
-import { provideThemeCofnig, toggleThemeColor } from './useTheme'
+import { provideThemeCofnig } from './useTheme'
 
 const props = defineProps<{
   value: ThemeConfig
@@ -9,24 +8,6 @@ const props = defineProps<{
 }>()
 
 provideThemeCofnig(props.value)
-
-onMounted(() => {
-  watch(
-    () => props.theme,
-    () => {
-      const isDark = toggleThemeColor(props.theme)
-      const root = document.documentElement
-      if (isDark) {
-        root.classList.add('dark')
-        root.setAttribute('data-theme', 'dark')
-      } else {
-        root.classList.remove('dark')
-        root.setAttribute('data-theme', 'light')
-      }
-    },
-    { immediate: true }
-  )
-})
 </script>
 
 <template>

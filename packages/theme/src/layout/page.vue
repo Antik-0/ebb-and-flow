@@ -92,12 +92,12 @@ provideLayoutCtx({
 
     <Sidebar :glass-mask="isDesktop" />
 
-    <div class="pt-[--navbar-height]">
+    <div class="pt-[--h-navbar]">
       <div class="layout-doc">
         <main class="doc-content">
           <template v-if="page">
             <div class="px-8 pb-24 flex-1 min-w-0">
-              <article id="content" class="vp-doc">
+              <article id="content" class="ebb-doc">
                 <slot></slot>
               </article>
               <DocFooter :last-updated="page.lastUpdated" />

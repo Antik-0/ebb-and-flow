@@ -15,7 +15,7 @@ const showTitle = computed(() => showToolPanel.value)
 
 <template>
   <div class="flex flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]">
-    <header class="h-[--navbar-height] max-w-320 w-full relative isolate">
+    <header class="h-[--h-navbar] max-w-320 w-full relative isolate">
       <div class="grid cols-[120px_1fr_120px] size-full">
         <slot name="start-action"></slot>
 

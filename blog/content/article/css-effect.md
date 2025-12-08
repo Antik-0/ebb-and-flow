@@ -13,15 +13,15 @@
       r="100"
       fill="none"
       stroke="#59AFFF"
-      stroke-width="24"
-      stroke-linecap="round"
-      stroke-dasharray="1 314"
-      stroke-dashoffset="0"
+      :stroke-width="24"
+      :stroke-linecap="round"
+      :stroke-dasharray="1 314"
+      :stroke-dashoffset="0"
     />
   </svg>
 </div>
 
-::: code-group
+::code-group
 
 ```html
 <svg width="200" height="200" viewBox="-200 -200 400 400">
@@ -66,7 +66,7 @@
 }
 ```
 
-:::
+::
 
 ## 炫彩边框
 
@@ -78,7 +78,7 @@
   </div>
 </div>
 
-::: code-group
+::code-group
 
 ```html
 <div class="border-container">
@@ -129,7 +129,7 @@
 }
 ```
 
-:::
+::
 
 ## 网格动画
 
@@ -143,7 +143,7 @@
   </div>
 </div>
 
-::: code-group
+::code-group
 
 ```html
 <div class="grid-view">
@@ -192,7 +192,7 @@
 }
 ```
 
-:::
+::
 
 ## playon
 
@@ -203,7 +203,7 @@
     height="1em"
     style="font-size: 128px; color: oklch(0.645 0.246 16.439)"
   >
-    <g stroke="currentColor" stroke-width="6" stroke-linecap="round">
+    <g stroke="currentColor" :stroke-width="6" :stroke-linecap="round">
       <line x1="7" y1="10" x2="7" y2="26">
         <animate
           attributeName="y1"
@@ -270,15 +270,10 @@
 
 ## 下拉 Loading
 
-<script setup>
-import SVGLoading from '../components/SVGLoading.vue'
-</script>
+::svg-loading
+::
 
-<div class="flex flex-center h-60">
-  <SVGLoading />
-</div>
-
-::: code-group
+::code-group
 
 ```html
 <div class="flex flex-col gap-4 flex-center">
@@ -386,7 +381,7 @@ function onInput(event: Event) {
 }
 ```
 
-:::
+::
 
 <!-- svg spiner -->
 <style>

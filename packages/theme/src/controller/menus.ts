@@ -1,12 +1,12 @@
 import type { MenuItem, NavMenuRecord } from '#/types'
 import { isExternalLink } from '@repo/utils'
 import { createSharedState } from '@repo/utils/hooks'
-import { useRoute } from 'nuxt/app'
+import { useRouter } from 'nuxt/app'
 import { onMounted, ref, shallowRef, watch } from 'vue'
 import { useTheme } from '#/useTheme.ts'
 
 export const useSharedMenus = createSharedState(() => {
-  const route = useRoute()
+  const router = useRouter()
   const { theme } = useTheme()
 
   const menus = ref(buildMenuTree(theme.navMenus))
@@ -24,14 +24,14 @@ export const useSharedMenus = createSharedState(() => {
   const updateActiveLink = () => {
     prevActiveNode.value = currActiveNode.value
 
-    const currentPath = route.path
+    const currentPath = router.currentRoute.value.path
     currActiveNode.value = matchActiveNode(menus.value, currentPath)
 
     updateNodeActive(prevActiveNode.value, false)
     updateNodeActive(currActiveNode.value, true)
   }
 
-  watch(route, updateActiveLink)
+  watch(() => router.currentRoute.value, updateActiveLink)
   onMounted(updateActiveLink)
 
   return {

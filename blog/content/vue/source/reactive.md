@@ -1,8 +1,8 @@
 # vue 源码解析 - reactive
 
-:::tip
+::custom-block
 vue 在 3.5+ 的版本重构了响应式系统，本文解析的 vue 源码版本为 3.5.13。
-:::
+::
 
 ## 源码
 

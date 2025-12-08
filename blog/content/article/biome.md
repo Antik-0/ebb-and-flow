@@ -1,14 +1,16 @@
 # Biome 配置
 
-:::info
+::custom-block
 
 [传送门](https://biomejs.dev/zh-cn/guides/getting-started/)
 
-:::
+::
 
 ## source
 
-```json
+::code-group
+
+```json [biome.json]
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
@@ -116,3 +118,4 @@
 }
 
 ```
+::

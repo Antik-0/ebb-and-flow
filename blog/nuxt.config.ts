@@ -7,7 +7,11 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      link: [{ rel: 'icon', href: '/logo.png' }]
+      link: [{ rel: 'icon', href: '/logo.png' }],
+      htmlAttrs: {
+        class: 'dark',
+        lang: 'zh-cn'
+      }
     },
     rootAttrs: {
       id: 'app'
@@ -40,10 +44,7 @@ export default defineNuxtConfig({
           depth: 2
         },
         highlight: {
-          theme: {
-            default: 'github-light',
-            dark: 'github-dark'
-          }
+          theme: 'github-dark'
         }
       }
     },

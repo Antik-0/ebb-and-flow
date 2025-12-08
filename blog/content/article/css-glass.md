@@ -1,22 +1,19 @@
 # CSS-毛玻璃效果
 
-<script setup>
-import CSSGlass from '../components/CSSGlass.vue'
-</script>
-
-::: info
+::custom-block
 
 [传送门](https://www.tyleo.com/guides/html-glass#final-recipe-lookahead)
 
-:::
+::
 
 ## 效果
 
-<CSSGlass />
+::css-glass
+::
 
 ## 源码
 
-::: code-group
+::code-group
 
 ```vue
 <script setup lang="ts">
@@ -134,4 +131,4 @@ useMove(glassEl)
 }
 ```
 
-:::
+::

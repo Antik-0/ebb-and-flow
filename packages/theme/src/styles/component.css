@@ -191,7 +191,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: calc(var(--navbar-height) + 56px);
+  padding-top: calc(var(--h-navbar) + 56px);
   padding-bottom: 56px;
 }
 

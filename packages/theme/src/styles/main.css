@@ -7,18 +7,12 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: hsl(0 0% 39%) hsl(0 0% 17%);
-}
-
-html[data-theme='light'] {
-  color-scheme: light;
-}
-
-html[data-theme='dark'] {
   color-scheme: dark;
 }
 
 body {
   min-height: 100vh;
+  font-family: var(--font-family-base);
   color: var(--foreground);
   background-color: var(--background);
 }

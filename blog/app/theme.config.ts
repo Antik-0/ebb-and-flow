@@ -43,15 +43,15 @@ export const themeConfig: ThemeConfig = {
           collapsed: true,
           items: [
             { text: 'Reactive', link: '/vue/guide/reactive' },
-            { text: 'BaseHandlers', link: '/vue/guide/baseHandlers' },
+            { text: 'BaseHandlers', link: '/vue/guide/base-handlers' },
             {
               text: 'CollectionHandlers',
-              link: '/vue/guide/collectionHandlers'
+              link: '/vue/guide/collection-handlers'
             },
             { text: 'Ref', link: '/vue/guide/ref' },
             { text: 'Effect', link: '/vue/guide/effect' },
             { text: 'Computed', link: '/vue/guide/computed' },
-            { text: 'EffectScope', link: '/vue/guide/effectScope' }
+            { text: 'EffectScope', link: '/vue/guide/effect-scope' }
           ]
         },
         {
@@ -59,20 +59,20 @@ export const themeConfig: ThemeConfig = {
           collapsed: true,
           items: [
             { text: 'reactive', link: '/vue/source/reactive' },
-            { text: 'baseHandlers', link: '/vue/source/baseHandlers' },
+            { text: 'baseHandlers', link: '/vue/source/base-handlers' },
             {
               text: 'collectionHandlers',
-              link: '/vue/source/collectionHandlers'
+              link: '/vue/source/collection-handlers'
             },
             {
               text: 'arrayInstrumentations',
-              link: '/vue/source/arrayInstrumentations'
+              link: '/vue/source/array-instrumentations'
             },
             { text: 'ref', link: '/vue/source/ref' },
             { text: 'computed', link: '/vue/source/computed' },
             { text: 'dep', link: '/vue/source/dep' },
             { text: 'effect', link: '/vue/source/effect' },
-            { text: 'effectScope', link: '/vue/source/effectScope' },
+            { text: 'effectScope', link: '/vue/source/effect-scope' },
             { text: 'watch', link: '/vue/source/watch' }
           ]
         }

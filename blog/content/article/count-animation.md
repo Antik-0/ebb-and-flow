@@ -4,7 +4,7 @@
 
 ## source
 
-::: code-group
+::code-group
 
 ```ts [useCount]
 import { ref, toValue, computed } from 'vue'
@@ -156,4 +156,4 @@ export function useCountTo(to: number, duration: number, precision?: number) {
 }
 ```
 
-:::
+::

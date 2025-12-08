@@ -1,6 +1,6 @@
 # Vue 响应式系统 - Reactive
 
-::: tip 前言
+::custom-block{title='前言'}
 本文解析的 vue 源码版本为 `3.4.27`，只涉及包 `packages/reactivity` 下的内容，一般文章的标题就是其对应的源码模块。
 
 推荐先阅读 vue 官方文档-[深入响应式系统](https://cn.vuejs.org/guide/extras/reactivity-in-depth.html)，理解 dep(依赖)、effect(作用)等相关术语，这将有助于更好的理解 vue 响应式系统。
@@ -8,7 +8,7 @@
 **vue3** 响应式系统的基础是 Proxy，关于 Proxy 的知识可查看[阮一峰老师的教程](https://wangdoc.com/es6/proxy)。
 
 为了行文方便，下文中出现 `reactive` 这个词有时候并不是特指 `reactive` 这个函数，更多的是表示一个对象被 `reactive、readonly` 等响应式函数包装后具有了 vue 的响应性，是泛指这一系列代理，具体意思根据上下文会有所不同。
-:::
+::
 
 ## reactive
 

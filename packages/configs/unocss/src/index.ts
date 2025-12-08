@@ -19,13 +19,19 @@ export const presetBase = definePreset(() => {
     theme: {
       colors: {
         brand: {
-          DEFAULT: '#62d9e9',
-          1: '#62d9e9',
-          2: '#ff637e',
-          3: '#a8b1ff'
+          DEFAULT: 'var(--c-brand-1)',
+          1: 'var(--c-brand-1)',
+          2: 'var(--c-brand-2)',
+          3: 'var(--c-brand-3)'
         },
-        border: '#3c3f44',
-        divider: '#2e2e32'
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        muted: 'var(--muted)',
+        'muted-foreground': 'var(--muted-foreground)',
+        accent: 'var(--accent)',
+        'accent-foreground': 'var(--accent-foreground)',
+        border: 'var(--c-border)',
+        divider: 'var(--c-divider)'
       }
     },
     shortcuts: [

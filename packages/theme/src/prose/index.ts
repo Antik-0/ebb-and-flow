@@ -1,0 +1,5 @@
+export type { CodeBlockProps } from './CodeBlock.ts'
+export { default as AnchorHead } from './AnchorHead.vue'
+export { CodeBlock } from './CodeBlock.ts'
+export { default as CodeGroup } from './CodeGroup.vue'
+export { default as CustomBlock } from './CustomBlock.vue'
