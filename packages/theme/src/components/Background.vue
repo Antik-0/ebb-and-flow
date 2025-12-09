@@ -1,46 +1,49 @@
 <script setup lang='ts'>
 import type { Timer } from '#/types'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import TeleportToBody from './TeleportToBody.vue'
 
 const props = defineProps<{
-  backgrounds: string[]
+  pictures: string[]
   interval?: number
 }>()
 
 const motions = ref<string[]>([])
+const defaultInterval = 60_000
+
+const activeIndex = ref(0)
+let timer: Timer | null = null
 
 watch(
-  () => props.backgrounds.length,
+  () => props.pictures.length,
   size => {
     motions.value = Array.from<string>({ length: size }).fill('')
   },
   { immediate: true }
 )
 
-const activeIndex = ref(0)
-let timer: Timer | null = null
-
 function onMotionFrame() {
-  const length = props.backgrounds.length
+  const length = props.pictures.length
   const currIndex = activeIndex.value
   const nextIndex = (currIndex + 1) % length
   activeIndex.value = nextIndex
 
-  motions.value[currIndex] = 'exit'
+  motions.value[currIndex] = 'leave'
   motions.value[nextIndex] = 'enter'
 }
 
 onMounted(() => {
   watch(
-    () => props.backgrounds.length,
+    () => props.pictures.length,
     length => {
       activeIndex.value = 0
       timer && window.clearInterval(timer)
 
       const enableMotion = length > 1
       if (enableMotion) {
-        timer = window.setInterval(onMotionFrame, props.interval ?? 60_000)
+        timer = window.setInterval(
+          onMotionFrame,
+          props.interval ?? defaultInterval
+        )
       }
     }
   )
@@ -52,43 +55,43 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <TeleportToBody id="background">
-    <div class="grid inset-0 fixed isolate -z-1">
-      <picture
-        v-for="(source, index) in backgrounds"
-        :key="index"
-        class="background-image"
-        :data-active="index === activeIndex"
-        :data-motion="motions[index]"
-      >
-        <img
-          alt="background"
-          class="size-full object-cover"
-          :src="source"
-        />
-      </picture>
-    </div>
-  </TeleportToBody>
+  <div aria-hidden="true" class="grid inset-0 fixed isolate -z-1">
+    <picture
+      v-for="(source, index) in pictures"
+      :key="index"
+      class="picture-image"
+      :data-active="index === activeIndex"
+      :data-motion="motions[index]"
+    >
+      <img
+        alt="background"
+        class="size-full object-cover"
+        :src="source"
+      />
+    </picture>
+  </div>
 </template>
 
 <style>
-.background-image {
+.picture-image {
   grid-area: 1 / 1;
   opacity: 0;
   z-index: -1;
   mix-blend-mode: plus-lighter;
+  animation-duration: 2000ms;
+  animation-timing-function: ease-out;
 }
 
-.background-image[data-active='true'] {
+.picture-image[data-active='true'] {
   opacity: 1;
-  z-index: 10;
+  z-index: 1;
 }
 
-.background-image[data-motion='enter'] {
-  animation: cross-fade-enter 2s ease-out;
+.picture-image[data-motion='enter'] {
+  animation-name: cross-fade-enter;
 }
 
-.background-image[data-motion='exit'] {
-  animation: cross-fade-exit 2s ease-out;
+.picture-image[data-motion='leave'] {
+  animation-name: cross-fade-leave;
 }
 </style>

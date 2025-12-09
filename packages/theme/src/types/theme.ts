@@ -1,5 +1,20 @@
 export interface ThemeConfig {
   /**
+   * 网站默认标题
+   */
+  title: string
+
+  /**
+   * 网站标题模板
+   */
+  titleTemplate?: string
+
+  /**
+   * 404 页面标题
+   */
+  notFoundTitle?: string
+
+  /**
    * 头像
    */
   avatar: string

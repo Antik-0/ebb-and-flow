@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { useAnimationFrame } from '@repo/utils/hooks'
-import { nextTick, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
+import { onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 
 const props = defineProps<{
   /**
@@ -48,7 +48,7 @@ const {
   prefix = '[',
   suffix = ']',
   placeholder = '.',
-  cycle = true
+  cycle = false
 } = props
 
 const maxLength = props.maxLength ?? Math.max(...codes.map(s => s.length))
@@ -115,9 +115,8 @@ watch(
   }
 )
 
-onMounted(async () => {
+onMounted(() => {
   if (codes.length === 0 || props.paused) return
-  await nextTick()
   raf = window.requestAnimationFrame(animationFrame)
 })
 

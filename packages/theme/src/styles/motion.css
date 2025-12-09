@@ -119,7 +119,7 @@
   }
 }
 
-@keyframes cross-fade-exit {
+@keyframes cross-fade-leave {
   from {
     opacity: 1;
   }

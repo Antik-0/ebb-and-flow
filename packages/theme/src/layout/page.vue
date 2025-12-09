@@ -1,7 +1,8 @@
 <script setup lang='ts'>
 import type { Page } from '#/types'
+import { usePageTitle } from '@repo/utils/hooks'
 import { useRouter } from 'nuxt/app'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 import Avatar from '#/components/Avatar.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import DocFooter from '#/components/DocFooter.vue'
@@ -21,11 +22,28 @@ import { Menu } from '#/icons'
 import NotFound from '#/NotFound.vue'
 import { useTheme } from '#/useTheme'
 
-const { page } = defineProps<{ page?: Page }>()
+defineOptions({ name: 'LayoutPage' })
+
+const props = defineProps<{ page?: Page }>()
+
+const { theme } = useTheme()
+
+// 动态修改页面标题
+const defaultTitleTemplate = `<title> | ${theme.title}`
+
+const pageTitle = usePageTitle(props.page?.title, {
+  titleTemplate: theme?.titleTemplate ?? defaultTitleTemplate
+})
+
+watch(
+  () => props.page,
+  page => {
+    pageTitle.value = page?.title ?? theme.notFoundTitle ?? '404'
+  }
+)
 
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
 
-const { theme } = useTheme()
 const router = useRouter()
 
 const showToolPanel = shallowRef(false)
@@ -38,7 +56,7 @@ function backToHome() {
 }
 
 providePageToc({
-  value: computed(() => page?.toc ?? [])
+  value: computed(() => props.page?.toc ?? [])
 })
 
 provideLayoutCtx({

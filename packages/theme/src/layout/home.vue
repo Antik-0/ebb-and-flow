@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { usePageTitle } from '@repo/utils/hooks'
 import { useRouter } from 'nuxt/app'
 import { shallowRef } from 'vue'
 import CodeMotion from '#/components/CodeMotion.vue'
@@ -11,6 +12,8 @@ import { useTheme } from '#/useTheme'
 defineOptions({ name: 'LayoutHome' })
 
 const { theme } = useTheme()
+
+usePageTitle(theme.title)
 
 const titleAnimating = shallowRef(true)
 const taglineMotion = shallowRef('')
@@ -48,6 +51,7 @@ function handleEnter() {
           <CodeMotion
             :codes="theme.codes"
             :paused="taglineMotion !== 'fade'"
+            cycle
           />
         </p>
       </h2>

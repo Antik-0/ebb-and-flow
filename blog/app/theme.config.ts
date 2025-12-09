@@ -1,15 +1,16 @@
 import type { ThemeConfig } from '@repo/theme'
 
 export const themeConfig: ThemeConfig = {
+  title: '潮起潮落',
   avatar: '/avatar.png',
   author: '潮起潮落',
   tagline: 'A Website Is Developed With',
   codes: [
-    'VitePress',
-    'The Vite',
+    'The Nuxt',
     'The Vue',
-    'The Unocss',
     'The Bun',
+    'The Unocss',
+    'Motion-Vue',
     'TypeScript'
   ],
   defaultActiveLink: '/vue/guide/reactive',
