@@ -41,7 +41,6 @@
   "workspaces": {
     "packages": [
       "blog",
-      "docs",
       "packages/*",
       "packages/configs/*"
     ],
@@ -61,10 +60,6 @@
       "turbo": "^2.6.1",
       "unbuild": "^3.6.1",
       "unocss": "^66.5.10",
-      "vite": "^7.2.6",
-      "vite-plugin-compression": "^0.5.1",
-      "vite-plugin-vue-devtools": "8.0.5",
-      "vitepress": "^1.6.4",
       "vue": "^3.5.25",
       "vue-router": "^4.6.3",
       "zod": "^4.1.13"

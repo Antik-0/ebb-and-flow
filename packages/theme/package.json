@@ -23,7 +23,6 @@
     "iconify-icon": "catalog:",
     "motion-v": "catalog:",
     "nuxt": "catalog:",
-    "vite": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {
