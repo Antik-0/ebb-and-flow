@@ -1,25 +1,24 @@
-import Unocss from '@unocss/eslint-config/flat'
 import { defineConfig, globalIgnores } from 'eslint/config'
-import JSONC from './jsonc.js'
-import Vue from './vue.js'
+import JSONC from './jsonc.ts'
+import Unocss from './unocss.ts'
+import Vue from './vue.ts'
 
 /**
  * reference: https://eslint.org/docs/latest/use/configure/configuration-files
  */
-export default defineConfig([
+export const configEbb = defineConfig([
   globalIgnores([
     '**/node_modules',
     '**/dist',
+    '**/cache',
     '**/.cache',
+    '**/.output',
+    '**/.data',
+    '**/.nuxt',
+    '**/.nitro',
     '**/.turbo',
     '**/*.ttf',
-    '**/*.woff',
-    '**/.vitepress/cache/**',
-    '**/LICENSE*',
-    '**/auto-import?(s).d.ts',
-    '**/components.d.ts'
+    '**/*.woff'
   ]),
-  {
-    extends: [JSONC, Vue, Unocss as any]
-  }
+  { extends: [JSONC, Vue, Unocss] }
 ])

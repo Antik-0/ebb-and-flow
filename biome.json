@@ -7,6 +7,7 @@
       "docs/**/*",
       "scripts/*",
       "uno.config.ts",
+      "eslint.config.ts",
       "package.json",
       "tsconfig.json",
       "!**/node_modules",
@@ -38,10 +39,10 @@
       "style": {
         "noNonNullAssertion": "off",
         "useNumberNamespace": {
-          "level": "info",
+          "level": "warn",
           "fix": "safe"
         },
-        "useNumericSeparators": "error",
+        "useNumericSeparators": "warn",
         "useSelfClosingElements": {
           "level": "warn",
           "fix": "safe",
@@ -68,7 +69,8 @@
               {
                 "type": true
               }
-            ]
+            ],
+            "identifierOrder": "lexicographic"
           }
         },
         "useSortedAttributes": "on"
@@ -80,7 +82,9 @@
     "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 80
+    "lineWidth": 80,
+    "attributePosition": "auto",
+    "bracketSpacing": true
   },
   "javascript": {
     "formatter": {
@@ -90,16 +94,26 @@
       "arrowParentheses": "asNeeded"
     }
   },
+  "json": {
+    "parser": {
+      "allowComments": false,
+      "allowTrailingCommas": false
+    },
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
   "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
     "formatter": {
       "quoteStyle": "single"
     }
   },
   "overrides": [
     {
-      "includes": [
-        "**/*.vue"
-      ],
+      "includes": ["**/*.vue"],
       "linter": {
         "rules": {
           "style": {

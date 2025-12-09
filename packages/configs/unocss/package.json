@@ -1,6 +1,6 @@
 {
   "name": "@config/unocss",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
+    "@unocss/preset-wind4": "^66.5.10",
     "unocss": "catalog:"
   }
 }

@@ -1,14 +1,16 @@
-import type { PresetFactory } from 'unocss'
+import type { Theme } from '@unocss/preset-wind4'
+import presetWind4 from '@unocss/preset-wind4'
 import {
   definePreset,
-  presetWind4,
   transformerDirectives,
   transformerVariantGroup
 } from 'unocss'
 
-export const presetBase = definePreset(() => {
+interface PresetEbbTheme extends Theme {}
+
+export const presetEbb = definePreset<undefined, PresetEbbTheme>(() => {
   return {
-    name: 'base',
+    name: '@unocss/preset-ebb',
     presets: [
       presetWind4({
         preflights: {
@@ -18,18 +20,23 @@ export const presetBase = definePreset(() => {
     ],
     theme: {
       colors: {
+        // 主题色
         brand: {
           DEFAULT: 'var(--c-brand-1)',
           1: 'var(--c-brand-1)',
           2: 'var(--c-brand-2)',
           3: 'var(--c-brand-3)'
         },
+        // 基础
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        // 静音：用于文本或图标等信息的静默态
         muted: 'var(--muted)',
         'muted-foreground': 'var(--muted-foreground)',
+        // 强调：用于文本或图标等信息的 hover 态
         accent: 'var(--accent)',
         'accent-foreground': 'var(--accent-foreground)',
+        // 边框
         border: 'var(--c-border)',
         divider: 'var(--c-divider)'
       }
@@ -40,9 +47,9 @@ export const presetBase = definePreset(() => {
     ],
     content: {
       pipeline: {
-        include: [/\.(vue|md)/]
+        include: [/\.(vue|mdx?)/]
       }
     },
     transformers: [transformerDirectives(), transformerVariantGroup()]
   }
-}) as PresetFactory<any>
+})

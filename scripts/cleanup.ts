@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 import ora from 'ora'
 import pc from 'picocolors'
 // @ts-expect-error: no types
@@ -9,10 +9,14 @@ import prompts from 'prompts'
 const cleanFiles = [
   'node_modules',
   'bun.lock',
-  '.temp',
-  '.turbo',
   'cache',
-  'dist'
+  'dist',
+  '.output',
+  '.data',
+  '.nuxt',
+  '.nitro',
+  '.temp',
+  '.turbo'
 ]
 const ignoreFiles = ['.git', '.github', '.vscode', 'assets', 'src']
 const recursiveDepth = 4
