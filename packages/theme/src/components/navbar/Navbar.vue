@@ -22,7 +22,7 @@ function backHome() {
 </script>
 
 <template>
-  <div class="flex flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]">
+  <div class="flex flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]" data-role="navbar">
     <header class="bg-[--c-bg-navbar] h-[--h-navbar] max-w-320 w-full relative isolate">
       <div class="grid cols-[120px_1fr_120px] size-full">
         <div class="px-6 flex items-center">

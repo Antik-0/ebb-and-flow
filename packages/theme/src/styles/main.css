@@ -38,6 +38,31 @@ iconify-icon {
   height: 1em;
 }
 
+.layout-page {
+  display: grid;
+  grid-template-columns: 1fr minmax(auto, 1280px) 1fr;
+}
+
+.page-content {
+  grid-column: 2 / 3;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding: 32px;
+  background-color: var(--c-bg-content);
+}
+
+@media (width >= 960px) {
+  .layout-page {
+    padding: 24px;
+  }
+
+  .page-content {
+    border-radius: 20px;
+    padding-inline: 0;
+  }
+}
+
 .mask {
   mask-size: cover;
   mask-position: center;

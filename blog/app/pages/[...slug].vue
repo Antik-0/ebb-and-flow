@@ -1,13 +1,17 @@
 <script setup lang='ts'>
 import type { ContentCollectionItem } from '@nuxt/content'
 import type { OutlineAnchor } from '@repo/theme'
-import { LayoutPage } from '@repo/theme'
+import { DocContent } from '@repo/theme'
+
+definePageMeta({
+  layout: 'page'
+})
 
 const route = useRoute()
 
-const { data: page } = await useAsyncData(route.path, () => {
-  return queryCollection('content').path(route.path).first()
-})
+const { data: page } = await useAsyncData(route.path, async () =>
+  queryCollection('content').path(route.path).first()
+)
 
 const pageMeta = computed(() => {
   if (!page.value) return undefined
@@ -39,7 +43,7 @@ function buildToc(links: TocLinks) {
 </script>
 
 <template>
-  <LayoutPage :page="pageMeta">
+  <DocContent :page="pageMeta">
     <ContentRenderer v-if="page" :value="page" />
-  </LayoutPage>
+  </DocContent>
 </template>

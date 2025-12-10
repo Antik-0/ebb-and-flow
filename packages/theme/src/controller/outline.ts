@@ -1,22 +1,12 @@
-import type { ComputedRef, InjectionKey } from 'vue'
-import type { OutlineAnchor } from '#/types'
 import { throttle } from '@repo/utils'
 import { useEventListener } from '@repo/utils/hooks'
-import { inject, onMounted, provide, shallowRef, watch } from 'vue'
-
-interface PageTocContext {
-  value: ComputedRef<OutlineAnchor[]>
-}
-
-const PageTocKey = Symbol('toc') as InjectionKey<PageTocContext>
-
-export function providePageToc(value: PageTocContext) {
-  provide(PageTocKey, value)
-}
+import { computed, onMounted, shallowRef, watch } from 'vue'
+import { usePageData } from './layout'
 
 export function useOutline() {
-  const context = inject(PageTocKey, {} as PageTocContext)
-  const anchors = context.value
+  const { page } = usePageData()
+
+  const anchors = computed(() => page.value?.toc ?? [])
   const activeIndex = shallowRef(-1)
 
   let offsetTopMap: number[] = []
@@ -43,7 +33,7 @@ export function useOutline() {
     }
 
     activeIndex.value = activated
-  }, 200)
+  }, 100)
 
   function createOffsetTopMap() {
     const container = document.getElementById('content')

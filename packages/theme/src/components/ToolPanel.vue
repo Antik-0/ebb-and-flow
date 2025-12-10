@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { useFPS } from '@repo/utils/hooks'
 import { shallowRef, watch } from 'vue'
-import DocOutline from '#/components/DocOutline.vue'
+import DocOutline from '#/components/doc/DocOutline.vue'
 import { Popover } from '#/components/popover'
 import { useLayoutCtx } from '#/controller/layout.ts'
 import { useSidebarControl } from '#/controller/sidebar.ts'

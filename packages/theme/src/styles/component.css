@@ -163,44 +163,9 @@
 
 /**
  * ==================================================
- * layout-doc
+ * 🏷️ doc
  * ==================================================
  */
-.layout-doc {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-.doc-content {
-  position: relative;
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  padding: 32px;
-  background-color: var(--c-bg-content);
-}
-
-@media (width >= 960px) {
-  .layout-doc {
-    padding: 24px;
-  }
-
-  .doc-content {
-    border-radius: 20px;
-    padding-inline: 0;
-  }
-}
-
-@media (width >= 1280px) {
-  .layout-doc {
-    grid-template-columns: 1fr minmax(auto, 1280px) 1fr;
-  }
-
-  .doc-content {
-    grid-column: 2 / 3;
-  }
-}
-
 .doc-aside {
   position: fixed;
   top: 0;
@@ -271,11 +236,11 @@
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  color: var(--c-text-2);
+  color: var(--muted-foreground);
   cursor: pointer;
   transition: color 200ms ease;
 
   &:hover {
-    color: var(--c-brand-3);
+    color: var(--c-brand-2);
   }
 }

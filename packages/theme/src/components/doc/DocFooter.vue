@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed, onMounted, shallowRef, watchEffect } from 'vue'
 import { useSharedMenus } from '#/controller/menus.ts'
-import Link from './Link.vue'
+import Link from '../Link.vue'
 
 const props = defineProps<{
   lastUpdated?: string

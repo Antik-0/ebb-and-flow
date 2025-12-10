@@ -1,7 +1,5 @@
 <script setup lang='ts'>
-import { LayoutHome } from '@repo/theme'
+definePageMeta({
+  layout: 'home'
+})
 </script>
-
-<template>
-  <LayoutHome />
-</template>

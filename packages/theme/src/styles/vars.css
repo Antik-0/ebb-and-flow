@@ -36,8 +36,8 @@
      * -----------------------------------------------------------* */
     --c-bg-navbar: transparent;
     --c-bg-sidebar: hsl(240 16% 10% / 0.6);
-    --c-bg-overlay: hsl(240 16% 10% / 0.6);
     --c-bg-content: hsl(240 16% 10% / 0.8);
+    --c-bg-overlay: hsl(240 16% 10% / 0.6);
 
     --c-bg-code-title: hsl(205 58% 6%);
     --c-bg-code-block: hsl(194 42% 21%);

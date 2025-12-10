@@ -20,7 +20,7 @@ function backToTop() {
   <button
     ref="scope"
     aria-label="back to top"
-    class="text-6 text-[--c-text-2] flex size-10 cursor-pointer flex-center"
+    class="text-6 text-muted-foreground flex size-10 cursor-pointer flex-center hover:text-brand-3"
     title="回到顶部"
     type="button"
     @click="backToTop"

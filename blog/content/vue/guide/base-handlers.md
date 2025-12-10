@@ -519,7 +519,7 @@ console.log('>>>', arr.includes(proxy)) // true
 
 而如果是 `find` 等参数为函数类型的查找方法，则不具备这个效果，但是它们也有特别的表现：
 
-```ts:line-numbers
+```ts
 const raw = {}
 const proxy = reactive(raw)
 const arr = reactive([raw])
@@ -534,7 +534,7 @@ console.log(arr[0] === proxy) // true
 
 让我们回到 `baseReactiveHandler.get` 的代码：
 
-```ts:line-numbers {5,11}
+```ts
 // ...
 const targetIsArray = isArray(target)
 if (!isReadonly) {

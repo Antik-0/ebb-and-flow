@@ -14,3 +14,4 @@ export { default as LayoutPage } from './layout/page.vue'
 // components
 
 export { default as Background } from './components/Background.vue'
+export { default as DocContent } from './components/doc/DocContent.vue'

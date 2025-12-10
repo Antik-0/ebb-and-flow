@@ -5,7 +5,9 @@ import { themeConfig } from './theme.config'
 
 <template>
   <ThemeProvider theme="dark" :value="themeConfig">
-    <NuxtPage />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </ThemeProvider>
   <Background :pictures="['/wallhaven-rrwvdq.webp']" />
 </template>

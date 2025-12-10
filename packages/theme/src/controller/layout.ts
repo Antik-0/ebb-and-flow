@@ -1,6 +1,7 @@
 import type { ComputedRef, InjectionKey } from 'vue'
+import type { Page } from '#/types'
 import { useMediaQuery } from '@repo/utils/hooks'
-import { computed, inject, provide } from 'vue'
+import { computed, inject, provide, shallowRef } from 'vue'
 
 export function useLayout() {
   const isDesktop = useMediaQuery('(width >= 1024px)', { initialValue: true })
@@ -29,4 +30,14 @@ export function provideLayoutCtx(value: LayoutContext) {
 
 export function useLayoutCtx() {
   return inject(LayoutCtx)!
+}
+
+const page = shallowRef<Page | null>(null)
+
+const setPageData = (data: Page | null) => {
+  page.value = data
+}
+
+export function usePageData() {
+  return { page, setPageData }
 }

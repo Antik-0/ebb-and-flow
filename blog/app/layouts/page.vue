@@ -1,0 +1,9 @@
+<script setup lang='ts'>
+import { LayoutPage } from '@repo/theme'
+</script>
+
+<template>
+  <LayoutPage>
+    <slot></slot>
+  </LayoutPage>
+</template>
