@@ -1,27 +1,27 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { nextTick, onBeforeUnmount, onMounted, toValue } from 'vue'
+import { onBeforeUnmount, onMounted, toValue } from 'vue'
 
 type AddEventListener = {
   <E extends keyof WindowEventMap>(
     el: MaybeRefOrGetter<Window>,
     type: E,
-    listener: (this: Window, event: WindowEventMap[E]) => any,
+    listener: (this: Window, event: WindowEventMap[E]) => void,
     options?: AddEventListenerOptions
-  ): any
+  ): void
 
   <E extends keyof DocumentEventMap>(
     el: MaybeRefOrGetter<Document>,
     type: E,
-    listener: (this: Document, event: DocumentEventMap[E]) => any,
+    listener: (this: Document, event: DocumentEventMap[E]) => void,
     options?: AddEventListenerOptions
-  ): any
+  ): void
 
   <E extends keyof HTMLElementEventMap>(
     el: MaybeRefOrGetter<HTMLElement>,
     type: E,
-    listener: (this: HTMLElement, event: HTMLElementEventMap[E]) => any,
+    listener: (this: HTMLElement, event: HTMLElementEventMap[E]) => void,
     options?: AddEventListenerOptions
-  ): any
+  ): void
 
   (
     el: MaybeRefOrGetter<EventTarget | null>,
@@ -59,12 +59,9 @@ export function useEventListener() {
     }
   }
 
-  const clearEventListener = () => {
-    controller.abort()
-  }
+  const clearEventListener = () => controller.abort()
 
-  onMounted(async () => {
-    await nextTick()
+  onMounted(() => {
     for (const { el, type, listener, options } of eventQueue) {
       const element = toValue(el)
       if (!element) continue

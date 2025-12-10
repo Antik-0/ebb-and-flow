@@ -19,10 +19,10 @@ watch(
   <nav aria-label="outline" class="pl-4 border-l-2 border-divider relative isolate">
     <div
       v-show="activeIndex !== -1"
-      class="bg-brand-3/20 h-8 transition-transform duration-200 inset-x-0 absolute -ml-[2px] -z-1"
+      class="border-l-2 border-brand-2 bg-brand-2/20 h-8 transition-transform duration-200 inset-x-0 absolute -ml-[2px] -z-1"
       :style="{ translate: `0 ${marketOffset}px` }"
     ></div>
-    <div class="text-14px text-[--c-text-1] leading-8 font-600">页面导航</div>
+    <div class="text-14px text-accent-foreground leading-8 font-600">页面导航</div>
     <ul>
       <li
         v-for="(anchor, index) in anchors"

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type { SidebarItem as SidebarMenuItem } from '#/types'
+import type { SidebarMenuItem } from '#/types'
 import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import Link from '#/components/Link.vue'
 import { ChevronRight, Icon } from '#/icons'
@@ -14,8 +14,7 @@ const props = withDefaults(defineProps<Props>(), { level: 1 })
 const collapsed = ref(props.item.collapsed ?? true)
 const collapsiable = computed(() => {
   const item = props.item
-  const hasChildren = Array.isArray(item.items) && item.items.length
-  return props.item.collapsed !== undefined && hasChildren
+  return Array.isArray(item.items) && item.items.length
 })
 
 const viewRef = useTemplateRef<HTMLElement>('view')
@@ -59,26 +58,30 @@ onMounted(() => {
     <button
       :aria-expanded="!collapsed"
       class="sidebar-item__button"
+      :data-active="item.active"
       type="button"
       @click="toggle"
     >
       <Icon
         v-if="item.icon"
-        class="text-brand mr-2 flex h-8"
+        class="text-brand mr-2 h-8"
         :icon="item.icon"
       />
-      <span class="text-14px text-[--c-text-1] leading-8 font-700 flex-1 text-nowrap truncate">
+      <span
+        class="text-sm text-accent-foreground leading-8 font-700 flex-1 text-nowrap truncate"
+        data-role="button-title"
+      >
         {{ item.text }}
       </span>
       <span
-        class="text-(lg [--c-text-3]) flex size-8 flex-center -mr-2"
+        class="text-4.5 text-muted-foreground flex size-6 flex-center"
       >
         <ChevronRight class="transition-transform duration-250" />
       </span>
     </button>
     <div
       ref="view"
-      class="pl-5 border-l border-[--c-divider] transition-all duration-250 ease overflow-hidden"
+      class="pl-5 transition-height duration-250 ease overflow-hidden"
       :data-level="level"
       @transitionend.self="onTransitionend"
     >
@@ -91,27 +94,27 @@ onMounted(() => {
     </div>
   </template>
 
-  <Link
+  <div
     v-else
     class="sidebar-item"
     :data-active="item.active"
-    data-role="link"
-    :href="item.link"
+    data-role="route"
   >
-    <Icon
-      v-if="item.icon"
-      class="text-brand mr-2 flex h-8"
-      :icon="item.icon"
-    />
-    <span
-      :class="[
-        'flex-1',
-        'text-(14px [--c-text-2]) leading-8 font-500',
-        'transition-color duration-250',
-        'hover:text-brand-3'
-      ]"
+    <Link
+      class="flex gap-2 truncate items-center"
+      :href="item.link"
     >
-      {{ item.text }}
-    </span>
-  </Link>
+      <Icon
+        v-if="item.icon"
+        class="text-brand"
+        :icon="item.icon"
+      />
+      <span
+        class="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-250 hover:text-brand-2"
+        data-role="title"
+      >
+        {{ item.text }}
+      </span>
+    </Link>
+  </div>
 </template>

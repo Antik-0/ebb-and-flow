@@ -3,14 +3,11 @@ import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { ref, useTemplateRef, watch } from 'vue'
 import GlassMask from '#/components/GlassMask.vue'
-import { useSidebar, useSidebarControl } from '#/controller/sidebar.ts'
+import { useSidebarControl, useSidebarMenus } from '#/controller/sidebar'
 import SidebarGroup from './SidebarGroup.vue'
 
-defineProps<{
-  glassMask?: boolean
-}>()
-
 const { isOpen, close } = useSidebarControl()
+const { sidebarMenus } = useSidebarMenus()
 
 const show = ref(isOpen.value)
 const x = useMotionValue('-100%')
@@ -33,8 +30,6 @@ watch(
   }
 )
 
-const { menus } = useSidebar()
-
 const sidebar = useTemplateRef('sidebar')
 const { addEventListener } = useEventListener()
 
@@ -45,7 +40,7 @@ addEventListener(
     for (const path of event.composedPath()) {
       const node = path as HTMLElement
       if (node === document.body) break
-      if (node.getAttribute('data-role') === 'link') {
+      if (node.getAttribute('data-role') === 'route') {
         close()
         break
       }
@@ -58,28 +53,22 @@ addEventListener(
   <div
     v-show="show"
     class="inset-0 fixed z-[--z-index-sidebar]"
+    data-role="sidebar"
   >
     <motion.aside
       ref="sidebar"
       class="flex-col w-80 inset-y-0 left-0 absolute z-20 isolate"
       :style="{ x }"
     >
-      <div class="p-8 flex-1 overflow-x-hidden overflow-y-auto">
+      <div class="px-6 py-8 flex-1 overflow-x-hidden overflow-y-auto">
         <SidebarGroup
-          v-for="(item, index) in menus"
+          v-for="(item, index) in sidebarMenus"
           :key="index"
           :item="item"
         />
       </div>
-      <div
-        class="sidebar-background"
-        :data-glass-mask="glassMask"
-      >
-        <GlassMask
-          v-if="glassMask"
-          class="inset-0 absolute"
-          style="--size: contain"
-        />
+      <div class="sidebar-background w-100 inset-y-0 right-0 absolute -z-1">
+        <GlassMask style="--fit-size: contain" />
       </div>
     </motion.aside>
     <div

@@ -9,20 +9,20 @@ const props = defineProps<{
   rel?: string
 }>()
 
-const tag = computed(() => props.tag ?? (props.href ? 'a' : 'span'))
+const NuxtLink = resolveComponent('NuxtLink')
+
+const tag = computed(() => props.tag ?? (props.href ? NuxtLink : 'span'))
 
 const isExternal = computed(
   () => (props.href && isExternalLink(props.href)) || props.target === '_blank'
 )
-
-const NuxtLink = resolveComponent('NuxtLink')
 </script>
 
 <template>
   <component
-    :is="isExternal ? tag : NuxtLink"
-    :ref="props.rel ?? (isExternal ? 'noreferrer' : undefined)"
+    :is="isExternal ? 'a' : tag"
     :href="props.href"
+    :rel="props.rel ?? (isExternal ? 'noreferrer' : undefined)"
     :target="props.target ?? (isExternal ? '_blank' : undefined)"
   >
     <slot></slot>

@@ -45,6 +45,7 @@ export const presetEbb = definePreset<undefined, PresetEbbTheme>(() => {
       ['flex-col', 'flex flex-col'],
       ['flex-center', 'items-center justify-center']
     ],
+    rules: [['grid-full', { 'grid-area': '1 / 1' }]],
     content: {
       pipeline: {
         include: [/\.(vue|mdx?)/]

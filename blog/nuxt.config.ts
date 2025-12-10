@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     build: {
       markdown: {
         toc: {
-          depth: 2
+          depth: 3
         },
         highlight: {
           theme: 'github-dark'

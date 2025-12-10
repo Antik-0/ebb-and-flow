@@ -2,7 +2,7 @@ import 'iconify-icon'
 
 // theme
 
-export type { ThemeConfig } from './types'
+export type * from './types'
 export { default as ThemeProvider } from './context.vue'
 export { useTheme } from './useTheme.ts'
 

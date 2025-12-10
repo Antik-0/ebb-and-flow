@@ -1,9 +1,9 @@
 <script setup lang='ts'>
 import type { Component } from 'vue'
 import { h, shallowRef } from 'vue'
-import Link from '#/components/Link.vue'
 import { Github } from '#/icons'
 import { useTheme } from '#/useTheme'
+import Link from '../Link.vue'
 
 const { theme } = useTheme()
 

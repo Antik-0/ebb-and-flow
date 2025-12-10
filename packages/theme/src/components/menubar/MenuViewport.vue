@@ -11,8 +11,8 @@ interface ContentProps {
 }
 
 function Content(props: ContentProps, { attrs }: SetupContext) {
-  const { render, ...restProps } = props
-  return h('div', { ...restProps, ...attrs }, render?.())
+  const { render } = props
+  return h('div', { ...attrs }, render?.())
 }
 Content.props = ['render']
 

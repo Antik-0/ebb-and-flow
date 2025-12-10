@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import type { VNode } from 'vue'
 import type { MenuItem } from '#/types'
 import { motion } from 'motion-v'
 import Link from '#/components/Link.vue'
@@ -11,7 +12,7 @@ const props = defineProps<{
 }>()
 
 const slots = defineSlots<{
-  content: () => any
+  content: () => VNode[]
 }>()
 
 const { forwarItemContent, onMenuItemHover } = useMenuViewCtx()
@@ -38,7 +39,7 @@ forwarItemContent(props.item, slots.content)
       >
         <Icon :icon="item.icon" />
       </motion.span>
-      <motion.span class="text-14px leading-5" layout>
+      <motion.span class="text-sm" layout>
         {{ item.text }}
       </motion.span>
     </Link>

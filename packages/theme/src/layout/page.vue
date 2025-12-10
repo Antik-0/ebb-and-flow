@@ -1,24 +1,16 @@
 <script setup lang='ts'>
 import type { Page } from '#/types'
 import { usePageTitle } from '@repo/utils/hooks'
-import { useRouter } from 'nuxt/app'
 import { computed, shallowRef, watch } from 'vue'
-import Avatar from '#/components/Avatar.vue'
-import CubeAvatar from '#/components/CubeAvatar.vue'
 import DocFooter from '#/components/DocFooter.vue'
 import DocOutline from '#/components/DocOutline.vue'
 import ImageViewer from '#/components/ImageViewer.vue'
-import Menubar from '#/components/menubar/Menubar.vue'
-import Navbar from '#/components/Navbar.vue'
-import SocialLinks from '#/components/SocialLinks.vue'
+import Navbar from '#/components/navbar/Navbar.vue'
 import Sidebar from '#/components/sidebar/Sidebar.vue'
-import SidebarTrigger from '#/components/sidebar/SidebarTrigger.vue'
-import ThemeToggle from '#/components/ThemeToggle.vue'
 import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
 import { provideLayoutCtx, useLayout } from '#/controller/layout'
 import { providePageToc } from '#/controller/outline'
-import { Menu } from '#/icons'
 import NotFound from '#/NotFound.vue'
 import { useTheme } from '#/useTheme'
 
@@ -44,15 +36,9 @@ watch(
 
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
 
-const router = useRouter()
-
 const showToolPanel = shallowRef(false)
 function onSentinelChange(visible: boolean) {
   showToolPanel.value = !visible
-}
-
-function backToHome() {
-  router.push('/')
 }
 
 providePageToc({
@@ -69,46 +55,9 @@ provideLayoutCtx({
 
 <template>
   <div class="min-h-screen">
-    <Navbar>
-      <template #start-action>
-        <div class="px-6 flex items-center">
-          <SidebarTrigger
-            v-if="isMobile"
-            class="text-6 size-10"
-          >
-            <Menu />
-          </SidebarTrigger>
-          <CubeAvatar
-            v-else
-            :avatar="theme.avatar"
-            class="mx-auto"
-            :style="{
-              '--size': '40px',
-              '--rounded': '4px'
-            }"
-            @click="backToHome"
-          />
-        </div>
-      </template>
+    <Navbar />
 
-      <template #menu>
-        <Avatar
-          v-if="isMobile"
-          :avatar="theme.avatar"
-          @click="backToHome"
-        />
-        <Menubar v-else />
-      </template>
-
-      <template #end-action>
-        <div class="pr-6 flex items-center justify-between">
-          <ThemeToggle />
-          <SocialLinks />
-        </div>
-      </template>
-    </Navbar>
-
-    <Sidebar :glass-mask="isDesktop" />
+    <Sidebar />
 
     <div class="pt-[--h-navbar]">
       <div class="layout-doc">

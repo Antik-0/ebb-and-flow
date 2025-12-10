@@ -138,7 +138,7 @@ useAnimationFrame(() => {
   <span
     :class="[
       'contain-content inline-flex items-center px-2 rounded-2',
-      'font-mono text-brand-3 bg-zinc-600/40',
+      'font-mono text-brand-2 bg-zinc-600/40',
       'transition-opacity duration-600 data-[paused=true]:opacity-20'
     ]"
     :data-paused="paused"

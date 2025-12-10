@@ -36,16 +36,18 @@ function buildGroups() {
 
 <template>
   <div class="p-6">
-    <div v-for="(group, index) in groups" :key="index" :class="{ 'mt-4': index !== 0 }">
+    <div
+      v-for="(group, index) in groups"
+      :key="index"
+      :class="{ 'mt-4': index !== 0 }"
+    >
       <div
         v-if="group.label"
-        class="text-14px text-brand-1 leading-8 font-600 mb-3"
+        class="text-sm text-brand leading-8 font-600 mb-3"
       >
         {{ group.label }}
       </div>
-      <section
-        class="gap-4 grid"
-      >
+      <section class="gap-4 grid">
         <Link
           v-for="item in group.children"
           :key="item.text"
@@ -53,12 +55,12 @@ function buildGroups() {
         >
           <span
             :class="[
-              'text-[--c-text-1] p-3 rounded-2 block',
+              'text-foreground p-3 rounded-2 block',
               'transition-colors duration-250 ease',
-              'hover:(text-brand-3 bg-brand-3/20)',
+              'hover:(text-brand-2 bg-brand-2/20)',
             ]"
           >
-            <span class="text-14px text-nowrap">{{ item.text }}</span>
+            <span class="text-sm text-nowrap">{{ item.text }}</span>
           </span>
         </Link>
       </section>

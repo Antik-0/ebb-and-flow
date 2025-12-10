@@ -69,7 +69,7 @@
 
 .ebb-doc a {
   font-weight: 500;
-  color: var(--c-brand-3);
+  color: var(--c-brand-2);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -148,6 +148,14 @@
 }
 
 /**
+ * img
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc img {
+  margin: 0 auto;
+}
+
+/**
  * ==================================================
  * 🏷️ code
  * ==================================================
@@ -166,7 +174,7 @@
 .ebb-doc :not(pre) > code {
   padding: 3px 6px;
   border-radius: 4px;
-  color: var(--c-brand-3);
+  color: var(--c-brand-2);
   background-color: color-mix(in srgb, var(--c-bg-code-block) 40%, transparent);
 }
 

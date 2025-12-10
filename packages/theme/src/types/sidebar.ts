@@ -1,6 +1,6 @@
 import type { NavMenuRecord } from './theme.ts'
 
-export interface SidebarItem extends NavMenuRecord {
+export interface SidebarMenuItem extends NavMenuRecord {
   /**
    * 是否激活
    */

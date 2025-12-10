@@ -1,41 +1,41 @@
-@layer theme, layout, markdown;
+@layer theme, layout;
 
 @layer theme {
   :root {
-    --foreground: #e0e0d7;
-    --background: #19191f;
-    --background-deep: #131318;
+    --foreground: #f0f8ff;
+    --background: #1f1919;
+    --background-deep: #181313;
 
     /**
      * 静音：用于文本或图标等信息的静默态
      * -----------------------------------------------------------* */
-    --muted: #262626;
-    --muted-foreground: #6a6a71;
+    --muted: #2c2c2c;
+    --muted-foreground: #98989f;
 
     /**
      * 强调：用于文本或图标等信息的 hover 态
      * -----------------------------------------------------------* */
-    --accent: #3a3a3a;
-    --accent-foreground: #cacacc;
+    --accent: #5c5c5c;
+    --accent-foreground: #ceced1;
 
     /**
      * 边框
      * -----------------------------------------------------------* */
     --c-border: #3c3f44;
-    --c-divider: #2e2e32;
+    --c-divider: #424850;
 
     /**
      * 品牌色
      * -----------------------------------------------------------* */
     --c-brand-1: #62d9e9;
-    --c-brand-2: #ff637e;
-    --c-brand-3: #a8b1ff;
+    --c-brand-2: #a8b1ff;
+    --c-brand-3: #ff637e;
 
     /**
-     * 布局模块背景色
+     * 布局组件背景色
      * -----------------------------------------------------------* */
-    --c-bg-navbar: hsl(0 0% 20% / 0.1);
-    --c-bg-sidebar: hsl(240 16% 10% / 0.9);
+    --c-bg-navbar: transparent;
+    --c-bg-sidebar: hsl(240 16% 10% / 0.6);
     --c-bg-overlay: hsl(240 16% 10% / 0.6);
     --c-bg-content: hsl(240 16% 10% / 0.8);
 
@@ -47,8 +47,8 @@
 @layer layout {
   :root {
     --h-navbar: 64px;
-    --z-index-navbar: 30;
-    --z-index-sidebar: 40;
+    --z-index-navbar: 10;
+    --z-index-sidebar: 20;
     --z-index-toolpanel: 50;
   }
 
@@ -59,13 +59,5 @@
     --font-family-mono:
       ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
       'Courier New', monospace;
-    font-optical-sizing: auto;
-  }
-}
-
-@layer markdown {
-  :root {
-    --code-icon-copy: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3C/g%3E%3C/svg%3E");
-    --code-icon-copied: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgba(128,128,128,1)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3E%3Crect width='8' height='4' x='8' y='2' rx='1' ry='1'/%3E%3Cpath d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2'/%3E%3Cpath d='m9 14l2 2l4-4'/%3E%3C/g%3E%3C/svg%3E");
   }
 }

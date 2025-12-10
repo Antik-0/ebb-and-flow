@@ -3,7 +3,7 @@ import { LayoutGroup } from 'motion-v'
 import { useTemplateRef } from 'vue'
 import FlowingLight from '#/components/FlowingLight.vue'
 import { useSharedMenus } from '#/controller/menus.ts'
-import { useMenubarHover, useMenuViewControl } from '#/controller/navbar'
+import { useMenuViewControl, useMenubarHover } from '#/controller/navbar'
 import MenubarGroup from './MenubarGroup.vue'
 import MenubarItem from './MenubarItem.vue'
 import MenuViewport from './MenuViewport.vue'
@@ -31,8 +31,10 @@ const { onMouseenter, onMouseleave } = useMenuViewControl(scope)
       :style="{ '--offset-x': offsetX + 'px' }"
     ></div>
 
+    <div class="menubar-indicator grid-full -z-1"></div>
+
     <menu
-      class="px-4 flex"
+      class="grid-full px-4 flex"
       role="menu"
     >
       <LayoutGroup>
