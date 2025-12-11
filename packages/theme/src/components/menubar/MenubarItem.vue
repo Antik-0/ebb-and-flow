@@ -3,21 +3,24 @@ import type { VNode } from 'vue'
 import type { MenuItem } from '#/types'
 import { motion } from 'motion-v'
 import Link from '#/components/Link.vue'
-import { useMenuViewCtx } from '#/controller/navbar.ts'
+import { useMenubarCtx } from '#/controller/navbar.ts'
 import { Icon } from '#/icons'
 
 const props = defineProps<{
   item: MenuItem
-  index: number
+}>()
+
+const emit = defineEmits<{
+  hover: []
 }>()
 
 const slots = defineSlots<{
   content: () => VNode[]
 }>()
 
-const { forwarItemContent, onMenuItemHover } = useMenuViewCtx()
+const { forwarContent } = useMenubarCtx()
 
-forwarItemContent(props.item, slots.content)
+forwarContent(props.item, slots.content)
 </script>
 
 <template>
@@ -26,7 +29,7 @@ forwarItemContent(props.item, slots.content)
     :data-active="item.active"
     role="menuitem"
     layout
-    @pointerenter="($event) => onMenuItemHover($event, index)"
+    @pointerenter="emit('hover')"
   >
     <Link
       class="px-4 py-2.5 flex items-center"

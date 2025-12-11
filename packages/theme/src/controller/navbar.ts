@@ -1,54 +1,22 @@
-import type { InjectionKey, MaybeRefOrGetter, ShallowRef, VNode } from 'vue'
+import type {
+  FunctionalComponent,
+  InjectionKey,
+  Ref,
+  ShallowRef,
+  VNode
+} from 'vue'
 import type { MenuItem } from '#/types'
-import { useResizeObserver } from '@repo/utils/hooks'
-import { inject, onMounted, provide, shallowRef, toValue } from 'vue'
+import { h, inject, provide, ref, shallowRef } from 'vue'
 
-export function useMenubarHover(scope: MaybeRefOrGetter<HTMLElement | null>) {
-  const offsetX = shallowRef(0)
-  let scopeOffsetLeft = 0
-
-  const onMousemove = (event: MouseEvent) => {
-    offsetX.value = event.clientX - scopeOffsetLeft
-  }
-
-  const { onWindowResize } = useResizeObserver()
-
-  onMounted(() => {
-    onWindowResize(() => {
-      const element = toValue(scope)
-      if (!element) return
-      scopeOffsetLeft = element.getBoundingClientRect().left
-    })
-  })
-
-  return { offsetX, onMousemove }
-}
-
-export interface Content {
+export interface ContentView {
   item: MenuItem
   render: () => VNode[]
 }
 
-interface MenuViewContext {
-  visible: ShallowRef<boolean>
-  contents: ShallowRef<Content[]>
-  prevHoverIndex: ShallowRef<number>
-  currHoverIndex: ShallowRef<number>
-  arrowOffsetX: ShallowRef<number>
-  forwarItemContent: (item: MenuItem, contentRender: () => VNode[]) => void
-  onMenuItemHover: (event: MouseEvent, index: number) => void
-}
-
-const MenuViewCtx = Symbol('menubar') as InjectionKey<MenuViewContext>
-
-export function useMenuViewCtx() {
-  return inject(MenuViewCtx)!
-}
-
-export function useMenuViewControl(
-  scope: MaybeRefOrGetter<HTMLElement | null>
-) {
-  const visible = shallowRef(false)
+export function useMenuViewControl() {
+  const visible = ref(false)
+  const prevHoverIndex = ref(-1)
+  const currHoverIndex = ref(-1)
 
   function onMouseenter() {
     visible.value = true
@@ -58,66 +26,49 @@ export function useMenuViewControl(
     visible.value = false
   }
 
-  const contents = shallowRef<Content[]>([])
-
-  function forwarItemContent(item: MenuItem, contentRender: () => VNode[]) {
-    contents.value.push({
-      item,
-      render: contentRender
-    })
-  }
-
-  const prevHoverIndex = shallowRef(-1)
-  const currHoverIndex = shallowRef(-1)
-  const arrowOffsetX = shallowRef(0)
-
-  function onMenuItemHover(event: MouseEvent, index: number) {
+  function onMenuItemHover(index: number) {
     prevHoverIndex.value = currHoverIndex.value
     currHoverIndex.value = index
-
-    const target = event.target! as HTMLElement
-    arrowOffsetX.value = computeArrowOffsetX(target, index)
   }
 
-  let arrowOffsetXCache: number[] = []
-  function computeArrowOffsetX(target: HTMLElement, index: number) {
-    if (arrowOffsetXCache.length === 0) {
-      const length = contents.value.length
-      arrowOffsetXCache = Array.from<number>({ length })
-    }
+  const contentViews = shallowRef<ContentView[]>([])
 
-    if (arrowOffsetXCache[index] !== undefined) {
-      return arrowOffsetXCache[index]
-    }
-
-    // 缓存未命中
-    let offsetLeft = 0
-    const targetWidth = target.offsetWidth
-
-    const root = toValue(scope)!
-    while (target !== root) {
-      offsetLeft += target.offsetLeft
-      target = target.offsetParent as HTMLElement
-    }
-
-    const offsetX = offsetLeft + targetWidth / 2 - root.offsetWidth / 2
-    arrowOffsetXCache[index] = offsetX
-
-    return offsetX
+  function forwarContent(item: MenuItem, render: () => VNode[]) {
+    contentViews.value.push({ item, render })
   }
-
-  provide(MenuViewCtx, {
-    visible,
-    contents,
-    prevHoverIndex,
-    currHoverIndex,
-    arrowOffsetX,
-    forwarItemContent,
-    onMenuItemHover
-  })
 
   return {
+    visible,
+    prevHoverIndex,
+    currHoverIndex,
+    contentViews,
     onMouseenter,
-    onMouseleave
+    onMouseleave,
+    onMenuItemHover,
+    forwarContent
   }
+}
+
+export const ContentRender: FunctionalComponent<{
+  render: () => VNode[]
+}> = (props, { attrs }) => h('div', { ...attrs }, props.render())
+ContentRender.props = ['render']
+
+interface MenubarContext {
+  offsetX: Ref<number>
+  showViewport: Ref<boolean>
+  contentViews: ShallowRef<ContentView[]>
+  prevHoverIndex: Ref<number>
+  currHoverIndex: Ref<number>
+  forwarContent: (item: MenuItem, render: () => VNode[]) => void
+}
+
+const MenubarCtx = Symbol('menubar') as InjectionKey<MenubarContext>
+
+export function provideMenubarContent(value: MenubarContext) {
+  provide(MenubarCtx, value)
+}
+
+export function useMenubarCtx() {
+  return inject(MenubarCtx)!
 }
