@@ -59,7 +59,6 @@ interface ObserveEntry {
 
 export function useResizeObserver() {
   const observeEntries: ObserveEntry[] = []
-  const windowResizeCbs: Callback[] = []
 
   const _observe = (
     target: MaybeRefOrGetter<Element | null>,
@@ -77,8 +76,6 @@ export function useResizeObserver() {
       const element = toValue(target)
       element && unobserve(element, callback)
     }
-    observeEntries.length = 0
-    windowResizeCbs.length = 0
   }
 
   onMounted(async () => {
@@ -87,17 +84,13 @@ export function useResizeObserver() {
       const element = toValue(target)
       element && observe(element, callback)
     }
-
-    const root = document.documentElement
-    for (const cb of windowResizeCbs) {
-      _observe(root, cb)
-    }
   })
 
   onBeforeUnmount(clear)
 
   const onWindowResize = (callback: Callback) => {
-    windowResizeCbs.push(callback)
+    const root = () => document?.documentElement
+    _observe(root, callback)
   }
 
   return {

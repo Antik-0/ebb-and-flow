@@ -28,7 +28,7 @@ export function useScroll() {
 
   let raf: number | undefined
   let stl: AnimationTimeline
-  let offsetTop = 0
+  let maxScrollTop = 0
 
   const { onWindowResize } = useResizeObserver()
 
@@ -36,19 +36,19 @@ export function useScroll() {
     if (!stl || !stl.currentTime) return
 
     progress.value = (stl.currentTime as any).value / 100
-    y.value = offsetTop * progress.value
+    y.value = maxScrollTop * progress.value
     window.requestAnimationFrame(animationFrame)
   }
 
   const scrollFrame = () => {
     y.value = document.documentElement.scrollTop
-    progress.value = y.value / offsetTop
+    progress.value = y.value / maxScrollTop
   }
 
   onMounted(() => {
     onWindowResize(() => {
       const root = document.documentElement
-      offsetTop = root.scrollHeight - root.clientHeight
+      maxScrollTop = root.scrollHeight - root.clientHeight
     })
 
     tryOnIdle(() => {

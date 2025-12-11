@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, ShallowRef } from 'vue'
-import { onBeforeMount, onMounted, shallowRef, toValue } from 'vue'
+import { onBeforeUnmount, onMounted, shallowRef, toValue } from 'vue'
 
 interface Options extends KeyframeEffectOptions {
   target?: MaybeRefOrGetter<Element | null>
@@ -37,7 +37,7 @@ export function useAnimation(
     motionRaw = new Animation(effect, timeline)
   })
 
-  onBeforeMount(() => {
+  onBeforeUnmount(() => {
     motionRaw = null
   })
 
