@@ -3,5 +3,7 @@ import { LayoutHome } from '@repo/theme'
 </script>
 
 <template>
-  <LayoutHome />
+  <LayoutHome>
+    <slot></slot>
+  </LayoutHome>
 </template>

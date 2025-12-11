@@ -80,6 +80,8 @@ function handleEnter() {
     <div class="flex items-end inset-0 fixed -z-1">
       <div class="tidewater"></div>
     </div>
+
+    <slot></slot>
   </div>
 </template>
 
