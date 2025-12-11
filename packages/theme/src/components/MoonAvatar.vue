@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div class="moon-avatar size-50 cursor-pointer relative isolate">
-    <div class="rounded-999 inset-0 absolute z-20 overflow-hidden">
+    <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
       <img
         alt="site owner avatar"
         class="transition-transform duration-800 ease-in-out"

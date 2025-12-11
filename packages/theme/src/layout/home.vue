@@ -67,7 +67,7 @@ function handleEnter() {
         <div class="entry-button">
           <button
             aria-label="entry"
-            class="text-teal p-3 rounded-999 bg-black/10 flex cursor-pointer flex-center"
+            class="text-teal p-3 rounded-full bg-black/10 flex cursor-pointer flex-center"
             type="button"
           >
             <Power class="text-10" />
