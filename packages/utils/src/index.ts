@@ -15,13 +15,6 @@ export function normalizeLink(path: string): string {
 }
 
 /**
- * 判断是否支持 ViewTranstion API
- */
-export const enableTransitions = () =>
-  'startViewTransition' in document &&
-  window.matchMedia('(prefers-reduced-motion: no-preference)').matches
-
-/**
  * 睡眠指定时间
  */
 export const sleep = (time: number) =>

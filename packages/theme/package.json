@@ -16,7 +16,7 @@
       "types": "./src/prose/index.ts",
       "import": "./src/prose/index.ts"
     },
-    "./style/*": "./src/styles/*"
+    "./styles/*": "./src/styles/*"
   },
   "dependencies": {
     "@repo/utils": "workspace:*",

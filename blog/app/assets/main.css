@@ -1,0 +1,49 @@
+/* biome-ignore-all lint/correctness/noUnknownTypeSelector: not supported */
+
+/**
+ * ==================================================
+ * 🏷️ layout view-transition
+ * ==================================================
+ */
+
+html {
+  view-transition-name: layout;
+}
+
+html::view-transition-new(layout),
+html::view-transition-old(layout) {
+  animation-duration: 2000ms;
+  animation-timing-function: ease-in-out;
+}
+
+html[data-motion='fade-in']::view-transition-new(layout) {
+  animation-name: layout-fade-in;
+}
+
+html[data-motion='fade-in']::view-transition-old(layout) {
+  animation-name: layout-fade-out;
+  animation-delay: 400ms;
+}
+
+html[data-motion='fade-out']::view-transition-new(layout) {
+  animation-name: layout-fade-out;
+  animation-direction: reverse;
+}
+
+html[data-motion='fade-out']::view-transition-old(layout) {
+  animation-name: layout-fade-in;
+  animation-delay: 400ms;
+  animation-direction: reverse;
+}
+
+@keyframes layout-fade-in {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes layout-fade-out {
+  to {
+    transform: translateY(100%);
+  }
+}
