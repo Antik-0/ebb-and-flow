@@ -22,6 +22,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return
   }
 
+  if (to.path === from.path) {
+    return
+  }
+
   if (to.path === '/') {
     viewTransition('fade-in')
   } else if (from.path === '/') {
