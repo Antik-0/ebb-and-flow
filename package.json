@@ -7,14 +7,14 @@
   "packageManager": "bun@1.3.3",
   "scripts": {
     "boot": "bun install && bun stub",
-    "build": "turbo run build --filter=blog",
+    "build": "turbo run build --filter=docs",
     "clean": "bun run ./scripts/cleanup.ts",
-    "dev": "turbo run dev --filter=blog",
+    "dev": "turbo run dev --filter=docs",
     "eslint": "eslint --fix --cache --cache-location=.temp/.eslintcache",
     "lint": "biome check --fix && bun run eslint",
     "lint:debug": "bunx @eslint/config-inspector@latest",
-    "prepare": "bun run --filter blog prepare",
-    "preview": "turbo run preview --filter=blog",
+    "prepare": "bun run --filter docs prepare",
+    "preview": "turbo run preview --filter=docs",
     "stub": "turbo run stub",
     "up-deps": "bun run ./scripts/upgrade.ts"
   },
@@ -40,7 +40,7 @@
   },
   "workspaces": {
     "packages": [
-      "blog",
+      "docs",
       "packages/*",
       "packages/configs/*"
     ],

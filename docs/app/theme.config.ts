@@ -59,22 +59,19 @@ export const themeConfig: ThemeConfig = {
           text: 'vue 源码解析(3.5+)',
           collapsed: true,
           items: [
-            { text: 'reactive', link: '/vue/source/reactive' },
-            { text: 'baseHandlers', link: '/vue/source/base-handlers' },
-            {
-              text: 'collectionHandlers',
-              link: '/vue/source/collection-handlers'
-            },
+            { text: 'reactive', link: '/vue/reactive' },
+            { text: 'baseHandlers', link: '/vue/base-handlers' },
+            { text: 'collectionHandlers', link: '/vue/collection-handlers' },
             {
               text: 'arrayInstrumentations',
-              link: '/vue/source/array-instrumentations'
+              link: '/vue/array-instrumentations'
             },
-            { text: 'ref', link: '/vue/source/ref' },
-            { text: 'computed', link: '/vue/source/computed' },
-            { text: 'dep', link: '/vue/source/dep' },
-            { text: 'effect', link: '/vue/source/effect' },
-            { text: 'effectScope', link: '/vue/source/effect-scope' },
-            { text: 'watch', link: '/vue/source/watch' }
+            { text: 'ref', link: '/vue/ref' },
+            { text: 'computed', link: '/vue/computed' },
+            { text: 'dep', link: '/vue/dep' },
+            { text: 'effect', link: '/vue/effect' },
+            { text: 'effectScope', link: '/vue/effect-scope' },
+            { text: 'watch', link: '/vue/watch' }
           ]
         }
       ]
@@ -96,7 +93,7 @@ export const themeConfig: ThemeConfig = {
       items: [
         { text: 'Bimoe配置', link: '/article/biome' },
         { text: '传送门', link: '/article/links' },
-        { text: '排序算法', link: '/algorithm/sort' }
+        { text: '排序算法', link: '/article/sorting-algorithm' }
       ]
     }
   ],
