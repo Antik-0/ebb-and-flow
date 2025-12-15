@@ -3,8 +3,8 @@ import 'iconify-icon'
 // theme
 
 export type * from './types'
-export { default as ThemeProvider } from './context.vue'
-export { useTheme } from './useTheme.ts'
+export { defineThemeConfig, useTheme } from './theme.ts'
+export { default as ThemeRoot } from './theme-root.vue'
 
 // layout
 

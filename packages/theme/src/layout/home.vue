@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import { usePageTitle } from '@repo/utils/hooks'
 import { useRouter } from 'nuxt/app'
 import { shallowRef } from 'vue'
 import CodeMotion from '#/components/CodeMotion.vue'
@@ -7,13 +6,11 @@ import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
 import MoonAvatar from '#/components/MoonAvatar.vue'
 import { Power } from '#/icons'
-import { useTheme } from '#/useTheme'
+import { useTheme } from '#/theme'
 
 defineOptions({ name: 'LayoutHome' })
 
 const { theme } = useTheme()
-
-usePageTitle(theme.title)
 
 const titleAnimating = shallowRef(true)
 const taglineMotion = shallowRef('')

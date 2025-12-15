@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import { h, shallowRef } from 'vue'
 import { Github } from '#/icons'
-import { useTheme } from '#/useTheme'
+import { useTheme } from '#/theme'
 import Link from '../Link.vue'
 
 const { theme } = useTheme()

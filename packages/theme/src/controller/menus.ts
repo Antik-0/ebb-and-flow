@@ -3,7 +3,7 @@ import { isExternalLink } from '@repo/utils'
 import { createSharedState } from '@repo/utils/hooks'
 import { useRouter } from 'nuxt/app'
 import { onMounted, ref, shallowRef, watch } from 'vue'
-import { useTheme } from '#/useTheme.ts'
+import { useTheme } from '#/theme'
 
 export const useSharedMenus = createSharedState(() => {
   const router = useRouter()

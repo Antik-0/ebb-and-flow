@@ -1,13 +1,13 @@
 <script setup lang='ts'>
 import type { ThemeConfig } from '#/types'
-import { provideThemeCofnig } from './useTheme'
+import { provideThemeCofnig } from './theme'
 
 const props = defineProps<{
-  value: ThemeConfig
+  config: ThemeConfig
   theme?: 'light' | 'dark'
 }>()
 
-provideThemeCofnig(props.value)
+provideThemeCofnig(props.config)
 </script>
 
 <template>

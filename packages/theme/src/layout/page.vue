@@ -1,31 +1,13 @@
 <script setup lang='ts'>
-import { usePageTitle } from '@repo/utils/hooks'
-import { computed, shallowRef, watch } from 'vue'
+import { computed, shallowRef } from 'vue'
 import ImageViewer from '#/components/ImageViewer.vue'
 import Navbar from '#/components/navbar/Navbar.vue'
 import Sidebar from '#/components/sidebar/Sidebar.vue'
 import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
-import { provideLayoutCtx, useLayout, usePageData } from '#/controller/layout'
-import { useTheme } from '#/useTheme'
+import { provideLayoutCtx, useLayout } from '#/controller/layout'
 
 defineOptions({ name: 'LayoutPage' })
-
-const { theme } = useTheme()
-const { page } = usePageData()
-
-const defaultTitleTemplate = `<title> | ${theme.title}`
-const pageTitle = usePageTitle(page.value?.title, {
-  titleTemplate: theme?.titleTemplate ?? defaultTitleTemplate
-})
-
-watch(
-  () => page.value,
-  page => {
-    pageTitle.value = page?.title ?? theme.notFoundTitle ?? '404'
-  },
-  { immediate: true }
-)
 
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
 

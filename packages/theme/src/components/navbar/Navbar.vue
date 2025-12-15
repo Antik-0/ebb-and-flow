@@ -2,7 +2,7 @@
 import { useRouter } from 'nuxt/app'
 import { useLayoutCtx } from '#/controller/layout'
 import { Menu } from '#/icons'
-import { useTheme } from '#/useTheme'
+import { useTheme } from '#/theme'
 import Avatar from '../Avatar.vue'
 import CubeAvatar from '../CubeAvatar.vue'
 import GlassMask from '../GlassMask.vue'

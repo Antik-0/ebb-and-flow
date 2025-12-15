@@ -2,7 +2,7 @@
 import type { Page } from '#/types'
 import { watch } from 'vue'
 import { useLayoutCtx, usePageData } from '#/controller/layout'
-import NotFound from '#/NotFound.vue'
+import NotFound from '#/not-found.vue'
 import DocFooter from './DocFooter.vue'
 import DocOutline from './DocOutline.vue'
 

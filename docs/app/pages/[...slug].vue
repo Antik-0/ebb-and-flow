@@ -11,6 +11,8 @@ const { data: page } = await useAsyncData(route.path, async () =>
   queryCollection('content').path(route.path).first()
 )
 
+useSeoMeta({ title: formatTitle(page.value?.title) })
+
 const pageMeta = computed(() => {
   if (!page.value) return undefined
 
