@@ -3,9 +3,7 @@ import type { ContentCollectionItem } from '@nuxt/content'
 import type { OutlineAnchor } from '@repo/theme'
 import { DocContent } from '@repo/theme'
 
-definePageMeta({
-  layout: 'page'
-})
+definePageMeta({ layout: 'page' })
 
 const route = useRoute()
 
