@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useRouter } from 'nuxt/app'
+import { navigateTo } from 'nuxt/app'
 import { shallowRef } from 'vue'
 import CodeMotion from '#/components/CodeMotion.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
@@ -15,9 +15,8 @@ const { theme } = useTheme()
 const titleAnimating = shallowRef(true)
 const taglineMotion = shallowRef('')
 
-const router = useRouter()
 function handleEnter() {
-  router.push(theme.defaultActiveLink)
+  navigateTo(theme.defaultActiveLink)
 }
 </script>
 

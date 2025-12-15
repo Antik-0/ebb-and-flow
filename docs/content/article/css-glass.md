@@ -115,7 +115,7 @@ useMove(glassEl)
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url('../images/css-glass-mask.png') no-repeat;
+  background: url('/glass-mask.png') no-repeat;
   background-size: cover;
   opacity: 0.05;
 }

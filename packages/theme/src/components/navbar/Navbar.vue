@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useRouter } from 'nuxt/app'
+import { navigateTo } from 'nuxt/app'
 import { useLayoutCtx } from '#/controller/layout'
 import { Menu } from '#/icons'
 import { useTheme } from '#/theme'
@@ -13,12 +13,6 @@ import SocialLinks from './SocialLinks.vue'
 
 const { isMobile } = useLayoutCtx()
 const { theme } = useTheme()
-
-const router = useRouter()
-
-function backHome() {
-  router.push('/')
-}
 </script>
 
 <template>
@@ -40,7 +34,7 @@ function backHome() {
               '--size': '40px',
               '--rounded': '4px'
             }"
-            @click="backHome"
+            @click="navigateTo('/')"
           />
         </div>
 
@@ -48,7 +42,7 @@ function backHome() {
           <Avatar
             v-if="isMobile"
             :avatar="theme.avatar"
-            @click="backHome"
+            @click="navigateTo('/')"
           />
           <Menubar v-else />
         </div>

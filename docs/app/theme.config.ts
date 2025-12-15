@@ -15,12 +15,12 @@ export const themeConfig = defineThemeConfig(() => {
       'Motion-Vue',
       'TypeScript'
     ],
-    defaultActiveLink: '/vue/guide/reactive',
+    defaultActiveLink: '/articles',
     navMenus: [
       {
         text: '首页',
         icon: 'lucide:circle-dot',
-        link: '/articles',
+        link: '/',
         items: []
       },
       {

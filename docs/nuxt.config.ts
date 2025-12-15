@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   app: {
+    baseURL: '/ebb-and-flow/',
     head: {
       link: [{ rel: 'icon', href: '/logo.png' }],
       htmlAttrs: {
