@@ -12,6 +12,10 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts"
     },
+    "./icons": {
+      "types": "./src/icons/index.ts",
+      "import": "./src/icons/index.ts"
+    },
     "./prose": {
       "types": "./src/prose/index.ts",
       "import": "./src/prose/index.ts"

@@ -12,14 +12,16 @@ const props = defineProps<{
     <a class="group inline-flex items-center relative" :href="`#${id}`">
       <span
         :class="[
-          'rounded-md -left-1 flex size-5 flex-center absolute -translate-x-full cursor-pointer',
-          'text-muted-foreground bg-muted hover:text-brand',
+          'rounded-md flex size-5 flex-center cursor-pointer absolute',
+          'text-muted-foreground bg-muted hover:text-brand duration-250',
           'opacity-0 group-hover:opacity-100 transition-opacity'
         ]"
       >
         <Hash class="size-4" />
       </span>
-      <slot></slot>
+      <span class="transition-transform duration-250 group-hover:translate-x-6">
+        <slot></slot>
+      </span>
     </a>
   </component>
 </template>

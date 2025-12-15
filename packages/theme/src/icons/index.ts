@@ -1,7 +1,7 @@
 import type { IconifyIconAttributes } from 'iconify-icon'
 import type { FunctionalComponent } from 'vue'
 import { h } from 'vue'
-import { builtingLogoIcons } from './logo'
+import { builtingLogoIcons } from './logos'
 
 interface IconProps extends IconifyIconAttributes {}
 
@@ -23,6 +23,7 @@ export { default as BookOpen } from './BookOpen.vue'
 export { default as ChevronRight } from './ChevronRight.vue'
 export { default as Copy } from './Copy.vue'
 export { default as CopyCheck } from './CopyCheck.vue'
+export { default as EllipsisVertical } from './EllipsisVertical.vue'
 export { default as Github } from './Github.vue'
 export { default as Hash } from './Hash.vue'
 export { default as Menu } from './Menu.vue'

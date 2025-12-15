@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, type ShallowRef, shallowRef } from 'vue'
+import { type ShallowRef, onMounted, reactive, shallowRef } from 'vue'
 
 const glassEl = shallowRef<HTMLDivElement>()
 

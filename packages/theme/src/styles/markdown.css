@@ -161,14 +161,19 @@
  * ==================================================
  */
 
-.ebb-doc pre.shiki {
+.ebb-doc pre {
   max-width: 100%;
   padding: 20px;
   tab-size: 4;
   font-family: var(--font-family-mono);
   font-size: 14px;
   background-color: color-mix(in srgb, var(--c-bg-code-block) 20%, transparent);
+  white-space: normal;
   overflow-x: auto;
+}
+
+.ebb-doc pre code {
+  white-space: pre;
 }
 
 .ebb-doc :not(pre) > code {
@@ -178,7 +183,7 @@
   background-color: color-mix(in srgb, var(--c-bg-code-block) 40%, transparent);
 }
 
-.ebb-doc .shiki :is(code, .line) {
+.ebb-doc .pre :is(code, .line) {
   display: block;
 }
 
@@ -188,15 +193,12 @@
  * ==================================================
  */
 .code-group {
-  position: relative;
   margin: 16px 0;
-  border-radius: 8px;
-  overflow: hidden;
   box-shadow: 0 0 10px 1px hsl(0 0% 30% / 0.1);
 }
 
-.code-group:hover button[data-role='copy-button'] {
-  opacity: 1;
+.code-group pre {
+  border-radius: 0;
 }
 
 /**
@@ -237,6 +239,6 @@
   margin: 0;
 }
 
-.custom-block p code {
-  background-color: var(--custom-block-code-bg);
+.custom-block pre {
+  margin-top: 6px;
 }
