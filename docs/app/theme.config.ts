@@ -21,6 +21,7 @@ export const themeConfig = defineThemeConfig(() => {
         text: '首页',
         icon: 'lucide:circle-dot',
         link: '/',
+        hiddenInSidebar: true,
         items: []
       },
       {
@@ -33,7 +34,10 @@ export const themeConfig = defineThemeConfig(() => {
           { text: 'fetch-封装', link: '/article/fetch-request' },
           { text: '手动渲染组件', link: '/article/manual-render' },
           { text: '防抖/节流', link: '/article/debounce' },
-          { text: '数字滚动', link: '/article/count-animation' }
+          { text: '数字滚动', link: '/article/count-animation' },
+          { text: 'Bimoe配置', link: '/article/biome' },
+          { text: '传送门', link: '/article/links' },
+          { text: '排序算法', link: '/article/sorting-algorithm' }
         ]
       },
       {
@@ -43,22 +47,6 @@ export const themeConfig = defineThemeConfig(() => {
         items: [
           {
             text: 'Vue 源码解析',
-            collapsed: true,
-            items: [
-              { text: 'Reactive', link: '/vue/guide/reactive' },
-              { text: 'BaseHandlers', link: '/vue/guide/base-handlers' },
-              {
-                text: 'CollectionHandlers',
-                link: '/vue/guide/collection-handlers'
-              },
-              { text: 'Ref', link: '/vue/guide/ref' },
-              { text: 'Effect', link: '/vue/guide/effect' },
-              { text: 'Computed', link: '/vue/guide/computed' },
-              { text: 'EffectScope', link: '/vue/guide/effect-scope' }
-            ]
-          },
-          {
-            text: 'vue 源码解析(3.5+)',
             collapsed: true,
             items: [
               { text: 'reactive', link: '/vue/reactive' },
@@ -75,13 +63,29 @@ export const themeConfig = defineThemeConfig(() => {
               { text: 'effectScope', link: '/vue/effect-scope' },
               { text: 'watch', link: '/vue/watch' }
             ]
+          },
+          {
+            text: 'Vue 源码解析(旧)',
+            collapsed: true,
+            items: [
+              { text: 'Reactive', link: '/vue/guide/reactive' },
+              { text: 'BaseHandlers', link: '/vue/guide/base-handlers' },
+              {
+                text: 'CollectionHandlers',
+                link: '/vue/guide/collection-handlers'
+              },
+              { text: 'Ref', link: '/vue/guide/ref' },
+              { text: 'Effect', link: '/vue/guide/effect' },
+              { text: 'Computed', link: '/vue/guide/computed' },
+              { text: 'EffectScope', link: '/vue/guide/effect-scope' }
+            ]
           }
         ]
       },
       {
         text: '动效',
         icon: 'lucide:sparkles',
-        collapsed: false,
+        collapsed: true,
         items: [
           { text: 'CSS-Effect', link: '/article/css-effect' },
           { text: 'CSS-毛玻璃', link: '/article/css-glass' },
@@ -89,14 +93,10 @@ export const themeConfig = defineThemeConfig(() => {
         ]
       },
       {
-        text: '更多',
+        text: '归档',
         icon: 'ic:twotone-signpost',
-        collapsed: false,
-        items: [
-          { text: 'Bimoe配置', link: '/article/biome' },
-          { text: '传送门', link: '/article/links' },
-          { text: '排序算法', link: '/article/sorting-algorithm' }
-        ]
+        link: '/articles',
+        items: []
       }
     ],
     socialLinks: [

@@ -25,7 +25,7 @@ watch(
       <article id="content" class="ebb-doc">
         <slot></slot>
       </article>
-      <DocFooter :last-updated="page.lastUpdated" />
+      <DocFooter />
     </div>
 
     <div v-if="isDesktop" class="pl-8 w-64">

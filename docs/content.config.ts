@@ -7,7 +7,9 @@ export default defineContentConfig({
       type: 'page',
       source: '**/*.md',
       schema: z.object({
-        lastUpdated: z.string().optional()
+        tags: z.array(z.string()).optional(),
+        readingTime: z.number().optional(),
+        lastUpdated: z.number().optional()
       })
     })
   }

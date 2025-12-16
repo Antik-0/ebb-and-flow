@@ -1,4 +1,11 @@
+---
+tags: ['技术', '请求', 'TS']
+---
+
 # 基于 fetch 的请求类封装
+
+::page-meta
+::
 
 ## FetchClient
 

@@ -1,4 +1,11 @@
+---
+tags: ['视图过渡', '杂谈', '动画']
+---
+
 # view-transitions - 视图过渡
+
+::page-meta
+::
 
 今天介绍一个新的 Web API - `View Transition API`，该 API 是 2023 年新出的，用于实现平滑的过渡动画效果。
 

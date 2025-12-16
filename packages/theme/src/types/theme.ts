@@ -67,22 +67,32 @@ export interface NavMenuRecord {
    * 文本
    */
   text: string
+
   /**
    * 图标
    */
   icon?: string
+
   /**
    * 链接
    */
   link?: string
+
   /**
    * 子菜单是否组合
    */
   grouped?: boolean
+
   /**
    * 是否折叠
    */
   collapsed?: boolean
+
+  /**
+   * 在侧边栏隐藏
+   */
+  hiddenInSidebar?: boolean
+
   /**
    * 子菜单
    */

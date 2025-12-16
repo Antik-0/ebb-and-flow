@@ -29,7 +29,7 @@ export function useSidebarMenus() {
   const { menus } = useSharedMenus()
 
   const sidebarMenus = computed<SidebarMenuItem[]>(() =>
-    menus.value.filter(item => item.link !== '/')
+    menus.value.filter(item => !item.hiddenInSidebar)
   )
 
   return { sidebarMenus }

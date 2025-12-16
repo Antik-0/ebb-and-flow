@@ -1,30 +1,7 @@
 <script setup lang='ts'>
-import { computed, onMounted, shallowRef, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useSharedMenus } from '#/controller/menus.ts'
 import Link from '../Link.vue'
-
-const props = defineProps<{
-  lastUpdated?: string
-}>()
-
-const datetime = shallowRef('')
-const ISODatetime = shallowRef('')
-const hasLastUpdated = computed(() => !!props.lastUpdated)
-
-onMounted(() => {
-  const DateTimeFormater = new Intl.DateTimeFormat('zh-CN', {
-    dateStyle: 'short',
-    timeStyle: 'medium',
-    timeZone: 'Asia/ShangHai'
-  })
-
-  watchEffect(() => {
-    if (!props.lastUpdated) return
-    const date = new Date(props.lastUpdated)
-    datetime.value = DateTimeFormater.format(date)
-    ISODatetime.value = date.toISOString()
-  })
-})
 
 const { currActiveNode } = useSharedMenus()
 
@@ -34,13 +11,6 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
 
 <template>
   <footer class="mt-16">
-    <div class="pb-4 flex items-center justify-between">
-      <p v-if="hasLastUpdated" class="text-14px text-muted-foreground leading-8 font-500">
-        <span>最后更新于: </span>
-        <time :datetime="ISODatetime">{{ datetime }}</time>
-      </p>
-    </div>
-
     <div class="bg-divider h-px"></div>
 
     <nav aria-label="pager" class="pt-6 gap-4 grid grid-cols-1 sm:grid-cols-2">

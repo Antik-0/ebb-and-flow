@@ -1,4 +1,5 @@
 export { debounce, throttle } from './debounce.ts'
+export { groupBy } from './groupBy.ts'
 
 const HASH_OR_QUERY_RE = /[?#].*$/
 const INDEX_OR_EXT_RE = /(?:(^|\/)index)?\.(?:md|html)$/

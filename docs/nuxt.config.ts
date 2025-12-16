@@ -1,5 +1,5 @@
-import { execSync } from 'node:child_process'
 import { URL, fileURLToPath } from 'node:url'
+import { computeReadingTime, getGitUpdatedTime } from './content-utils'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -18,7 +18,6 @@ export default defineNuxtConfig({
       id: 'app'
     }
   },
-
   css: ['~/assets/main.css', '@repo/theme/styles/main.css'],
 
   alias: {
@@ -54,18 +53,9 @@ export default defineNuxtConfig({
   hooks: {
     'content:file:afterParse': ctx => {
       const { file, content } = ctx
-      content.lastUpdated = getGitUpdated(file.path)
+      const filepath = file.path
+      content.readingTime = computeReadingTime(file.body)
+      content.lastUpdated = getGitUpdatedTime(filepath)
     }
   }
 })
-
-function getGitUpdated(filepath: string) {
-  try {
-    const lastUpdated = execSync(
-      `git log -1 --pretty=format:%cI -- ${filepath}`
-    ).toString()
-    return lastUpdated
-  } catch {
-    return undefined
-  }
-}

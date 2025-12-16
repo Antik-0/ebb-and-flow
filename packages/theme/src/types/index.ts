@@ -8,10 +8,6 @@ export interface Page {
    */
   title: string
   /**
-   * 页面最后更新时间
-   */
-  lastUpdated?: string
-  /**
    * 页面导航
    */
   toc?: OutlineAnchor[]
