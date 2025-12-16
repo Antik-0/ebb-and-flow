@@ -71,13 +71,6 @@
 .ebb-doc a {
   font-weight: 500;
   color: var(--c-brand-2);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.ebb-doc :is(h2, h3) > a {
-  color: inherit;
-  text-decoration: none;
 }
 
 /**
