@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-import { LayoutPage } from '@repo/theme'
+import { EbbPage } from '@repo/theme'
 </script>
 
 <template>
-  <LayoutPage>
+  <EbbPage>
     <slot></slot>
-  </LayoutPage>
+  </EbbPage>
 </template>

@@ -7,8 +7,6 @@ import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
 import { provideLayoutCtx, useLayout } from '#/controller/layout'
 
-defineOptions({ name: 'LayoutPage' })
-
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
 
 const showToolPanel = shallowRef(false)

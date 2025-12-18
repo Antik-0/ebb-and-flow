@@ -1,15 +1,10 @@
 import 'iconify-icon'
 
-// theme
-
 export type * from './types'
+export { default as EbbHome } from './layouts/EbbHome.vue'
+export { default as EbbPage } from './layouts/EbbPage.vue'
+export { default as EbbTheme } from './layouts/EbbTheme.vue'
 export { defineThemeConfig, useTheme } from './theme.ts'
-export { default as ThemeRoot } from './theme-root.vue'
-
-// layout
-
-export { default as LayoutHome } from './layout/home.vue'
-export { default as LayoutPage } from './layout/page.vue'
 
 // components
 

@@ -8,8 +8,6 @@ import MoonAvatar from '#/components/MoonAvatar.vue'
 import { Power } from '#/icons'
 import { useTheme } from '#/theme'
 
-defineOptions({ name: 'LayoutHome' })
-
 const { theme } = useTheme()
 
 const titleAnimating = shallowRef(true)
@@ -76,8 +74,6 @@ function handleEnter() {
     <div class="flex items-end inset-0 fixed -z-1">
       <div class="tidewater"></div>
     </div>
-
-    <slot></slot>
   </div>
 </template>
 
