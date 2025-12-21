@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { navigateTo } from 'nuxt/app'
-import { shallowRef } from 'vue'
+import { ref } from 'vue'
 import CodeMotion from '#/components/CodeMotion.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
@@ -10,8 +10,8 @@ import { useTheme } from '#/theme'
 
 const { theme } = useTheme()
 
-const titleAnimating = shallowRef(true)
-const taglineMotion = shallowRef('')
+const titleAnimating = ref(true)
+const taglineMotion = ref('')
 
 function handleEnter() {
   navigateTo(theme.defaultActiveLink)
@@ -20,7 +20,7 @@ function handleEnter() {
 
 <template>
   <div class="flex-col h-screen w-screen isolate">
-    <div class="px-10 pb-60px pt-160px flex-col flex-1 items-center">
+    <div class="px-10 pb-20 pt-40 flex-col flex-1 items-center">
       <MoonAvatar :avatar="theme.avatar" />
 
       <h1 class="mt-4 py-8 text-center w-full">

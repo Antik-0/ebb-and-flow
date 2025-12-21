@@ -108,26 +108,6 @@
   }
 }
 
-@keyframes cross-fade-enter {
-  from {
-    opacity: 0;
-    clip-path: inset(50% round 100px);
-  }
-  to {
-    opacity: 1;
-    clip-path: inset(-40px round 100px);
-  }
-}
-
-@keyframes cross-fade-leave {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
 @keyframes motion-image {
   from {
     opacity: 0;

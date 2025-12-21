@@ -2,13 +2,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  /**
-   * block 类型
-   */
   type?: 'info' | 'warning' | 'danger'
-  /**
-   * block 标题
-   */
   title?: string
 }
 

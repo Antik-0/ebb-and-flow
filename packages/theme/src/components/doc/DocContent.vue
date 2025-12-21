@@ -1,14 +1,14 @@
 <script setup lang='ts'>
 import type { Page } from '#/types'
 import { watch } from 'vue'
-import { useLayoutCtx, usePageData } from '#/controller/layout'
+import { useLayoutContext, usePageData } from '#/controller/layout'
 import NotFound from '#/not-found.vue'
 import DocFooter from './DocFooter.vue'
 import DocOutline from './DocOutline.vue'
 
 const props = defineProps<{ page?: Page }>()
 
-const { isDesktop } = useLayoutCtx()
+const { isDesktop } = useLayoutContext()
 
 const { setPageData } = usePageData()
 

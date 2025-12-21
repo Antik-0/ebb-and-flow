@@ -3,8 +3,7 @@ import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { Timer } from '#/types'
 import type { PopoverProps } from './index.ts'
 import { useEventListener } from '@repo/utils/hooks'
-import { computed, h, onMounted, watch } from 'vue'
-import TeleportToBody from '#/components/TeleportToBody.vue'
+import { Teleport, computed, h, onMounted, watch } from 'vue'
 import { usePopoverState } from './state.ts'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
@@ -126,7 +125,7 @@ onMounted(() => {
 
 <template>
   <TriggerElement />
-  <TeleportToBody id="popover">
+  <Teleport to="#teleports">
     <div
       v-if="isActive"
       v-show="visible"
@@ -146,7 +145,7 @@ onMounted(() => {
     >
       <slot></slot>
     </div>
-  </TeleportToBody>
+  </Teleport>
 </template>
 
 <style>

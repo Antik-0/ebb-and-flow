@@ -3,7 +3,7 @@ import { useFPS } from '@repo/utils/hooks'
 import { shallowRef, watch } from 'vue'
 import DocOutline from '#/components/doc/DocOutline.vue'
 import { Popover } from '#/components/popover'
-import { useLayoutCtx } from '#/controller/layout.ts'
+import { useLayoutContext } from '#/controller/layout.ts'
 import { useSidebarControl } from '#/controller/sidebar.ts'
 import { BookOpen, PanelLeftClose, PanelLeftOpen } from '#/icons'
 import BackToTop from './BackToTop.vue'
@@ -11,11 +11,9 @@ import GlassMask from './GlassMask.vue'
 import ScrollIndicator from './ScrollIndicator.vue'
 import SidebarTrigger from './sidebar/SidebarTrigger.vue'
 
-defineProps<{
-  aside?: boolean
-}>()
+defineProps<{ aside?: boolean }>()
 
-const { isMobile, showToolPanel } = useLayoutCtx()
+const { isMobile, isTriggerSentinel } = useLayoutContext()
 
 const { isOpen: sidebarOpened, close: closeSidebar } = useSidebarControl()
 
@@ -24,7 +22,7 @@ const outlineOpened = shallowRef(false)
 watch(isMobile, () => (outlineOpened.value = false))
 
 watch(
-  () => showToolPanel.value,
+  () => isTriggerSentinel.value,
   value => {
     if (value === false) {
       outlineOpened.value = false
@@ -47,7 +45,7 @@ const { fps } = useFPS()
   <div
     class="toolpanel"
     :data-aside="aside"
-    :data-show="showToolPanel"
+    :data-show="isTriggerSentinel"
   >
     <div class="rounded-5 flex flex-col gap-1">
       <SidebarTrigger class="tool-button" title="侧边导航">

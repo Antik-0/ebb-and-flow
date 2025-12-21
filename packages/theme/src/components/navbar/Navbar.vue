@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { navigateTo } from 'nuxt/app'
-import { useLayoutCtx } from '#/controller/layout'
+import { useLayoutContext } from '#/controller/layout'
 import { Menu } from '#/icons'
 import { useTheme } from '#/theme'
 import Avatar from '../Avatar.vue'
@@ -11,8 +11,8 @@ import SidebarTrigger from '../sidebar/SidebarTrigger.vue'
 import ThemeToggle from '../ThemeToggle.vue'
 import SocialLinks from './SocialLinks.vue'
 
-const { isMobile } = useLayoutCtx()
 const { theme } = useTheme()
+const { isMobile } = useLayoutContext()
 </script>
 
 <template>

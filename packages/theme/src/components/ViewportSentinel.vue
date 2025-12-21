@@ -36,7 +36,8 @@ onMounted(() => {
   <div
     ref="sentinel"
     aria-hidden="true"
-    class="h-1 inset-x-0 absolute z-1"
+    class="h-1 inset-x-0 absolute -z-1"
+    data-role="sentinel"
     :style="style"
   ></div>
 </template>

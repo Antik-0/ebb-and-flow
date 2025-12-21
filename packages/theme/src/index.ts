@@ -8,5 +8,4 @@ export { defineThemeConfig, useTheme } from './theme.ts'
 
 // components
 
-export { default as Background } from './components/Background.vue'
 export { default as DocContent } from './components/doc/DocContent.vue'

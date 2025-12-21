@@ -1,24 +1,31 @@
 <script setup lang='ts'>
-import { computed, shallowRef } from 'vue'
+import { computed, ref } from 'vue'
 import ImageViewer from '#/components/ImageViewer.vue'
 import Navbar from '#/components/navbar/Navbar.vue'
 import Sidebar from '#/components/sidebar/Sidebar.vue'
 import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
-import { provideLayoutCtx, useLayout } from '#/controller/layout'
+import {
+  provideLayoutContext,
+  useLayout,
+  usePageLoading
+} from '#/controller/layout'
 
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
 
-const showToolPanel = shallowRef(false)
-function onSentinelChange(visible: boolean) {
-  showToolPanel.value = !visible
+const { isLoading } = usePageLoading()
+
+const isTriggerSentinel = ref(false)
+
+function onSentinelVisibleChange(visible: boolean) {
+  isTriggerSentinel.value = !visible
 }
 
-provideLayoutCtx({
+provideLayoutContext({
   isDesktop,
   isMobile,
   isLargeScreen,
-  showToolPanel: computed(() => showToolPanel.value)
+  isTriggerSentinel: computed(() => isTriggerSentinel.value)
 })
 </script>
 
@@ -27,20 +34,30 @@ provideLayoutCtx({
     <Navbar />
     <Sidebar />
 
-    <div class="pt-[--h-navbar]">
-      <div class="layout-page" data-role="page">
-        <main class="page-content">
-          <slot></slot>
-        </main>
+    <div class="ebb-page" data-role="page">
+      <main class="page-content">
+        <slot></slot>
 
-        <div v-if="isLargeScreen" class="pl-2">
-          <ToolPanel aside />
+        <div
+          v-if="isLoading"
+          class="p-8 bg-black/60 inset-0 absolute"
+        >
+          <slot name="loading">
+          </slot>
         </div>
+      </main>
+
+      <div v-if="isLargeScreen" class="pl-2">
+        <ToolPanel aside />
       </div>
     </div>
 
     <ToolPanel v-if="!isLargeScreen" />
-    <ViewportSentinel :top="200" @visible-change="onSentinelChange" />
     <ImageViewer />
+
+    <ViewportSentinel
+      :top="200"
+      @visible-change="onSentinelVisibleChange"
+    />
   </div>
 </template>

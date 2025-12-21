@@ -1,7 +1,7 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import type { Page } from '#/types'
 import { useMediaQuery } from '@repo/utils/hooks'
-import { computed, inject, provide, shallowRef } from 'vue'
+import { computed, inject, provide, ref } from 'vue'
 
 export function useLayout() {
   const isDesktop = useMediaQuery('(width >= 1024px)', { initialValue: true })
@@ -19,20 +19,20 @@ interface LayoutContext {
   isMobile: ComputedRef<boolean>
   isDesktop: ComputedRef<boolean>
   isLargeScreen: ComputedRef<boolean>
-  showToolPanel: ComputedRef<boolean>
+  isTriggerSentinel: ComputedRef<boolean>
 }
 
-const LayoutCtx = Symbol('layout') as InjectionKey<LayoutContext>
+const context = Symbol('layout') as InjectionKey<LayoutContext>
 
-export function provideLayoutCtx(value: LayoutContext) {
-  provide(LayoutCtx, value)
+export function provideLayoutContext(value: LayoutContext) {
+  provide(context, value)
 }
 
-export function useLayoutCtx() {
-  return inject(LayoutCtx)!
+export function useLayoutContext() {
+  return inject(context)!
 }
 
-const page = shallowRef<Page | null>(null)
+const page = ref<Page | null>(null)
 
 const setPageData = (data: Page | null) => {
   page.value = data
@@ -40,4 +40,10 @@ const setPageData = (data: Page | null) => {
 
 export function usePageData() {
   return { page, setPageData }
+}
+
+const isLoading = ref(false)
+
+export function usePageLoading() {
+  return { isLoading }
 }
