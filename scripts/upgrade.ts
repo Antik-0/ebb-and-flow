@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { join } from 'node:path'
-import { fileURLToPath, URL } from 'node:url'
+import { URL, fileURLToPath } from 'node:url'
 import ora from 'ora'
 import pc from 'picocolors'
 import rootPackageJSON from '../package.json' with { type: 'json' }

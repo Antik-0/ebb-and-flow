@@ -13,10 +13,10 @@
       "!**/node_modules",
       "!**/dist",
       "!**/cache",
-      "!**/output",
-      "!**/data",
-      "!**/nuxt",
-      "!**/nitro",
+      "!**/.nuxt",
+      "!**/.data",
+      "!**/.output",
+      "!**/.nitro",
       "!biome.json"
     ]
   },
