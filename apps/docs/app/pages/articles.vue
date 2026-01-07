@@ -4,7 +4,7 @@ import { motion } from 'motion-v'
 
 definePageMeta({ layout: 'page' })
 
-useSeoMeta({ title: formatTitle('目录') })
+useSeoMeta({ title: formatTitle('归档') })
 
 const { data } = await useFetch('/api/articles')
 

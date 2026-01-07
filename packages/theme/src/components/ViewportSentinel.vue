@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { useIntersectionObserver } from '@repo/utils/hooks'
 import { computed, onMounted, useTemplateRef } from 'vue'
+import { useIntersectionObserver } from '#/hooks'
 
 const props = defineProps<{
   top?: number

@@ -1,6 +1,6 @@
 import { throttle } from '@repo/utils'
-import { useEventListener } from '@repo/utils/hooks'
 import { computed, onMounted, shallowRef, watch } from 'vue'
+import { useEventListener } from '#/hooks'
 import { usePageData } from './layout'
 
 export function useOutline() {

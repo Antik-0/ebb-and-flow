@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { useAnimationFrame } from '@repo/utils/hooks'
 import { onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
+import { useAnimationFrame } from '#/hooks'
 
 const props = defineProps<{
   /**

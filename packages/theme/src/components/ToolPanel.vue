@@ -1,10 +1,10 @@
 <script setup lang='ts'>
-import { useFPS } from '@repo/utils/hooks'
 import { shallowRef, watch } from 'vue'
 import DocOutline from '#/components/doc/DocOutline.vue'
 import { Popover } from '#/components/popover'
 import { useLayoutContext } from '#/controller/layout.ts'
 import { useSidebarControl } from '#/controller/sidebar.ts'
+import { useFPS } from '#/hooks'
 import { BookOpen, PanelLeftClose, PanelLeftOpen } from '#/icons'
 import BackToTop from './BackToTop.vue'
 import GlassMask from './GlassMask.vue'

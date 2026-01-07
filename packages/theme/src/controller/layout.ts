@@ -1,7 +1,7 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import type { Page } from '#/types'
-import { useMediaQuery } from '@repo/utils/hooks'
 import { computed, inject, provide, ref } from 'vue'
+import { useMediaQuery } from '#/hooks'
 
 export function useLayout() {
   const isDesktop = useMediaQuery('(width >= 1024px)', { initialValue: true })

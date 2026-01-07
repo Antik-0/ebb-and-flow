@@ -1,8 +1,8 @@
 import type { MenuItem, NavMenuRecord } from '#/types'
 import { isExternalLink } from '@repo/utils'
-import { createSharedState } from '@repo/utils/hooks'
 import { useRouter } from 'nuxt/app'
 import { onMounted, ref, shallowRef, watch } from 'vue'
+import { createSharedState } from '#/hooks'
 import { useTheme } from '#/theme'
 
 export const useSharedMenus = createSharedState(() => {

@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-import { useEventListener } from '@repo/utils/hooks'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { ref, useTemplateRef, watch } from 'vue'
 import GlassMask from '#/components/GlassMask.vue'
 import { useSidebarControl, useSidebarMenus } from '#/controller/sidebar'
+import { useEventListener } from '#/hooks'
 import SidebarGroup from './SidebarGroup.vue'
 
 const { isOpen, close } = useSidebarControl()

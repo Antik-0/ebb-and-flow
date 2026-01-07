@@ -6,9 +6,9 @@ import {
   transformerVariantGroup
 } from 'unocss'
 
-interface PresetEbbTheme extends Theme {}
+interface EbbTheme extends Theme {}
 
-export const presetEbb = definePreset<undefined, PresetEbbTheme>(() => {
+export const ebbUnoPreset = definePreset<undefined, EbbTheme>(() => {
   return {
     name: '@unocss/preset-ebb',
     presets: [

@@ -1,6 +1,5 @@
 {
   "name": "@repo/utils",
-  "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -8,14 +7,9 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
-    },
-    "./hooks": {
-      "types": "./src/hooks/index.ts",
-      "import": "./src/hooks/index.ts"
     }
   },
   "devDependencies": {
-    "@config/tsconfig": "workspace:*",
-    "vue": "catalog:"
+    "@config/tsconfig": "workspace:*"
   }
 }

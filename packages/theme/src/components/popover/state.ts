@@ -1,8 +1,8 @@
 import type { ComponentPublicInstance, ShallowRef } from 'vue'
 import type { EffectKeyframe, Placement, PopoverProps } from '.'
 import { nextAnimationFrame } from '@repo/utils'
-import { useAnimation } from '@repo/utils/hooks'
 import { computed, reactive, ref, shallowRef, watch } from 'vue'
+import { useAnimation } from '#/hooks'
 
 type PartialProps = 'effectEnter' | 'effectLeave' | 'onOpen' | 'onClose'
 

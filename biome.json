@@ -2,9 +2,8 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "includes": [
-      "blog/**/*",
+      "apps/**/*",
       "packages/**/*",
-      "docs/**/*",
       "scripts/*",
       "uno.config.ts",
       "eslint.config.ts",
@@ -14,9 +13,9 @@
       "!**/dist",
       "!**/cache",
       "!**/.nuxt",
+      "!**/.nitro",
       "!**/.data",
       "!**/.output",
-      "!**/.nitro",
       "!biome.json"
     ]
   },

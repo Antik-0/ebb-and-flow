@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import { useAnimation } from '@repo/utils/hooks'
 import {
   nextTick,
   onBeforeMount,
@@ -7,6 +6,7 @@ import {
   shallowRef,
   useTemplateRef
 } from 'vue'
+import { useAnimation } from '#/hooks'
 
 let controller: AbortController | null = null
 

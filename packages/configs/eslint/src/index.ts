@@ -6,16 +6,16 @@ import Vue from './vue.ts'
 /**
  * reference: https://eslint.org/docs/latest/use/configure/configuration-files
  */
-export const configEbb = defineConfig([
+export const ebbESLintConfig = defineConfig([
   globalIgnores([
     '**/node_modules',
     '**/dist',
     '**/cache',
     '**/.cache',
-    '**/.output',
-    '**/.data',
     '**/.nuxt',
     '**/.nitro',
+    '**/.data',
+    '**/.output',
     '**/.turbo',
     '**/*.ttf',
     '**/*.woff'

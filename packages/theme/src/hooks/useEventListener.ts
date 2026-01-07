@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { onBeforeUnmount, onMounted, toValue } from 'vue'
 
-type AddEventListener = {
+interface AddEventListener {
   <E extends keyof WindowEventMap>(
     el: MaybeRefOrGetter<Window>,
     type: E,

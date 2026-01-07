@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import { useResizeObserver } from '@repo/utils/hooks'
 import { LayoutGroup, animate, motion, useMotionValue } from 'motion-v'
 import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import FlowingLight from '#/components/FlowingLight.vue'
@@ -8,6 +7,7 @@ import {
   provideMenubarContent,
   useMenuViewControl
 } from '#/controller/navbar.ts'
+import { useResizeObserver } from '#/hooks'
 import MenubarGroup from './MenubarGroup.vue'
 import MenubarItem from './MenubarItem.vue'
 import MenuViewport from './MenuViewport.vue'

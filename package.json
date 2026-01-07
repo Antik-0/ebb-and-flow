@@ -40,7 +40,7 @@
   },
   "workspaces": {
     "packages": [
-      "docs",
+      "apps/*",
       "packages/*",
       "packages/configs/*"
     ],

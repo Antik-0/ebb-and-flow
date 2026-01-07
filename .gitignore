@@ -3,10 +3,10 @@ dist
 cache
 
 # Nuxt dev/build outputs
-.output
-.data
 .nuxt
 .nitro
+.data
+.output
 
 # Local env files
 .env

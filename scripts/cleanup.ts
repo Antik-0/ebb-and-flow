@@ -11,10 +11,10 @@ const cleanFiles = [
   'bun.lock',
   'cache',
   'dist',
-  '.output',
-  '.data',
   '.nuxt',
   '.nitro',
+  '.data',
+  '.output',
   '.temp',
   '.turbo'
 ]

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { useAnimation } from '@repo/utils/hooks'
+import { useAnimation } from '#/hooks'
 import { Rocket } from '#/icons'
 
 const [animation, scope] = useAnimation(

@@ -1,5 +1,5 @@
+import { tryOnIdle } from '@repo/utils'
 import { onBeforeUnmount, onMounted, shallowRef } from 'vue'
-import { tryOnIdle } from '../index.ts'
 import { useResizeObserver } from './useResizeObserver.ts'
 
 interface ScrollTimelineOptions {

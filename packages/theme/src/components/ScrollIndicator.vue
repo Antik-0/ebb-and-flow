@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { useScroll } from '@repo/utils/hooks'
 import { computed } from 'vue'
+import { useScroll } from '#/hooks'
 
 const { progress } = useScroll()
 
