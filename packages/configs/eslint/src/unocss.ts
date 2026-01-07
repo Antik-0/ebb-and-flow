@@ -4,7 +4,7 @@ import { defineConfig } from 'eslint/config'
 
 export default defineConfig({
   extends: [Unocss as unknown as Config],
-  files: ['**/*.vue'],
+  files: ['**/*.vue', '**/*.tsx'],
   rules: {
     'unocss/order': [
       'warn',

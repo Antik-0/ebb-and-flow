@@ -1,0 +1,245 @@
+/**
+ * ==================================================
+ * 🏷️ Sidebar
+ * ==================================================
+ */
+.sidebar-group {
+  padding-block: 12px;
+
+  + .sidebar-group {
+    border-top: 1px;
+    border-color: var(--c-divider);
+  }
+}
+
+.sidebar-item,
+.sidebar-item__button {
+  --m-color: transparent;
+
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: --m-color ease 250ms;
+  box-shadow: inset 0 0 12px 2px var(--m-color);
+
+  &:hover {
+    --m-color: hsla(186, 49%, 73%, 0.2);
+  }
+}
+
+.sidebar-item[data-active='true'] [data-role='title'] {
+  color: var(--c-brand-2);
+}
+
+.sidebar-item__button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+
+  &:hover span:last-child {
+    color: var(--accent-foreground);
+  }
+
+  &[aria-expanded='true'] svg {
+    rotate: 90deg;
+  }
+}
+
+.sidebar-item__button[data-active='true'] > [data-role='button-title'] {
+  color: var(--c-brand-1);
+}
+
+.sidebar-background {
+  background-color: var(--c-bg-sidebar);
+  box-shadow: 4px 0 60px 1px hsl(187 75% 65% / 0.2);
+}
+
+@media (width >= 1280px) {
+  .sidebar-background {
+    background-color: transparent;
+  }
+}
+
+/**
+ * ==================================================
+ * 🏷️ menubar
+ * ==================================================
+ */
+.menubar {
+  --rounded: 999px;
+
+  isolation: isolate;
+  position: relative;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  border-radius: var(--rounded);
+  box-shadow:
+    inset 0 0 20px 2px hsl(187 92% 69% / 0.1),
+    0 1px 10px 0 hsl(214 93% 73% / 0.4);
+}
+
+.menubar-background {
+  --bg-color: color-mix(in hsl, var(--c-brand-1) 20%, transparent);
+
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: var(--rounded);
+  opacity: 0;
+  transition: opacity ease-in 200ms;
+  background: radial-gradient(
+    100px circle at var(--offset-x) 50%,
+    var(--bg-color),
+    transparent 65%
+  );
+}
+
+.menubar:hover .menubar-background {
+  opacity: 1;
+}
+
+.menubar-indicator {
+  height: 32px;
+  border-radius: var(--rounded);
+  box-shadow: inset 0 0 12px 1px hsl(187 75% 65% / 0.4);
+}
+
+.menu-viewport {
+  contain: layout;
+  isolation: isolate;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  min-width: 100%;
+  padding-top: 10px;
+}
+
+.menu-viewport__arrow {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  rotate: -45deg;
+  translate: 0 50%;
+  transition: translate 250ms ease;
+  background: linear-gradient(45deg, transparent 50%, hsl(0 0% 26% / 0.6) 50%);
+}
+
+.menu-content {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  animation-duration: 600ms;
+  animation-timing-function: ease;
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.menu-content[data-active='true'] {
+  position: relative;
+  z-index: 20;
+}
+
+.menu-content[data-motion='from-start'] {
+  animation-name: enter-from-start;
+}
+
+.menu-content[data-motion='from-end'] {
+  animation-name: enter-from-end;
+}
+
+.menu-content[data-motion='to-start'] {
+  animation-name: exit-to-start;
+}
+
+.menu-content[data-motion='to-end'] {
+  animation-name: exit-to-end;
+}
+
+/**
+ * ==================================================
+ * 🏷️ doc
+ * ==================================================
+ */
+.doc-aside {
+  position: fixed;
+  top: 0;
+  width: 224px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--h-navbar) + 56px);
+  padding-bottom: 56px;
+}
+
+.aside-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  opacity: 0.4;
+  overflow: hidden auto;
+  scrollbar-width: none;
+  transition: opacity 600ms;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.outline-item {
+  padding: 0 calc(var(--level, 0) * 16px);
+  font-size: 14px;
+  line-height: 32px;
+  color: var(--muted-foreground);
+  overflow: hidden;
+
+  &:is(:hover, .is-active) {
+    color: var(--c-brand-2);
+  }
+}
+
+/**
+ * ==================================================
+ * toolpanel
+ * ==================================================
+ */
+.toolpanel {
+  position: fixed;
+  top: 50%;
+  right: 8px;
+  padding: 4px;
+  z-index: var(--z-index-toolpanel);
+  opacity: 0;
+  translate: 100%;
+  transition-property: opacity, translate;
+  transition-duration: 600ms;
+}
+
+.toolpanel[data-show='true'] {
+  opacity: 1;
+  translate: 0;
+}
+
+.toolpanel[data-aside='true'] {
+  right: unset;
+}
+
+.tool-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: color 200ms ease;
+
+  &:hover {
+    color: var(--c-brand-2);
+  }
+}

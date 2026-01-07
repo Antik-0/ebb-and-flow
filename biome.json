@@ -16,6 +16,8 @@
       "!**/.nitro",
       "!**/.data",
       "!**/.output",
+      "!**/.next",
+      "!**/out",
       "!biome.json"
     ]
   },
@@ -53,7 +55,15 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noAssignInExpressions": "off"
+        "noAssignInExpressions": "off",
+        "noUnknownAtRules": {
+          "level": "warn",
+          "options": {
+            "ignore": [
+              "unocss"
+            ]
+          }
+        }
       }
     }
   },

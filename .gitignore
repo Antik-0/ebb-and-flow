@@ -8,6 +8,11 @@ cache
 .data
 .output
 
+# Next dev/build outputs
+.next
+out
+next-env.d.ts
+
 # Local env files
 .env
 .env.*

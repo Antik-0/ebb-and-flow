@@ -17,6 +17,8 @@ export const ebbESLintConfig = defineConfig([
     '**/.data',
     '**/.output',
     '**/.turbo',
+    '**/.next',
+    '**/out',
     '**/*.ttf',
     '**/*.woff'
   ]),

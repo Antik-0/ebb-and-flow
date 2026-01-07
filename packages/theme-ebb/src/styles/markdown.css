@@ -1,0 +1,236 @@
+/**
+ * Headings
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc :is(h1, h2, h3, h4, h5, h6) {
+  position: relative;
+  font-weight: 600;
+  outline: none;
+}
+
+.ebb-doc :is(h2, h3) {
+  scroll-margin-top: calc(var(--h-navbar) + 32px);
+}
+
+.ebb-doc h1 {
+  text-align: center;
+  font-size: 28px;
+  line-height: 40px;
+}
+
+@media (width >= 768px) {
+  .ebb-doc h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+.ebb-doc h2 {
+  margin: 48px 0 24px;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.ebb-doc h3 {
+  margin: 32px 0 0;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.ebb-doc :is(h4, h5, h6) {
+  margin: 24px 0 0;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+/**
+ * Paragraph and inline elements
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc p {
+  margin: 16px 0;
+  line-height: 28px;
+}
+
+.ebb-doc strong {
+  font-weight: 600;
+}
+
+.ebb-doc blockquote {
+  margin: 16px 0;
+  border-left: 2px solid var(--c-divider);
+  padding-left: 16px;
+  color: var(--accent-foreground);
+}
+
+.ebb-doc blockquote > p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.ebb-doc a {
+  font-weight: 500;
+  color: var(--c-brand-2);
+}
+
+/**
+ * Lists
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc :where(ul, ol) {
+  margin: 16px 0;
+  padding-left: 20px;
+}
+
+.ebb-doc ul {
+  list-style: disc;
+}
+
+.ebb-doc ol {
+  list-style: decimal;
+}
+
+.ebb-doc li + li {
+  margin-top: 8px;
+}
+
+.ebb-doc li > :where(ul, ol) {
+  margin: 8px 0 0;
+}
+
+/**
+ * Table
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc table {
+  display: block;
+  border-collapse: collapse;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.ebb-doc tr {
+  border-top: 1px solid var(--c-divider);
+  background-color: var(--background);
+}
+
+.ebb-doc tr:nth-child(2n) {
+  background-color: var(--background-deep);
+}
+
+.ebb-doc :where(th, td) {
+  border: 1px solid var(--c-divider);
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.ebb-doc th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  background-color: var(--background-deep);
+}
+
+/**
+ * Decorational elements
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc hr {
+  margin: 16px 0;
+  border: none;
+  border-top: 1px solid var(--c-divider);
+}
+
+/**
+ * img
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc img {
+  margin: 0 auto;
+}
+
+/**
+ * code
+ * -------------------------------------------------------------------------- */
+
+.ebb-doc pre {
+  max-width: 100%;
+  padding: 20px;
+  tab-size: 4;
+  font-family: var(--font-family-mono);
+  font-size: 14px;
+  background-color: color-mix(in srgb, var(--c-bg-code-block) 20%, transparent);
+  white-space: normal;
+  overflow-x: auto;
+}
+
+.ebb-doc pre code {
+  white-space: pre;
+}
+
+.ebb-doc :not(pre) > code {
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: var(--c-brand-2);
+  background-color: color-mix(in srgb, var(--c-bg-code-block) 40%, transparent);
+}
+
+.ebb-doc .pre :is(code, .line) {
+  display: block;
+}
+
+/**
+ * ==================================================
+ * 🏷️ code-group
+ * ==================================================
+ */
+.code-group {
+  margin: 16px 0;
+  box-shadow: 0 0 10px 1px hsl(0 0% 30% / 0.1);
+}
+
+.code-group pre {
+  border-radius: 0;
+}
+
+/**
+ * ==================================================
+ * 🏷️ custom-block
+ * ==================================================
+ */
+.custom-block {
+  margin: 16px 0;
+  padding: 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  color: #f0f8ff;
+  background-color: color-mix(in srgb, var(--c-bg-code-block) 20%, transparent);
+}
+
+.custom-block[data-type='info'] {
+  --custom-block-bg: hsl(235 100% 74% / 0.2);
+  --custom-block-code-bg: hsl(235 100% 74% / 0.4);
+}
+
+.custom-block[data-type='warning'] {
+  --custom-block-bg: hsla(43, 100%, 65%, 0.4);
+  --custom-block-code-bg: hsl(43 100% 65% / 0.4);
+}
+
+.custom-block[data-type='danger'] {
+  --custom-block-bg: hsl(0 91% 71% / 0.2);
+  --custom-block-code-bg: hsl(0 91% 71% / 0.4);
+}
+
+.custom-block p {
+  margin: 6px 0 0;
+  line-height: 24px;
+}
+
+.custom-block p:first-child {
+  margin: 0;
+}
+
+.custom-block pre {
+  margin-top: 6px;
+}

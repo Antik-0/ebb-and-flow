@@ -1,0 +1,120 @@
+@property --m-value {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --m-value-u {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --m-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --m-opacity {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --m-color {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
+@keyframes motion-value {
+  from {
+    --m-value: var(--value-from, 0);
+  }
+  to {
+    --m-value: var(--value-to, 1);
+  }
+}
+
+@keyframes motion-value-u {
+  from {
+    --m-value-u: var(--value-u-from, 0);
+  }
+  to {
+    --m-value-u: var(--value-u-to, 0);
+  }
+}
+
+@keyframes motion-angle {
+  from {
+    --m-angle: var(--angle-from, 0deg);
+  }
+  to {
+    --m-angle: var(--angle-to, 360deg);
+  }
+}
+
+@keyframes motion-opacity {
+  from {
+    --m-opacity: var(--opacity-from, 0);
+  }
+  to {
+    --m-opacity: var(--opacity-to, 1);
+  }
+}
+
+@keyframes enter-from-start {
+  from {
+    opacity: 0.6;
+    transform: translateX(-200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes enter-from-end {
+  from {
+    opacity: 0.6;
+    transform: translateX(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes exit-to-start {
+  from {
+    opacity: 0.4;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+}
+
+@keyframes exit-to-end {
+  from {
+    opacity: 0.4;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+}
+
+@keyframes motion-image {
+  from {
+    opacity: 0;
+    clip-path: inset(0 40% round 20px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 round 0);
+  }
+}

@@ -1,0 +1,63 @@
+@layer theme, layout;
+
+@layer theme {
+  :root {
+    --foreground: #f0f8ff;
+    --background: #1f1919;
+    --background-deep: #181313;
+
+    /**
+     * 静音：用于文本或图标等信息的静默态
+     * -----------------------------------------------------------* */
+    --muted: #2c2c2c;
+    --muted-foreground: #98989f;
+
+    /**
+     * 强调：用于文本或图标等信息的 hover 态
+     * -----------------------------------------------------------* */
+    --accent: #5c5c5c;
+    --accent-foreground: #ceced1;
+
+    /**
+     * 边框
+     * -----------------------------------------------------------* */
+    --c-border: #3c3f44;
+    --c-divider: #424850;
+
+    /**
+     * 品牌色
+     * -----------------------------------------------------------* */
+    --c-brand-1: #62d9e9;
+    --c-brand-2: #a8b1ff;
+    --c-brand-3: #ff637e;
+
+    /**
+     * 布局组件背景色
+     * -----------------------------------------------------------* */
+    --c-bg-navbar: transparent;
+    --c-bg-sidebar: hsl(240 16% 10% / 0.6);
+    --c-bg-content: hsl(240 16% 10% / 0.8);
+    --c-bg-overlay: hsl(240 16% 10% / 0.6);
+
+    --c-bg-code-title: hsl(205 58% 6%);
+    --c-bg-code-block: hsl(194 42% 21%);
+  }
+}
+
+@layer layout {
+  :root {
+    --h-navbar: 64px;
+    --z-index-navbar: 10;
+    --z-index-sidebar: 20;
+    --z-index-toolpanel: 50;
+  }
+
+  :root {
+    --font-family-base:
+      'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-family-mono:
+      ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
+      'Courier New', monospace;
+  }
+}

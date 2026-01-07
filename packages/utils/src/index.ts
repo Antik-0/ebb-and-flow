@@ -34,6 +34,8 @@ export const random = (min: number, max: number) => {
  */
 export const noop = () => {}
 
+export const isFunction = (value: unknown) => typeof value === 'function'
+
 /**
  * 返回指定闭区间数列，若只提供一个参数 n，则返回 [0, n] 数列
  */
