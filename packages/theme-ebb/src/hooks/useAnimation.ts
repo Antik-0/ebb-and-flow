@@ -1,7 +1,7 @@
 import type { RefObject } from 'react'
-import type { MaybeRefOrGetter } from './helper'
+import type { MaybeRefOrGetter } from '#/utils'
 import { useEffect, useMemo, useRef } from 'react'
-import { toValue } from './helper'
+import { toValue } from '#/utils'
 
 interface Options extends KeyframeEffectOptions {
   target?: MaybeRefOrGetter<Element | null>
@@ -14,7 +14,7 @@ type AnimationProxy = Omit<Animation, 'effect'> & {
   isRunning: boolean
 }
 
-export function useAnimation(
+export function useAnimation<T extends Element = Element>(
   keyframes: Keyframe[] | PropertyIndexedKeyframes | null,
   options: Options
 ) {
@@ -26,7 +26,7 @@ export function useAnimation(
     []
   )
 
-  const scope = useRef<Element | null>(null)
+  const scope = useRef<T | null>(null)
   const scopeProxy = useMemo(
     () =>
       createScopeProxy(scope, target => {
@@ -39,7 +39,7 @@ export function useAnimation(
   useEffect(() => {
     // 只绑定一次 target，后续 target 变更，手动更新
     const _target = toValue(target) ?? null
-    _target && (scope.current = _target)
+    _target && (scope.current = _target as T)
 
     // 创建动画对象原型
     const effect = new KeyframeEffect(scope.current, keyframes, effectOptions)

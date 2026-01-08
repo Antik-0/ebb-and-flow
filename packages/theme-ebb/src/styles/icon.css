@@ -1,0 +1,40 @@
+.menu-line {
+  --m-value: 16;
+  --value-from: 16;
+  --value-to: 0;
+  stroke-dashoffset: var(--m-value);
+  animation: motion-value 0.2s ease forwards;
+  animation-delay: var(--delay, 0);
+}
+
+.moon-body {
+  fill-opacity: var(--m-value);
+  animation: motion-value 0.8s ease 0.6s forwards;
+}
+
+.moon-star {
+  opacity: var(--m-opacity);
+  animation: motion-opacity 4s ease infinite;
+  animation-delay: var(--delay);
+}
+
+.sun {
+  rotate: var(--m-angle);
+  animation: motion-angle 10s linear 0.2s infinite;
+}
+
+.sun-body {
+  --value-from: 10;
+  --value-to: 6;
+  r: var(--m-value);
+  animation: motion-value 1s ease forwards;
+}
+
+.sun-light {
+  --m-value: 2;
+  --value-from: 2;
+  --value-to: 0;
+  stroke-dashoffset: var(--m-value);
+  animation: motion-value 0.2s ease forwards;
+  animation-delay: var(--delay);
+}

@@ -28,7 +28,8 @@
       "a11y": {
         "noStaticElementInteractions": "off",
         "useValidAnchor": "off",
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        "noSvgWithoutTitle": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
@@ -59,9 +60,7 @@
         "noUnknownAtRules": {
           "level": "warn",
           "options": {
-            "ignore": [
-              "unocss"
-            ]
+            "ignore": ["unocss"]
           }
         }
       }

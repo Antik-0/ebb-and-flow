@@ -1,18 +1,46 @@
-import type { Config } from 'eslint/config'
-import Unocss from '@unocss/eslint-config/flat'
+import parserTs from '@typescript-eslint/parser'
+import UnoPlugin from '@unocss/eslint-plugin'
 import { defineConfig } from 'eslint/config'
 
-export default defineConfig({
-  extends: [Unocss as unknown as Config],
-  files: ['**/*.vue', '**/*.tsx'],
-  rules: {
-    'unocss/order': [
-      'warn',
-      {
-        unoFunctions: ['clsx'],
-        unoVariables: []
+export default defineConfig([
+  {
+    files: ['**/*.vue'],
+    plugins: {
+      ...(UnoPlugin.configs.flat.plugins as any)
+    },
+    rules: {
+      'unocss/order': [
+        'warn',
+        {
+          unoFunctions: ['clsx'],
+          unoVariables: []
+        }
+      ],
+      'unocss/order-attributify': 'warn'
+    }
+  },
+  {
+    files: ['**/*.tsx'],
+    languageOptions: {
+      parser: parserTs,
+      parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true }
       }
-    ],
-    'unocss/order-attributify': 'warn'
+    },
+    plugins: {
+      ...(UnoPlugin.configs.flat.plugins as any)
+    },
+    rules: {
+      'unocss/order': [
+        'warn',
+        {
+          unoFunctions: ['clsx'],
+          unoVariables: []
+        }
+      ],
+      'unocss/order-attributify': 'warn'
+    }
   }
-})
+])

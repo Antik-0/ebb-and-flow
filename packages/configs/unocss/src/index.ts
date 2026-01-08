@@ -48,7 +48,7 @@ export const ebbUnoPreset = definePreset<undefined, EbbTheme>(() => {
     rules: [['grid-full', { 'grid-area': '1 / 1' }]],
     content: {
       pipeline: {
-        include: [/\.(vue|mdx?)/]
+        include: [/\.(vue|tsx|mdx?)/]
       }
     },
     transformers: [transformerDirectives(), transformerVariantGroup()]

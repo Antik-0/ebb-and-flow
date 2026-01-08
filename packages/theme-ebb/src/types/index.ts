@@ -1,3 +1,5 @@
+import type { HTMLAttributes } from 'react'
+
 export type Fn = (...args: any[]) => any
 
 export type Timer = NodeJS.Timeout | number
@@ -27,6 +29,8 @@ export interface OutlineAnchor {
    */
   level: number
 }
+
+export type WithHTMLProps<T = HTMLDivElement> = HTMLAttributes<T>
 
 export * from './menu.ts'
 export * from './sidebar.ts'

@@ -1,4 +1,4 @@
-import type { RefObject } from 'react'
+import type { CSSProperties, RefObject } from 'react'
 import { isFunction } from '@repo/utils'
 
 export type MaybeRefOrGetter<T = any> = T | RefObject<T> | (() => T)
@@ -13,3 +13,5 @@ export function toValue<T = any>(source: MaybeRefOrGetter<T>): T {
   }
   return isRefObject(source) ? source.current : source
 }
+
+export const cssVars = (vars: Record<string, string>) => vars as CSSProperties

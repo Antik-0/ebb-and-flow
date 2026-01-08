@@ -1,6 +1,6 @@
-import type { MaybeRefOrGetter } from './helper'
+import type { MaybeRefOrGetter } from '#/utils'
 import { useCallback, useEffect, useRef } from 'react'
-import { toValue } from './helper'
+import { toValue } from '#/utils'
 
 type Callback = (entry: ResizeObserverEntry) => void
 

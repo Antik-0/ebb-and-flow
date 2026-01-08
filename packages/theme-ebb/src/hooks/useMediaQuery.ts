@@ -1,6 +1,6 @@
-import type { MaybeRefOrGetter } from './helper'
+import type { MaybeRefOrGetter } from '#/utils'
 import { useEffect, useRef, useState } from 'react'
-import { toValue } from './helper'
+import { toValue } from '#/utils'
 
 export function useMediaQuery(
   query: MaybeRefOrGetter<string>,

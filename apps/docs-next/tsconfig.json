@@ -12,6 +12,7 @@
     "plugins": [{ "name": "next" }]
   },
   "include": [
+    "global.d.ts",
     "next-env.d.ts",
     "next.config.ts",
     "./src/**/*.ts",

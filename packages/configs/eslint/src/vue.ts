@@ -1,6 +1,6 @@
+import parserTs from '@typescript-eslint/parser'
 import { defineConfig } from 'eslint/config'
 import pluginVue from 'eslint-plugin-vue'
-import tsEslint from 'typescript-eslint'
 import parserVue from 'vue-eslint-parser'
 
 /**
@@ -16,12 +16,11 @@ export default defineConfig({
   languageOptions: {
     parser: parserVue,
     parserOptions: {
-      ecmaFeatures: {
-        jsx: true
-      },
-      extraFileExtensions: ['.vue'],
-      parser: tsEslint.parser,
-      sourceType: 'module'
+      parser: parserTs,
+      sourceType: 'module',
+      ecmaVersion: 'latest',
+      ecmaFeatures: { jsx: true },
+      extraFileExtensions: ['.vue']
     }
   },
   rules: {
