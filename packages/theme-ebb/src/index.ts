@@ -1,2 +1,4 @@
 export type * from './types/index.ts'
-export { ThemeContext, defineThemeConfig, useTheme } from './theme.ts'
+export { EbbLayoutHome } from './layouts/home'
+export { EbbThemeProvider } from './layouts/theme'
+export { defineThemeConfig, useTheme } from './theme.ts'

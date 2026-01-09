@@ -1,5 +1,6 @@
 import type { WithHTMLProps } from '#/types'
 import { clsx } from '@repo/utils'
+import Image from 'next/image'
 
 interface Props extends WithHTMLProps<HTMLButtonElement> {
   avatar: string
@@ -19,7 +20,7 @@ export function EbbAvatar(props: Props) {
       {...restProps}
     >
       <div className="mask mask-squircle">
-        <img
+        <Image
           alt="site owner avatar"
           className="size-11"
           decoding="async"

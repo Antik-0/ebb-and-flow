@@ -1,5 +1,5 @@
 import type { SVGProps } from 'react'
-import { cssVars } from '#/utils'
+import { withVars } from '#/utils'
 
 export default function ThemeLight(props: SVGProps<SVGSVGElement>) {
   return (
@@ -23,14 +23,14 @@ export default function ThemeLight(props: SVGProps<SVGSVGElement>) {
           d="M12 21v1M21 12h1M12 3v-1M3 12h-1"
           stroke-dasharray="2"
           stroke-dashoffset="2"
-          style={cssVars({ '--delay': '0.6s' })}
+          style={withVars({ '--delay': '0.6s' })}
         />
         <path
           className="sun-light"
           d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"
           stroke-dasharray="2"
           stroke-dashoffset="2"
-          style={cssVars({ '--delay': '0.8s' })}
+          style={withVars({ '--delay': '0.8s' })}
         />
       </g>
       <mask id="SVGu6kfobeu">

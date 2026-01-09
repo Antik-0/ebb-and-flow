@@ -15,6 +15,7 @@ const cleanFiles = [
   '.nitro',
   '.data',
   '.output',
+  '.next',
   '.temp',
   '.turbo'
 ]
