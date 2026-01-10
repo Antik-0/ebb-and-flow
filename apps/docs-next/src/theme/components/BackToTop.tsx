@@ -1,5 +1,5 @@
-import { useAnimation } from '#/hooks'
-import { Rocket } from '#/icons'
+import { useAnimation } from '../hooks'
+import { Rocket } from '../icons'
 
 export function BackToTop() {
   const [animation, scope] = useAnimation<HTMLButtonElement>(

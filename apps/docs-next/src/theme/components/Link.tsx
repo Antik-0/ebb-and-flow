@@ -1,6 +1,6 @@
 import type { LinkProps as NextLinkProps } from 'next/link'
 import type { PropsWithChildren } from 'react'
-import type { WithHTMLProps } from '#/types'
+import type { WithHTMLProps } from '../types'
 import { isExternalLink, isString } from '@repo/utils'
 import NextLink from 'next/link'
 

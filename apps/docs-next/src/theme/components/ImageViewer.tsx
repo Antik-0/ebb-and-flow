@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { useAnimation } from '#/hooks'
+import { useAnimation } from '../hooks'
 
 export function ImageViewer() {
   const [show, setShow] = useState(false)

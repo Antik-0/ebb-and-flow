@@ -2,11 +2,11 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { CodeMotion } from '#/components/CodeMotion'
-import { CubeAvatar } from '#/components/CubeAvatar'
-import { FloatingText } from '#/components/FloatingText'
-import { Power } from '#/icons'
-import { useTheme } from '#/theme.ts'
+import { CodeMotion } from '../components/CodeMotion'
+import { CubeAvatar } from '../components/CubeAvatar'
+import { FloatingText } from '../components/FloatingText'
+import { Power } from '../icons'
+import { useTheme } from '../theme.ts'
 
 export function EbbLayoutHome() {
   const { theme } = useTheme()
@@ -90,7 +90,10 @@ function EbbMoonAvatar(props: MoonAvatarProps) {
         <Image
           alt="site owner avatar"
           className="transition-transform duration-800 ease-in-out"
+          height={200}
+          loading="eager"
           src={props.avatar}
+          width={200}
         />
       </div>
       <div className="moon-bg"></div>

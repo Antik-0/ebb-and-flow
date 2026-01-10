@@ -1,9 +1,8 @@
-'use client'
-import { EbbThemeProvider } from '@ebb/theme'
+import { EbbThemeProvider } from '#/theme'
 import { themeConfig } from '#/theme.config.ts'
 
 import '@unocss/reset/tailwind-v4.css'
-import '@ebb/theme/styles/main.css'
+import '#/theme/styles/main.css'
 import '#/assets/main.css'
 
 export default function RootLayout({
@@ -11,11 +10,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  console.log(themeConfig)
   return (
     <html lang="zh-CN">
       <body>
-        <EbbThemeProvider config={themeConfig}>{children}</EbbThemeProvider>
+        <div id="app">
+          <EbbThemeProvider config={themeConfig}>{children}</EbbThemeProvider>
+        </div>
       </body>
     </html>
   )

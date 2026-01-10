@@ -1,7 +1,6 @@
 import type { ThemeConfig } from './types'
-import { createContext, useContext } from 'react'
-
-export const ThemeContext = createContext<ThemeConfig>({} as ThemeConfig)
+import { useContext } from 'react'
+import { ThemeContext } from './layouts/theme'
 
 const isDark = false
 

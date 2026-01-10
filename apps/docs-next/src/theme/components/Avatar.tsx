@@ -1,4 +1,4 @@
-import type { WithHTMLProps } from '#/types'
+import type { WithHTMLProps } from '../types'
 import { clsx } from '@repo/utils'
 import Image from 'next/image'
 

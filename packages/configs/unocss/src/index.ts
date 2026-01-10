@@ -13,11 +13,9 @@ export const ebbUnoPreset = definePreset<undefined, EbbTheme>(() => {
     name: '@unocss/preset-ebb',
     presets: [
       presetWind4({
-        preflights: {
-          reset: true
-        }
+        preflights: { reset: true }
       })
-    ],
+    ] as any,
     theme: {
       colors: {
         // 主题色

@@ -1,4 +1,4 @@
-import { defineThemeConfig } from '@ebb/theme'
+import { defineThemeConfig } from './theme'
 
 export const themeConfig = defineThemeConfig(() => {
   return {
@@ -8,11 +8,11 @@ export const themeConfig = defineThemeConfig(() => {
     author: '潮起潮落',
     tagline: 'A Website Is Developed With',
     codes: [
-      'The Nuxt',
-      'The Vue',
+      'The Next',
+      'The React',
       'The Bun',
       'The Unocss',
-      'Motion-Vue',
+      'The Motion',
       'TypeScript'
     ],
     defaultActiveLink: '/articles',

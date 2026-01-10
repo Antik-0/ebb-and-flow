@@ -1,6 +1,6 @@
 import { clsx } from '@repo/utils'
 import { useEffect, useRef, useState } from 'react'
-import { useAnimationFrame } from '#/hooks'
+import { useAnimationFrame } from '../hooks'
 
 interface Props {
   /**
@@ -94,9 +94,9 @@ export function CodeMotion(props: Props) {
 
   useEffect(() => {
     if (paused) {
-      controller.current?.start()
+      controller.current?.stop()
     } else {
-      controller.current?.stop?.()
+      controller.current?.start()
     }
   }, [paused])
 

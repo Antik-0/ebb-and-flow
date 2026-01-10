@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { EbbLayoutHome } from '@ebb/theme'
+import { EbbLayoutHome } from '#/theme'
 
 export const metadata: Metadata = {
   title: '潮起潮落',
