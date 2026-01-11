@@ -1,7 +1,6 @@
-import type { WithHTMLProps } from '../../types'
+import type { WithHTMLProps } from '../types'
 import { clsx } from '@repo/utils'
 import { withVars } from '#/utils'
-import './index.css'
 
 interface Props extends WithHTMLProps {
   avatar: string
@@ -11,11 +10,14 @@ export function CubeAvatar(props: Props) {
   const { avatar, className, style, ...restProps } = props
 
   return (
-    <div className="cube-avatar">
+    <div
+      className={clsx('cube-avatar', className)}
+      style={style}
+      {...restProps}
+    >
       <div
         className={clsx('cube', className)}
-        style={withVars({ '--avatar': `url(${avatar})` }, style)}
-        {...restProps}
+        style={withVars({ '--avatar': `url(${avatar})` })}
       >
         <div className="cube-face" data-state="front"></div>
         <div className="cube-face" data-state="back"></div>

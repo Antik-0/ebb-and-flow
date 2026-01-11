@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: '潮起潮落首页'
 }
 
-export default function HomePage() {
+export default function Home() {
   return <EbbLayoutHome />
 }

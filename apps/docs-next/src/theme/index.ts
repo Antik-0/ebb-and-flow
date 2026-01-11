@@ -1,4 +1,5 @@
 export type * from './types'
 export { EbbLayoutHome } from './layouts/home'
+export { EbbLayoutPage } from './layouts/page'
 export { EbbThemeProvider } from './layouts/theme'
-export { defineThemeConfig, useTheme } from './theme.ts'
+export { defineThemeConfig, useTheme } from './theme'

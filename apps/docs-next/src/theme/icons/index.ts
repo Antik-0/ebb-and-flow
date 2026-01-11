@@ -1,13 +1,7 @@
-import type { IconifyIconAttributes } from 'iconify-icon'
 import type { FC } from 'react'
+import { Icon } from '@iconify-icon/react'
 import { createElement } from 'react'
 import { builtingLogoIcons } from './logos'
-
-interface IconProps extends IconifyIconAttributes {}
-
-const Icon: FC<IconProps> = props => {
-  return createElement('iconify-icon', props)
-}
 
 const LogoIconRender: FC<{
   logo: string

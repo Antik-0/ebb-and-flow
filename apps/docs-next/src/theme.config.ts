@@ -15,7 +15,7 @@ export const themeConfig = defineThemeConfig(() => {
       'The Motion',
       'TypeScript'
     ],
-    defaultActiveLink: '/articles',
+    defaultActiveLink: '/docs/articles',
     navMenus: [
       {
         text: '首页',

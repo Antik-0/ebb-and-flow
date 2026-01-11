@@ -58,7 +58,7 @@ const {
   onMouseenter,
   onMouseleave,
   onMenuItemHover,
-  forwarContent
+  forwardContent
 } = useMenuViewControl()
 
 onMounted(() => {
@@ -109,7 +109,7 @@ provideMenubarContent({
   contentViews,
   prevHoverIndex,
   currHoverIndex,
-  forwarContent
+  forwardContent
 })
 </script>
 

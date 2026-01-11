@@ -1,4 +1,4 @@
-import type { NavMenuRecord } from './theme.ts'
+import type { NavMenuRecord } from './theme'
 
 export interface MenuItem extends NavMenuRecord {
   /**

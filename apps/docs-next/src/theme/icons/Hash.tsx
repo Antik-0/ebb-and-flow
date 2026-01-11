@@ -13,9 +13,9 @@ export default function Hash(props: SVGProps<SVGSVGElement>) {
         d="M4 9h16M4 15h16M10 3L8 21m8-18l-2 18"
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       />
     </svg>
   )

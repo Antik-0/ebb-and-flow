@@ -14,22 +14,22 @@ export default function ThemeLight(props: SVGProps<SVGSVGElement>) {
       <g
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       >
         <path
           className="sun-light"
           d="M12 21v1M21 12h1M12 3v-1M3 12h-1"
-          stroke-dasharray="2"
-          stroke-dashoffset="2"
+          strokeDasharray="2"
+          strokeDashoffset="2"
           style={withVars({ '--delay': '0.6s' })}
         />
         <path
           className="sun-light"
           d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"
-          stroke-dasharray="2"
-          stroke-dashoffset="2"
+          strokeDasharray="2"
+          strokeDashoffset="2"
           style={withVars({ '--delay': '0.8s' })}
         />
       </g>

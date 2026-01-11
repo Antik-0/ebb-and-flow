@@ -33,7 +33,7 @@ export function useMenuViewControl() {
 
   const contentViews = shallowRef<ContentView[]>([])
 
-  function forwarContent(item: MenuItem, render: () => VNode[]) {
+  function forwardContent(item: MenuItem, render: () => VNode[]) {
     contentViews.value.push({ item, render })
   }
 
@@ -45,7 +45,7 @@ export function useMenuViewControl() {
     onMouseenter,
     onMouseleave,
     onMenuItemHover,
-    forwarContent
+    forwardContent
   }
 }
 
@@ -60,7 +60,7 @@ interface MenubarContext {
   contentViews: ShallowRef<ContentView[]>
   prevHoverIndex: Ref<number>
   currHoverIndex: Ref<number>
-  forwarContent: (item: MenuItem, render: () => VNode[]) => void
+  forwardContent: (item: MenuItem, render: () => VNode[]) => void
 }
 
 const MenubarCtx = Symbol('menubar') as InjectionKey<MenubarContext>

@@ -13,11 +13,11 @@ export default function Menu(props: SVGProps<SVGSVGElement>) {
       <g
         fill="none"
         stroke="currentColor"
-        stroke-dasharray="16"
-        stroke-dashoffset="16"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeDasharray="16"
+        strokeDashoffset="16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       >
         <path className="menu-line" d="M5 5h14" />
         <path

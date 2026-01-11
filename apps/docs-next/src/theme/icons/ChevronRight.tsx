@@ -13,9 +13,9 @@ export default function ChevronRight(props: SVGProps<SVGSVGElement>) {
         d="m9 18l6-6l-6-6"
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       />
     </svg>
   )

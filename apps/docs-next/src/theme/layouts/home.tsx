@@ -6,7 +6,7 @@ import { CodeMotion } from '../components/CodeMotion'
 import { CubeAvatar } from '../components/CubeAvatar'
 import { FloatingText } from '../components/FloatingText'
 import { Power } from '../icons'
-import { useTheme } from '../theme.ts'
+import { useTheme } from '../theme'
 
 export function EbbLayoutHome() {
   const { theme } = useTheme()

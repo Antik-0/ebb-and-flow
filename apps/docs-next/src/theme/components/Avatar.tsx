@@ -22,9 +22,10 @@ export function EbbAvatar(props: Props) {
       <div className="mask mask-squircle">
         <Image
           alt="site owner avatar"
-          className="size-11"
           decoding="async"
+          height={44}
           src={avatar}
+          width={44}
         />
       </div>
     </button>

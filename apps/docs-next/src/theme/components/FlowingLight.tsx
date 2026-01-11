@@ -1,5 +1,4 @@
 import { withVars } from '#/utils'
-import './index.css'
 
 export function FlowingLight() {
   return (

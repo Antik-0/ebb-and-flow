@@ -12,9 +12,9 @@ export default function CopyCheck(props: SVGProps<SVGSVGElement>) {
       <g
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       >
         <path d="m12 15l2 2l4-4" />
         <rect height="14" rx="2" ry="2" width="14" x="8" y="8" />

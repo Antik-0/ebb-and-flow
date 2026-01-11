@@ -18,9 +18,9 @@ const slots = defineSlots<{
   content: () => VNode[]
 }>()
 
-const { forwarContent } = useMenubarCtx()
+const { forwardContent } = useMenubarCtx()
 
-forwarContent(props.item, slots.content)
+forwardContent(props.item, slots.content)
 </script>
 
 <template>

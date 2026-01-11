@@ -23,7 +23,7 @@ export function EbbLink(props: PropsWithChildren<LinkProps>) {
     ...restProps
   } = props
 
-  const _href = isString(href) ? href : href.pathname
+  const _href = isString(href) ? href : href?.pathname
   const isExternal = _href && isExternalLink(_href)
 
   const _rel = isExternal ? 'noreferrer' : rel
@@ -47,6 +47,8 @@ export function EbbLink(props: PropsWithChildren<LinkProps>) {
       scroll={scroll}
       target={_target}
       {...restProps}
-    />
+    >
+      {children}
+    </NextLink>
   )
 }
