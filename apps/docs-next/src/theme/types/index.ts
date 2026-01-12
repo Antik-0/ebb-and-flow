@@ -33,5 +33,4 @@ export interface OutlineAnchor {
 export type WithHTMLProps<T = HTMLDivElement> = HTMLAttributes<T>
 
 export * from './menu.ts'
-export * from './sidebar.ts'
 export * from './theme.ts'

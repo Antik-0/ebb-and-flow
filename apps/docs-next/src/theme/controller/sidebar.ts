@@ -1,11 +1,11 @@
-import type { SidebarMenuItem } from '../types'
+import type { MenuItem } from '../types'
 import { useMemo, useSyncExternalStore } from 'react'
-import { useMenus } from './menus'
+import { useSharedMenus } from './menus'
 
-type Listener = () => void
+type Subscriber = () => void
 
 let isOpen = false
-let listeners: Listener[] = []
+const subscribers = new Set<Subscriber>()
 
 function open() {
   isOpen = true
@@ -23,14 +23,14 @@ function toggle() {
 }
 
 function update() {
-  for (const listener of listeners) {
-    listener()
-  }
+  subscribers.forEach(subscriber => {
+    subscriber()
+  })
 }
 
-function subscribe(listener: Listener) {
-  listeners.push(listener)
-  return () => (listeners = listeners.filter(l => l !== listener))
+function subscribe(subscriber: Subscriber) {
+  subscribers.add(subscriber)
+  return () => subscribers.delete(subscriber)
 }
 
 function getSnapshot() {
@@ -43,12 +43,12 @@ export function useSidebarControl() {
 }
 
 export function useSidebarMenus() {
-  const { menus } = useMenus()
+  const menus = useSharedMenus()
 
-  const sidebarMenus = useMemo<SidebarMenuItem[]>(
+  const sidebarMenus = useMemo<MenuItem[]>(
     () => menus.filter(item => !item.hiddenInSidebar),
     [menus]
   )
 
-  return { sidebarMenus }
+  return sidebarMenus
 }

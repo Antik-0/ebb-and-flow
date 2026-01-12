@@ -1,13 +1,15 @@
 import { animate, motion, useMotionValue } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { withVars } from '#/utils'
 import { useSidebarControl, useSidebarMenus } from '../../controller/sidebar'
 import { useEventListener } from '../../hooks'
 import { GlassMask } from '../GlassMask'
 import { SidebarGroup } from './SidebarGroup'
 
+const SidebarGroupMemo = memo(SidebarGroup)
+
 export function Sidebar() {
-  const { sidebarMenus } = useSidebarMenus()
+  const sidebarMenus = useSidebarMenus()
   const { isOpen, close } = useSidebarControl()
 
   const [show, setShow] = useState(isOpen)
@@ -58,7 +60,7 @@ export function Sidebar() {
       >
         <div className="px-6 py-8 flex-1 overflow-x-hidden overflow-y-auto">
           {sidebarMenus.map((item, index) => (
-            <SidebarGroup item={item} key={index} />
+            <SidebarGroupMemo item={item} key={index} />
           ))}
         </div>
 

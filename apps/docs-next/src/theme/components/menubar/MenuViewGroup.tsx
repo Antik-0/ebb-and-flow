@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { EbbLink } from '../Link'
 
 interface Props {
-  items?: MenuItem[]
+  items: MenuItem[]
 }
 
 interface Group {
@@ -13,10 +13,8 @@ interface Group {
   children: MenuItem[]
 }
 
-export function MenubarGroup(props: Props) {
+export function MenuViewGroup(props: Props) {
   const [groups] = useState(() => buildGroups(props.items ?? []))
-
-  if (!props.items) return null
 
   return (
     <div className="p-6">
@@ -34,7 +32,7 @@ export function MenubarGroup(props: Props) {
                   className={clsx(
                     'text-foreground p-3 rounded-2 block',
                     'transition-colors duration-250 ease',
-                    'hover:(text-brand-2 bg-brand-2/20)'
+                    'hover:text-brand-2 hover:bg-brand-2/20'
                   )}
                 >
                   <span className="text-sm text-nowrap">{item.text}</span>
@@ -50,14 +48,12 @@ export function MenubarGroup(props: Props) {
 
 function MenubarGroupLink(props: PropsWithChildren<{ link?: string }>) {
   const { link, children } = props
-
   return link ? <EbbLink href={link}>{children}</EbbLink> : children
 }
 
 function buildGroups(items: MenuItem[]) {
   const groupMap: Group[] = []
   let group: MenuItem[] = []
-
   for (const item of items) {
     if (item.items) {
       group.length && groupMap.push({ children: group })

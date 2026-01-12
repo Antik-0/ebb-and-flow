@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN">
+    <html data-scroll-behavior="smooth" lang="zh-CN">
       <body>
         <div id="app">
           <EbbThemeProvider config={themeConfig}>{children}</EbbThemeProvider>

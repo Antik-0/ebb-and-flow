@@ -1,76 +1,86 @@
-import type { PointerEvent } from 'react'
-import { LayoutGroup, motion, useMotionValue } from 'motion/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import type { RefObject } from 'react'
+import { LayoutGroup, animate, motion, useMotionValue } from 'motion/react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { withVars } from '#/utils'
-import { useMenus } from '../../controller/menus'
-import { MenubarContext, useMenuViewControl } from '../../controller/navbar'
-import { useResizeObserver } from '../../hooks'
+import { useMenuActiveNode, useSharedMenus } from '../../controller/menus'
+import {
+  MenubarContext,
+  useMenubarHover,
+  useMenubarMotion
+} from '../../controller/navbar'
+import { useEventListener } from '../../hooks'
 import { FlowingLight } from '../FlowingLight'
-import { MenubarGroup } from './MenubarGroup'
 import { MenubarItem } from './MenubarItem'
 import { MenuViewport } from './MenuViewport'
 
-export function Menubar() {
-  // scope 的计算信息
-  const scopeHalfWidth = useRef(0)
-  const scopeOffsetLeft = useRef(0)
-  const menuItemNodes = useRef<HTMLElement[]>([])
+const MenubarItemMemo = memo(MenubarItem)
 
-  const scope = useRef<HTMLElement | null>(null)
-  const { observe } = useResizeObserver()
+export function Menubar() {
+  const menus = useSharedMenus()
+  const currActiveNode = useMenuActiveNode()
+  const { scope, offsetX, motion, updateMotion } = useMenubarMotion()
+  const [activeIndex, setActiveIndex] = useState(-1)
 
   useEffect(() => {
-    observe(
-      () => scope.current,
-      entry => {
-        const target = entry.target as HTMLElement
-        const rect = target.getBoundingClientRect()
-        scopeHalfWidth.current = rect.width / 2
-        scopeOffsetLeft.current = rect.left
-      }
-    )
-
-    menuItemNodes.current = [
-      ...scope.current!.querySelectorAll<HTMLElement>("li[role='menuitem']")
-    ]
+    if (currActiveNode) {
+      const index = menus.indexOf(currActiveNode)
+      setActiveIndex(index)
+    }
   }, [])
 
-  const [hoverX, setHoverX] = useState(0)
-  const onMousemove = (event: PointerEvent<HTMLElement>) => {
-    setHoverX(event.clientX - scopeOffsetLeft.current)
+  const [showViewport, setShowViewport] = useState(false)
+  const [prevHoverIndex, setPrevHoverIndex] = useState(-1)
+  const [currHoverIndex, setCurrHoverIndex] = useState(-1)
+
+  useEffect(() => {
+    updateMotion(currHoverIndex)
+  }, [currHoverIndex])
+
+  useEffect(() => {
+    const prevActiveIndex = activeIndex
+
+    let rootActiveNode = currActiveNode
+    while (rootActiveNode?.parent) {
+      rootActiveNode = rootActiveNode.parent
+    }
+    const index = menus.indexOf(rootActiveNode!)
+    setActiveIndex(index)
+
+    if (prevActiveIndex !== index) {
+      if (index === currHoverIndex) {
+        updateMotion(index)
+      } else {
+        setCurrHoverIndex(index)
+      }
+    }
+  }, [currActiveNode])
+
+  function onMouseenter() {
+    setShowViewport(true)
   }
 
-  const [offsetX, setOffsetX] = useState(0)
-  const motionX = useMotionValue(0)
-  const motionW = useMotionValue(0)
+  function onMouseleave() {
+    setShowViewport(false)
+  }
 
-  const [activeIndex, setActiveIndex] = useState(-1)
-  const { menus, currActiveNode } = useMenus()
-
-  const {
-    visible,
-    prevHoverIndex,
-    currHoverIndex,
-    contentViews,
-    onMouseenter,
-    onMouseleave,
-    onMenuItemHover,
-    forwardContent
-  } = useMenuViewControl()
+  function onMenuItemHover(index: number) {
+    setPrevHoverIndex(currHoverIndex)
+    setCurrHoverIndex(index)
+  }
 
   const contextValue = useMemo(
     () => ({
       offsetX,
-      showViewport: visible,
-      contentViews,
+      showViewport,
       prevHoverIndex,
-      currHoverIndex,
-      forwardContent
+      currHoverIndex
     }),
-    [offsetX, visible, prevHoverIndex, currHoverIndex]
+    [offsetX, showViewport, prevHoverIndex, currHoverIndex]
   )
 
-  function onViewportClose() {}
+  function onViewportClose() {
+    setCurrHoverIndex(activeIndex)
+  }
 
   return (
     <MenubarContext value={contextValue}>
@@ -78,28 +88,18 @@ export function Menubar() {
         className="menubar"
         onPointerEnter={onMouseenter}
         onPointerLeave={onMouseleave}
-        onPointerMove={onMousemove}
         ref={scope}
       >
-        <div
-          aria-hidden="true"
-          className="menubar-background"
-          style={withVars({ '--offset-x': hoverX + 'px' })}
-        ></div>
+        <MenubarBackground scope={scope} />
 
-        <motion.div
-          className="menubar-indicator absolute -z-1"
-          data-show="true"
-          style={{ x: motionX, width: motionW }}
-        />
+        <MenubarIndicator motion={motion} />
 
         <menu className="grid-full px-4 flex" data-role="menu">
           <LayoutGroup>
             {menus.map((item, index) => (
-              <MenubarItem
-                content={() => <MenubarGroup items={item.items} />}
+              <MenubarItemMemo
                 item={item}
-                key={index}
+                key={item.id}
                 onHover={() => onMenuItemHover(index)}
               />
             ))}
@@ -107,8 +107,61 @@ export function Menubar() {
         </menu>
 
         <FlowingLight />
-        {false && <MenuViewport onClose={onViewportClose} />}
+        <MenuViewport onClose={onViewportClose} />
       </nav>
     </MenubarContext>
+  )
+}
+
+interface BackgroundProps {
+  scope: RefObject<HTMLElement | null>
+}
+
+function MenubarBackground(props: BackgroundProps) {
+  const { offsetX, onMousemove } = useMenubarHover()
+  const { addEventListener } = useEventListener()
+
+  useEffect(() => {
+    const target = props.scope.current
+    if (!target) return
+    addEventListener(target, 'pointermove', onMousemove)
+  }, [])
+
+  return (
+    <div
+      aria-hidden="true"
+      className="menubar-background"
+      style={withVars({ '--offset-x': offsetX + 'px' })}
+    ></div>
+  )
+}
+
+interface IndicatorProps {
+  motion: {
+    offsetX: number
+    width: number
+  }
+}
+
+function MenubarIndicator(props: IndicatorProps) {
+  const { offsetX, width } = props.motion
+
+  const motionX = useMotionValue(0)
+  const motionW = useMotionValue(0)
+
+  useEffect(() => {
+    animate(motionX, offsetX, { type: 'spring', duration: 0.6 })
+  }, [offsetX])
+
+  useEffect(() => {
+    animate(motionW, width, { type: 'spring', duration: 0.6 })
+  }, [width])
+
+  return (
+    <motion.div
+      className="menubar-indicator absolute -z-1"
+      data-show="true"
+      style={{ x: motionX, width: motionW }}
+    />
   )
 }

@@ -1,48 +1,44 @@
 import type { AnimationEvent } from 'react'
-import type { ContentView } from '../../controller/navbar'
+import type { MenuItem } from '../../types'
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useMemo, useState } from 'react'
-import { ContentRender, useMenubarCtx } from '../../controller/navbar'
+import { memo, useEffect, useMemo, useState } from 'react'
+import { useSharedMenus } from '../../controller/menus'
+import { useMenubarCtx } from '../../controller/navbar'
 import { GlassMask } from '../GlassMask'
+import { MenuViewGroup } from './MenuViewGroup'
 
 interface Props {
   onClose: () => void
 }
 
-interface ContentItem extends ContentView {
+interface ContentItem {
   show: boolean
   motion?: 'from-start' | 'from-end' | 'to-start' | 'to-end'
+  content?: MenuItem[]
 }
 
 export function MenuViewport(props: Props) {
-  const {
-    offsetX,
-    showViewport,
-    contentViews,
-    prevHoverIndex,
-    currHoverIndex
-  } = useMenubarCtx()
+  const { offsetX, showViewport, prevHoverIndex, currHoverIndex } =
+    useMenubarCtx()
 
-  const [contents] = useState<ContentItem[]>(() =>
-    contentViews.current.map(content => ({
-      show: false,
-      motion: undefined,
-      ...content
-    }))
+  const menus = useSharedMenus()
+  const [contents, setContents] = useState<ContentItem[]>(() =>
+    createViewContent(menus)
   )
 
   const showArrow = useMemo(
-    () => contents[currHoverIndex]?.item?.items?.length,
+    () => contents[currHoverIndex]?.content,
     [currHoverIndex]
   )
 
   useEffect(() => {
     onHoverIndexChange(currHoverIndex, prevHoverIndex)
-  }, [currHoverIndex])
+  }, [currHoverIndex, prevHoverIndex])
 
   function onHoverIndexChange(currIndex: number, prevIndex: number) {
-    const currItem = contents[currIndex]!
+    const currItem = contents[currIndex]
     const prevItem = contents[prevIndex]
+    if (!currItem) return
 
     const isFromEnd = currIndex > prevIndex
     currItem.motion = isFromEnd ? 'from-end' : 'from-start'
@@ -50,6 +46,7 @@ export function MenuViewport(props: Props) {
       prevItem.motion = isFromEnd ? 'to-start' : 'to-end'
     }
     currItem.show = true
+    setContents([...contents])
   }
 
   function onAnimationend(event: AnimationEvent) {
@@ -61,6 +58,7 @@ export function MenuViewport(props: Props) {
     if (motion.startsWith('to')) {
       const index = Number(target.getAttribute('data-index'))
       contents[index]!.show = false
+      setContents([...contents])
     }
   }
 
@@ -94,14 +92,13 @@ export function MenuViewport(props: Props) {
               onAnimationEnd={onAnimationend}
             >
               {contents.map((item, index) => (
-                <ContentRender
-                  className="menu-content"
-                  data-active={currHoverIndex === index}
-                  data-index={index}
-                  data-motion={item.motion}
+                <MenuViewContent
+                  content={item.content}
+                  index={index}
+                  isActive={currHoverIndex === index}
                   key={index}
-                  render={item.render}
-                  style={{ display: item.show ? undefined : 'none' }}
+                  motion={item.motion}
+                  show={item.show}
                 />
               ))}
             </div>
@@ -111,4 +108,42 @@ export function MenuViewport(props: Props) {
       )}
     </AnimatePresence>
   )
+}
+
+interface ViewContentProps {
+  show: boolean
+  index: number
+  isActive: boolean
+  motion: ContentItem['motion']
+  content?: MenuItem[]
+}
+
+const MenuViewGroupMemo = memo(MenuViewGroup)
+
+function MenuViewContent(props: ViewContentProps) {
+  const { show, index, isActive, motion, content } = props
+  if (!content) return null
+  return (
+    <div
+      className="menu-content"
+      data-active={isActive}
+      data-index={index}
+      data-motion={motion}
+      style={{ display: show ? undefined : 'none' }}
+    >
+      <MenuViewGroupMemo items={content} />
+    </div>
+  )
+}
+
+function createViewContent(menus: MenuItem[]) {
+  const res: ContentItem[] = []
+  for (const item of menus) {
+    res.push({
+      show: false,
+      motion: undefined,
+      content: item.items
+    })
+  }
+  return res
 }

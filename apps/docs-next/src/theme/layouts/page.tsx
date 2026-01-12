@@ -1,9 +1,11 @@
 'use client'
 import type { PropsWithChildren } from 'react'
-import { useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
 import { Navbar } from '../components/Navbar'
 import { Sidebar } from '../components/sidebar/Sidebar'
 import { LayoutContext, useLayoutState } from '../controller/layout'
+import { updateActiveLink } from '../controller/menus'
 
 export function EbbLayoutPage({ children }: PropsWithChildren) {
   const { isDesktop, isMobile, isLargeScreen } = useLayoutState()
@@ -19,6 +21,7 @@ export function EbbLayoutPage({ children }: PropsWithChildren) {
       <div className="min-h-screen">
         <Navbar />
         <Sidebar />
+        <MenusSync />
 
         <div className="ebb-page" data-role="page">
           <main className="page-content">{children}</main>
@@ -26,4 +29,17 @@ export function EbbLayoutPage({ children }: PropsWithChildren) {
       </div>
     </LayoutContext>
   )
+}
+
+/**
+ * 更新全局菜单激活状态
+ */
+function MenusSync() {
+  const pathname = usePathname()
+
+  useEffect(() => {
+    updateActiveLink(pathname)
+  }, [pathname])
+
+  return null
 }

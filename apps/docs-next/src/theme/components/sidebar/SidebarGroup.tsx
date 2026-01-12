@@ -1,9 +1,9 @@
-import type { SidebarMenuItem } from '../../types'
+import type { MenuItem } from '../../types'
 import { Icon } from '../../icons'
 import { SidebarItem } from './SidebarItem'
 
 interface SidebarGroupProps {
-  item: SidebarMenuItem
+  item: MenuItem
 }
 
 export function SidebarGroup({ item }: SidebarGroupProps) {
@@ -24,8 +24,8 @@ export function SidebarGroup({ item }: SidebarGroupProps) {
               {item.text}
             </span>
           </div>
-          {item.items?.map((subItem, index) => (
-            <section className="py-1" key={index}>
+          {item.items?.map(subItem => (
+            <section className="py-1" key={subItem.id}>
               <SidebarItem item={subItem} />
             </section>
           ))}

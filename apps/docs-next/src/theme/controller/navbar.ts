@@ -1,70 +1,68 @@
-import type { FC, ReactNode, RefObject } from 'react'
-import type { MenuItem, WithHTMLProps } from '../types'
-import {
-  createContext,
-  createElement,
-  useContext,
-  useRef,
-  useState
-} from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useResizeObserver } from '../hooks'
 
-export interface ContentView {
-  item: MenuItem
-  render: () => ReactNode
+let scopeHalfWidth = 0
+let scopeOffsetLeft = 0
+let menuItemNodes: HTMLElement[] = []
+
+export function useMenubarHover() {
+  // 距离 scope 左边界的偏移量
+  const [offsetX, setOffsetX] = useState(0)
+  const onMousemove = (event: PointerEvent) => {
+    setOffsetX(event.clientX - scopeOffsetLeft)
+  }
+
+  return { offsetX, onMousemove }
 }
 
-export function useMenuViewControl() {
-  const [visible, setVisible] = useState(false)
-  const [prevHoverIndex, setPrevHoverIndex] = useState(-1)
-  const [currHoverIndex, setCurrHoverIndex] = useState(-1)
+export function useMenubarMotion() {
+  const scope = useRef<HTMLElement | null>(null)
+  const { observe } = useResizeObserver()
 
-  const contentViews = useRef<ContentView[]>([])
+  useEffect(() => {
+    observe(
+      () => scope.current,
+      entry => {
+        const target = entry.target as HTMLElement
+        const rect = target.getBoundingClientRect()
+        scopeHalfWidth = rect.width / 2
+        scopeOffsetLeft = rect.left
+      }
+    )
 
-  function onMouseenter() {
-    setVisible(true)
+    menuItemNodes = [
+      ...scope.current!.querySelectorAll<HTMLElement>("li[role='menuitem']")
+    ]
+
+    return () => {
+      scopeHalfWidth = 0
+      scopeOffsetLeft = 0
+      menuItemNodes = []
+    }
+  }, [])
+
+  // 距离 scope 中心点的偏移量
+  const [offsetX, setOffsetX] = useState(0)
+  const [motion, setMotion] = useState({ offsetX: 0, width: 0 })
+
+  function updateMotion(index: number) {
+    const target = menuItemNodes[index]
+    if (!target) return
+
+    const itemWidth = target.offsetWidth
+    const offsetXValue = target.offsetLeft + itemWidth / 2 - scopeHalfWidth
+    setOffsetX(offsetXValue)
+    setMotion({ offsetX: offsetXValue, width: itemWidth })
   }
 
-  function onMouseleave() {
-    setVisible(false)
-  }
-
-  function onMenuItemHover(index: number) {
-    setPrevHoverIndex(currHoverIndex)
-    setCurrHoverIndex(index)
-  }
-
-  function forwardContent(item: MenuItem, render: () => ReactNode) {
-    contentViews.current.push({ item, render })
-  }
-
-  return {
-    visible,
-    prevHoverIndex,
-    currHoverIndex,
-    contentViews,
-    onMouseenter,
-    onMouseleave,
-    onMenuItemHover,
-    forwardContent
-  }
-}
-
-interface ContentRenderProps extends WithHTMLProps {
-  render: () => ReactNode
-}
-
-export const ContentRender: FC<ContentRenderProps> = props => {
-  const { render, ...restProps } = props
-  return createElement('div', restProps, render())
+  return { scope, offsetX, motion, updateMotion }
 }
 
 interface MenubarContext {
   offsetX: number
   showViewport: boolean
-  contentViews: RefObject<ContentView[]>
   prevHoverIndex: number
   currHoverIndex: number
-  forwardContent: (item: MenuItem, render: () => ReactNode) => void
 }
 
 export const MenubarContext = createContext({} as MenubarContext)

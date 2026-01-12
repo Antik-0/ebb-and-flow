@@ -1,29 +1,24 @@
-import type { PropsWithChildren, ReactNode } from 'react'
+import type { PropsWithChildren } from 'react'
 import type { MenuItem } from '../../types'
 import { motion } from 'motion/react'
-import { useEffect } from 'react'
-import { useMenubarCtx } from '../../controller/navbar'
+import { useMenuNodeIsActive } from '../../controller/menus'
 import { Icon } from '../../icons'
 import { EbbLink } from '../Link'
 
 interface Props {
   item: MenuItem
-  content: () => ReactNode
   onHover: () => void
 }
 
 export function MenubarItem(props: Props) {
-  const { item, content, onHover } = props
-  const { forwardContent } = useMenubarCtx()
+  const { item, onHover } = props
 
-  useEffect(() => {
-    forwardContent(item, content)
-  }, [])
+  const isActive = useMenuNodeIsActive(item.id)
 
   return (
     <motion.li
       className="cursor-pointer relative data-[active=true]:text-brand hover:text-brand"
-      data-active={item.active}
+      data-active={isActive}
       layout
       onPointerEnter={onHover}
       role="menuitem"
@@ -32,7 +27,7 @@ export function MenubarItem(props: Props) {
         className="px-4 py-2.5 flex items-center"
         link={item.link}
       >
-        {item.icon && item.active && (
+        {item.icon && isActive && (
           <motion.span
             className="text-4 mr-1 inline-flex flex-center"
             layout-id="menuitem-icon"
@@ -44,7 +39,7 @@ export function MenubarItem(props: Props) {
           {item.text}
         </motion.span>
       </MenubarItemLink>
-      {item.active && (
+      {isActive && (
         <motion.span
           className="h-px inset-x-px absolute from-transparent to-transparent via-brand/70 bg-linear-to-r -bottom-px"
           layout-id="menuitem-line"
