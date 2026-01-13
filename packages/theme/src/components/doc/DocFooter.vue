@@ -35,7 +35,6 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
         class="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2 sm:col-2"
       >
         <Link
-
           class="px-4 py-3 text-right flex-col"
           :href="nextNav.link"
         >

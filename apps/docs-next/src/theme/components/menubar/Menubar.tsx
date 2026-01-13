@@ -55,11 +55,11 @@ export function Menubar() {
     }
   }, [currActiveNode])
 
-  function onMouseenter() {
+  function onMouseEnter() {
     setShowViewport(true)
   }
 
-  function onMouseleave() {
+  function onMouseLeave() {
     setShowViewport(false)
   }
 
@@ -83,17 +83,17 @@ export function Menubar() {
   }
 
   return (
-    <MenubarContext value={contextValue}>
-      <nav
-        className="menubar"
-        onPointerEnter={onMouseenter}
-        onPointerLeave={onMouseleave}
-        ref={scope}
-      >
-        <MenubarBackground scope={scope} />
+    <nav
+      className="menubar"
+      onPointerEnter={onMouseEnter}
+      onPointerLeave={onMouseLeave}
+      ref={scope}
+    >
+      <MenubarBackground scope={scope} />
 
-        <MenubarIndicator motion={motion} />
+      <MenubarIndicator motion={motion} />
 
+      <MenubarContext value={contextValue}>
         <menu className="grid-full px-4 flex" data-role="menu">
           <LayoutGroup>
             {menus.map((item, index) => (
@@ -105,11 +105,11 @@ export function Menubar() {
             ))}
           </LayoutGroup>
         </menu>
-
-        <FlowingLight />
         <MenuViewport onClose={onViewportClose} />
-      </nav>
-    </MenubarContext>
+      </MenubarContext>
+
+      <FlowingLight />
+    </nav>
   )
 }
 
@@ -118,13 +118,13 @@ interface BackgroundProps {
 }
 
 function MenubarBackground(props: BackgroundProps) {
-  const { offsetX, onMousemove } = useMenubarHover()
+  const { offsetX, onMouseMove } = useMenubarHover()
   const { addEventListener } = useEventListener()
 
   useEffect(() => {
     const target = props.scope.current
     if (!target) return
-    addEventListener(target, 'pointermove', onMousemove)
+    addEventListener(target, 'pointermove', onMouseMove)
   }, [])
 
   return (

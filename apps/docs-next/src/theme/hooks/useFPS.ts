@@ -15,5 +15,5 @@ export function useFPS() {
     }
   })
 
-  return { fps }
+  return fps
 }

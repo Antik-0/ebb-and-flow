@@ -3,13 +3,17 @@ import type { PropsWithChildren } from 'react'
 import type { WithHTMLProps } from '../types'
 import { isExternalLink, isString } from '@repo/utils'
 import NextLink from 'next/link'
+import { createElement } from 'react'
 
-interface LinkProps extends NextLinkProps, WithHTMLProps<HTMLAnchorElement> {
+interface EbbLinkProps
+  extends Omit<NextLinkProps, 'href'>,
+    WithHTMLProps<HTMLAnchorElement> {
+  href?: NextLinkProps['href']
   tag?: string
   target?: string
 }
 
-export function EbbLink(props: PropsWithChildren<LinkProps>) {
+export function EbbLink(props: PropsWithChildren<EbbLinkProps>) {
   const {
     href,
     replace,
@@ -20,8 +24,12 @@ export function EbbLink(props: PropsWithChildren<LinkProps>) {
     tag,
     rel,
     target,
-    ...restProps
+    ...attrs
   } = props
+
+  if (!href) {
+    return createElement(tag ?? 'span', attrs, children)
+  }
 
   const _href = isString(href) ? href : href?.pathname
   const isExternal = _href && isExternalLink(_href)
@@ -31,7 +39,7 @@ export function EbbLink(props: PropsWithChildren<LinkProps>) {
 
   if (isExternal) {
     return (
-      <a href={_href} rel={_rel} target={_target} {...restProps}>
+      <a href={_href} rel={_rel} target={_target} {...attrs}>
         {children}
       </a>
     )
@@ -46,7 +54,7 @@ export function EbbLink(props: PropsWithChildren<LinkProps>) {
       replace={replace}
       scroll={scroll}
       target={_target}
-      {...restProps}
+      {...attrs}
     >
       {children}
     </NextLink>

@@ -8,11 +8,11 @@ let menuItemNodes: HTMLElement[] = []
 export function useMenubarHover() {
   // 距离 scope 左边界的偏移量
   const [offsetX, setOffsetX] = useState(0)
-  const onMousemove = (event: PointerEvent) => {
+  const onMouseMove = (event: PointerEvent) => {
     setOffsetX(event.clientX - scopeOffsetLeft)
   }
 
-  return { offsetX, onMousemove }
+  return { offsetX, onMouseMove }
 }
 
 export function useMenubarMotion() {
@@ -31,7 +31,9 @@ export function useMenubarMotion() {
     )
 
     menuItemNodes = [
-      ...scope.current!.querySelectorAll<HTMLElement>("li[role='menuitem']")
+      ...scope.current!.querySelectorAll<HTMLElement>(
+        "li[data-role='menuitem']"
+      )
     ]
 
     return () => {

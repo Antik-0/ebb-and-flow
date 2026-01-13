@@ -6,7 +6,7 @@ import { useSidebarControl } from '../../controller/sidebar'
 export function SidebarTrigger(
   props: PropsWithChildren<WithHTMLProps<HTMLButtonElement>>
 ) {
-  const { className, children } = props
+  const { className, children, ...restProps } = props
   const { isOpen, toggle } = useSidebarControl()
 
   return (
@@ -17,6 +17,7 @@ export function SidebarTrigger(
       onClick={toggle}
       role="switch"
       type="button"
+      {...restProps}
     >
       {children}
     </button>

@@ -1,40 +1,67 @@
 'use client'
 import type { PropsWithChildren } from 'react'
 import { usePathname } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navbar } from '../components/Navbar'
 import { Sidebar } from '../components/sidebar/Sidebar'
-import { LayoutContext, useLayoutState } from '../controller/layout'
+import { ToolPanel } from '../components/ToolPanel'
+import { ViewportSentinel } from '../components/ViewportSentinel'
+import { layoutStore, useLayoutState } from '../controller/layout'
 import { updateActiveLink } from '../controller/menus'
 
 export function EbbLayoutPage({ children }: PropsWithChildren) {
-  const { isDesktop, isMobile, isLargeScreen } = useLayoutState()
-  const [isTriggerSentinel] = useState(false)
-
-  const layoutContext = useMemo(
-    () => ({ isDesktop, isMobile, isLargeScreen, isTriggerSentinel }),
-    [isDesktop, isMobile, isLargeScreen, isTriggerSentinel]
-  )
-
   return (
-    <LayoutContext value={layoutContext}>
-      <div className="min-h-screen">
-        <Navbar />
-        <Sidebar />
-        <MenusSync />
+    <div className="min-h-screen">
+      <LayoutWatcher />
+      <MenusWatcher />
 
-        <div className="ebb-page" data-role="page">
-          <main className="page-content">{children}</main>
-        </div>
+      <Navbar />
+      <Sidebar />
+
+      <div className="ebb-page" data-role="page">
+        <main className="page-content">{children}</main>
       </div>
-    </LayoutContext>
+      <ToolPanel />
+
+      <SentinelWatcher />
+    </div>
   )
 }
 
 /**
- * 更新全局菜单激活状态
+ * ✨ 布局状态观察器
  */
-function MenusSync() {
+function LayoutWatcher() {
+  const { isDesktop, isMobile, isLargeScreen } = useLayoutState()
+
+  useEffect(() => {
+    layoutStore.setState({ isDesktop, isMobile, isLargeScreen })
+  }, [isDesktop, isMobile, isLargeScreen])
+
+  return null
+}
+
+/**
+ * ✨ 滚动哨兵状态观察器
+ */
+function SentinelWatcher() {
+  const [isTriggerSentinel, setIsTriggerSentinel] = useState(false)
+
+  useEffect(() => {
+    layoutStore.setState({ isTriggerSentinel })
+  }, [isTriggerSentinel])
+
+  function onVisibleChange(visible: boolean) {
+    setIsTriggerSentinel(!visible)
+  }
+
+  return <ViewportSentinel onVisibleChange={onVisibleChange} top={200} />
+}
+
+/**
+ * ✨ 菜单激活状态观察器
+ */
+function MenusWatcher() {
   const pathname = usePathname()
 
   useEffect(() => {

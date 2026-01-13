@@ -45,7 +45,7 @@ export function Navbar() {
 function NavbarBrand() {
   const router = useRouter()
   const { theme } = useTheme()
-  const { isMobile } = useLayout()
+  const isMobile = useLayout(state => state.isMobile)
 
   if (isMobile) {
     return (
@@ -71,7 +71,7 @@ function NavbarBrand() {
 function NavbarCenter() {
   const router = useRouter()
   const { theme } = useTheme()
-  const { isMobile } = useLayout()
+  const isMobile = useLayout(state => state.isMobile)
 
   if (isMobile) {
     return <EbbAvatar avatar={theme.avatar} onClick={() => router.push('/')} />

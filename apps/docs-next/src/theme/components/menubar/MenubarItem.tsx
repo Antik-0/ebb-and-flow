@@ -1,4 +1,3 @@
-import type { PropsWithChildren } from 'react'
 import type { MenuItem } from '../../types'
 import { motion } from 'motion/react'
 import { useMenuNodeIsActive } from '../../controller/menus'
@@ -19,14 +18,11 @@ export function MenubarItem(props: Props) {
     <motion.li
       className="cursor-pointer relative data-[active=true]:text-brand hover:text-brand"
       data-active={isActive}
+      data-role="menuitem"
       layout
       onPointerEnter={onHover}
-      role="menuitem"
     >
-      <MenubarItemLink
-        className="px-4 py-2.5 flex items-center"
-        link={item.link}
-      >
+      <EbbLink className="px-4 py-2.5 flex items-center" href={item.link}>
         {item.icon && isActive && (
           <motion.span
             className="text-4 mr-1 inline-flex flex-center"
@@ -38,7 +34,7 @@ export function MenubarItem(props: Props) {
         <motion.span className="text-sm" layout>
           {item.text}
         </motion.span>
-      </MenubarItemLink>
+      </EbbLink>
       {isActive && (
         <motion.span
           className="h-px inset-x-px absolute from-transparent to-transparent via-brand/70 bg-linear-to-r -bottom-px"
@@ -47,18 +43,4 @@ export function MenubarItem(props: Props) {
       )}
     </motion.li>
   )
-}
-
-function MenubarItemLink(
-  props: PropsWithChildren<{ className?: string; link?: string }>
-) {
-  const { className, link, children } = props
-  if (link) {
-    return (
-      <EbbLink className={className} href={link}>
-        {children}
-      </EbbLink>
-    )
-  }
-  return <span className={className}>{children}</span>
 }

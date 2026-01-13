@@ -1,44 +1,29 @@
 import type { MenuItem } from '../types'
-import { useMemo, useSyncExternalStore } from 'react'
+import { useMemo } from 'react'
+import { defineEbbStore } from '../store'
 import { useSharedMenus } from './menus'
 
-type Subscriber = () => void
-
-let isOpen = false
-const subscribers = new Set<Subscriber>()
-
-function open() {
-  isOpen = true
-  update()
+interface SidebarState {
+  isOpen: boolean
+  open: () => void
+  close: () => void
+  toggle: () => void
 }
 
-function close() {
-  isOpen = false
-  update()
-}
+const [useSidebar, sidebarStore] = defineEbbStore<SidebarState>(set => {
+  return {
+    isOpen: false,
+    open: () => set({ isOpen: true }),
+    close: () => set({ isOpen: false }),
+    toggle: () => set(state => ({ isOpen: !state.isOpen }))
+  }
+})
 
-function toggle() {
-  isOpen = !isOpen
-  update()
-}
-
-function update() {
-  subscribers.forEach(subscriber => {
-    subscriber()
-  })
-}
-
-function subscribe(subscriber: Subscriber) {
-  subscribers.add(subscriber)
-  return () => subscribers.delete(subscriber)
-}
-
-function getSnapshot() {
-  return isOpen
-}
+export { useSidebar, sidebarStore }
 
 export function useSidebarControl() {
-  const isOpen = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  const isOpen = useSidebar(state => state.isOpen)
+  const { open, close, toggle } = sidebarStore.getState()
   return { isOpen, open, close, toggle }
 }
 

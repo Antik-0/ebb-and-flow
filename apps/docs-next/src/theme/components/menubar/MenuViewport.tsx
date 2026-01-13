@@ -1,5 +1,4 @@
-import type { AnimationEvent } from 'react'
-import type { MenuItem } from '../../types'
+import type { PropsWithChildren } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { memo, useEffect, useMemo, useState } from 'react'
 import { useSharedMenus } from '../../controller/menus'
@@ -7,60 +6,16 @@ import { useMenubarCtx } from '../../controller/navbar'
 import { GlassMask } from '../GlassMask'
 import { MenuViewGroup } from './MenuViewGroup'
 
-interface Props {
+interface MenuViewportProps {
   onClose: () => void
 }
 
-interface ContentItem {
-  show: boolean
-  motion?: 'from-start' | 'from-end' | 'to-start' | 'to-end'
-  content?: MenuItem[]
-}
-
-export function MenuViewport(props: Props) {
-  const { offsetX, showViewport, prevHoverIndex, currHoverIndex } =
-    useMenubarCtx()
+export function MenuViewport(props: MenuViewportProps) {
+  const { offsetX, showViewport, currHoverIndex } = useMenubarCtx()
 
   const menus = useSharedMenus()
-  const [contents, setContents] = useState<ContentItem[]>(() =>
-    createViewContent(menus)
-  )
-
-  const showArrow = useMemo(
-    () => contents[currHoverIndex]?.content,
-    [currHoverIndex]
-  )
-
-  useEffect(() => {
-    onHoverIndexChange(currHoverIndex, prevHoverIndex)
-  }, [currHoverIndex, prevHoverIndex])
-
-  function onHoverIndexChange(currIndex: number, prevIndex: number) {
-    const currItem = contents[currIndex]
-    const prevItem = contents[prevIndex]
-    if (!currItem) return
-
-    const isFromEnd = currIndex > prevIndex
-    currItem.motion = isFromEnd ? 'from-end' : 'from-start'
-    if (prevItem) {
-      prevItem.motion = isFromEnd ? 'to-start' : 'to-end'
-    }
-    currItem.show = true
-    setContents([...contents])
-  }
-
-  function onAnimationend(event: AnimationEvent) {
-    const target = event.target as HTMLElement
-    if (!target.classList.contains('menu-content')) {
-      return
-    }
-    const motion = target.getAttribute('data-motion')!
-    if (motion.startsWith('to')) {
-      const index = Number(target.getAttribute('data-index'))
-      contents[index]!.show = false
-      setContents([...contents])
-    }
-  }
+  const contents = useMemo(() => menus.map(item => item.items), [menus])
+  const showArrow = !!contents[currHoverIndex]
 
   function onExitComplete() {
     !showViewport && props.onClose()
@@ -87,19 +42,11 @@ export function MenuViewport(props: Props) {
             ></div>
           </div>
           <div className="relative isolate">
-            <div
-              className="rounded-4 relative overflow-hidden"
-              onAnimationEnd={onAnimationend}
-            >
-              {contents.map((item, index) => (
-                <MenuViewContent
-                  content={item.content}
-                  index={index}
-                  isActive={currHoverIndex === index}
-                  key={index}
-                  motion={item.motion}
-                  show={item.show}
-                />
+            <div className="rounded-4 relative overflow-hidden">
+              {contents.map((content, index) => (
+                <MenuViewContent index={index} key={index}>
+                  {content && <MenuViewGroupMemo items={content} />}
+                </MenuViewContent>
               ))}
             </div>
             <GlassMask className="rounded-4 inset-0 absolute -z-1" />
@@ -110,40 +57,48 @@ export function MenuViewport(props: Props) {
   )
 }
 
-interface ViewContentProps {
-  show: boolean
-  index: number
-  isActive: boolean
-  motion: ContentItem['motion']
-  content?: MenuItem[]
-}
-
 const MenuViewGroupMemo = memo(MenuViewGroup)
 
-function MenuViewContent(props: ViewContentProps) {
-  const { show, index, isActive, motion, content } = props
-  if (!content) return null
+type Motion = 'from-start' | 'from-end' | 'to-start' | 'to-end' | undefined
+
+function MenuViewContent(props: PropsWithChildren<{ index: number }>) {
+  const { index, children } = props
+
+  const { currHoverIndex, prevHoverIndex } = useMenubarCtx()
+
+  const [show, setShow] = useState(false)
+  const [active, setActive] = useState(false)
+  const [motion, setMotion] = useState<Motion>(undefined)
+
+  useEffect(() => {
+    const isFromEnd = currHoverIndex > prevHoverIndex
+    if (index === currHoverIndex) {
+      setMotion(isFromEnd ? 'from-end' : 'from-start')
+    } else if (index === prevHoverIndex) {
+      setMotion(isFromEnd ? 'to-start' : 'to-end')
+    }
+    setShow(index === currHoverIndex || index === prevHoverIndex)
+    setActive(index === currHoverIndex)
+  }, [currHoverIndex, prevHoverIndex])
+
+  if (!children) return null
+
+  function onAnimationEnd() {
+    if (index === prevHoverIndex) {
+      setShow(false)
+    }
+  }
+
   return (
     <div
       className="menu-content"
-      data-active={isActive}
+      data-active={active}
       data-index={index}
       data-motion={motion}
+      onAnimationEnd={onAnimationEnd}
       style={{ display: show ? undefined : 'none' }}
     >
-      <MenuViewGroupMemo items={content} />
+      {children}
     </div>
   )
-}
-
-function createViewContent(menus: MenuItem[]) {
-  const res: ContentItem[] = []
-  for (const item of menus) {
-    res.push({
-      show: false,
-      motion: undefined,
-      content: item.items
-    })
-  }
-  return res
 }

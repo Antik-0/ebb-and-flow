@@ -9,9 +9,10 @@ export function useTheme() {
   return { theme, isDark }
 }
 
-// 类型推导
 export function defineThemeConfig(config: ThemeConfig): ThemeConfig
 export function defineThemeConfig(config: () => ThemeConfig): ThemeConfig
-export function defineThemeConfig(config: ThemeConfig | (() => ThemeConfig)) {
+export function defineThemeConfig(
+  config: ThemeConfig | (() => ThemeConfig)
+): ThemeConfig {
   return typeof config === 'function' ? config() : config
 }

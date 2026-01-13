@@ -21,7 +21,7 @@ function subscribe(subscriber: Subscriber) {
   return () => subscribers.delete(subscriber)
 }
 
-function notifySubscribers() {
+function notify() {
   subscribers.forEach(subscriber => {
     subscriber()
   })
@@ -79,7 +79,7 @@ export function updateActiveLink(pathname: string) {
     node = node.parent
   }
   activeNodes = nodeIds
-  notifySubscribers()
+  notify()
 }
 
 function matchActiveNode(menus: MenuItem[], currentPath: string) {

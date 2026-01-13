@@ -34,7 +34,7 @@ export function SidebarItem(props: SidebarItemProps) {
 
   return (
     <div className="sidebar-item" data-active={isActive} data-role="route">
-      <EbbLink className="flex gap-2 truncate items-center" href={item.link!}>
+      <EbbLink className="flex gap-2 truncate items-center" href={item.link}>
         {item.icon && <Icon className="text-brand" icon={item.icon} />}
         <span
           className="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-250 hover:text-brand-2"

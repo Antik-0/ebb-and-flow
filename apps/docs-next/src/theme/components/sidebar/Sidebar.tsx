@@ -6,10 +6,7 @@ import { useEventListener } from '../../hooks'
 import { GlassMask } from '../GlassMask'
 import { SidebarGroup } from './SidebarGroup'
 
-const SidebarGroupMemo = memo(SidebarGroup)
-
 export function Sidebar() {
-  const sidebarMenus = useSidebarMenus()
   const { isOpen, close } = useSidebarControl()
 
   const [show, setShow] = useState(isOpen)
@@ -58,17 +55,29 @@ export function Sidebar() {
         ref={sidebar}
         style={{ x }}
       >
-        <div className="px-6 py-8 flex-1 overflow-x-hidden overflow-y-auto">
-          {sidebarMenus.map((item, index) => (
-            <SidebarGroupMemo item={item} key={index} />
-          ))}
-        </div>
-
-        <div className="sidebar-background w-100 inset-y-0 right-0 absolute -z-1">
-          <GlassMask style={withVars({ '--fit-size': 'contain' })} />
-        </div>
+        <SidebarContent />
+        <SidebarMask />
       </motion.aside>
       <div className="bg-black/20 inset-0 absolute z-10" onClick={close}></div>
     </div>
   )
 }
+
+const SidebarContent = memo(() => {
+  const sidebarMenus = useSidebarMenus()
+  return (
+    <div className="px-6 py-8 flex-1 overflow-x-hidden overflow-y-auto">
+      {sidebarMenus.map((item, index) => (
+        <SidebarGroup item={item} key={index} />
+      ))}
+    </div>
+  )
+})
+
+const SidebarMask = memo(() => {
+  return (
+    <div className="sidebar-background w-100 inset-y-0 right-0 absolute -z-1">
+      <GlassMask style={withVars({ '--fit-size': 'contain' })} />
+    </div>
+  )
+})

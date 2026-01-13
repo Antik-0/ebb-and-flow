@@ -1,19 +1,13 @@
-import type { PropsWithChildren } from 'react'
 import type { MenuItem } from '../../types'
 import { clsx } from '@repo/utils'
 import { useState } from 'react'
 import { EbbLink } from '../Link'
 
-interface Props {
+interface MenuViewGroupProps {
   items: MenuItem[]
 }
 
-interface Group {
-  label?: string
-  children: MenuItem[]
-}
-
-export function MenuViewGroup(props: Props) {
+export function MenuViewGroup(props: MenuViewGroupProps) {
   const [groups] = useState(() => buildGroups(props.items ?? []))
 
   return (
@@ -27,7 +21,7 @@ export function MenuViewGroup(props: Props) {
           )}
           <section className="gap-4 grid">
             {group.children.map(item => (
-              <MenubarGroupLink key={item.text} link={item.link}>
+              <EbbLink href={item.link} key={item.text}>
                 <span
                   className={clsx(
                     'text-foreground p-3 rounded-2 block',
@@ -37,7 +31,7 @@ export function MenuViewGroup(props: Props) {
                 >
                   <span className="text-sm text-nowrap">{item.text}</span>
                 </span>
-              </MenubarGroupLink>
+              </EbbLink>
             ))}
           </section>
         </div>
@@ -46,9 +40,9 @@ export function MenuViewGroup(props: Props) {
   )
 }
 
-function MenubarGroupLink(props: PropsWithChildren<{ link?: string }>) {
-  const { link, children } = props
-  return link ? <EbbLink href={link}>{children}</EbbLink> : children
+interface Group {
+  label?: string
+  children: MenuItem[]
 }
 
 function buildGroups(items: MenuItem[]) {
