@@ -1,0 +1,83 @@
+import type { Plugin } from 'unified'
+import type { VFile } from 'vfile'
+import type { Data, MDAST, TocItem } from '../types.ts'
+import { define } from 'unist-util-mdx-define'
+import {
+  computeReadingTime,
+  getGitUpdatedTime,
+  getNodeText,
+  visit
+} from '../helper.ts'
+import { valueToEstreeNode } from './estree.ts'
+
+export interface RemarkMetadataOptions {
+  /**
+   * 元字段名称
+   */
+  name?: string
+  /**
+   * 元信息创建回调
+   */
+  create: (ast: MDAST.Root, file: VFile) => Data | void
+  /**
+   * 标题提取深度
+   * @default [2,3]
+   */
+  headDepths?: number[]
+}
+
+/**
+ * remark 插件：定义 `.mdx` 文件的元数据
+ *
+ * 内置了一些元数据
+ *
+ * `lastUpdated` - 最后更新时间
+ *
+ * `readingTime` - 阅读时间
+ *
+ * `toc` - 页面导航
+ */
+export const remarkMetadata: Plugin<
+  [RemarkMetadataOptions],
+  MDAST.Root
+> = options => {
+  const { name = 'metadata', create, headDepths = [2, 3] } = options
+
+  return (ast, file) => {
+    const filepath = file.history[0]!
+    const lastUpdated = getGitUpdatedTime(filepath)
+    const readingTime = computeReadingTime(file.value as string)
+
+    const toc: TocItem[] = []
+    visit<MDAST.Heading>(ast, 'heading', node => {
+      const depth = node.depth
+      if (headDepths.includes(depth)) {
+        toc.push({
+          depth: node.depth,
+          text: getNodeText(node)
+        })
+      }
+      return false
+    })
+
+    const metaData = {
+      lastUpdated,
+      readingTime,
+      toc
+    }
+    Object.assign(file.data, metaData)
+
+    const extendData = create(ast, file) ?? {}
+
+    const defineValue = {
+      [name]: valueToEstreeNode({ ...metaData, ...extendData })
+    } as define.Variables
+
+    try {
+      define(ast, file, defineValue)
+    } catch (error) {
+      const errorMsg = (error as Error).message
+      console.error(`[RemarkMetadata Error]: ${errorMsg} in file: ${filepath}`)
+    }
+  }
+}

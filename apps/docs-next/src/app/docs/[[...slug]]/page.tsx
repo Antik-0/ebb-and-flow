@@ -1,12 +1,18 @@
-'use client'
-import { usePathname } from 'next/navigation'
+import { use } from 'react'
+import { EbbDocContent } from '#/theme'
 
-export default function Page() {
-  const pathname = usePathname()
+export default function Page({
+  params,
+  searchParams
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const { slug } = use(params)
 
   return (
-    <div className="text-rose-400">
+    <EbbDocContent>
       <span>hello,world</span>
-    </div>
+    </EbbDocContent>
   )
 }

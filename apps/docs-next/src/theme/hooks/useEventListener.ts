@@ -48,7 +48,10 @@ export function useEventListener() {
       options: AddEventListenerOptions = {}
     ) => {
       if (!el) return
-      ;(el as Element).addEventListener(type, listener, options)
+      ;(el as Element).addEventListener(type, listener, {
+        signal: controller.current.signal,
+        ...options
+      })
       eventEntries.current.push({ el, type, listener })
 
       return () => {

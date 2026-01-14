@@ -14,12 +14,14 @@ export function toValue<T = any>(source: MaybeRefOrGetter<T>): T {
   return isRefObject(source) ? source.current : source
 }
 
-type StyleWithVars = CSSProperties | Record<string, string> | undefined
+type StyleWithVars = CSSProperties | Record<string, string> | undefined | false
 
 export const withVars = (...styles: StyleWithVars[]) => {
   const style: CSSProperties = {}
-  for (const s of styles) {
-    Object.assign(style, s)
+  for (const sv of styles) {
+    if (sv) {
+      Object.assign(style, sv)
+    }
   }
   return style
 }

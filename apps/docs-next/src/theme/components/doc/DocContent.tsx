@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react'
 import type { Page } from '../../types'
 import { useLayout } from '../../controller/layout'
 import { NotFound } from '../NotFound'
+import { DocFooter } from './DocFooter'
 
 interface Props {
   page?: Page
@@ -13,7 +14,7 @@ export function DocContent(props: PropsWithChildren<Props>) {
 
   const isDesktop = useLayout(state => state.isDesktop)
 
-  if (!page) {
+  if (page) {
     return <NotFound />
   }
 
@@ -23,6 +24,7 @@ export function DocContent(props: PropsWithChildren<Props>) {
         <article className="ebb-doc" id="content">
           {children}
         </article>
+        <DocFooter />
       </div>
 
       {isDesktop && (

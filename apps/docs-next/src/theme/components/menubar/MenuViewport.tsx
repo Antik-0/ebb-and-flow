@@ -27,9 +27,9 @@ export function MenuViewport(props: MenuViewportProps) {
         <motion.div
           animate={{ y: 0 }}
           className="menu-viewport"
+          data-role="menuviewport"
           exit={{ opacity: 0, y: 40 }}
           initial={{ y: 40 }}
-          onPointerMove={event => event.stopPropagation()}
           transition={{ type: 'spring', duration: 0.6 }}
         >
           <div className="flex w-full justify-center">

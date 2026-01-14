@@ -9,7 +9,8 @@
     "paths": {
       "#/*": ["./src/*"]
     },
-    "plugins": [{ "name": "next" }]
+    "plugins": [{ "name": "next" }],
+    "types": ["react", "react-dom"]
   },
   "include": [
     "global.d.ts",

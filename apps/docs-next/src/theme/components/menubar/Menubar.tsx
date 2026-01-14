@@ -1,4 +1,4 @@
-import type { RefObject } from 'react'
+import type { PointerEvent, RefObject } from 'react'
 import { LayoutGroup, animate, motion, useMotionValue } from 'motion/react'
 import { memo, useEffect, useMemo, useState } from 'react'
 import { withVars } from '#/utils'
@@ -55,7 +55,14 @@ export function Menubar() {
     }
   }, [currActiveNode])
 
-  function onMouseEnter() {
+  function onMouseEnter(event: PointerEvent<HTMLElement>) {
+    let node = event.target as HTMLElement
+    while (node !== document.body) {
+      if (node.getAttribute('data-role') === 'menuviewport') {
+        return
+      }
+      node = node.parentElement!
+    }
     setShowViewport(true)
   }
 

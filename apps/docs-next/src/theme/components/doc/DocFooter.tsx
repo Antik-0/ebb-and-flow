@@ -21,8 +21,8 @@ function FooterNavigation() {
       aria-label="pager"
       className="pt-6 gap-4 grid grid-cols-1 sm:grid-cols-2"
     >
-      <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2">
-        {prevNav && (
+      {prevNav && (
+        <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2">
           <EbbLink className="px-4 py-3 flex-col" href={prevNav.link}>
             <span className="text-12px text-muted-foreground leading-20px">
               上一页
@@ -31,8 +31,10 @@ function FooterNavigation() {
               {prevNav?.text}
             </span>
           </EbbLink>
-        )}
-        {nextNav && (
+        </div>
+      )}
+      {nextNav && (
+        <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2">
           <EbbLink
             className="px-4 py-3 text-right flex-col"
             href={nextNav.link}
@@ -44,8 +46,8 @@ function FooterNavigation() {
               {nextNav.text}
             </span>
           </EbbLink>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   )
 }
