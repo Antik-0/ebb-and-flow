@@ -1,12 +1,13 @@
 'use client'
 import type { PropsWithChildren } from 'react'
-import type { Page } from '../../types'
-import { useLayout } from '../../controller/layout'
+import type { PageData } from '../../types'
+import { useEffect } from 'react'
+import { pageStore, useLayout } from '../../controller/layout'
 import { NotFound } from '../NotFound'
 import { DocFooter } from './DocFooter'
 
 interface Props {
-  page?: Page
+  page?: PageData
 }
 
 export function DocContent(props: PropsWithChildren<Props>) {
@@ -14,7 +15,15 @@ export function DocContent(props: PropsWithChildren<Props>) {
 
   const isDesktop = useLayout(state => state.isDesktop)
 
-  if (page) {
+  useEffect(() => {
+    if (page) {
+      pageStore.setState(page)
+    } else {
+      pageStore.reset()
+    }
+  }, [page])
+
+  if (!page) {
     return <NotFound />
   }
 

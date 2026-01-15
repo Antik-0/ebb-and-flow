@@ -10,14 +10,16 @@
       "#/*": ["./src/*"]
     },
     "plugins": [{ "name": "next" }],
-    "types": ["react", "react-dom"]
+    "types": ["react", "react-dom", "mdx", "bun"]
   },
   "include": [
     "global.d.ts",
     "next-env.d.ts",
     "next.config.ts",
+    "src/mdx-components.tsx",
     "./src/**/*.ts",
     "./src/**/*.tsx",
+    "./src/**/*.mdx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ]

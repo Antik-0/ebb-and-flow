@@ -1,6 +1,6 @@
 import type { Plugin } from 'unified'
 import type { VFile } from 'vfile'
-import type { Data, MDAST, TocItem } from '../types.ts'
+import type { Data, MDAST, Metadata, TocItem } from '../types.ts'
 import { define } from 'unist-util-mdx-define'
 import {
   computeReadingTime,
@@ -13,23 +13,22 @@ import { valueToEstreeNode } from './estree.ts'
 export interface RemarkMetadataOptions {
   /**
    * 元字段名称
+   * @default 'metadata'
    */
   name?: string
   /**
    * 元信息创建回调
    */
-  create: (ast: MDAST.Root, file: VFile) => Data | void
+  setup?: (ast: MDAST.Root, file: VFile) => Data
   /**
    * 标题提取深度
    * @default [2,3]
    */
-  headDepths?: number[]
+  tocDepth?: number[]
 }
 
 /**
- * remark 插件：定义 `.mdx` 文件的元数据
- *
- * 内置了一些元数据
+ * ✨ 定义 `.mdx` 文件的元数据
  *
  * `lastUpdated` - 最后更新时间
  *
@@ -41,7 +40,7 @@ export const remarkMetadata: Plugin<
   [RemarkMetadataOptions],
   MDAST.Root
 > = options => {
-  const { name = 'metadata', create, headDepths = [2, 3] } = options
+  const { name = '_metadata', setup, tocDepth = [2, 3] } = options
 
   return (ast, file) => {
     const filepath = file.history[0]!
@@ -49,28 +48,35 @@ export const remarkMetadata: Plugin<
     const readingTime = computeReadingTime(file.value as string)
 
     const toc: TocItem[] = []
-    visit<MDAST.Heading>(ast, 'heading', node => {
-      const depth = node.depth
-      if (headDepths.includes(depth)) {
-        toc.push({
-          depth: node.depth,
-          text: getNodeText(node)
-        })
-      }
-      return false
-    })
+    visit<MDAST.Heading>(
+      ast,
+      (node, { signal }) => {
+        const depth = node.depth
+        if (tocDepth.includes(depth)) {
+          toc.push({
+            text: getNodeText(node),
+            level: node.depth
+          })
+        }
+        return signal.stop
+      },
+      { type: 'heading' }
+    )
 
-    const metaData = {
+    const metadata: Metadata = {
       lastUpdated,
       readingTime,
       toc
     }
-    Object.assign(file.data, metaData)
+    Object.assign(file.data, metadata)
 
-    const extendData = create(ast, file) ?? {}
+    // 同步数据给 `rehype` 插件
+    file.data.tocDepth = tocDepth
+
+    const extendData = setup?.(ast, file) ?? {}
 
     const defineValue = {
-      [name]: valueToEstreeNode({ ...metaData, ...extendData })
+      [name]: valueToEstreeNode({ ...metadata, ...extendData })
     } as define.Variables
 
     try {

@@ -18,6 +18,7 @@ interface EbbStoreState<S = any> {
 interface EbbStore<S = any> {
   getState: GetState<S>
   setState: SetState<S>
+  reset: () => void
 }
 
 /**
@@ -83,6 +84,7 @@ export function defineEbbStore<S extends StateRecord = any>(
   const getState: GetState<S> = () => state.value
 
   const initState = setup(setState, getState)
+
   if (!isPlainObject(initState)) {
     const stateType = Object.prototype.toString.call(initState)
     throw new Error(
@@ -93,7 +95,9 @@ export function defineEbbStore<S extends StateRecord = any>(
   }
 
   state.value = initState
-  Object.assign(store, { getState, setState })
+  const reset = () => setState(initState)
+
+  Object.assign(store, { getState, setState, reset })
 
   const useStore = <T>(getter: (state: S) => T) => {
     const getSnapshop = useCallback(() => getter(state.value), [getter])

@@ -73,6 +73,28 @@
   color: var(--c-brand-2);
 }
 
+.ebb-link::after {
+  --m-value-u: 0%;
+
+  content: '';
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+  height: 2px;
+  border-radius: 2px;
+  translate: 0 2px;
+  transition: --m-value-u 400ms ease-in-out;
+  background: linear-gradient(
+    to right,
+    var(--c-brand-2) var(--m-value-u),
+    hsla(0, 0%, 60%, 0.2) var(--m-value-u)
+  );
+}
+
+.ebb-link:hover::after {
+  --m-value-u: 100%;
+}
+
 /**
  * Lists
  * -------------------------------------------------------------------------- */
@@ -155,6 +177,7 @@
 
 .ebb-doc pre {
   max-width: 100%;
+  margin: 16px 0;
   padding: 20px;
   tab-size: 4;
   font-family: var(--font-family-mono);

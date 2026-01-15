@@ -1,3 +1,4 @@
+import type { PageData } from '../types'
 import { useMediaQuery } from '../hooks'
 import { defineEbbStore } from '../store'
 
@@ -30,3 +31,15 @@ export function useLayoutState() {
     isLargeScreen
   }
 }
+
+const [usePageData, pageStore] = defineEbbStore<PageData>(set => {
+  return {
+    lastUpdated: null,
+    readingTime: 0,
+    toc: [],
+    tags: [],
+    update: (value: PageData) => set(value)
+  }
+})
+
+export { usePageData, pageStore }

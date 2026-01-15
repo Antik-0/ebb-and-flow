@@ -1,18 +1,18 @@
 import { use } from 'react'
+import { source } from '#/lib/source'
 import { EbbDocContent } from '#/theme'
 
 export default function Page({
-  params,
-  searchParams
+  params
 }: {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const { slug } = use(params)
+  const { MDXContent, metadata } = use(source())
 
   return (
-    <EbbDocContent>
-      <span>hello,world</span>
+    <EbbDocContent page={metadata}>
+      <MDXContent />
     </EbbDocContent>
   )
 }

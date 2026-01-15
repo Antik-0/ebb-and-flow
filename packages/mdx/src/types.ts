@@ -1,6 +1,30 @@
 export type * as HAST from 'hast'
 export type * as MDAST from 'mdast'
 
+export interface Metadata {
+  /**
+   * 最后更新时间
+   */
+  lastUpdated: number | null
+  /**
+   * 阅读时间
+   */
+  readingTime: number
+  /**
+   * toc 导航
+   */
+  toc: TocItem[]
+}
+
+export type Data = Record<string, string | number | boolean | null>
+
+export type PlainObject = Record<string, unknown>
+
+export interface TocItem {
+  text: string
+  level: number
+}
+
 /**
  * AST Descriptor Syntax
  *
@@ -41,13 +65,4 @@ export interface ObjectExpression extends ASTNode {
 export interface ArrayExpression extends ASTNode {
   type: 'ArrayExpression'
   elements: ASTNode[]
-}
-
-export type Data = Record<string, string | number | boolean | null>
-
-export type PlainObject = Record<string, unknown>
-
-export interface TocItem {
-  depth: number
-  text: string
 }
