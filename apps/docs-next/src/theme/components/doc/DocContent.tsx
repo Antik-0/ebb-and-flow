@@ -30,7 +30,7 @@ export function DocContent(props: PropsWithChildren<Props>) {
   return (
     <div className="flex" data-role="doc-content">
       <div className="px-8 pb-24 flex-1 min-w-0">
-        <article className="ebb-doc" id="content">
+        <article className="ebb-doc" id="ebb-content">
           {children}
         </article>
         <DocFooter />

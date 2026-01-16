@@ -8,10 +8,6 @@
   outline: none;
 }
 
-.ebb-doc :is(h2, h3) {
-  scroll-margin-top: calc(var(--h-navbar) + 32px);
-}
-
 .ebb-doc h1 {
   text-align: center;
   font-size: 28px;
@@ -23,6 +19,10 @@
     font-size: 32px;
     line-height: 40px;
   }
+}
+
+.ebb-doc :is(h2, h3) {
+  scroll-margin-top: calc(var(--h-navbar) + 32px);
 }
 
 .ebb-doc h2 {
@@ -177,17 +177,20 @@
 
 .ebb-doc pre {
   max-width: 100%;
-  margin: 16px 0;
   padding: 20px;
   tab-size: 4;
   font-family: var(--font-family-mono);
   font-size: 14px;
+  color: var(--shiki-dark);
   background-color: color-mix(in srgb, var(--c-bg-code-block) 20%, transparent);
   white-space: normal;
   overflow-x: auto;
 }
 
 .ebb-doc pre code {
+  display: block;
+  font-size: 16px;
+  line-height: 24px;
   white-space: pre;
 }
 
@@ -198,8 +201,17 @@
   background-color: color-mix(in srgb, var(--c-bg-code-block) 40%, transparent);
 }
 
-.ebb-doc .pre :is(code, .line) {
-  display: block;
+.ebb-doc pre .line {
+  display: inline-block;
+}
+
+.ebb-doc pre .line[data-highlight='true'] {
+  width: 100%;
+  background-color: var(--c-bg-code-block);
+}
+
+.ebb-doc .shiki span {
+  color: var(--shiki-dark);
 }
 
 /**
@@ -213,6 +225,7 @@
 }
 
 .code-group pre {
+  position: static;
   border-radius: 0;
 }
 

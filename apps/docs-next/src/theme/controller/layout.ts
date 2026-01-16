@@ -32,13 +32,13 @@ export function useLayoutState() {
   }
 }
 
-const [usePageData, pageStore] = defineEbbStore<PageData>(set => {
+const [usePageData, pageStore] = defineEbbStore<PageData>(() => {
   return {
-    lastUpdated: null,
-    readingTime: 0,
+    title: '',
     toc: [],
     tags: [],
-    update: (value: PageData) => set(value)
+    lastUpdated: null,
+    readingTime: 0
   }
 })
 

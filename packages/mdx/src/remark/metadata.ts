@@ -1,14 +1,10 @@
 import type { Plugin } from 'unified'
 import type { VFile } from 'vfile'
-import type { Data, MDAST, Metadata, TocItem } from '../types.ts'
+import type { Data, MDAST, Metadata } from '../types.ts'
 import { define } from 'unist-util-mdx-define'
-import {
-  computeReadingTime,
-  getGitUpdatedTime,
-  getNodeText,
-  visit
-} from '../helper.ts'
-import { valueToEstreeNode } from './estree.ts'
+import { createExpression } from '../shared/estree.ts'
+import { computeReadingTime, getGitUpdatedTime } from '../shared/general.ts'
+import { getNodeText, visit } from '../shared/visit.ts'
 
 export interface RemarkMetadataOptions {
   /**
@@ -40,21 +36,32 @@ export const remarkMetadata: Plugin<
   [RemarkMetadataOptions],
   MDAST.Root
 > = options => {
-  const { name = '_metadata', setup, tocDepth = [2, 3] } = options
+  const { name = '_metadata', setup, tocDepth = [2, 3] } = options ?? {}
 
   return (ast, file) => {
     const filepath = file.history[0]!
     const lastUpdated = getGitUpdatedTime(filepath)
     const readingTime = computeReadingTime(file.value as string)
 
-    const toc: TocItem[] = []
+    const metadata: Metadata = {
+      title: '',
+      toc: [],
+      lastUpdated,
+      readingTime
+    }
+
     visit<MDAST.Heading>(
       ast,
       (node, { signal }) => {
+        let text = ''
         const depth = node.depth
+        if (depth === 1) {
+          text = getNodeText(node)
+          metadata.title = text
+        }
         if (tocDepth.includes(depth)) {
-          toc.push({
-            text: getNodeText(node),
+          metadata.toc.push({
+            text: text ?? getNodeText(node),
             level: node.depth
           })
         }
@@ -63,11 +70,6 @@ export const remarkMetadata: Plugin<
       { type: 'heading' }
     )
 
-    const metadata: Metadata = {
-      lastUpdated,
-      readingTime,
-      toc
-    }
     Object.assign(file.data, metadata)
 
     // 同步数据给 `rehype` 插件
@@ -76,14 +78,14 @@ export const remarkMetadata: Plugin<
     const extendData = setup?.(ast, file) ?? {}
 
     const defineValue = {
-      [name]: valueToEstreeNode({ ...metadata, ...extendData })
+      [name]: createExpression({ ...metadata, ...extendData })
     } as define.Variables
 
     try {
       define(ast, file, defineValue)
     } catch (error) {
       const errorMsg = (error as Error).message
-      console.error(`[RemarkMetadata Error]: ${errorMsg} in file: ${filepath}`)
+      console.error(`[remarkMetadata Error]: ${errorMsg} in file: ${filepath}`)
     }
   }
 }

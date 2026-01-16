@@ -1,7 +1,7 @@
 import type { Metadata } from '@ebb/mdx'
 
 declare global {
-  interface MDXMetadata extends Metadata {
+  interface PageMetadata extends Metadata {
     /**
      * 文章标签
      */

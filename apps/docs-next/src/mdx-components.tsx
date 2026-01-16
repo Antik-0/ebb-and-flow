@@ -2,6 +2,7 @@ import type { MDXComponents } from 'mdx/types'
 import {
   CodeGroup,
   CustomBlock,
+  PageMeta,
   ProseA,
   ProseH2,
   ProseH3,
@@ -13,8 +14,9 @@ const components: MDXComponents = {
   h2: ProseH2,
   h3: ProseH3,
   pre: ProsePre,
-  CustomBlock,
-  CodeGroup
+  PageMeta,
+  CodeGroup,
+  CustomBlock
 }
 
 export function useMDXComponents(): MDXComponents {

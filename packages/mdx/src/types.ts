@@ -3,6 +3,10 @@ export type * as MDAST from 'mdast'
 
 export interface Metadata {
   /**
+   * 文章标题
+   */
+  title: string
+  /**
    * 最后更新时间
    */
   lastUpdated: number | null
@@ -26,43 +30,57 @@ export interface TocItem {
 }
 
 /**
- * AST Descriptor Syntax
+ * esTree Descriptor Syntax
  *
  * refer: https://github.com/estree/estree/blob/master/es5.md
  */
 
-export interface ASTNode {
+export interface EsNode {
   type: string
 }
 
+export interface Program extends EsNode {
+  type: 'Program'
+  body: Statement[]
+}
+
+export interface Statement extends EsNode {}
+
+export interface ExpressionStatement extends Statement {
+  type: 'ExpressionStatement'
+  expression: Expression
+}
+
+export interface Expression extends EsNode {}
+
 export type LiteralValue = string | number | boolean | null
 
-export interface Literal extends ASTNode {
+export interface Literal extends EsNode {
   type: 'Literal'
   value: LiteralValue
 }
 
-export interface Identifier extends ASTNode {
+export interface Identifier extends EsNode {
   type: 'Identifier'
   name: string
 }
 
-export interface Property extends ASTNode {
+export interface Property extends EsNode {
   type: 'Property'
   kind: 'init' | 'get' | 'set'
   method: boolean
   computed: boolean
   shorthand: boolean
   key: Literal | Identifier
-  value: ASTNode
+  value: EsNode
 }
 
-export interface ObjectExpression extends ASTNode {
+export interface ObjectExpression extends Expression {
   type: 'ObjectExpression'
   properties: Property[]
 }
 
-export interface ArrayExpression extends ASTNode {
+export interface ArrayExpression extends Expression {
   type: 'ArrayExpression'
-  elements: ASTNode[]
+  elements: EsNode[]
 }

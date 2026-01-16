@@ -1,6 +1,11 @@
 import type { RehypeShikiOptions, RemarkMetadataOptions } from '@ebb/mdx'
 import type { NextConfig } from 'next'
-import { rehypePatch, rehypeShiki, remarkMetadata } from '@ebb/mdx'
+import {
+  rehypePatch,
+  rehypeShiki,
+  remarkFrontmatter,
+  remarkMetadata
+} from '@ebb/mdx'
 import createMDX from '@next/mdx'
 
 const nextConfig: NextConfig = {
@@ -12,21 +17,30 @@ const withMDX = createMDX({
   options: {
     remarkPlugins: [
       [
+        remarkFrontmatter,
+        {
+          test: 111
+        }
+      ],
+      [
         remarkMetadata,
         {
           name: '_metadata',
+          setup(_, file) {
+            return file.data.matters as any
+          },
           tocDepth: [2, 3]
         } satisfies RemarkMetadataOptions
       ]
     ],
     rehypePlugins: [
-      [rehypePatch],
       [
         rehypeShiki,
         {
-          theme: 'github-dark'
+          theme: 'vitesse'
         } satisfies RehypeShikiOptions
-      ]
+      ],
+      [rehypePatch]
     ]
   }
 })

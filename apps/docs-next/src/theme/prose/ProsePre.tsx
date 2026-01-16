@@ -7,13 +7,14 @@ import { Copy, CopyCheck } from '../icons'
 
 interface Props extends WithHTMLProps<HTMLPreElement> {
   code?: string
-  lang: string
+  language: string
   filename?: string
   lines: string
 }
 
 export function ProsePre(props: PropsWithChildren<Props>) {
-  const { className, code, lang, filename, lines, children, ...attrs } = props
+  const { className, code, language, filename, lines, children, ...attrs } =
+    props
 
   const [copied, setCopied] = useState(false)
 

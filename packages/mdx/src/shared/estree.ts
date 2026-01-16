@@ -1,22 +1,36 @@
 import type {
-  ASTNode,
   ArrayExpression,
+  EsNode,
+  ExpressionStatement,
   Literal,
   LiteralValue,
   ObjectExpression,
   PlainObject,
+  Program,
   Property
 } from '../types.ts'
 
-export function valueToEstreeNode(value: unknown): ASTNode | null {
+export function createEsTree(value: unknown): Program {
+  return {
+    type: 'Program',
+    body: [
+      {
+        type: 'ExpressionStatement',
+        expression: createExpression(value)
+      } as ExpressionStatement
+    ]
+  }
+}
+
+export function createExpression(value: unknown): EsNode | null {
   if (isLiteral(value)) {
     return toLiteralNode(value)
   }
 
   if (isArray(value)) {
-    const elements: ASTNode[] = []
+    const elements: EsNode[] = []
     for (const v of value) {
-      const ele = valueToEstreeNode(v)
+      const ele = createExpression(v)
       if (ele !== null) {
         elements.push(ele)
       }
@@ -27,7 +41,7 @@ export function valueToEstreeNode(value: unknown): ASTNode | null {
   if (isObject(value)) {
     const properties: Property[] = []
     for (const k in value) {
-      const v = valueToEstreeNode(value[k])
+      const v = createExpression(value[k])
       if (v !== null) {
         properties.push(toPropertyNode(k, v))
       }
@@ -57,7 +71,7 @@ function toLiteralNode(value: LiteralValue): Literal {
   return { type: 'Literal', value }
 }
 
-function toArrayNode(elements: ASTNode[]): ArrayExpression {
+function toArrayNode(elements: EsNode[]): ArrayExpression {
   return { type: 'ArrayExpression', elements }
 }
 
@@ -65,7 +79,7 @@ function toObjectNode(properties: Property[]): ObjectExpression {
   return { type: 'ObjectExpression', properties }
 }
 
-function toPropertyNode(key: string, value: ASTNode): Property {
+function toPropertyNode(key: string, value: EsNode): Property {
   return {
     type: 'Property',
     kind: 'init',
