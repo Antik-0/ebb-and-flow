@@ -3,11 +3,10 @@ import type { PropsWithChildren } from 'react'
 import type { PageData } from '../../types'
 import { useEffect } from 'react'
 import { pageStore, useLayout } from '../../controller/layout'
-import { NotFound } from '../NotFound'
 import { DocFooter } from './DocFooter'
 
 interface Props {
-  page?: PageData
+  page: PageData
 }
 
 export function DocContent(props: PropsWithChildren<Props>) {
@@ -16,16 +15,8 @@ export function DocContent(props: PropsWithChildren<Props>) {
   const isDesktop = useLayout(state => state.isDesktop)
 
   useEffect(() => {
-    if (page) {
-      pageStore.setState(page)
-    } else {
-      pageStore.reset()
-    }
+    pageStore.setState(page)
   }, [page])
-
-  if (!page) {
-    return <NotFound />
-  }
 
   return (
     <div className="flex" data-role="doc-content">

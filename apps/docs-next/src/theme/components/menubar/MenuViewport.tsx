@@ -84,6 +84,9 @@ function MenuViewContent(props: PropsWithChildren<{ index: number }>) {
   if (!children) return null
 
   function onAnimationEnd() {
+    if (index === currHoverIndex) {
+      return
+    }
     if (index === prevHoverIndex) {
       setShow(false)
     }

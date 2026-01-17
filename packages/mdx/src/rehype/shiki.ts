@@ -22,8 +22,9 @@ export const rehypeShiki: Plugin<[RehypeShikiOptions], HAST.Root> = options => {
         if (node.tagName !== 'pre') return
 
         const codeNode = node.children[0] as HAST.Element
+        const props = codeNode.properties
+        const className = ((props?.className as string[]) ?? []).join(' ')
 
-        const className = (codeNode.properties.className as string[]).join(' ')
         const codeMeta = (codeNode.data as any)?.meta ?? ''
         const language = extractLanguage(className)
         const filename = extractFilename(codeMeta)

@@ -10,6 +10,7 @@ export const rehypePatch: Plugin<[], HAST.Root> = () => {
   return async (ast, file) => {
     const tocDepth = (file.data.tocDepth as number[]) ?? []
     const tocHeads = tocDepth.map(n => `h${n}`)
+    const metadata = file.data.metadata as Record<string, any>
 
     visit<any>(
       ast,
@@ -24,8 +25,13 @@ export const rehypePatch: Plugin<[], HAST.Root> = () => {
         // ✨ code-group 注入 tabs
         if (node.name === 'CodeGroup') {
           const tabs = parsePreTab(node.children)
-
           const attrs = propsToJsxAttributes({ tabs })
+          node.attributes.push(...attrs)
+        }
+
+        // ✨ page-meta 注入 metadata
+        if (node.name === 'PageMeta') {
+          const attrs = propsToJsxAttributes(metadata)
           node.attributes.push(...attrs)
         }
       },

@@ -6,20 +6,27 @@ interface MDXSource {
   metadata: PageMetadata
 }
 
-export async function source() {
-  const module = await import('#/content/article/link.mdx')
-  const { default: MDXContent, ...data } = module
+export async function source(slug: string[]) {
+  try {
+    const pathname = slug.join('/')
+    const module = await import(
+      `../content/${decodeURIComponent(pathname)}.mdx`
+    )
+    const { default: MDXContent, ...data } = module
 
-  const metadata = {} as PageMetadata
+    const metadata = {} as PageMetadata
 
-  for (const key in data) {
-    const value = (data as any)[key] as unknown
-    if (isPlainObject(value)) {
-      Object.assign(metadata, value)
-    } else {
-      Reflect.set(metadata, key, value)
+    for (const key in data) {
+      const value = (data as any)[key] as unknown
+      if (isPlainObject(value)) {
+        Object.assign(metadata, value)
+      } else {
+        Reflect.set(metadata, key, value)
+      }
     }
-  }
 
-  return { MDXContent, metadata } as MDXSource
+    return { MDXContent, metadata } as MDXSource
+  } catch {
+    return null
+  }
 }

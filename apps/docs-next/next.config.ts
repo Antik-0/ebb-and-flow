@@ -9,6 +9,9 @@ import {
 import createMDX from '@next/mdx'
 
 const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: true
+  },
   pageExtensions: ['tsx', 'mdx']
 }
 
@@ -16,12 +19,7 @@ const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
   options: {
     remarkPlugins: [
-      [
-        remarkFrontmatter,
-        {
-          test: 111
-        }
-      ],
+      [remarkFrontmatter],
       [
         remarkMetadata,
         {

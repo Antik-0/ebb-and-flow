@@ -34,7 +34,7 @@ function FooterNavigation() {
         </div>
       )}
       {nextNav && (
-        <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2">
+        <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2 sm:col-2">
           <EbbLink
             className="px-4 py-3 text-right flex-col"
             href={nextNav.link}

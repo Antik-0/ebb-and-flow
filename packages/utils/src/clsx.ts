@@ -1,13 +1,14 @@
 import { isArray, isPlainObject, isString } from './general.ts'
 
-type ClassObject = Record<string, boolean | null | undefined>
+type ClassObject = Record<string, number | boolean | null | undefined>
 
 type ClassValue =
   | string
+  | number
   | boolean
-  | ClassObject
   | null
   | undefined
+  | ClassObject
   | ClassValue[]
 
 export function clsx(...inputs: ClassValue[]) {

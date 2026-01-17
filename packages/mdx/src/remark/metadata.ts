@@ -70,16 +70,16 @@ export const remarkMetadata: Plugin<
       { type: 'heading' }
     )
 
-    Object.assign(file.data, metadata)
-
-    // 同步数据给 `rehype` 插件
-    file.data.tocDepth = tocDepth
-
     const extendData = setup?.(ast, file) ?? {}
+    Object.assign(metadata, extendData)
 
     const defineValue = {
-      [name]: createExpression({ ...metadata, ...extendData })
+      [name]: createExpression(extendData)
     } as define.Variables
+
+    // 同步数据给 `rehype` 插件
+    file.data.metadata = metadata
+    file.data.tocDepth = tocDepth
 
     try {
       define(ast, file, defineValue)

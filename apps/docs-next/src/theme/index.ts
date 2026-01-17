@@ -1,5 +1,6 @@
 export type * from './types'
 export { DocContent as EbbDocContent } from './components/doc/DocContent'
+export { EbbNotFound } from './components/NotFound'
 export { EbbLayoutHome } from './layouts/home'
 export { EbbLayoutPage } from './layouts/page'
 export { EbbThemeProvider } from './layouts/theme'

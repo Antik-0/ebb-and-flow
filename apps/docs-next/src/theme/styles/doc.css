@@ -9,9 +9,10 @@
 }
 
 .ebb-doc h1 {
-  text-align: center;
+  padding: 0 120px;
   font-size: 28px;
   line-height: 40px;
+  text-align: center;
 }
 
 @media (width >= 768px) {
@@ -32,13 +33,13 @@
 }
 
 .ebb-doc h3 {
-  margin: 32px 0 0;
+  margin: 24px 0;
   font-size: 20px;
   line-height: 28px;
 }
 
 .ebb-doc :is(h4, h5, h6) {
-  margin: 24px 0 0;
+  margin: 24px 0;
   font-size: 18px;
   line-height: 24px;
 }
@@ -240,7 +241,7 @@
   font-size: 14px;
   border-radius: 8px;
   color: #f0f8ff;
-  background-color: color-mix(in srgb, var(--c-bg-code-block) 20%, transparent);
+  background-color: var(--custom-block-bg);
 }
 
 .custom-block[data-type='info'] {

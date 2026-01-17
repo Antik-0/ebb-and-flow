@@ -1,6 +1,6 @@
 import { EbbLink } from './Link'
 
-export function NotFound() {
+export function EbbNotFound() {
   return (
     <div className="px-8 py-24 text-center w-full">
       <p className="text-16 leading-[1] font-600">404</p>

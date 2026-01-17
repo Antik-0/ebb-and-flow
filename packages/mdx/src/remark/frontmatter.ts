@@ -36,7 +36,7 @@ export const remarkFrontmatter: Plugin<[], MDAST.Root> = () => {
       return
     }
 
-    const matters = Object.create(null)
+    const matters = {}
 
     for (let i = 1; i < endIndex; i++) {
       const node = children[i] as any
