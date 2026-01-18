@@ -1,5 +1,5 @@
 import type { SVGProps } from 'react'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 
 export default function ThemeDark(props: SVGProps<SVGSVGElement>) {
   return (
@@ -20,17 +20,17 @@ export default function ThemeDark(props: SVGProps<SVGSVGElement>) {
         <path
           className="moon-star"
           d="M13 4h1.5M13 4h-1.5M13 4v1.5M13 4v-1.5"
-          style={withVars({ '--delay': '1s' })}
+          style={stylex({ '--delay': '1s' })}
         />
         <path
           className="moon-star"
           d="M19 11h1.5M19 11h-1.5M19 11v1.5M19 11v-1.5"
-          style={withVars({ '--delay': '2s' })}
+          style={stylex({ '--delay': '2s' })}
         />
         <path
           className="moon-star"
           d="M19 4h1.5M19 4h-1.5M19 4v1.5M19 4v-1.5"
-          style={withVars({ '--delay': '0s' })}
+          style={stylex({ '--delay': '0s' })}
         />
       </g>
       <path

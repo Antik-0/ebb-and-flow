@@ -1,6 +1,7 @@
 import type { Plugin } from 'unified'
 import type { HAST } from '../types.ts'
 import { createEsTree } from '../shared/estree.ts'
+import { sanitizeSelector } from '../shared/general.ts'
 import { getNodeText, visit } from '../shared/visit.ts'
 
 /**
@@ -17,7 +18,7 @@ export const rehypePatch: Plugin<[], HAST.Root> = () => {
       node => {
         // ✨ 导航 h 标签注入 id
         if (tocHeads.includes(node.tagName)) {
-          const id = getNodeText(node)
+          const id = sanitizeSelector(getNodeText(node))
           Object.assign(node.properties, { id })
           return
         }
@@ -27,12 +28,14 @@ export const rehypePatch: Plugin<[], HAST.Root> = () => {
           const tabs = parsePreTab(node.children)
           const attrs = propsToJsxAttributes({ tabs })
           node.attributes.push(...attrs)
+          return
         }
 
         // ✨ page-meta 注入 metadata
         if (node.name === 'PageMeta') {
           const attrs = propsToJsxAttributes(metadata)
           node.attributes.push(...attrs)
+          return
         }
       },
       { depth: 1 }

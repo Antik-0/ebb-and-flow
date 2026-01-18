@@ -14,13 +14,13 @@ type ClassValue =
 export function clsx(...inputs: ClassValue[]) {
   let res = ''
   for (const klass of inputs) {
-    const v = toValue(klass)
+    const v = normalizeClass(klass)
     if (v) res += v + ' '
   }
   return res.trim()
 }
 
-function toValue(klass: ClassValue) {
+function normalizeClass(klass: ClassValue) {
   if (!klass) return ''
   if (isString(klass)) return klass
 
@@ -33,7 +33,7 @@ function toValue(klass: ClassValue) {
     }
   } else if (isArray(klass)) {
     for (const k of klass) {
-      res += toValue(k) + ' '
+      res += normalizeClass(k) + ' '
     }
   }
   return res.trim()

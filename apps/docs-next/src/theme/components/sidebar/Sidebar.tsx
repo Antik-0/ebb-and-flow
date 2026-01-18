@@ -1,6 +1,6 @@
 import { animate, motion, useMotionValue } from 'motion/react'
 import { memo, useEffect, useRef, useState } from 'react'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 import { useSidebarControl, useSidebarMenus } from '../../controller/sidebar'
 import { useEventListener } from '../../hooks'
 import { GlassMask } from '../GlassMask'
@@ -48,7 +48,7 @@ export function Sidebar() {
     <div
       className="inset-0 fixed z-[--z-index-sidebar]"
       data-role="sidebar"
-      style={{ display: show ? undefined : 'none' }}
+      style={stylex({ display: !show && 'none' })}
     >
       <motion.aside
         className="flex-col w-80 inset-y-0 left-0 absolute z-20 isolate"
@@ -77,7 +77,7 @@ const SidebarContent = memo(() => {
 const SidebarMask = memo(() => {
   return (
     <div className="sidebar-background w-100 inset-y-0 right-0 absolute -z-1">
-      <GlassMask style={withVars({ '--fit-size': 'contain' })} />
+      <GlassMask style={stylex({ '--fit-size': 'contain' })} />
     </div>
   )
 })

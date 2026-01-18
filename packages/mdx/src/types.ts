@@ -25,6 +25,7 @@ export type Data = Record<string, string | number | boolean | null>
 export type PlainObject = Record<string, unknown>
 
 export interface TocItem {
+  to: string
   text: string
   level: number
 }

@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 import { useScroll } from '../hooks'
 
 export function ScrollIndicator() {
@@ -10,7 +10,7 @@ export function ScrollIndicator() {
   return (
     <svg
       height="1em"
-      style={withVars({
+      style={stylex({
         rotate: '-90deg',
         transition: 'stroke-offset 600ms ease-in'
       })}

@@ -1,5 +1,5 @@
 import type { SVGProps } from 'react'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 
 export default function Menu(props: SVGProps<SVGSVGElement>) {
   return (
@@ -23,12 +23,12 @@ export default function Menu(props: SVGProps<SVGSVGElement>) {
         <path
           className="menu-line"
           d="M5 12h14"
-          style={withVars({ '--delay': '0.2s' })}
+          style={stylex({ '--delay': '0.2s' })}
         />
         <path
           className="menu-line"
           d="M5 19h14"
-          style={withVars({ '--delay': '0.4s' })}
+          style={stylex({ '--delay': '0.4s' })}
         />
       </g>
     </svg>

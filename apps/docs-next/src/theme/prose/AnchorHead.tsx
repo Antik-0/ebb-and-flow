@@ -12,11 +12,16 @@ interface Props extends WithHTMLProps<HTMLHeadingElement> {
 
 export function AnchorHead(props: PropsWithChildren<Props>) {
   const { tag, id, children, ...attrs } = props
-  return createElement(tag, { id, ...attrs }, <Anchor>{children}</Anchor>)
+  return createElement(
+    tag,
+    { id, ...attrs },
+    <Anchor id={id}>{children}</Anchor>
+  )
 }
 
 function Anchor(props: PropsWithChildren<{ id?: string }>) {
   const { id = '', children } = props
+
   return (
     <a className="group inline-flex items-center relative" href={`#${id}`}>
       <span

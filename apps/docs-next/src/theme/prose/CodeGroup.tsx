@@ -2,6 +2,7 @@
 import type { PropsWithChildren } from 'react'
 import { clsx } from '@repo/utils'
 import { useState } from 'react'
+import { stylex } from '#/utils'
 import { LogoIconRender } from '../icons'
 
 interface TabItem {
@@ -44,7 +45,7 @@ export function CodeGroup(props: PropsWithChildren<Props>) {
       {contents.map((content, index) => (
         <div
           key={index}
-          style={{ display: activeIndex === index ? undefined : 'none' }}
+          style={stylex({ display: activeIndex !== index && 'none' })}
         >
           {content}
         </div>

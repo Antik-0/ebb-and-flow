@@ -1,10 +1,12 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useMenuActiveNode } from '../controller/menus'
 import { useAnimation } from '../hooks'
 
 export function ImageViewer() {
-  const [show, setShow] = useState(false)
+  const activeNode = useMenuActiveNode()
   const [previewURL, setPreviewURL] = useState('')
 
+  const viewerDOM = useRef<HTMLDivElement | null>(null)
   const triggerDOM = useRef<HTMLImageElement | null>(null)
   const pictureDOM = useRef<HTMLPictureElement | null>(null)
 
@@ -22,21 +24,16 @@ export function ImageViewer() {
 
   function handleOpen() {
     if (leaveAnimation.isRunning) return
-    setShow(true)
+    viewerDOM.current?.style.removeProperty('display')
     triggerDOM.current?.setAttribute('data-hidden', 'true')
+    enterAnimation.play()
   }
-
-  useLayoutEffect(() => {
-    if (show) {
-      enterAnimation.play()
-    }
-  }, [show])
 
   async function handleClose() {
     if (leaveAnimation.isRunning) return
     leaveAnimation.play()
     await leaveAnimation.finished
-    setShow(false)
+    viewerDOM.current?.style.setProperty('display', 'none')
     triggerDOM.current?.removeAttribute('data-hidden')
   }
 
@@ -47,7 +44,10 @@ export function ImageViewer() {
 
     const { scaleX, scaleY, offsetX, offsetY } = computeEffectState(image)
     enterAnimation.effect?.setKeyframes([
-      { translate: `${offsetX}px ${offsetY}px`, scale: `${scaleX} ${scaleY}` },
+      {
+        translate: `${offsetX}px ${offsetY}px`,
+        scale: `${scaleX} ${scaleY}`
+      },
       { translate: '0 0', scale: '1 1' }
     ])
 
@@ -55,7 +55,7 @@ export function ImageViewer() {
   }
 
   useEffect(() => {
-    const container = document.getElementById('content')
+    const container = document.getElementById('ebb-content')
     const imageList = container?.querySelectorAll('img') ?? []
 
     const controller = new AbortController()
@@ -67,17 +67,19 @@ export function ImageViewer() {
     }
 
     return () => controller.abort()
-  }, [])
-
-  if (!show) return null
+  }, [activeNode])
 
   return (
     <div
       className="bg-black/40 grid contain-paint inset-0 place-content-center place-items-center fixed z-100"
       onClick={handleClose}
+      ref={viewerDOM}
+      style={{ display: 'none' }}
     >
-      <picture className="max-h-full max-w-full">
-        <img alt="preview" className="size-full" src={previewURL} />
+      <picture className="max-h-full max-w-full" ref={pictureDOM}>
+        {previewURL && (
+          <img alt="preview" className="size-full" src={previewURL} />
+        )}
       </picture>
     </div>
   )

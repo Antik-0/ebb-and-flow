@@ -12,8 +12,8 @@ export async function source(slug: string[]) {
     const module = await import(
       `../content/${decodeURIComponent(pathname)}.mdx`
     )
-    const { default: MDXContent, ...data } = module
 
+    const { default: MDXContent, ...data } = module
     const metadata = {} as PageMetadata
 
     for (const key in data) {

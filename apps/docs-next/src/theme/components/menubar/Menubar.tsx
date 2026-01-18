@@ -1,7 +1,7 @@
 import type { PointerEvent, RefObject } from 'react'
 import { LayoutGroup, animate, motion, useMotionValue } from 'motion/react'
 import { memo, useEffect, useMemo, useState } from 'react'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 import { useMenuActiveNode, useSharedMenus } from '../../controller/menus'
 import {
   MenubarContext,
@@ -138,7 +138,7 @@ function MenubarBackground(props: BackgroundProps) {
     <div
       aria-hidden="true"
       className="menubar-background"
-      style={withVars({ '--offset-x': offsetX + 'px' })}
+      style={stylex({ '--offset-x': offsetX + 'px' })}
     ></div>
   )
 }

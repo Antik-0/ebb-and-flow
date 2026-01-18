@@ -3,7 +3,11 @@ import type { VFile } from 'vfile'
 import type { Data, MDAST, Metadata } from '../types.ts'
 import { define } from 'unist-util-mdx-define'
 import { createExpression } from '../shared/estree.ts'
-import { computeReadingTime, getGitUpdatedTime } from '../shared/general.ts'
+import {
+  computeReadingTime,
+  getGitUpdatedTime,
+  sanitizeSelector
+} from '../shared/general.ts'
 import { getNodeText, visit } from '../shared/visit.ts'
 
 export interface RemarkMetadataOptions {
@@ -60,8 +64,10 @@ export const remarkMetadata: Plugin<
           metadata.title = text
         }
         if (tocDepth.includes(depth)) {
+          const tocText = text || getNodeText(node)
           metadata.toc.push({
-            text: text ?? getNodeText(node),
+            to: `#${sanitizeSelector(tocText)}`,
+            text: tocText,
             level: node.depth
           })
         }
@@ -74,7 +80,7 @@ export const remarkMetadata: Plugin<
     Object.assign(metadata, extendData)
 
     const defineValue = {
-      [name]: createExpression(extendData)
+      [name]: createExpression(metadata)
     } as define.Variables
 
     // 同步数据给 `rehype` 插件

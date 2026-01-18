@@ -101,8 +101,7 @@ async function handleClick() {
 
 根据上述的描述，在视图过渡中页面的新旧状态分别为主页和详情页，也就是路由切换前后的页面状态，幸运的是，`vitepress` 提供了一个简单的路由守卫功能。
 
-::: code-group
-
+<CodeGroup>
 ```ts [Layout.vue]
 const { viewTransitionStart, sleep } = useViewTransition()
 const router = useRouter()
@@ -157,8 +156,7 @@ export function useViewTransition() {
   return { viewTransitionStart, sleep }
 }
 ```
-
-:::
+</CodeGroup>
 
 我将路由守卫放在了 `Layout.vue` 组件上来监听路由的变化，只有当主页 `进入/退出` 的时候才开启视图过渡。
 

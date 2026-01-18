@@ -22,3 +22,22 @@ export function getGitUpdatedTime(filepath: string) {
     return null
   }
 }
+
+/**
+ * CSS 选择器消毒
+ */
+export function sanitizeSelector(str: string) {
+  return (
+    str
+      .trim() // 去掉首尾空格
+      // 匹配所有非法 CSS 标识符字符
+      .replaceAll(
+        /[^a-zA-Z0-9\u4e00-\u9fa5_-]+/g,
+        '-' // 替换成 -
+      )
+      // 合并连续的 -
+      .replaceAll(/-+/g, '-')
+      // 去掉开头或结尾的 -
+      .replaceAll(/^-|-$/g, '')
+  )
+}

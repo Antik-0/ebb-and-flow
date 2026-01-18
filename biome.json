@@ -38,6 +38,9 @@
           "fix": "safe"
         }
       },
+      "performance": {
+        "noImgElement": "off"
+      },
       "style": {
         "noNonNullAssertion": "off",
         "useNumberNamespace": {

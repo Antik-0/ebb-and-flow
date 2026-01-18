@@ -2,6 +2,7 @@
 import type { PropsWithChildren } from 'react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { ImageViewer } from '../components/ImageViewer'
 import { Navbar } from '../components/Navbar'
 import { Sidebar } from '../components/sidebar/Sidebar'
 import { ToolPanel } from '../components/ToolPanel'
@@ -23,6 +24,7 @@ export function EbbLayoutPage({ children }: PropsWithChildren) {
       </div>
       <ToolPanel />
 
+      <ImageViewer />
       <SentinelWatcher />
     </div>
   )

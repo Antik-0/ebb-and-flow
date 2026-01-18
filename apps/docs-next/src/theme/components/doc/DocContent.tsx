@@ -4,6 +4,7 @@ import type { PageData } from '../../types'
 import { useEffect } from 'react'
 import { pageStore, useLayout } from '../../controller/layout'
 import { DocFooter } from './DocFooter'
+import { DocOutline } from './DocOutline'
 
 interface Props {
   page: PageData
@@ -31,6 +32,7 @@ export function DocContent(props: PropsWithChildren<Props>) {
         <div className="pl-8 w-64">
           <aside className="doc-aside">
             <div className="aside-content">
+              <DocOutline />
               <div className="flex-1"></div>
             </div>
           </aside>

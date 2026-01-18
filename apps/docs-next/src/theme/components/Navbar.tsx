@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 import { EbbAvatar } from '../components/Avatar'
 import { useLayout } from '../controller/layout'
 import { Menu } from '../icons'
@@ -36,7 +36,7 @@ export function Navbar() {
 
       <GlassMask
         className="inset-0 absolute -z-1"
-        style={withVars({ '--fit-size': 'cover' })}
+        style={stylex({ '--fit-size': 'cover' })}
       />
     </div>
   )
@@ -60,7 +60,7 @@ function NavbarBrand() {
       avatar={theme.avatar}
       className="mx-auto"
       onClick={() => router.push('/')}
-      style={withVars({
+      style={stylex({
         '--size': '40px',
         '--rounded': '4px'
       })}

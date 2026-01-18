@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { memo, useEffect, useMemo, useState } from 'react'
+import { stylex } from '#/utils'
 import { useSharedMenus } from '../../controller/menus'
 import { useMenubarCtx } from '../../controller/navbar'
 import { GlassMask } from '../GlassMask'
@@ -35,10 +36,10 @@ export function MenuViewport(props: MenuViewportProps) {
           <div className="flex w-full justify-center">
             <div
               className="menu-viewport__arrow"
-              style={{
-                display: showArrow ? undefined : 'none',
+              style={stylex({
+                display: !showArrow && 'none',
                 translate: `${offsetX}px 50%`
-              }}
+              })}
             ></div>
           </div>
           <div className="relative isolate">
@@ -99,7 +100,7 @@ function MenuViewContent(props: PropsWithChildren<{ index: number }>) {
       data-index={index}
       data-motion={motion}
       onAnimationEnd={onAnimationEnd}
-      style={{ display: show ? undefined : 'none' }}
+      style={stylex({ display: !show && 'none' })}
     >
       {children}
     </div>

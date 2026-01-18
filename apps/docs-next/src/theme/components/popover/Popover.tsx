@@ -12,7 +12,7 @@ import {
   useRef
 } from 'react'
 import { createPortal } from 'react-dom'
-import { withVars } from '#/utils'
+import { stylex } from '#/utils'
 import { useEventListener } from '../../hooks'
 import { usePopoverState } from './state'
 
@@ -158,14 +158,14 @@ function PopoverContent(props: PropsWithChildren<PopoverContentProps>) {
 
   if (!isActive) return null
 
-  const wrapperStyle = withVars(
+  const wrapperStyle = stylex(
     {
       '--x': `${translate.x}px`,
-      '--y': `${translate.y}px`
+      '--y': `${translate.y}px`,
+      display: !visible && 'none',
+      position: fixed ? 'fixed' : 'absolute',
+      translate: 'var(--x) var(--y)'
     },
-    !visible && { display: 'none' },
-    { position: fixed ? 'fixed' : 'absolute' },
-    { translate: 'var(--x) var(--y)' },
     style
   )
 
