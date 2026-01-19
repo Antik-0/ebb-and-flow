@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
-    "@unocss/preset-wind4": "^66.5.10",
+    "@unocss/preset-wind4": "catalog:",
     "unocss": "catalog:"
   }
 }

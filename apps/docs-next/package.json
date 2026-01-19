@@ -11,28 +11,28 @@
     "start": "next start"
   },
   "dependencies": {
-    "@iconify-icon/react": "^3.0.3",
+    "@iconify-icon/react": "catalog:",
     "@repo/utils": "workspace:*",
-    "motion": "^12.24.12",
-    "next": "^16.1.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "motion": "catalog:",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@config/unocss": "workspace:*",
     "@ebb/mdx": "workspace:*",
-    "@mdx-js/loader": "^3.1.1",
-    "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^16.1.2",
-    "@types/mdx": "^2.0.13",
-    "@types/node": "25.0.3",
-    "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.3",
-    "@unocss/postcss": "66.5.10",
-    "@unocss/reset": "^66.5.12",
-    "typescript": "^5.9.3",
-    "unocss": "^66.5.12"
+    "@mdx-js/loader": "catalog:",
+    "@mdx-js/react": "catalog:",
+    "@next/mdx": "catalog:",
+    "@types/mdx": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@unocss/postcss": "catalog:",
+    "@unocss/reset": "catalog:",
+    "typescript": "catalog:",
+    "unocss": "catalog:"
   },
   "ignoreScripts": [
     "sharp",
