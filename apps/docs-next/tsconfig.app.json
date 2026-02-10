@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@config/tsconfig/tsconfig.app.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "incremental": true,
+    "baseUrl": "./",
+    "paths": {
+      "#/*": ["./src/*"],
+      "content": ["./.data/index.js"]
+    },
+    "plugins": [{ "name": "next" }],
+    "types": ["react", "react-dom", "mdx", "bun"]
+  },
+  "include": [
+    "global.d.ts",
+    "next-env.d.ts",
+    "next.config.ts",
+    "src/mdx-components.tsx",
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.mdx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ]
+}

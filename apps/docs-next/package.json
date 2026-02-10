@@ -8,6 +8,7 @@
   "scripts": {
     "build": "next build --webpack",
     "dev": "next dev --webpack",
+    "mdx": "bun scripts/dev-server.ts",
     "start": "next start"
   },
   "dependencies": {

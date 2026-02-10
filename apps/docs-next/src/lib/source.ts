@@ -1,32 +1,29 @@
-import type { MDXContent } from 'mdx/types'
-import { isPlainObject } from '@repo/utils'
+// @ts-nocheck - no type
+import contentIndex from 'content'
 
-interface MDXSource {
-  MDXContent: MDXContent
-  metadata: PageMetadata
+interface SourceEntry {
+  Content: any
+  metadata: any
 }
 
-export async function source(slug: string[]) {
+async function getPage(...path: string[]) {
   try {
-    const pathname = slug.join('/')
-    const module = await import(
-      `../content/${decodeURIComponent(pathname)}.mdx`
-    )
-
-    const { default: MDXContent, ...data } = module
-    const metadata = {} as PageMetadata
-
-    for (const key in data) {
-      const value = (data as any)[key] as unknown
-      if (isPlainObject(value)) {
-        Object.assign(metadata, value)
-      } else {
-        Reflect.set(metadata, key, value)
-      }
-    }
-
-    return { MDXContent, metadata } as MDXSource
+    const key = path.join('/')
+    const loader = contentIndex[key]
+    if (!loader) return null
+    const { default: Content, ...metadata } = await loader()
+    return { Content, metadata } as SourceEntry
   } catch {
     return null
   }
+}
+
+function getPages() {
+  const paths = Object.keys(contentIndex)
+  return Promise.all(paths.map(path => getPage(path)))
+}
+
+export const source = {
+  getPage,
+  getPages
 }

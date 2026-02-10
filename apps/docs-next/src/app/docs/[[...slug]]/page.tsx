@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { use } from 'react'
+import { MDXContent } from '#/Content'
 import { source } from '#/lib/source'
 import { EbbDocContent } from '#/theme'
 import { themeConfig } from '#/theme.config'
@@ -12,17 +13,22 @@ interface PageProps {
 
 export default function Page({ params }: PageProps) {
   const { slug } = use(params)
-  const pageData = use(source(slug))
+
+  const data = use(source.getPage(...slug))
+
+  const pageData = undefined as any
 
   if (!pageData) {
     notFound()
   }
 
-  const { MDXContent, metadata } = pageData
+  const { Content, metadata } = pageData
+
+  console.log(metadata)
 
   return (
     <EbbDocContent page={metadata}>
-      <MDXContent />
+      <MDXContent Render={Content} />
     </EbbDocContent>
   )
 }
@@ -31,7 +37,7 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const pageData = await source(slug)
+  const pageData = undefined as any
 
   if (!pageData) {
     return {
