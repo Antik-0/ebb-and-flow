@@ -1,4 +1,5 @@
 import type { MDXComponents } from 'mdx/types'
+import { createElement } from 'react'
 import { CSSGlass } from './content/components/css-glass'
 import { SVGLoading } from './content/components/svg-loading'
 import {
@@ -25,6 +26,6 @@ const components: MDXComponents = {
 
 type Content = React.FunctionComponent<{ components: MDXComponents }>
 
-export const MDXContent = ({ Render }: { Render: Content }) => {
-  return <Render components={components} />
+export const MDXContent = ({ content }: { content: Content }) => {
+  return createElement(content, { components })
 }

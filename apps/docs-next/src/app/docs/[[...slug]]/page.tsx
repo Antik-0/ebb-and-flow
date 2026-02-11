@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { use } from 'react'
-import { MDXContent } from '#/Content'
 import { source } from '#/lib/source'
+import { MDXContent } from '#/MDXContent'
 import { EbbDocContent } from '#/theme'
 import { themeConfig } from '#/theme.config'
 import { formatTitle } from '#/utils'
@@ -11,11 +10,8 @@ interface PageProps {
   params: Promise<{ slug: string[] }>
 }
 
-export default function Page({ params }: PageProps) {
-  const { slug } = use(params)
-
-  const data = use(source.getPage(...slug))
-
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params
   const pageData = undefined as any
 
   if (!pageData) {
@@ -24,11 +20,9 @@ export default function Page({ params }: PageProps) {
 
   const { Content, metadata } = pageData
 
-  console.log(metadata)
-
   return (
     <EbbDocContent page={metadata}>
-      <MDXContent Render={Content} />
+      <MDXContent content={Content} />
     </EbbDocContent>
   )
 }
@@ -37,7 +31,7 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const pageData = undefined as any
+  const pageData = await source.getPage(...slug)
 
   if (!pageData) {
     return {
@@ -49,4 +43,8 @@ export async function generateMetadata({
   const { title, tags } = pageData.metadata
   const description = tags ? `潮起潮落: ${tags.join(' ')}` : '潮起潮落'
   return { title, description }
+}
+
+export function generateStaticParams() {
+  return source.getSlugs()
 }

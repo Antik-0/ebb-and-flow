@@ -3,12 +3,13 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#/*": "./src/*"
+    "#/*": "./src/*",
+    "#content": "./.data/index.js"
   },
   "scripts": {
-    "build": "next build --webpack",
-    "dev": "next dev --webpack",
-    "mdx": "bun scripts/dev-server.ts",
+    "build": "next build",
+    "dev": "next dev",
+    "mdx": "bun scripts/build-source.ts",
     "start": "next start"
   },
   "dependencies": {

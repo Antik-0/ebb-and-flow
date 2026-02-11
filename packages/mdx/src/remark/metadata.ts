@@ -43,9 +43,9 @@ export const remarkMetadata: Plugin<
   const { name = '_metadata', setup, tocDepth = [2, 3] } = options ?? {}
 
   return (ast, file) => {
-    const filepath = file.history[0]!
+    const filepath = file.path
     const lastUpdated = getGitUpdatedTime(filepath)
-    const readingTime = computeReadingTime(file.value as string)
+    const readingTime = computeReadingTime(file.toString())
 
     const metadata: Metadata = {
       title: '',

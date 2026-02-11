@@ -2,7 +2,7 @@ import type { CacheMap, CompileContext, MDXConfig } from './types.ts'
 import { rm } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { createProcessor } from '@mdx-js/mdx'
-import { logCached, logCompiled, logEnd, logStart } from './logger.ts'
+import { logger } from './logger.ts'
 
 interface BuildOptions {
   mode?: 'dev' | 'build'
@@ -36,7 +36,7 @@ export async function buildMDXSource(options: BuildOptions = {}) {
   const configCacheKey = '__config__'
 
   if (mode === 'build' || configStat.mtimeMs !== cache[configCacheKey]) {
-    // 构建模式清除缓存，重新编译
+    // 构建模式/`config.ts`被修改清除缓存，重新编译
     await rm(sourceDir, { recursive: true, force: true })
     await rm(cacheFile, { recursive: true, force: true })
     cache = {}
@@ -52,18 +52,18 @@ export async function buildMDXSource(options: BuildOptions = {}) {
 
   const glob = new Bun.Glob('**/*.mdx')
 
-  logStart()
+  logger.start()
 
   let totalDuration = 0
   for await (const path of glob.scan({ cwd: contentDir })) {
     const startTime = performance.now()
     const cacheHit = await compile(path)
     if (cacheHit) {
-      logCached(path)
+      logger.cached(path)
     } else {
       const duration = performance.now() - startTime
       totalDuration += duration
-      logCompiled(path, duration)
+      logger.compiled(path, duration)
     }
   }
 
@@ -74,7 +74,7 @@ export async function buildMDXSource(options: BuildOptions = {}) {
   // 构建 content 索引
   await buildContentIndex(mdxDataDir)
 
-  logEnd(totalDuration)
+  logger.successd(totalDuration)
 
   return { compile }
 }
@@ -83,7 +83,8 @@ function createCompileWithCache(ctx: CompileContext) {
   const { contentDir, sourceDir, cache, processor } = ctx
 
   return async (path: string) => {
-    const file = Bun.file(resolve(contentDir, path))
+    const filepath = resolve(contentDir, path)
+    const file = Bun.file(filepath)
     const stat = await file.stat()
     const mtimeMs = stat.mtimeMs
 
@@ -92,7 +93,7 @@ function createCompileWithCache(ctx: CompileContext) {
     }
 
     const value = await file.text()
-    const vfile = await processor.process({ path, value })
+    const vfile = await processor.process({ path: filepath, value })
 
     const tofile = resolve(sourceDir, path.replaceAll('.mdx', '.js'))
     await Bun.write(tofile, vfile.toString())

@@ -1,10 +1,10 @@
 import pc from 'picocolors'
 
-export const logStart = () => {
+const logStart = () => {
   console.log(`\n${pc.yellow('🕔 mdx start compiling ...')}\n`)
 }
 
-export const logEnd = (duration: number) => {
+const logSuccessd = (duration: number) => {
   console.log(`
       \n${
         pc.yellow('🎉 mdx compile successd ') +
@@ -13,14 +13,21 @@ export const logEnd = (duration: number) => {
     `)
 }
 
-export const logCompiled = (path: string, duration: number) => {
+const logCompiled = (path: string, duration: number) => {
   console.log(
     pc.magenta(`✨ ${path.padEnd(50, ' ')} `) +
       pc.blue('compiled in ') +
-      pc.red(`${duration.toFixed(2).padStart(6)} ms`)
+      pc.red(`${duration.toFixed(2).padStart(8)} ms`)
   )
 }
 
-export const logCached = (path: string) => {
+const logCached = (path: string) => {
   console.log(pc.magenta(`⚡ ${path.padEnd(50, ' ')} `) + pc.blue('cached'))
+}
+
+export const logger = {
+  start: logStart,
+  cached: logCached,
+  successd: logSuccessd,
+  compiled: logCompiled
 }
