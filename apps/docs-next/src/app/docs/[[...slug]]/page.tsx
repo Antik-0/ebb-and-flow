@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { source } from '#/lib/source'
 import { MDXContent } from '#/MDXContent'
 import { EbbDocContent } from '#/theme'
 import { themeConfig } from '#/theme.config'
@@ -31,7 +30,7 @@ export async function generateMetadata({
   params
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const pageData = await source.getPage(...slug)
+  const pageData = undefined as any
 
   if (!pageData) {
     return {
@@ -45,6 +44,6 @@ export async function generateMetadata({
   return { title, description }
 }
 
-export function generateStaticParams() {
-  return source.getSlugs()
-}
+// export function generateStaticParams() {
+//   return source.getSlugs()
+// }
