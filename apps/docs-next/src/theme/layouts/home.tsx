@@ -12,7 +12,7 @@ export function EbbLayoutHome() {
   const { theme } = useTheme()
 
   return (
-    <div className="flex-col h-screen w-screen isolate">
+    <div className="flex-col h-screen w-screen isolate" data-label="home">
       <div className="px-10 pb-20 pt-40 flex-col flex-1 items-center">
         <EbbMoonAvatar avatar={theme.avatar} />
 

@@ -1,74 +1,133 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+import {
+  createContext,
+  createElement,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef
+} from 'react'
 import { useResizeObserver } from '../hooks'
 
-let scopeHalfWidth = 0
-let scopeOffsetLeft = 0
-let menuItemNodes: HTMLElement[] = []
-
-export function useMenubarHover() {
-  // 距离 scope 左边界的偏移量
-  const [offsetX, setOffsetX] = useState(0)
-  const onMouseMove = (event: PointerEvent) => {
-    setOffsetX(event.clientX - scopeOffsetLeft)
-  }
-
-  return { offsetX, onMouseMove }
+interface MenubarMotion {
+  offsetX: number
+  itemWidth: number
 }
+
+type MotionCallback = (motion: MenubarMotion) => void
 
 export function useMenubarMotion() {
   const scope = useRef<HTMLElement | null>(null)
-  const { observe } = useResizeObserver()
+  const scopeHalfWidth = useRef(0)
+  const menuItemNodes = useRef<HTMLElement[]>([])
+  const motionCbs = useRef<MotionCallback[]>([])
 
+  const { observe } = useResizeObserver()
   useEffect(() => {
     observe(
       () => scope.current,
       entry => {
         const target = entry.target as HTMLElement
         const rect = target.getBoundingClientRect()
-        scopeHalfWidth = rect.width / 2
-        scopeOffsetLeft = rect.left
+        scopeHalfWidth.current = rect.width / 2
       }
     )
 
-    menuItemNodes = [
+    menuItemNodes.current = [
       ...scope.current!.querySelectorAll<HTMLElement>(
         "li[data-role='menuitem']"
       )
     ]
 
     return () => {
-      scopeHalfWidth = 0
-      scopeOffsetLeft = 0
-      menuItemNodes = []
+      scopeHalfWidth.current = 0
+      menuItemNodes.current = []
     }
   }, [])
 
-  // 距离 scope 中心点的偏移量
-  const [offsetX, setOffsetX] = useState(0)
-  const [motion, setMotion] = useState({ offsetX: 0, width: 0 })
-
-  function updateMotion(index: number) {
-    const target = menuItemNodes[index]
+  const updateMotion = useCallback((index: number) => {
+    const target = menuItemNodes.current[index]
     if (!target) return
 
-    const itemWidth = target.offsetWidth
-    const offsetXValue = target.offsetLeft + itemWidth / 2 - scopeHalfWidth
-    setOffsetX(offsetXValue)
-    setMotion({ offsetX: offsetXValue, width: itemWidth })
-  }
+    if (scopeHalfWidth.current === 0) {
+      const rect = scope.current!.getBoundingClientRect()
+      scopeHalfWidth.current = rect.width / 2
+    }
 
-  return { scope, offsetX, motion, updateMotion }
+    const offsetLeft = target.offsetLeft
+    const offsetWidth = target.offsetWidth
+    const offsetX = offsetLeft + offsetWidth / 2 - scopeHalfWidth.current
+
+    const motion: MenubarMotion = {
+      offsetX,
+      itemWidth: offsetWidth
+    }
+
+    for (const cb of motionCbs.current) {
+      cb(motion)
+    }
+  }, [])
+
+  const onMotionChange = useCallback((callback: MotionCallback) => {
+    motionCbs.current.push(callback)
+  }, [])
+
+  return { scope, updateMotion, onMotionChange }
 }
 
 interface MenubarContext {
-  offsetX: number
-  showViewport: boolean
-  prevHoverIndex: number
-  currHoverIndex: number
+  onMenuItemHover: (index: number) => void
+  onHoverIndexChange: (callback: (index: number) => void) => void
 }
 
-export const MenubarContext = createContext({} as MenubarContext)
-
-export function useMenubarCtx() {
-  return useContext(MenubarContext)
+interface MotionContext {
+  onMotionChange: (callback: MotionCallback) => void
 }
+
+interface ViewportContext {
+  prevIndex: number
+  currIndex: number
+}
+
+function createMenubar() {
+  const MenubarCtx = createContext({} as MenubarContext)
+
+  const Provider = (props: PropsWithChildren<{ value: MenubarContext }>) => {
+    const { value, children } = props
+    return createElement(MenubarCtx, { value }, children)
+  }
+
+  const useCtx = () => useContext(MenubarCtx)
+
+  return [Provider, useCtx] as const
+}
+
+function createMenubarMotion() {
+  const MotionCtx = createContext({} as MotionContext)
+
+  const Provider = (props: PropsWithChildren<{ value: MotionContext }>) => {
+    const { value, children } = props
+    return createElement(MotionCtx, { value }, children)
+  }
+
+  const useCtx = () => useContext(MotionCtx)
+
+  return [Provider, useCtx] as const
+}
+
+function createMenubarViewport() {
+  const ViewportCtx = createContext({} as ViewportContext)
+
+  const Provider = (props: PropsWithChildren<{ value: ViewportContext }>) => {
+    const { value, children } = props
+    return createElement(ViewportCtx, { value }, children)
+  }
+
+  const useCtx = () => useContext(ViewportCtx)
+
+  return [Provider, useCtx] as const
+}
+
+export const [MotionProvider, useMotion] = createMenubarMotion()
+export const [MenubarProvider, useMenubar] = createMenubar()
+export const [ViewportProvider, useViewport] = createMenubarViewport()

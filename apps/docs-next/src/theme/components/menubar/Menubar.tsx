@@ -1,174 +1,154 @@
-import type { PointerEvent, RefObject } from 'react'
+import type { ViewportRef } from './MenuViewport'
 import { LayoutGroup, animate, motion, useMotionValue } from 'motion/react'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { stylex } from '#/utils'
 import { useMenuActiveNode, useSharedMenus } from '../../controller/menus'
 import {
-  MenubarContext,
-  useMenubarHover,
-  useMenubarMotion
+  MenubarProvider,
+  MotionProvider,
+  useMenubarMotion,
+  useMotion
 } from '../../controller/navbar'
-import { useEventListener } from '../../hooks'
 import { FlowingLight } from '../FlowingLight'
 import { MenubarItem } from './MenubarItem'
 import { MenuViewport } from './MenuViewport'
 
-const MenubarItemMemo = memo(MenubarItem)
+const MenubarItemMemo = memo(MenubarItem, () => true)
+
+type HoverChangeCallback = (index: number) => void
 
 export function Menubar() {
   const menus = useSharedMenus()
   const currActiveNode = useMenuActiveNode()
-  const { scope, offsetX, motion, updateMotion } = useMenubarMotion()
-  const [activeIndex, setActiveIndex] = useState(-1)
+  const { scope, updateMotion, onMotionChange } = useMenubarMotion()
+
+  const activeIndex = useRef(-1)
+  const viewportRef = useRef<ViewportRef>(undefined!)
+  const hoverChangeCbs = useRef<HoverChangeCallback[]>([])
 
   useEffect(() => {
-    if (currActiveNode) {
-      const index = menus.indexOf(currActiveNode)
-      setActiveIndex(index)
+    const prevActiveIndex = activeIndex.current
+
+    let activeNode = currActiveNode
+    while (activeNode?.parent) {
+      activeNode = activeNode.parent
     }
-  }, [])
 
-  const [showViewport, setShowViewport] = useState(false)
-  const [prevHoverIndex, setPrevHoverIndex] = useState(-1)
-  const [currHoverIndex, setCurrHoverIndex] = useState(-1)
-
-  useEffect(() => {
-    updateMotion(currHoverIndex)
-  }, [currHoverIndex])
-
-  useEffect(() => {
-    const prevActiveIndex = activeIndex
-
-    let rootActiveNode = currActiveNode
-    while (rootActiveNode?.parent) {
-      rootActiveNode = rootActiveNode.parent
-    }
-    const index = menus.indexOf(rootActiveNode!)
-    setActiveIndex(index)
-
+    const index = menus.indexOf(activeNode!)
     if (prevActiveIndex !== index) {
-      if (index === currHoverIndex) {
-        updateMotion(index)
-      } else {
-        setCurrHoverIndex(index)
-      }
+      activeIndex.current = index
+      updateMotion(index)
     }
   }, [currActiveNode])
 
-  function onMouseEnter(event: PointerEvent<HTMLElement>) {
-    let node = event.target as HTMLElement
-    while (node !== document.body) {
-      if (node.getAttribute('data-role') === 'menuviewport') {
-        return
-      }
-      node = node.parentElement!
+  const onMenuItemHover = useCallback((index: number) => {
+    updateMotion(index)
+    for (const cb of hoverChangeCbs.current) {
+      cb(index)
     }
-    setShowViewport(true)
+  }, [])
+
+  const onHoverIndexChange = useCallback((callback: HoverChangeCallback) => {
+    hoverChangeCbs.current.push(callback)
+  }, [])
+
+  function onMouseEnter() {
+    viewportRef.current.open()
   }
 
   function onMouseLeave() {
-    setShowViewport(false)
+    viewportRef.current.close()
   }
 
-  function onMenuItemHover(index: number) {
-    setPrevHoverIndex(currHoverIndex)
-    setCurrHoverIndex(index)
+  function onViewportClose() {
+    updateMotion(activeIndex.current)
   }
+
+  const motionValue = useMemo(
+    () => ({
+      onMotionChange
+    }),
+    [onMotionChange]
+  )
 
   const contextValue = useMemo(
     () => ({
-      offsetX,
-      showViewport,
-      prevHoverIndex,
-      currHoverIndex
+      onMenuItemHover,
+      onHoverIndexChange
     }),
-    [offsetX, showViewport, prevHoverIndex, currHoverIndex]
+    [onMenuItemHover, onHoverIndexChange]
   )
 
-  function onViewportClose() {
-    setCurrHoverIndex(activeIndex)
-  }
-
   return (
-    <nav
-      className="menubar"
-      onPointerEnter={onMouseEnter}
-      onPointerLeave={onMouseLeave}
-      ref={scope}
-    >
-      <MenubarBackground scope={scope} />
+    <nav className="menubar" onPointerLeave={onMouseLeave} ref={scope}>
+      <MotionProvider value={motionValue}>
+        <MenubarBackground />
+        <MenubarIndicator />
+      </MotionProvider>
 
-      <MenubarIndicator motion={motion} />
-
-      <MenubarContext value={contextValue}>
-        <menu className="grid-full px-4 flex" data-role="menu">
+      <MenubarProvider value={contextValue}>
+        <menu
+          className="grid-full px-4 flex"
+          data-role="menu"
+          onPointerEnter={onMouseEnter}
+        >
           <LayoutGroup>
             {menus.map((item, index) => (
-              <MenubarItemMemo
-                item={item}
-                key={item.id}
-                onHover={() => onMenuItemHover(index)}
-              />
+              <MenubarItemMemo index={index} item={item} key={item.id} />
             ))}
           </LayoutGroup>
         </menu>
-        <MenuViewport onClose={onViewportClose} />
-      </MenubarContext>
+        <MenuViewport onClose={onViewportClose} ref={viewportRef} />
+      </MenubarProvider>
 
       <FlowingLight />
     </nav>
   )
 }
 
-interface BackgroundProps {
-  scope: RefObject<HTMLElement | null>
-}
-
-function MenubarBackground(props: BackgroundProps) {
-  const { offsetX, onMouseMove } = useMenubarHover()
-  const { addEventListener } = useEventListener()
+function MenubarBackground() {
+  const [offsetX, setOffsetX] = useState(0)
+  const { onMotionChange } = useMotion()
 
   useEffect(() => {
-    const target = props.scope.current
-    if (!target) return
-    addEventListener(target, 'pointermove', onMouseMove)
+    onMotionChange(motion => {
+      setOffsetX(motion.offsetX)
+    })
   }, [])
 
   return (
     <div
       aria-hidden="true"
       className="menubar-background"
+      data-role="background"
       style={stylex({ '--offset-x': offsetX + 'px' })}
     ></div>
   )
 }
 
-interface IndicatorProps {
-  motion: {
-    offsetX: number
-    width: number
-  }
-}
-
-function MenubarIndicator(props: IndicatorProps) {
-  const { offsetX, width } = props.motion
-
+function MenubarIndicator() {
   const motionX = useMotionValue(0)
   const motionW = useMotionValue(0)
+  const { onMotionChange } = useMotion()
 
   useEffect(() => {
-    animate(motionX, offsetX, { type: 'spring', duration: 0.6 })
-  }, [offsetX])
-
-  useEffect(() => {
-    animate(motionW, width, { type: 'spring', duration: 0.6 })
-  }, [width])
+    onMotionChange(motion => {
+      const { offsetX, itemWidth } = motion
+      animate(motionX, offsetX, { type: 'spring', duration: 0.6 })
+      animate(motionW, itemWidth, { type: 'spring', duration: 0.6 })
+    })
+  }, [])
 
   return (
     <motion.div
-      className="menubar-indicator absolute -z-1"
-      data-show="true"
-      style={{ x: motionX, width: motionW }}
+      aria-hidden="true"
+      className="rounded-[--rounded] h-8 absolute -z-1"
+      data-role="indicator"
+      style={{
+        x: motionX,
+        width: motionW,
+        boxShadow: 'inset 0 0 12px 1px hsl(187 75% 65% / 0.4)'
+      }}
     />
   )
 }

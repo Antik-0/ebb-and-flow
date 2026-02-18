@@ -1,17 +1,18 @@
 import type { MenuItem } from '../../types'
 import { motion } from 'motion/react'
 import { useMenuNodeIsActive } from '../../controller/menus'
+import { useMenubar } from '../../controller/navbar'
 import { Icon } from '../../icons'
 import { EbbLink } from '../Link'
 
 interface Props {
   item: MenuItem
-  onHover: () => void
+  index: number
 }
 
 export function MenubarItem(props: Props) {
-  const { item, onHover } = props
-
+  const { item, index } = props
+  const { onMenuItemHover } = useMenubar()
   const isActive = useMenuNodeIsActive(item.id)
 
   return (
@@ -20,7 +21,7 @@ export function MenubarItem(props: Props) {
       data-active={isActive}
       data-role="menuitem"
       layout
-      onPointerEnter={onHover}
+      onPointerEnter={() => onMenuItemHover(index)}
     >
       <EbbLink className="px-4 py-2.5 flex items-center" href={item.link}>
         {item.icon && isActive && (

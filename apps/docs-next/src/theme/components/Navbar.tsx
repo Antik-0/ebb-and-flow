@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from 'next/navigation'
 import { stylex } from '#/utils'
 import { EbbAvatar } from '../components/Avatar'
@@ -17,20 +18,18 @@ export function Navbar() {
       className="flex flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
       data-role="navbar"
     >
-      <header className="bg-[--c-bg-navbar] h-[--h-navbar] max-w-320 w-full relative isolate">
-        <div className="grid cols-[120px_1fr_120px] size-full">
-          <div className="px-6 flex items-center">
-            <NavbarBrand />
-          </div>
+      <header className="bg-[--c-bg-navbar] grid cols-[120px_1fr_120px] h-[--h-navbar] max-w-320 w-full">
+        <div className="px-6 flex items-center">
+          <NavbarBrand />
+        </div>
 
-          <div className="flex flex-center">
-            <NavbarCenter />
-          </div>
+        <div className="flex flex-center">
+          <NavbarCenter />
+        </div>
 
-          <div className="flex gap-3 items-center">
-            <ThemeToggle />
-            <SocialLinks />
-          </div>
+        <div className="pr-6 flex items-center justify-between">
+          <ThemeToggle />
+          <SocialLinks />
         </div>
       </header>
 
@@ -60,10 +59,7 @@ function NavbarBrand() {
       avatar={theme.avatar}
       className="mx-auto"
       onClick={() => router.push('/')}
-      style={stylex({
-        '--size': '40px',
-        '--rounded': '4px'
-      })}
+      style={stylex({ '--size': '40px', '--rounded': '4px' })}
     />
   )
 }

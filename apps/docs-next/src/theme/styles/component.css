@@ -90,41 +90,15 @@
   opacity: 0;
   transition: opacity ease-in 200ms;
   background: radial-gradient(
-    100px circle at var(--offset-x) 50%,
+    100px circle at 50% 50%,
     var(--bg-color),
     transparent 65%
   );
+  background-position-x: var(--offset-x);
 }
 
 .menubar:hover .menubar-background {
   opacity: 1;
-}
-
-.menubar-indicator {
-  height: 32px;
-  border-radius: var(--rounded);
-  box-shadow: inset 0 0 12px 1px hsl(187 75% 65% / 0.4);
-}
-
-.menu-viewport {
-  contain: layout;
-  isolation: isolate;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  translate: -50% 0;
-  min-width: 100%;
-  padding-top: 10px;
-}
-
-.menu-viewport__arrow {
-  width: 12px;
-  height: 12px;
-  border-radius: 4px;
-  rotate: -45deg;
-  translate: 0 50%;
-  transition: translate 250ms ease;
-  background: linear-gradient(45deg, transparent 50%, hsl(0 0% 26% / 0.6) 50%);
 }
 
 .menu-content {

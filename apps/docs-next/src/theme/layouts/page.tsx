@@ -12,19 +12,19 @@ import { updateActiveLink } from '../controller/menus'
 
 export function EbbLayoutPage({ children }: PropsWithChildren) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" data-label="page">
       <LayoutWatcher />
       <MenusWatcher />
 
       <Navbar />
-      <Sidebar />
+      {false && <Sidebar />}
 
       <div className="ebb-page" data-role="page">
         <main className="page-content">{children}</main>
       </div>
-      <ToolPanel />
+      {false && <ToolPanel />}
 
-      <ImageViewer />
+      {false && <ImageViewer />}
       <SentinelWatcher />
     </div>
   )

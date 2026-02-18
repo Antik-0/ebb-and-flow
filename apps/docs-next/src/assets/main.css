@@ -1,7 +1,7 @@
 /* biome-ignore-all lint/correctness/noUnknownTypeSelector: not supported */
 @unocss all;
 
-body {
+#app {
   background-image: url('/wallhaven-rrwvdq.webp');
   background-size: cover;
   background-position: center;

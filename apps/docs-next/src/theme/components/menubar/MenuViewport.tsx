@@ -1,55 +1,88 @@
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren, RefObject } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { memo, useEffect, useMemo, useState } from 'react'
+import {
+  memo,
+  useEffect,
+  useEffectEvent,
+  useImperativeHandle,
+  useMemo,
+  useState
+} from 'react'
 import { stylex } from '#/utils'
 import { useSharedMenus } from '../../controller/menus'
-import { useMenubarCtx } from '../../controller/navbar'
+import {
+  ViewportProvider,
+  useMenubar,
+  useViewport
+} from '../../controller/navbar'
 import { GlassMask } from '../GlassMask'
 import { MenuViewGroup } from './MenuViewGroup'
 
+export interface ViewportRef {
+  open: () => void
+  close: () => void
+}
+
 interface MenuViewportProps {
+  ref: RefObject<ViewportRef>
   onClose: () => void
 }
 
 export function MenuViewport(props: MenuViewportProps) {
-  const { offsetX, showViewport, currHoverIndex } = useMenubarCtx()
-
   const menus = useSharedMenus()
   const contents = useMemo(() => menus.map(item => item.items), [menus])
-  const showArrow = !!contents[currHoverIndex]
+
+  const { onHoverIndexChange } = useMenubar()
+
+  const [show, setShow] = useState(false)
+  const [prevIndex, setPrevIndex] = useState(-1)
+  const [currIndex, setCurrIndex] = useState(-1)
+
+  const handleIndexChange = useEffectEvent((index: number) => {
+    setPrevIndex(currIndex)
+    setCurrIndex(index)
+  })
+
+  useEffect(() => {
+    onHoverIndexChange(handleIndexChange)
+  }, [])
+
+  useImperativeHandle(
+    props.ref,
+    () => ({
+      open: () => setShow(true),
+      close: () => setShow(false)
+    }),
+    []
+  )
 
   function onExitComplete() {
-    !showViewport && props.onClose()
+    !show && props.onClose()
   }
+
+  const contextValue = { prevIndex, currIndex }
 
   return (
     <AnimatePresence onExitComplete={onExitComplete}>
-      {showViewport && (
+      {show && (
         <motion.div
           animate={{ y: 0 }}
-          className="menu-viewport"
-          data-role="menuviewport"
+          className="pt-2 min-w-full contain-layout left-1/2 top-full absolute isolate -translate-x-1/2"
+          data-role="viewport"
           exit={{ opacity: 0, y: 40 }}
           initial={{ y: 40 }}
           transition={{ type: 'spring', duration: 0.6 }}
         >
-          <div className="flex w-full justify-center">
-            <div
-              className="menu-viewport__arrow"
-              style={stylex({
-                display: !showArrow && 'none',
-                translate: `${offsetX}px 50%`
-              })}
-            ></div>
-          </div>
           <div className="relative isolate">
-            <div className="rounded-4 relative overflow-hidden">
-              {contents.map((content, index) => (
-                <MenuViewContent index={index} key={index}>
-                  {content && <MenuViewGroupMemo items={content} />}
-                </MenuViewContent>
-              ))}
-            </div>
+            <ViewportProvider value={contextValue}>
+              <div className="rounded-4 relative overflow-hidden">
+                {contents.map((content, index) => (
+                  <MenuViewContent index={index} key={index}>
+                    {content && <MenuViewGroupMemo items={content} />}
+                  </MenuViewContent>
+                ))}
+              </div>
+            </ViewportProvider>
             <GlassMask className="rounded-4 inset-0 absolute -z-1" />
           </div>
         </motion.div>
@@ -65,30 +98,30 @@ type Motion = 'from-start' | 'from-end' | 'to-start' | 'to-end' | undefined
 function MenuViewContent(props: PropsWithChildren<{ index: number }>) {
   const { index, children } = props
 
-  const { currHoverIndex, prevHoverIndex } = useMenubarCtx()
+  const { currIndex, prevIndex } = useViewport()
 
   const [show, setShow] = useState(false)
   const [active, setActive] = useState(false)
   const [motion, setMotion] = useState<Motion>(undefined)
 
   useEffect(() => {
-    const isFromEnd = currHoverIndex > prevHoverIndex
-    if (index === currHoverIndex) {
+    const isFromEnd = currIndex > prevIndex
+    if (index === currIndex) {
       setMotion(isFromEnd ? 'from-end' : 'from-start')
-    } else if (index === prevHoverIndex) {
+    } else if (index === prevIndex) {
       setMotion(isFromEnd ? 'to-start' : 'to-end')
     }
-    setShow(index === currHoverIndex || index === prevHoverIndex)
-    setActive(index === currHoverIndex)
-  }, [currHoverIndex, prevHoverIndex])
+    setShow(index === currIndex || index === prevIndex)
+    setActive(index === currIndex)
+  }, [currIndex, prevIndex])
 
   if (!children) return null
 
   function onAnimationEnd() {
-    if (index === currHoverIndex) {
+    if (index === currIndex) {
       return
     }
-    if (index === prevHoverIndex) {
+    if (index === prevIndex) {
       setShow(false)
     }
   }

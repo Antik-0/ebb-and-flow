@@ -1,18 +1,22 @@
+'use client'
+import type { PropsWithChildren } from 'react'
 import type { ThemeConfig } from './types'
-import { useContext } from 'react'
-import { ThemeContext } from './layouts/theme'
+import { createContext, createElement, useContext } from 'react'
 
-const isDark = false
+function createEbbTheme() {
+  const EbbThemeCtx = createContext<ThemeConfig>({} as ThemeConfig)
 
-export function useTheme() {
-  const theme = useContext(ThemeContext)
-  return { theme, isDark }
+  const Provider = (props: PropsWithChildren<{ config: ThemeConfig }>) => {
+    const { config, children } = props
+    return createElement(EbbThemeCtx, { value: config }, children)
+  }
+
+  const useTheme = () => {
+    const theme = useContext(EbbThemeCtx)
+    return { theme }
+  }
+
+  return [Provider, useTheme] as const
 }
 
-export function defineThemeConfig(config: ThemeConfig): ThemeConfig
-export function defineThemeConfig(config: () => ThemeConfig): ThemeConfig
-export function defineThemeConfig(
-  config: ThemeConfig | (() => ThemeConfig)
-): ThemeConfig {
-  return typeof config === 'function' ? config() : config
-}
+export const [EbbThemeProvider, useTheme] = createEbbTheme()
