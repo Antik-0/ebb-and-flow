@@ -12,16 +12,23 @@ import { updateActiveLink } from '../controller/menus'
 
 export function EbbLayoutPage({ children }: PropsWithChildren) {
   return (
-    <div className="min-h-screen" data-label="page">
+    <div className="ebb-page" data-label="page">
       <LayoutWatcher />
       <MenusWatcher />
 
       <Navbar />
-      {false && <Sidebar />}
 
-      <div className="ebb-page" data-role="page">
-        <main className="page-content">{children}</main>
-      </div>
+      <main className="grid-area-[main] md:p-4" data-role="main">
+        <section className="p-6 bg-[--c-bg-content] min-h-200vh min-w-0 w-full relative md:rounded-4">
+          {children}
+        </section>
+      </main>
+
+      <Sidebar.Container>
+        <Sidebar />
+        <Sidebar.Overlay />
+      </Sidebar.Container>
+
       {false && <ToolPanel />}
 
       {false && <ImageViewer />}

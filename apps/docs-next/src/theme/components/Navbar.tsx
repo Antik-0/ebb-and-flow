@@ -15,7 +15,7 @@ import { ThemeToggle } from './ThemeToggle'
 export function Navbar() {
   return (
     <div
-      className="flex flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
+      className="flex grid-area-[navbar] flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
       data-role="navbar"
     >
       <header className="bg-[--c-bg-navbar] grid cols-[120px_1fr_120px] h-[--h-navbar] max-w-320 w-full">

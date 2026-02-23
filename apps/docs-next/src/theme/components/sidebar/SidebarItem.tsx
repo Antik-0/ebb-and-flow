@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import type { MenuItem } from '../../types'
 import { useEffect, useRef, useState } from 'react'
+import { stylex } from '#/utils'
 import { useMenuNodeIsActive } from '../../controller/menus'
 import { ChevronRight, Icon } from '../../icons'
 import { EbbLink } from '../Link'
@@ -33,8 +34,11 @@ export function SidebarItem(props: SidebarItemProps) {
   }
 
   return (
-    <div className="sidebar-item" data-active={isActive} data-role="route">
-      <EbbLink className="flex gap-2 truncate items-center" href={item.link}>
+    <li className="sidebar-item" data-active={isActive} data-role="route">
+      <EbbLink
+        className="flex gap-2 truncate transition-transform duration-250 items-center"
+        href={item.link}
+      >
         {item.icon && <Icon className="text-brand" icon={item.icon} />}
         <span
           className="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-250 hover:text-brand-2"
@@ -43,7 +47,7 @@ export function SidebarItem(props: SidebarItemProps) {
           {item.text}
         </span>
       </EbbLink>
-    </div>
+    </li>
   )
 }
 
@@ -60,7 +64,7 @@ function SidebarItemCollapsible(props: PropsWithChildren<CollapsibleProps>) {
   const defaultCollapsed = props.defaultCollapsed ?? true
 
   const [collapsed, setCollapsed] = useState(defaultCollapsed)
-  const viewRef = useRef<HTMLDivElement | null>(null)
+  const viewRef = useRef<HTMLUListElement | null>(null)
 
   function toggle() {
     const element = viewRef.current!
@@ -110,14 +114,14 @@ function SidebarItemCollapsible(props: PropsWithChildren<CollapsibleProps>) {
           <ChevronRight className="transition-transform duration-250" />
         </span>
       </button>
-      <div
-        className="pl-5 transition-height duration-250 ease overflow-hidden"
-        data-level={level}
+      <ul
+        className="transition-height duration-250 ease overflow-hidden"
         onTransitionEnd={onTransitionEnd}
         ref={viewRef}
+        style={stylex({ '--level': level })}
       >
         {children}
-      </div>
+      </ul>
     </>
   )
 }

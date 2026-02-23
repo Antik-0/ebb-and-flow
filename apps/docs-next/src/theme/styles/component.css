@@ -17,6 +17,7 @@
   --m-color: transparent;
 
   padding: 4px 8px;
+  padding-left: calc(var(--level, 0) * 16px + 8px);
   border-radius: 8px;
   cursor: pointer;
   transition: --m-color ease 250ms;
@@ -25,6 +26,10 @@
   &:hover {
     --m-color: hsla(186, 49%, 73%, 0.2);
   }
+}
+
+.sidebar-item:hover a {
+  translate: 12px;
 }
 
 .sidebar-item[data-active='true'] [data-role='title'] {
@@ -48,17 +53,6 @@
 
 .sidebar-item__button[data-active='true'] > [data-role='button-title'] {
   color: var(--c-brand-1);
-}
-
-.sidebar-background {
-  background-color: var(--c-bg-sidebar);
-  box-shadow: 4px 0 60px 1px hsl(187 75% 65% / 0.2);
-}
-
-@media (width >= 1280px) {
-  .sidebar-background {
-    background-color: transparent;
-  }
 }
 
 /**
