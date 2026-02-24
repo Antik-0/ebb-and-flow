@@ -12,14 +12,11 @@ interface Group {
   children: MenuItem[]
 }
 
-const groups = shallowRef<Group[]>(buildGroups())
+const groups = shallowRef<Group[]>(buildGroups(props.items ?? []))
 
-function buildGroups() {
-  const items = props.items ?? []
-
+function buildGroups(items: MenuItem[]) {
   const groupMap: Group[] = []
   let group: MenuItem[] = []
-
   for (const item of items) {
     if (item.items) {
       group.length && groupMap.push({ children: group })

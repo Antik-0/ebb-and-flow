@@ -1,6 +1,5 @@
-import type { SidebarMenuItem } from '#/types'
-import { computed, readonly, ref } from 'vue'
-import { useSharedMenus } from './menus'
+import { computed, ref } from 'vue'
+import { useMenus } from './menus'
 
 const isOpen = ref(false)
 
@@ -18,7 +17,7 @@ export function useSidebarControl() {
   }
 
   return {
-    isOpen: readonly(isOpen),
+    isOpen,
     open,
     close,
     toggle
@@ -26,11 +25,11 @@ export function useSidebarControl() {
 }
 
 export function useSidebarMenus() {
-  const { menus } = useSharedMenus()
+  const menus = useMenus()
 
-  const sidebarMenus = computed<SidebarMenuItem[]>(() =>
+  const sidebarMenus = computed(() =>
     menus.value.filter(item => !item.hiddenInSidebar)
   )
 
-  return { sidebarMenus }
+  return sidebarMenus
 }

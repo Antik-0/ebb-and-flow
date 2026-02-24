@@ -1,37 +1,38 @@
 <script setup lang='ts'>
-import { computed } from 'vue'
-import { useScroll } from '#/hooks'
-
-const { progress } = useScroll()
-
-const pathLength = 2 * Math.PI * 12
-const dashoffset = computed(() => {
-  return pathLength * (1 - progress.value)
-})
+const pathLength = Math.ceil(2 * Math.PI * 12)
 </script>
 
 <template>
   <svg
     height="1em"
-    :style="{
-      rotate: '-90deg',
-      transition: 'stroke-offset 600ms ease-in'
-    }"
+    style="rotate: -90deg"
     viewBox="0 0 32 32"
     width="1em"
     xmlns="http://www.w3.org/2000/svg"
   >
     <circle
+      class="scroll-indicator"
       cx="16"
       cy="16"
       fill="none"
       r="12"
-      rotate="-90deg"
       stroke="currentColor"
       :stroke-dasharray="pathLength"
-      :stroke-dashoffset="dashoffset"
       stroke-linecap="round"
       stroke-width="3"
+      :style="{
+        '--value-from': pathLength,
+        '--value-to': 0,
+      }"
     />
   </svg>
 </template>
+
+<style>
+.scroll-indicator {
+  stroke-dashoffset: var(--m-value);
+  animation: motion-value  linear forwards;
+  animation-duration: auto;
+  animation-timeline: scroll(block);
+}
+</style>

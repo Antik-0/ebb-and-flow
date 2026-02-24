@@ -1,11 +1,12 @@
 <script setup lang='ts'>
-import type { SidebarMenuItem } from '#/types'
+import type { MenuItem } from '#/types'
 import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import Link from '#/components/Link.vue'
+import { useMenuNodeIsActive } from '#/controller/menus'
 import { ChevronRight, Icon } from '#/icons'
 
 interface Props {
-  item: SidebarMenuItem
+  item: MenuItem
   level?: number
 }
 
@@ -16,6 +17,8 @@ const collapsiable = computed(() => {
   const item = props.item
   return Array.isArray(item.items) && item.items.length
 })
+
+const isActive = useMenuNodeIsActive(props.item.id)
 
 const viewRef = useTemplateRef<HTMLElement>('view')
 
@@ -58,7 +61,7 @@ onMounted(() => {
     <button
       :aria-expanded="!collapsed"
       class="sidebar-item__button"
-      :data-active="item.active"
+      :data-active="isActive"
       type="button"
       @click="toggle"
     >
@@ -97,7 +100,7 @@ onMounted(() => {
   <div
     v-else
     class="sidebar-item"
-    :data-active="item.active"
+    :data-active="isActive"
     data-role="route"
   >
     <Link

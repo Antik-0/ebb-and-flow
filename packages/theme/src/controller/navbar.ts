@@ -1,74 +1,98 @@
-import type {
-  FunctionalComponent,
-  InjectionKey,
-  Ref,
-  ShallowRef,
-  VNode
-} from 'vue'
-import type { MenuItem } from '#/types'
-import { h, inject, provide, ref, shallowRef } from 'vue'
+import type { FunctionalComponent, InjectionKey, Ref } from 'vue'
+import { inject, onMounted, provide, shallowRef } from 'vue'
+import { useResizeObserver } from '#/hooks'
 
-export interface ContentView {
-  item: MenuItem
-  render: () => VNode[]
+interface MenubarMotion {
+  offsetX: number
+  itemWidth: number
 }
 
-export function useMenuViewControl() {
-  const visible = ref(false)
-  const prevHoverIndex = ref(-1)
-  const currHoverIndex = ref(-1)
+type MotionCallback = (motion: MenubarMotion) => void
 
-  function onMouseenter() {
-    visible.value = true
+export function useMenubarMotion() {
+  const scope = shallowRef<HTMLElement | null>(null)
+  let scopeHalfWidth = 0
+  let menuItemNodes: HTMLElement[] = []
+  const motionCbs: MotionCallback[] = []
+
+  const { observe } = useResizeObserver()
+  onMounted(() => {
+    observe(
+      () => scope.value,
+      entry => {
+        const target = entry.target as HTMLElement
+        const rect = target.getBoundingClientRect()
+        scopeHalfWidth = rect.width / 2
+      }
+    )
+
+    menuItemNodes = [
+      ...scope.value!.querySelectorAll<HTMLElement>("li[data-role='menuitem']")
+    ]
+  })
+
+  function updateMotion(index: number) {
+    const target = menuItemNodes[index]
+    if (!target) return
+
+    if (scopeHalfWidth === 0) {
+      const rect = scope.value!.getBoundingClientRect()
+      scopeHalfWidth = rect.width / 2
+    }
+
+    const offsetLeft = target.offsetLeft
+    const offsetWidth = target.offsetWidth
+    const offsetX = offsetLeft + offsetWidth / 2 - scopeHalfWidth
+
+    const motion: MenubarMotion = {
+      offsetX,
+      itemWidth: offsetWidth
+    }
+
+    for (const cb of motionCbs) {
+      cb(motion)
+    }
   }
 
-  function onMouseleave() {
-    visible.value = false
+  function onMotionChange(callback: MotionCallback) {
+    motionCbs.push(callback)
   }
 
-  function onMenuItemHover(index: number) {
-    prevHoverIndex.value = currHoverIndex.value
-    currHoverIndex.value = index
-  }
-
-  const contentViews = shallowRef<ContentView[]>([])
-
-  function forwardContent(item: MenuItem, render: () => VNode[]) {
-    contentViews.value.push({ item, render })
-  }
-
-  return {
-    visible,
-    prevHoverIndex,
-    currHoverIndex,
-    contentViews,
-    onMouseenter,
-    onMouseleave,
-    onMenuItemHover,
-    forwardContent
-  }
+  return { scope, updateMotion, onMotionChange }
 }
 
-export const ContentRender: FunctionalComponent<{
-  render: () => VNode[]
-}> = (props, { attrs }) => h('div', { ...attrs }, props.render())
-ContentRender.props = ['render']
+function createContext<T>() {
+  const contextKey = Symbol() as InjectionKey<T>
+
+  const Provider: FunctionalComponent<
+    { value: T },
+    any,
+    { default: () => any }
+  > = (props, { slots }) => {
+    provide(contextKey, props.value)
+    return slots.default()
+  }
+  Provider.props = ['value']
+
+  const useContext = () => inject(contextKey)!
+
+  return [Provider, useContext] as const
+}
 
 interface MenubarContext {
-  offsetX: Ref<number>
-  showViewport: Ref<boolean>
-  contentViews: ShallowRef<ContentView[]>
-  prevHoverIndex: Ref<number>
-  currHoverIndex: Ref<number>
-  forwardContent: (item: MenuItem, render: () => VNode[]) => void
+  onMenuItemHover: (index: number) => void
+  onHoverIndexChange: (callback: (index: number) => void) => void
 }
 
-const MenubarCtx = Symbol('menubar') as InjectionKey<MenubarContext>
-
-export function provideMenubarContent(value: MenubarContext) {
-  provide(MenubarCtx, value)
+interface MotionContext {
+  onMotionChange: (callback: MotionCallback) => void
 }
 
-export function useMenubarCtx() {
-  return inject(MenubarCtx)!
+interface ViewportContext {
+  prevIndex: Ref<number>
+  currIndex: Ref<number>
 }
+
+export const [MenubarProvider, useMenubar] = createContext<MenubarContext>()
+export const [MotionProvider, useMotion] = createContext<MotionContext>()
+export const [ViewportProvider, useViewport] = createContext<ViewportContext>()

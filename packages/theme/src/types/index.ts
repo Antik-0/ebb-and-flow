@@ -1,3 +1,6 @@
+export * from './menu.ts'
+export * from './theme.ts'
+
 export type Fn = (...args: any[]) => any
 
 export type Timer = NodeJS.Timeout | number
@@ -27,7 +30,3 @@ export interface OutlineAnchor {
    */
   level: number
 }
-
-export * from './menu.ts'
-export * from './sidebar.ts'
-export * from './theme.ts'

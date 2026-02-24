@@ -50,17 +50,6 @@
   color: var(--c-brand-1);
 }
 
-.sidebar-background {
-  background-color: var(--c-bg-sidebar);
-  box-shadow: 4px 0 60px 1px hsl(187 75% 65% / 0.2);
-}
-
-@media (width >= 1280px) {
-  .sidebar-background {
-    background-color: transparent;
-  }
-}
-
 /**
  * ==================================================
  * 🏷️ menubar

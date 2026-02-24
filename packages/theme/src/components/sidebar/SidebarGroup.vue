@@ -1,11 +1,11 @@
 <script setup lang='ts'>
-import type { SidebarMenuItem } from '#/types'
+import type { MenuItem } from '#/types'
 import { computed } from 'vue'
 import { Icon } from '#/icons'
 import SidebarItem from './SidebarItem.vue'
 
 const props = defineProps<{
-  item: SidebarMenuItem
+  item: MenuItem
 }>()
 
 const isGrouped = computed(() => !!props.item.grouped)

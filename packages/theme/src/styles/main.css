@@ -6,7 +6,7 @@
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: hsl(0 0% 39%) hsl(0 0% 17%);
+  scrollbar-color: var(--c-scrollbar) hsl(0 0% 17%);
   color-scheme: dark;
 }
 
@@ -15,21 +15,6 @@ body {
   font-family: var(--font-family-base);
   color: var(--foreground);
   background-color: var(--background);
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background-color: hsl(0 0% 17%);
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: hsl(0 0% 39%);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(0, 0%, 30%);
 }
 
 iconify-icon {
@@ -56,37 +41,67 @@ iconify-icon {
   opacity: 0;
 }
 
-@supports (animation-timeline: view(block)) {
-  .motion-image {
-    animation: motion-image auto ease-in-out;
-    animation-timeline: view(block);
-    animation-range: entry 0% cover 40%;
-  }
+.motion-image {
+  animation: motion-image auto ease-in-out;
+  animation-timeline: view(block);
+  animation-range: entry 0% cover 40%;
 }
 
 .ebb-page {
   display: grid;
+  grid-template-areas:
+    'navbar navbar navbar'
+    'sidebar main outline';
   grid-template-columns: 1fr minmax(auto, 1280px) 1fr;
-  padding-top: var(--h-navbar);
+  grid-template-rows: var(--h-navbar) 1fr;
+  min-height: 100vh;
 }
 
-.page-content {
-  grid-column: 2 / 3;
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  padding: 32px;
-  background-color: var(--c-bg-content);
+.sidebar-container {
+  grid-area: sidebar;
+  container: sidebar / inline-size;
+  display: flex;
+  justify-content: flex-end;
 }
 
-@media (width >= 960px) {
-  .ebb-page {
-    padding: 24px;
-    padding-top: calc(var(--h-navbar) + 24px);
+.ebb-sidebar {
+  position: fixed;
+  left: 0;
+  inset-block: 0;
+  width: 320px;
+  display: grid;
+  z-index: var(--z-index-sidebar);
+}
+
+.sidebar-overlay {
+  z-index: calc(var(--z-index-sidebar) - 1);
+}
+
+@container sidebar (width >= 320px) {
+  .ebb-sidebar {
+    --opacity-from: 1;
+    --opacity-to: 0;
+    --value-u-to: -100%;
+
+    position: sticky;
+    top: calc(var(--h-navbar) + 16px);
+    height: 90vh;
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: var(--m-opacity);
+    translate: var(--m-value-u);
+    animation: ease-in-out forwards;
+    animation-name: motion-opacity, motion-value-u;
+    animation-duration: auto;
+    animation-timeline: scroll(root block);
+    animation-range: 0 600px;
   }
 
-  .page-content {
-    padding-inline: 0;
-    border-radius: 20px;
+  .ebb-sidebar .sidebar-mask {
+    width: 320px;
+  }
+
+  .sidebar-overlay {
+    display: none;
   }
 }

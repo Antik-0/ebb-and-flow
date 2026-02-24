@@ -2,9 +2,13 @@ import type { NavMenuRecord } from './theme.ts'
 
 export interface MenuItem extends NavMenuRecord {
   /**
-   * 是否激活
+   * 节点id
    */
-  active?: boolean
+  id: number
+  /**
+   * 子节点
+   */
+  items?: MenuItem[]
   /**
    * 父节点
    */

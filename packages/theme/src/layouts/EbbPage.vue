@@ -1,8 +1,13 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import { useRouter } from 'nuxt/app'
+import { computed, ref, watch } from 'vue'
 import ImageViewer from '#/components/ImageViewer.vue'
 import Navbar from '#/components/navbar/Navbar.vue'
-import Sidebar from '#/components/sidebar/Sidebar.vue'
+import {
+  Sidebar,
+  SidebarContainer,
+  SidebarOverlay
+} from '#/components/sidebar/Sidebar'
 import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
 import {
@@ -10,6 +15,7 @@ import {
   useLayout,
   usePageLoading
 } from '#/controller/layout'
+import { updateActiveLink } from '#/controller/menus'
 
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
 
@@ -21,6 +27,14 @@ function onSentinelVisibleChange(visible: boolean) {
   isTriggerSentinel.value = !visible
 }
 
+const router = useRouter()
+watch(
+  () => router.currentRoute.value,
+  currentRoute => {
+    updateActiveLink(currentRoute.path)
+  }
+)
+
 provideLayoutContext({
   isDesktop,
   isMobile,
@@ -30,27 +44,27 @@ provideLayoutContext({
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="ebb-page" data-role="page">
     <Navbar />
-    <Sidebar />
 
-    <div class="ebb-page" data-role="page">
-      <main class="page-content">
+    <main class="grid-area-[main] md:p-4" data-role="main">
+      <section class="p-6 bg-[--c-bg-content] min-h-200vh min-w-0 w-full relative md:rounded-4">
         <slot></slot>
 
         <div
           v-if="isLoading"
           class="p-8 bg-black/60 inset-0 absolute"
         >
-          <slot name="loading">
-          </slot>
+          <slot name="loading"></slot>
         </div>
-      </main>
+      </section>
+    </main>
 
-      <div v-if="isLargeScreen" class="pl-2">
-        <ToolPanel aside />
-      </div>
-    </div>
+    <SidebarContainer>
+      <Sidebar />
+      <SidebarOverlay />
+    </SidebarContainer>
+
 
     <ToolPanel v-if="!isLargeScreen" />
     <ImageViewer />
