@@ -5,6 +5,8 @@ export type Fn = (...args: any[]) => any
 
 export type Timer = NodeJS.Timeout | number
 
+export type Empty = Record<string, any>
+
 export interface Page {
   /**
    * 页面标题

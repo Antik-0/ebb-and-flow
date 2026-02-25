@@ -2,22 +2,30 @@ import { computed, ref } from 'vue'
 import { useMenus } from './menus'
 
 const isOpen = ref(false)
+const disabled = ref(false)
 
 export function useSidebarControl() {
   function open() {
-    isOpen.value = true
+    if (!disabled.value) {
+      isOpen.value = true
+    }
   }
 
   function close() {
-    isOpen.value = false
+    if (!disabled.value) {
+      isOpen.value = false
+    }
   }
 
   function toggle() {
-    isOpen.value = !isOpen.value
+    if (!disabled.value) {
+      isOpen.value = !isOpen.value
+    }
   }
 
   return {
     isOpen,
+    disabled,
     open,
     close,
     toggle

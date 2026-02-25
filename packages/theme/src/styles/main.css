@@ -51,10 +51,22 @@ iconify-icon {
   display: grid;
   grid-template-areas:
     'navbar navbar navbar'
-    'sidebar main outline';
+    'sidebar main aside';
   grid-template-columns: 1fr minmax(auto, 1280px) 1fr;
   grid-template-rows: var(--h-navbar) 1fr;
   min-height: 100vh;
+}
+
+@media screen and (width < 1024px) {
+  .ebb-page [data-role='menubar'] {
+    display: none;
+  }
+}
+
+@media screen and (width >= 1024px) {
+  .ebb-page [data-role='site-logo'] {
+    display: none;
+  }
 }
 
 .sidebar-container {
@@ -94,7 +106,7 @@ iconify-icon {
     animation-name: motion-opacity, motion-value-u;
     animation-duration: auto;
     animation-timeline: scroll(root block);
-    animation-range: 0 600px;
+    animation-range: 0 100vh;
   }
 
   .ebb-sidebar .sidebar-mask {

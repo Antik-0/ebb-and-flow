@@ -1,9 +1,9 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import { useSharedMenus } from '#/controller/menus.ts'
+import { useCurrActiveNode } from '#/controller/menus'
 import Link from '../Link.vue'
 
-const { currActiveNode } = useSharedMenus()
+const currActiveNode = useCurrActiveNode()
 
 const prevNav = computed(() => currActiveNode.value?.prevNav)
 const nextNav = computed(() => currActiveNode.value?.nextNav)

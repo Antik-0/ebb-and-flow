@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import type { MenuItem } from '#/types'
 import { shallowRef } from 'vue'
-import Link from '#/components/Link.vue'
+import Link from '../Link.vue'
 
 const props = defineProps<{
   items: MenuItem[]

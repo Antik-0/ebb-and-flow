@@ -1,5 +1,7 @@
 <script setup lang="ts">
 defineProps<{ avatar: string }>()
+
+const emit = defineEmits<{ click: [] }>()
 </script>
 
 <template>
@@ -7,6 +9,7 @@ defineProps<{ avatar: string }>()
     aria-label="avatar"
     class="cursor-pointer drop-shadow-sm drop-shadow-color-cyan-300"
     type="button"
+    @click="() => emit('click')"
   >
     <div class="mask mask-squircle">
       <img

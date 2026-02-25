@@ -1,5 +1,13 @@
-import type { FunctionalComponent, InjectionKey, Ref } from 'vue'
-import { inject, onMounted, provide, shallowRef } from 'vue'
+import type { InjectionKey, Ref, SlotsType, VNodeChild } from 'vue'
+import type { Empty } from '#/types'
+import {
+  defineComponent,
+  inject,
+  nextTick,
+  onMounted,
+  provide,
+  shallowRef
+} from 'vue'
 import { useResizeObserver } from '#/hooks'
 
 interface MenubarMotion {
@@ -31,9 +39,12 @@ export function useMenubarMotion() {
     ]
   })
 
-  function updateMotion(index: number) {
+  async function updateMotion(index: number) {
     const target = menuItemNodes[index]
     if (!target) return
+
+    // 等待 `scope` 和 `icon` 渲染完毕
+    await nextTick()
 
     if (scopeHalfWidth === 0) {
       const rect = scope.value!.getBoundingClientRect()
@@ -44,11 +55,7 @@ export function useMenubarMotion() {
     const offsetWidth = target.offsetWidth
     const offsetX = offsetLeft + offsetWidth / 2 - scopeHalfWidth
 
-    const motion: MenubarMotion = {
-      offsetX,
-      itemWidth: offsetWidth
-    }
-
+    const motion = { offsetX, itemWidth: offsetWidth }
     for (const cb of motionCbs) {
       cb(motion)
     }
@@ -64,15 +71,18 @@ export function useMenubarMotion() {
 function createContext<T>() {
   const contextKey = Symbol() as InjectionKey<T>
 
-  const Provider: FunctionalComponent<
+  const Provider = defineComponent<
     { value: T },
-    any,
-    { default: () => any }
-  > = (props, { slots }) => {
-    provide(contextKey, props.value)
-    return slots.default()
-  }
-  Provider.props = ['value']
+    Empty,
+    '',
+    SlotsType<{ default: () => VNodeChild }>
+  >(
+    (props, { slots }) => {
+      provide(contextKey, props.value)
+      return () => slots.default()
+    },
+    { props: ['value'] }
+  )
 
   const useContext = () => inject(contextKey)!
 
@@ -94,5 +104,5 @@ interface ViewportContext {
 }
 
 export const [MenubarProvider, useMenubar] = createContext<MenubarContext>()
-export const [MotionProvider, useMotion] = createContext<MotionContext>()
+export const [MotionProvider, useMotionCtx] = createContext<MotionContext>()
 export const [ViewportProvider, useViewport] = createContext<ViewportContext>()

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { onBeforeUnmount, onMounted, toValue } from 'vue'
+import { onBeforeUnmount, toValue } from 'vue'
 
 interface AddEventListener {
   <E extends keyof WindowEventMap>(
@@ -31,16 +31,8 @@ interface AddEventListener {
   ): void
 }
 
-interface EventEntry {
-  el: MaybeRefOrGetter<Element | null>
-  type: string
-  listener: (...args: any[]) => void
-  options: AddEventListenerOptions
-}
-
 export function useEventListener() {
   const controller = new AbortController()
-  const eventQueue: EventEntry[] = []
 
   const addEventListener: AddEventListener = (
     el: any,
@@ -49,30 +41,15 @@ export function useEventListener() {
     options: AddEventListenerOptions = {}
   ) => {
     const element = toValue(el)
-    if (element) {
-      element.addEventListener(type, listener, {
-        signal: controller.signal,
-        ...options
-      })
-    } else {
-      eventQueue.push({ el, type, listener, options })
-    }
+    if (!element) return
+
+    element.addEventListener(type, listener, {
+      signal: controller.signal,
+      ...options
+    })
   }
 
   const clearEventListener = () => controller.abort()
-
-  onMounted(() => {
-    for (const { el, type, listener, options } of eventQueue) {
-      const element = toValue(el)
-      if (!element) continue
-
-      element.addEventListener(type, listener, {
-        signal: controller.signal,
-        ...options
-      })
-    }
-    eventQueue.length = 0
-  })
 
   onBeforeUnmount(clearEventListener)
 

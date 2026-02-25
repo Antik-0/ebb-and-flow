@@ -1,20 +1,26 @@
+import type { SlotsType, VNodeChild } from 'vue'
+import type { Empty } from '#/types'
 import { AnimatePresence, motion } from 'motion-v'
-import { computed, defineComponent, defineExpose, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useMenus } from '#/controller/menus'
 import { ViewportProvider, useMenubar, useViewport } from '#/controller/navbar'
 import GlassMask from '../GlassMask.vue'
 import MenuViewGroup from './MenuViewGroup.vue'
 
-export const MenuViewport = defineComponent<any, { close: () => void }>(
-  (_, { emit }) => {
+export type MenuViewportRef = {
+  open: () => void
+  close: () => void
+}
+
+export default defineComponent<Empty, { close: () => void }>(
+  (_, { emit, expose }) => {
     const menus = useMenus()
     const contents = computed(() => menus.value.map(item => item.items))
-
-    const { onHoverIndexChange } = useMenubar()
 
     const show = ref(false)
     const prevIndex = ref(-1)
     const currIndex = ref(-1)
+    const { onHoverIndexChange } = useMenubar()
 
     function handleIndexChange(index: number) {
       prevIndex.value = currIndex.value
@@ -29,14 +35,14 @@ export const MenuViewport = defineComponent<any, { close: () => void }>(
 
     const contextValue = { prevIndex, currIndex }
 
-    defineExpose({
+    expose({
       open: () => (show.value = true),
       close: () => (show.value = false)
     })
 
     return () => (
       <AnimatePresence onExitComplete={onExitComplete}>
-        {show && (
+        {show.value && (
           <motion.div
             animate={{ y: 0 }}
             class="pt-2 min-w-full contain-layout left-1/2 top-full absolute isolate -translate-x-1/2"
@@ -62,12 +68,17 @@ export const MenuViewport = defineComponent<any, { close: () => void }>(
       </AnimatePresence>
     )
   },
-  { emits: ['close'] }
+  { name: 'MenuViewport', emits: ['close'] }
 )
 
 type Motion = 'from-start' | 'from-end' | 'to-start' | 'to-end' | undefined
 
-const MenuViewContent = defineComponent<{ index: number }>(
+const MenuViewContent = defineComponent<
+  { index: number },
+  Empty,
+  '',
+  SlotsType<{ default: () => VNodeChild }>
+>(
   (props, { slots }) => {
     const { currIndex, prevIndex } = useViewport()
 
@@ -101,8 +112,9 @@ const MenuViewContent = defineComponent<{ index: number }>(
     }
 
     return () => {
-      const children = slots.default?.()
+      const children = slots.default()
       if (!children) return null
+
       return (
         <div
           class="menu-content"
@@ -110,8 +122,10 @@ const MenuViewContent = defineComponent<{ index: number }>(
           data-index={props.index}
           data-motion={motion.value}
           onAnimationend={onAnimationEnd}
-          style={!show && { display: 'none' }}
-        ></div>
+          v-show={show.value}
+        >
+          {children}
+        </div>
       )
     }
   },

@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 import type { MenuItem } from '#/types'
 import { motion } from 'motion-v'
-import Link from '#/components/Link.vue'
 import { useMenuNodeIsActive } from '#/controller/menus'
 import { useMenubar } from '#/controller/navbar'
 import { Icon } from '#/icons'
+import Link from '../Link.vue'
 
 const props = defineProps<{
   index: number
@@ -19,7 +19,7 @@ const isActive = useMenuNodeIsActive(props.item.id)
   <motion.li
     class="cursor-pointer relative data-[active=true]:text-brand hover:text-brand"
     :data-active="isActive"
-    role="menuitem"
+    data-role="menuitem"
     layout
     @pointerenter="() => onMenuItemHover(index)"
   >

@@ -1,20 +1,15 @@
 <script setup lang='ts'>
 import { useRouter } from 'nuxt/app'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import ImageViewer from '#/components/ImageViewer.vue'
-import Navbar from '#/components/navbar/Navbar.vue'
-import {
-  Sidebar,
+import Navbar from '#/components/navbar/Navbar.tsx'
+import Sidebar, {
   SidebarContainer,
   SidebarOverlay
-} from '#/components/sidebar/Sidebar'
+} from '#/components/sidebar/Sidebar.tsx'
 import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
-import {
-  provideLayoutContext,
-  useLayout,
-  usePageLoading
-} from '#/controller/layout'
+import { layoutProvider, useLayout, usePageLoading } from '#/controller/layout'
 import { updateActiveLink } from '#/controller/menus'
 
 const { isDesktop, isMobile, isLargeScreen } = useLayout()
@@ -28,14 +23,18 @@ function onSentinelVisibleChange(visible: boolean) {
 }
 
 const router = useRouter()
-watch(
-  () => router.currentRoute.value,
-  currentRoute => {
-    updateActiveLink(currentRoute.path)
-  }
-)
 
-provideLayoutContext({
+onMounted(() => {
+  watch(
+    () => router.currentRoute.value,
+    currentRoute => {
+      updateActiveLink(currentRoute.path)
+    },
+    { immediate: true }
+  )
+})
+
+layoutProvider({
   isDesktop,
   isMobile,
   isLargeScreen,
@@ -47,8 +46,8 @@ provideLayoutContext({
   <div class="ebb-page" data-role="page">
     <Navbar />
 
-    <main class="grid-area-[main] md:p-4" data-role="main">
-      <section class="p-6 bg-[--c-bg-content] min-h-200vh min-w-0 w-full relative md:rounded-4">
+    <main class="grid-area-[main] min-w-0 md:p-4" data-role="main">
+      <section class="p-6 bg-[--c-bg-content] min-w-0 w-full relative md:rounded-4">
         <slot></slot>
 
         <div
@@ -70,6 +69,7 @@ provideLayoutContext({
     <ImageViewer />
 
     <ViewportSentinel
+      v-if="false"
       :top="200"
       @visible-change="onSentinelVisibleChange"
     />

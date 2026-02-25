@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { nextTick, onBeforeUnmount, onMounted, toValue } from 'vue'
+import { onBeforeUnmount, toValue } from 'vue'
 
 type Callback = (entry: ResizeObserverEntry) => void
 
@@ -65,9 +65,8 @@ export function useResizeObserver() {
     callback: Callback
   ) => {
     const element = toValue(target)
-    if (element) {
-      observe(element, callback)
-    }
+    if (!element) return
+    observe(element, callback)
     observeEntries.push({ target, callback })
   }
 
@@ -76,22 +75,15 @@ export function useResizeObserver() {
       const element = toValue(target)
       element && unobserve(element, callback)
     }
+    observeEntries.length = 0
   }
-
-  onMounted(async () => {
-    await nextTick()
-    for (const { target, callback } of observeEntries) {
-      const element = toValue(target)
-      element && observe(element, callback)
-    }
-  })
-
-  onBeforeUnmount(clear)
 
   const onWindowResize = (callback: Callback) => {
     const root = () => document?.documentElement
     _observe(root, callback)
   }
+
+  onBeforeUnmount(clear)
 
   return {
     onWindowResize,

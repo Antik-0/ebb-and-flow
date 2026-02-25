@@ -1,12 +1,12 @@
 <script setup lang='ts'>
-import { EbbTheme } from '@repo/theme'
+import { EbbThemeProvider } from '@repo/theme'
 import { themeConfig } from './theme.config'
 </script>
 
 <template>
-  <EbbTheme :config="themeConfig" theme="dark">
+  <EbbThemeProvider :config="themeConfig">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-  </EbbTheme>
+  </EbbThemeProvider>
 </template>

@@ -22,19 +22,21 @@ interface LayoutContext {
   isTriggerSentinel: ComputedRef<boolean>
 }
 
-const context = Symbol('layout') as InjectionKey<LayoutContext>
+function createLayoutCtx() {
+  const contextKey = Symbol() as InjectionKey<LayoutContext>
 
-export function provideLayoutContext(value: LayoutContext) {
-  provide(context, value)
+  const provider = (value: LayoutContext) => provide(contextKey, value)
+
+  const useContext = () => inject(contextKey)!
+
+  return [provider, useContext] as const
 }
 
-export function useLayoutContext() {
-  return inject(context)!
-}
+export const [layoutProvider, useLayoutCtx] = createLayoutCtx()
 
 const page = ref<Page | null>(null)
 
-const setPageData = (data: Page | null) => {
+function setPageData(data: Page | null) {
   page.value = data
 }
 

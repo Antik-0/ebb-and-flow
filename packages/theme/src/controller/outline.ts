@@ -1,75 +1,65 @@
-import { throttle } from '@repo/utils'
-import { computed, onMounted, shallowRef, watch } from 'vue'
-import { useEventListener } from '#/hooks'
+import { computed, onBeforeUnmount, onMounted, reactive, watch } from 'vue'
+import { useIntersectionObserver } from '#/hooks'
 import { usePageData } from './layout'
+
+let activeState: number[] = []
+const activeRange = reactive({
+  start: -1,
+  end: -1
+})
 
 export function useOutline() {
   const { page } = usePageData()
-
   const anchors = computed(() => page.value?.toc ?? [])
-  const activeIndex = shallowRef(-1)
 
-  let offsetTopMap: number[] = []
+  const { observe, clear } = useIntersectionObserver()
 
-  const { addEventListener } = useEventListener()
-
-  const computeActivedAnchor = throttle(() => {
-    const root = document.documentElement
-    const scrollTop = root.scrollTop
-    const scrollHeight = root.scrollHeight
-
-    if (scrollTop + window.innerHeight + 10 > scrollHeight) {
-      activeIndex.value = anchors.value.length - 1
-      return
-    }
-
-    let activated = -1
-    for (const [index, offsetTop] of offsetTopMap.entries()) {
-      if (offsetTop - scrollTop <= 200) {
-        activated = index
-      } else {
-        break
-      }
-    }
-
-    activeIndex.value = activated
-  }, 100)
-
-  function createOffsetTopMap() {
+  function observeHeading() {
     const container = document.getElementById('content')
-    if (!container) return []
+    if (!container) return
 
-    const result: number[] = []
-    for (const anchor of anchors.value) {
-      const id = anchor.to
-      const node = container.querySelector(id)
-      if (node) {
-        result.push(calcOffsetTop(node as HTMLElement))
+    const size = anchors.value.length
+    activeState = Array.from<number>({ length: size }).fill(0)
+
+    for (const [index, item] of anchors.value.entries()) {
+      const target = container.querySelector(item.to)
+      if (target) {
+        target.setAttribute('data-index', index + '')
+        observe(target, entry => {
+          const index = Number(entry.target.getAttribute('data-index'))
+          const isAcitve = entry.isIntersecting
+          activeState[index] = isAcitve ? 1 : 0
+
+          activeRange.start = activeState.indexOf(1)
+          activeRange.end = activeState.lastIndexOf(1)
+        })
       }
     }
-    return result
+  }
+
+  function clearObserver() {
+    clear()
+    activeState.length = 0
+    activeRange.start = -1
+    activeRange.end = -1
   }
 
   onMounted(() => {
     watch(
       () => anchors.value,
       () => {
-        offsetTopMap = createOffsetTopMap()
-        computeActivedAnchor()
+        observeHeading()
+        return clearObserver
       },
       { immediate: true }
     )
-    addEventListener(window, 'scroll', computeActivedAnchor)
   })
 
-  return { anchors, activeIndex }
+  onBeforeUnmount(clearObserver)
+
+  return { anchors }
 }
 
-function calcOffsetTop(node: HTMLElement) {
-  let offsetTop = 0
-  while (node) {
-    offsetTop += node.offsetTop
-    node = node.offsetParent as HTMLElement
-  }
-  return offsetTop
+export function useActiveRange() {
+  return activeRange
 }

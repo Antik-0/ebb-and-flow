@@ -17,6 +17,7 @@
   --m-color: transparent;
 
   padding: 4px 8px;
+  padding-left: calc(var(--level, 0) * 16px + 8px);
   border-radius: 8px;
   cursor: pointer;
   transition: --m-color ease 250ms;
@@ -25,6 +26,10 @@
   &:hover {
     --m-color: hsla(186, 49%, 73%, 0.2);
   }
+}
+
+.sidebar-item:hover a {
+  translate: 12px;
 }
 
 .sidebar-item[data-active='true'] [data-role='title'] {
@@ -79,41 +84,15 @@
   opacity: 0;
   transition: opacity ease-in 200ms;
   background: radial-gradient(
-    100px circle at var(--offset-x) 50%,
+    100px circle at 50% 50%,
     var(--bg-color),
     transparent 65%
   );
+  background-position-x: var(--offset-x);
 }
 
 .menubar:hover .menubar-background {
   opacity: 1;
-}
-
-.menubar-indicator {
-  height: 32px;
-  border-radius: var(--rounded);
-  box-shadow: inset 0 0 12px 1px hsl(187 75% 65% / 0.4);
-}
-
-.menu-viewport {
-  contain: layout;
-  isolation: isolate;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  translate: -50% 0;
-  min-width: 100%;
-  padding-top: 10px;
-}
-
-.menu-viewport__arrow {
-  width: 12px;
-  height: 12px;
-  border-radius: 4px;
-  rotate: -45deg;
-  translate: 0 50%;
-  transition: translate 250ms ease;
-  background: linear-gradient(45deg, transparent 50%, hsl(0 0% 26% / 0.6) 50%);
 }
 
 .menu-content {
@@ -176,18 +155,6 @@
 
   &:hover {
     opacity: 1;
-  }
-}
-
-.outline-item {
-  padding: 0 calc(var(--level, 0) * 16px);
-  font-size: 14px;
-  line-height: 32px;
-  color: var(--muted-foreground);
-  overflow: hidden;
-
-  &:is(:hover, .is-active) {
-    color: var(--c-brand-2);
   }
 }
 
