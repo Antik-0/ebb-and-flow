@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { AnchorHead } from '@repo/theme/prose'
+import { AnchorHead } from 'ebb-theme/prose'
 
 const props = defineProps<{ id?: string }>()
 </script>

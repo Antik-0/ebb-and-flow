@@ -1,4 +1,4 @@
-import { defineThemeConfig } from '@repo/theme'
+import { defineThemeConfig } from 'ebb-theme'
 
 export const themeConfig = defineThemeConfig(() => {
   return {

@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { EbbPage } from '@repo/theme'
+import { EbbPage } from 'ebb-theme'
 </script>
 
 <template>

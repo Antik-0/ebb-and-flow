@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@nuxt/content": "catalog:",
-    "@repo/theme": "workspace:*",
     "@repo/utils": "workspace:*",
+    "ebb-theme": "workspace:*",
     "motion-v": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",

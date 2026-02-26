@@ -1,4 +1,4 @@
-import { CodeGroup, CustomBlock } from '@repo/theme/prose'
+import { CodeGroup, CustomBlock } from 'ebb-theme/prose'
 
 export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp

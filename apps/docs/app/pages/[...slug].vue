@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import type { ContentCollectionItem } from '@nuxt/content'
-import type { OutlineAnchor } from '@repo/theme'
-import { DocContent } from '@repo/theme'
+import type { OutlineAnchor } from 'ebb-theme'
+import { DocContent } from 'ebb-theme'
 
 definePageMeta({ layout: 'page' })
 

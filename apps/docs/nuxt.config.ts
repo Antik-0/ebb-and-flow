@@ -18,7 +18,7 @@ export default defineNuxtConfig({
       id: 'app'
     }
   },
-  css: ['~/assets/main.css', '@repo/theme/styles/main.css'],
+  css: ['~/assets/main.css', 'ebb-theme/style.css'],
 
   alias: {
     '@': fileURLToPath(new URL('./app/assets', import.meta.url))

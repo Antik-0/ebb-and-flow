@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Copy, CopyCheck } from '@repo/theme/icons'
+import { Copy, CopyCheck } from 'ebb-theme/icons'
 
 // reference: https://github.com/nuxt-content/mdc/blob/main/src/runtime/components/prose/ProsePre.vue
 interface Props {

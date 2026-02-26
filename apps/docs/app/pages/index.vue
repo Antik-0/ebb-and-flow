@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { EbbHome } from '@repo/theme'
+import { EbbHome } from 'ebb-theme'
 
 definePageMeta({ layout: false })
 

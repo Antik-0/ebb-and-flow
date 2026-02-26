@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { EbbThemeProvider } from '@repo/theme'
+import { EbbThemeProvider } from 'ebb-theme'
 import { themeConfig } from './theme.config'
 </script>
 

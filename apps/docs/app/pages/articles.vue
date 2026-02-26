@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { EllipsisVertical } from '@repo/theme/icons'
+import { EllipsisVertical } from 'ebb-theme/icons'
 import { motion } from 'motion-v'
 
 definePageMeta({ layout: 'page' })
