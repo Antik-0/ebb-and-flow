@@ -1,5 +1,5 @@
 <template>
-  <div class="glass-mask">
+  <div aria-hidden="true" class="glass-mask">
     <div class="glass-mask__image"></div>
   </div>
 </template>

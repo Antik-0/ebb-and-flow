@@ -28,12 +28,13 @@ export default defineComponent(
       () => currActiveNode.value,
       () => {
         const prevActiveIndex = activeIndex
-        let activeNode = currActiveNode.value
-        while (activeNode?.parent) {
-          activeNode = activeNode.parent
+        const activeNode = currActiveNode.value
+        if (!activeNode) {
+          activeIndex = -1
+          return
         }
 
-        const index = menus.value.indexOf(activeNode!)
+        const index = Number(activeNode.index.split('_')[0]!)
         if (prevActiveIndex !== index) {
           activeIndex = index
           updateMotion(index)
@@ -92,7 +93,7 @@ export default defineComponent(
               ))}
             </LayoutGroup>
           </menu>
-          {<MenuViewport onClose={onViewportClose} ref={viewportRef} />}
+          <MenuViewport onClose={onViewportClose} ref={viewportRef} />
         </MenubarProvider>
 
         <FlowingLight />
@@ -132,13 +133,9 @@ const MenubarIndicator = defineComponent(() => {
   return () => (
     <motion.div
       aria-hidden="true"
-      class="rounded-[--rounded] h-8 absolute -z-1"
+      class="menubar-indicator"
       data-role="indicator"
-      style={{
-        x: motionX,
-        width: motionW,
-        boxShadow: 'inset 0 0 12px 1px hsl(187 75% 65% / 0.4)'
-      }}
+      style={{ x: motionX, width: motionW }}
     />
   )
 })

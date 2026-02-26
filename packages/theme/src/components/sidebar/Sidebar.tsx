@@ -45,7 +45,11 @@ export default defineComponent(
 
     return () => (
       <motion.aside class="ebb-sidebar" data-role="sidebar" style={{ x }}>
-        <div class="grid-full px-1 py-4 flex-col min-h-0" ref="sidebar">
+        <div
+          class="grid-full px-1 py-4 flex-col min-h-0"
+          data-role="content"
+          ref="sidebar"
+        >
           <SidebarContent />
         </div>
         <SidebarMask />
@@ -60,13 +64,7 @@ const SidebarContent = defineComponent(
     const sidebarMenus = useSidebarMenus()
 
     return () => (
-      <div
-        class="px-3 flex-1 overflow-x-hidden overflow-y-auto"
-        style={{
-          scrollbarWidth: 'thin',
-          scrollbarColor: 'var(--c-scrollbar) transparent'
-        }}
-      >
+      <div class="scrollbar-thin px-3 flex-1 overflow-x-hidden overflow-y-auto">
         {sidebarMenus.value.map((item, index) => (
           <SidebarGroup item={item} key={index} />
         ))}
@@ -78,7 +76,10 @@ const SidebarContent = defineComponent(
 
 function SidebarMask() {
   return (
-    <div class="sidebar-mask w-100 inset-y-0 right-0 absolute -z-1">
+    <div
+      class="sidebar-mask w-100 inset-y-0 right-0 absolute -z-1"
+      data-role="mask"
+    >
       <GlassMask style={{ '--fit-size': 'contain' }} />
     </div>
   )
@@ -114,7 +115,7 @@ export const SidebarContainer = defineComponent<
     })
 
     return () => (
-      <div class="sidebar-container" ref="container">
+      <div class="sidebar-container" data-role="container" ref="container">
         {slots.default()}
       </div>
     )
@@ -129,7 +130,8 @@ export const SidebarOverlay = defineComponent(
     return () => (
       <div
         aria-hidden="true"
-        class="sidebar-overlay bg-black/20 inset-0 fixed"
+        class="bg-black/20 inset-0 fixed z-[--z-index-sidebar-overlay]"
+        data-role="overlay"
         onClick={close}
         v-show={isOpen.value}
       ></div>

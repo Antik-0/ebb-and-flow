@@ -19,7 +19,7 @@ const collapsiable = computed(() => {
   return Array.isArray(item.items) && item.items.length
 })
 
-const isActive = useMenuNodeIsActive(props.item.id)
+const isActive = useMenuNodeIsActive(props.item.index)
 </script>
 
 <template>
@@ -37,7 +37,7 @@ const isActive = useMenuNodeIsActive(props.item.id)
         />
         <span
           class="text-sm text-accent-foreground leading-8 font-700 flex-1 text-nowrap truncate"
-          data-role="button-title"
+          data-role="text"
         >
           {{ item.text }}
         </span>
@@ -75,7 +75,7 @@ const isActive = useMenuNodeIsActive(props.item.id)
       />
       <span
         class="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-250 hover:text-brand-2"
-        data-role="title"
+        data-role="text"
       >
         {{ item.text }}
       </span>

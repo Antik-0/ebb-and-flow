@@ -1,16 +1,15 @@
 <script setup lang='ts'>
+import { nextTick, onBeforeUnmount, shallowRef, useTemplateRef } from 'vue'
 import {
-  nextTick,
-  onBeforeMount,
-  onMounted,
-  shallowRef,
-  useTemplateRef
-} from 'vue'
+  lockScrollbar,
+  onPageMounted,
+  unlockScrollbar
+} from '#/controller/layout'
 import { useAnimation } from '#/hooks'
 
 let controller: AbortController | null = null
 
-function removeImageEvent() {
+function removeImageClickEvent() {
   controller?.abort()
 }
 
@@ -37,6 +36,7 @@ async function handleOpen() {
   triggerDOM.value?.setAttribute('data-hidden', 'true')
   await nextTick()
   enterAnimation.play()
+  lockScrollbar()
 }
 
 async function handleClose() {
@@ -45,6 +45,7 @@ async function handleClose() {
   await leaveAnimation.finished
   show.value = false
   triggerDOM.value?.removeAttribute('data-hidden')
+  unlockScrollbar()
 }
 
 function handlePreview(event: MouseEvent) {
@@ -90,7 +91,10 @@ function computeEffectState(image: HTMLImageElement) {
   }
 }
 
-onMounted(() => {
+function bindImageClickEvent() {
+  removeImageClickEvent()
+  unlockScrollbar()
+
   const container = document.getElementById('content')
   const imageList = container?.querySelectorAll('img') ?? []
 
@@ -101,10 +105,13 @@ onMounted(() => {
     })
     element.classList.add('motion-image')
   }
-})
+}
 
-onBeforeMount(() => {
-  removeImageEvent()
+const stop = onPageMounted(bindImageClickEvent)
+
+onBeforeUnmount(() => {
+  removeImageClickEvent()
+  stop()
 })
 </script>
 
@@ -112,6 +119,7 @@ onBeforeMount(() => {
   <div
     v-show="show"
     class="bg-black/40 grid contain-paint inset-0 place-content-center place-items-center fixed z-100"
+    data-role="imageviewer"
     @click="handleClose"
   >
     <picture ref="picture" class="max-h-full max-w-full">

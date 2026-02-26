@@ -1,14 +1,12 @@
 <script setup lang='ts'>
 import type { Page } from '#/types'
-import { watch } from 'vue'
-import { useLayoutCtx, usePageData } from '#/controller/layout'
+import { onMounted, watch } from 'vue'
+import { triggerPageMounted, usePageData } from '#/controller/layout'
 import NotFound from '#/not-found.vue'
 import DocFooter from './DocFooter.vue'
 import DocOutline from './DocOutline.tsx'
 
 const props = defineProps<{ page?: Page }>()
-
-const { isDesktop } = useLayoutCtx()
 
 const { setPageData } = usePageData()
 
@@ -17,6 +15,10 @@ watch(
   value => setPageData(value ?? null),
   { immediate: true }
 )
+
+onMounted(() => {
+  triggerPageMounted()
+})
 </script>
 
 <template>
@@ -28,9 +30,14 @@ watch(
       <DocFooter />
     </div>
 
-    <div v-if="isDesktop" class="pl-8 w-64">
-      <aside class="doc-aside">
-        <div class="aside-content">
+    <div class="pl-4 w-64" data-role="doc-aside">
+      <aside class="pb-12 pt-[calc(var(--h-navbar)+48px)] flex-col w-56 inset-y-0 fixed">
+        <div
+          :class="[
+            'flex-col flex-1 overflow-x-hidden overflow-y-auto',
+            'opacity-40 transition-opacity hover:opacity-100'
+          ]"
+        >
           <DocOutline />
           <div class="flex-1"></div>
         </div>

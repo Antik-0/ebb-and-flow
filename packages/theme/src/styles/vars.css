@@ -34,12 +34,12 @@
     /**
      * 滚动条
      * -----------------------------------------------------------* */
-    --c-scrollbar: hsl(0 0% 39%);
+    --c-scrollbar-thumb: hsl(0 0% 39%);
+    --c-scrollbar-track: transparent;
 
     /**
      * 布局组件背景色
      * -----------------------------------------------------------* */
-    --c-bg-navbar: transparent;
     --c-bg-content: hsl(240 16% 10% / 0.8);
     --c-bg-overlay: hsl(240 16% 10% / 0.6);
 
@@ -53,6 +53,7 @@
     --h-navbar: 64px;
     --z-index-navbar: 10;
     --z-index-sidebar: 20;
+    --z-index-sidebar-overlay: 18;
     --z-index-toolpanel: 50;
   }
 

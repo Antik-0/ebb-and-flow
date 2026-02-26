@@ -46,7 +46,7 @@ export default defineComponent<Empty, { close: () => void }>(
           <motion.div
             animate={{ y: 0 }}
             class="pt-2 min-w-full contain-layout left-1/2 top-full absolute isolate -translate-x-1/2"
-            data-role="viewport"
+            data-role="menuviewport"
             exit={{ opacity: 0, y: 40 }}
             initial={{ y: 40 }}
             transition={{ type: 'spring', duration: 0.6 }}
@@ -99,7 +99,8 @@ const MenuViewContent = defineComponent<
         }
         show.value = index === currIndex || index === prevIndex
         active.value = index === currIndex
-      }
+      },
+      { immediate: true }
     )
 
     function onAnimationEnd() {

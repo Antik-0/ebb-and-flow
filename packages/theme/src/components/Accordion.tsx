@@ -68,7 +68,7 @@ function createAccordionContext() {
   return [provider, useContext] as const
 }
 
-const [accordionProvider, useAccordionCtx] = createAccordionContext()
+const [provideAccordion, useAccordionCtx] = createAccordionContext()
 
 export const Accordion = defineComponent<
   { defaultValue?: boolean },
@@ -93,7 +93,7 @@ export const Accordion = defineComponent<
       open,
       fold
     }
-    accordionProvider(context)
+    provideAccordion(context)
 
     return () => slots.default()
   },

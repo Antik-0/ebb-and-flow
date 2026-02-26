@@ -12,7 +12,7 @@ const props = defineProps<{
 }>()
 
 const { onMenuItemHover } = useMenubar()
-const isActive = useMenuNodeIsActive(props.item.id)
+const isActive = useMenuNodeIsActive(props.item.index)
 </script>
 
 <template>

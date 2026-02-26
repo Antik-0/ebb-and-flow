@@ -11,8 +11,6 @@ import GlassMask from './GlassMask.vue'
 import ScrollIndicator from './ScrollIndicator.vue'
 import SidebarTrigger from './sidebar/SidebarTrigger.vue'
 
-defineProps<{ aside?: boolean }>()
-
 const { isMobile, isTriggerSentinel } = useLayoutCtx()
 
 const { isOpen: sidebarOpened, close: closeSidebar } = useSidebarControl()
@@ -43,12 +41,20 @@ const { fps } = useFPS()
 
 <template>
   <div
-    class="toolpanel"
-    :data-aside="aside"
+    :class="[
+      'p-1 top-1/2 right-2 fixed z-[--z-index-toolpanel]',
+      'opacity-0 translate-x-full transition-all duration-600',
+      'data-[show=true]:(opacity-100 translate-x-0)'
+    ]"
+    data-role="toolpanel"
     :data-show="isTriggerSentinel"
   >
     <div class="rounded-5 flex flex-col gap-1">
-      <SidebarTrigger class="tool-button" title="侧边导航">
+      <SidebarTrigger
+        v-if="isMobile"
+        class="tool-button"
+        title="侧边导航"
+      >
         <PanelLeftOpen v-if="sidebarOpened" />
         <PanelLeftClose v-else />
       </SidebarTrigger>
@@ -84,7 +90,6 @@ const { fps } = useFPS()
           <GlassMask class="rounded-4 inset-0 absolute -z-1" />
         </div>
       </Popover>
-
 
       <div class="text-6 text-teal flex size-10 flex-center">
         <ScrollIndicator />

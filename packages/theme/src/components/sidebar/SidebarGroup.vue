@@ -12,7 +12,7 @@ const isGrouped = computed(() => !!props.item.grouped)
 </script>
 
 <template>
-  <section class="sidebar-group" role="group">
+  <section class="py-3" data-role="group">
     <template v-if="isGrouped">
       <div class="mb-2 px-2 flex">
         <Icon
@@ -20,7 +20,7 @@ const isGrouped = computed(() => !!props.item.grouped)
           class="text-18px text-brand mr-2 flex h-8"
           :icon="item.icon"
         />
-        <span class="text-14px text-muted-foreground leading-8 font-700">
+        <span :aria-label="item.text" class="text-14px text-muted-foreground leading-8 font-700">
           {{ item.text }}
         </span>
       </div>

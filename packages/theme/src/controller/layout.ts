@@ -1,5 +1,5 @@
 import type { ComputedRef, InjectionKey } from 'vue'
-import type { Page } from '#/types'
+import type { Fn, Page } from '#/types'
 import { computed, inject, provide, ref } from 'vue'
 import { useMediaQuery } from '#/hooks'
 
@@ -32,7 +32,17 @@ function createLayoutCtx() {
   return [provider, useContext] as const
 }
 
-export const [layoutProvider, useLayoutCtx] = createLayoutCtx()
+export const [provideLayoutCtx, useLayoutCtx] = createLayoutCtx()
+
+export function lockScrollbar() {
+  const root = document.documentElement
+  root.setAttribute('data-locked', 'true')
+}
+
+export function unlockScrollbar() {
+  const root = document.documentElement
+  root.removeAttribute('data-locked')
+}
 
 const page = ref<Page | null>(null)
 
@@ -48,4 +58,17 @@ const isLoading = ref(false)
 
 export function usePageLoading() {
   return { isLoading }
+}
+
+let pageMountedCbs: Fn[] = []
+
+export function onPageMounted(callback: Fn) {
+  pageMountedCbs.push(callback)
+  return () => (pageMountedCbs = pageMountedCbs.filter(f => f !== callback))
+}
+
+export function triggerPageMounted() {
+  for (const cb of pageMountedCbs) {
+    cb()
+  }
 }

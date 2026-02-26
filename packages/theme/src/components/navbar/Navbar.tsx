@@ -21,8 +21,8 @@ export default defineComponent(
         class="flex grid-area-[navbar] flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
         data-role="navbar"
       >
-        <div class="bg-[--c-bg-navbar] grid cols-[120px_1fr_120px] h-[--h-navbar] max-w-320 w-full">
-          <div class="px-6 flex items-center">
+        <div class="grid cols-[120px_1fr_120px] h-[--h-navbar] max-w-320 w-full">
+          <div class="px-4 flex items-center">
             <NavbarAction avatar={theme.avatar} isMobile={isMobile.value} />
           </div>
 
@@ -35,13 +35,13 @@ export default defineComponent(
             <Menubar />
           </div>
 
-          <div class="pr-6 flex items-center justify-between">
+          <div class="pr-4 flex gap-2 items-center justify-end">
             <ThemeToggle />
             <SocialLinks />
           </div>
         </div>
 
-        <GlassMask class="inset-0 absolute -z-1" style="--fit-size: cover" />
+        <GlassMask class="inset-0 absolute -z-1" />
       </header>
     )
   },

@@ -6,6 +6,10 @@ export interface MenuItem extends NavMenuRecord {
    */
   id: number
   /**
+   * 节点位置
+   */
+  index: string
+  /**
    * 子节点
    */
   items?: MenuItem[]

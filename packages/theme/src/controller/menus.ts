@@ -1,15 +1,19 @@
 import type { MenuItem, NavMenuRecord } from '#/types'
 import { isExternalLink } from '@repo/utils'
-import { computed, shallowRef } from 'vue'
+import { useRouter } from 'nuxt/app'
+import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useTheme } from '#/theme'
 
 const menus = shallowRef<MenuItem[]>([])
-const activeNodes = shallowRef<number[]>([])
+let menusIndexMap: Record<string, string> = {}
+
+const currActiveIndex = shallowRef('')
 const currActiveNode = shallowRef<MenuItem | null>(null)
 
 function createMenuTree(menus: NavMenuRecord[]) {
   let nodeId = 0
   let prevNavNode: MenuItem | undefined
+  menusIndexMap = {}
 
   function buildMenuTree(
     menus: NavMenuRecord[],
@@ -19,16 +23,22 @@ function createMenuTree(menus: NavMenuRecord[]) {
     if (depth === 3) return []
 
     const tree: MenuItem[] = []
-    for (const item of menus) {
+    for (const [index, item] of menus.entries()) {
       const { items, ...restProps } = item
+      const pathIndex = parent ? parent.index + '_' + index : String(index)
 
       const node = {
         id: nodeId++,
+        index: pathIndex,
         parent,
         ...restProps
       } as MenuItem
 
       const link = node.link
+      if (link) {
+        menusIndexMap[link] = pathIndex
+      }
+
       // 建立导航链接
       if (link && link !== '/' && !isExternalLink(link)) {
         if (prevNavNode) {
@@ -49,33 +59,6 @@ function createMenuTree(menus: NavMenuRecord[]) {
   return buildMenuTree(menus)
 }
 
-function matchActiveNode(menus: MenuItem[], currentPath: string) {
-  const queue = [...menus]
-
-  while (queue.length) {
-    const node = queue.shift()!
-    if (node.link === currentPath) {
-      return node
-    }
-    if (node.items) {
-      queue.push(...node.items)
-    }
-  }
-  return null
-}
-
-export function updateActiveLink(path: string) {
-  const activeNode = matchActiveNode(menus.value, path)
-  let node = activeNode
-  const nodeIds = []
-  while (node) {
-    nodeIds.push(node.id)
-    node = node.parent ?? null
-  }
-  activeNodes.value = nodeIds
-  currActiveNode.value = activeNode
-}
-
 /**
  * 获取共享菜单
  */
@@ -88,10 +71,10 @@ export function useMenus() {
 }
 
 /**
- * 根据 `id` 判断当前菜单节点是否激活
+ * 根据 `index` 判断当前菜单节点是否激活
  */
-export function useMenuNodeIsActive(id: number) {
-  return computed(() => activeNodes.value.includes(id))
+export function useMenuNodeIsActive(index: string) {
+  return computed(() => currActiveIndex.value.startsWith(index))
 }
 
 /**
@@ -99,4 +82,42 @@ export function useMenuNodeIsActive(id: number) {
  */
 export function useCurrActiveNode() {
   return currActiveNode
+}
+
+/**
+ * 更新菜单激活状态
+ */
+export function useUpdateMenuActive() {
+  const router = useRouter()
+
+  onMounted(() => {
+    watch(
+      () => router.currentRoute.value,
+      currentRoute => {
+        updateActiveLink(currentRoute.path)
+      },
+      { immediate: true }
+    )
+  })
+}
+
+function updateActiveLink(path: string) {
+  const activeIndex = menusIndexMap[path]
+  if (!activeIndex) {
+    currActiveIndex.value = ''
+    currActiveNode.value = null
+    return
+  }
+
+  let tree = menus.value
+  let node: MenuItem = null!
+  const paths = activeIndex.split('_')
+  for (const path of paths) {
+    const index = Number(path)
+    node = tree[index]!
+    tree = node.items!
+  }
+
+  currActiveNode.value = node
+  currActiveIndex.value = activeIndex
 }
