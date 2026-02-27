@@ -1,11 +1,5 @@
-<script setup lang='ts'>
-import { AnchorHead } from 'ebb-theme/prose'
+<script lang='ts'>
+import { ProseH2 } from 'ebb-theme/prose'
 
-const props = defineProps<{ id?: string }>()
+export default ProseH2
 </script>
-
-<template>
-  <AnchorHead :id="id" tag="h2" v-bind="$attrs">
-    <slot></slot>
-  </AnchorHead>
-</template>

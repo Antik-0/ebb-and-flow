@@ -1,16 +1,13 @@
 import type { OutlineAnchor } from '#/types'
-import { computed, onBeforeUnmount, onMounted, reactive, watch } from 'vue'
-import { useIntersectionObserver } from '#/hooks'
-import { usePageData } from './layout'
+import { computed, reactive } from 'vue'
+import { createSharedState, useIntersectionObserver } from '#/hooks'
+import { onPageMounted, usePage } from './layout'
 
 let activeState: number[] = []
-const activeRange = reactive({
-  start: -1,
-  end: -1
-})
+const activeRange = reactive({ start: -1, end: -1 })
 
-export function useOutline() {
-  const { page } = usePageData()
+export const useOutline = createSharedState(() => {
+  const { page } = usePage()
   const anchors = computed(() => page.value?.toc ?? [])
 
   const { observe, clear } = useIntersectionObserver()
@@ -45,72 +42,70 @@ export function useOutline() {
     activeRange.end = -1
   }
 
-  onMounted(() => {
-    watch(
-      () => anchors.value,
-      () => {
-        observeHeading()
-        return clearObserver
-      },
-      { immediate: true }
-    )
+  onPageMounted(() => {
+    clearObserver()
+    observeHeading()
   })
 
-  onBeforeUnmount(clearObserver)
-
   return { anchors }
-}
+})
 
-export function useActiveRange() {
+export function useActiveRanve() {
   return activeRange
 }
 
 export function createSVGMask(toc: OutlineAnchor[]) {
-  const ox = 2
-  const xg = 16
-  const yg = 12
-  const size = 20
+  // toc-item: line-height: 24, padding-block: 4
+  const ox = 4 // x 起点
+  const xStep = 16 // x 步长
+  const yStep = 24 // y 步长，对应文本的行高
+  const pad = 4 // padding-top
+  const gap = 8 // double padding-top
 
-  let [x, y] = [ox, -(yg / 2)]
   let maxLv = 0
-  const paths = [`M ${ox},0`]
+  let [x, y] = [ox, -pad]
+  const paths = [`M ${ox},4`]
 
   for (const item of toc) {
-    const lv = item.level
+    const lv = item.level - 1
     maxLv = Math.max(maxLv, lv)
-    const nx = ox + lv * xg
+    const nx = ox + lv * xStep
     if (nx !== x) {
       paths.push(`L ${x},${y}`)
       x = nx
-      y += yg
+      y += gap
       paths.push(`L ${x},${y}`)
-      y += size
+      y += yStep
     } else {
-      y += size + yg
+      y += yStep + gap
     }
   }
-  y += yg / 2
   paths.push(`L ${x},${y}`)
 
-  const width = maxLv * xg + ox * 2
-  const height = toc.length * (size + yg)
+  const width = maxLv * xStep + ox * 2
+  const height = toc.length * (yStep + gap)
   const path = paths.join(' ')
 
   const template = maskSvgTemplate(width, height, path)
+  const maskURL = `data:image/svg+xml,${template}`
 
-  return { width, height, path, template }
+  return { width, height, path, maskURL }
 }
 
 function maskSvgTemplate(width: number, height: number, path: string) {
   const template = `
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 ${width} ${height}"
-    height="${height}"
-    width="${width}"
-  >
-    <path d="${path}" fill="none" stroke="currentColor" stroke-width="1" />
-  </svg>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 ${width} ${height}"
+      height="${height}"
+      width="${width}"
+    >
+      <path d="${path}" fill="none" stroke="currentColor" stroke-width="1" />
+    </svg>
   `
   return template
+    .trim()
+    .replaceAll(/\r?\n/g, '')
+    .replaceAll(/\s+/g, ' ')
+    .replaceAll(/([">])\s+/g, '$1%20')
 }

@@ -1,7 +1,6 @@
 <script setup lang='ts'>
-import type { ContentCollectionItem } from '@nuxt/content'
 import type { OutlineAnchor } from 'ebb-theme'
-import { DocContent } from 'ebb-theme'
+import { EbbContent } from 'ebb-theme'
 
 definePageMeta({ layout: 'page' })
 
@@ -27,36 +26,36 @@ const { data: page } = await useAsyncData(route.path, async () => {
 
 useSeoMeta({ title: formatTitle(page.value?.title) })
 
-const pageMeta = computed(() => {
-  if (!page.value) return undefined
+const pageData = createPageData()
+
+function createPageData() {
+  if (!page.value) return null
 
   const title = page.value.title
   const links = page.value.body.toc?.links ?? []
   const toc = buildToc(links)
 
-  return { title, toc }
-})
-
-type TocLinks = NonNullable<ContentCollectionItem['body']['toc']>['links']
-
-function buildToc(links: TocLinks) {
-  const result: OutlineAnchor[] = []
-  for (const link of links) {
-    result.push({
-      text: link.text,
-      to: `#${link.id}`,
-      level: link.depth - 2
-    })
-    if (link.children) {
-      result.push(...buildToc(link.children))
+  function buildToc(items: typeof links) {
+    const result: OutlineAnchor[] = []
+    for (const item of items) {
+      result.push({
+        text: item.text,
+        to: `#${item.id}`,
+        level: item.depth - 1
+      })
+      if (item.children) {
+        result.push(...buildToc(item.children))
+      }
     }
+    return result
   }
-  return result
+
+  return { title, toc }
 }
 </script>
 
 <template>
-  <DocContent :page="pageMeta">
+  <EbbContent :page="pageData">
     <ContentRenderer v-if="page" :value="page" />
-  </DocContent>
+  </EbbContent>
 </template>

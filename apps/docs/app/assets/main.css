@@ -1,11 +1,60 @@
 /* biome-ignore-all lint/correctness/noUnknownTypeSelector: not supported */
 
-body {
+#app {
   background-image: url('/wallhaven-rrwvdq.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+html[data-layout='page'] #app {
+  --m-opacity: 0;
+  --opacity-to: 0.6;
+  background-color: hsl(0 0 0 / var(--m-opacity));
+  background-blend-mode: darken;
+  animation: motion-opacity forwards;
+  animation-duration: auto;
+  animation-timeline: scroll(root block);
+  animation-range-start: 400px;
+}
+
+@media screen and (width >= 800px) {
+  #app {
+    --moving-duration: 40s;
+  }
+}
+@media screen and (width >= 1280px) {
+  #app {
+    --moving-duration: 20s;
+  }
+}
+@media screen and (width >= 1600px) {
+  #app {
+    --moving-duration: 10s;
+  }
+}
+
+@media screen and (width >= 800px) {
+  /* html[data-layout='home'] #app {
+    animation: moving linear infinite;
+    animation-duration: var(--moving-duration);
+  } */
+}
+
+@keyframes moving {
+  0%,
+  50% {
+    background-position-x: 50%;
+  }
+
+  25% {
+    background-position-x: 100%;
+  }
+
+  75% {
+    background-position-x: 0%;
+  }
 }
 
 #loading-mask {

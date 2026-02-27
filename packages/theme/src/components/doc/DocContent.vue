@@ -1,14 +1,12 @@
 <script setup lang='ts'>
 import type { Page } from '#/types'
 import { onMounted, watch } from 'vue'
-import { triggerPageMounted, usePageData } from '#/controller/layout'
+import { setPageData, triggerPageMounted } from '#/controller/layout'
 import NotFound from '#/not-found.vue'
 import DocFooter from './DocFooter.vue'
 import DocOutline from './DocOutline.tsx'
 
 const props = defineProps<{ page?: Page }>()
-
-const { setPageData } = usePageData()
 
 watch(
   () => props.page,
@@ -35,7 +33,7 @@ onMounted(() => {
         <div
           :class="[
             'flex-col flex-1 overflow-x-hidden overflow-y-auto',
-            'opacity-40 transition-opacity hover:opacity-100'
+            'opacity-60 transition-opacity hover:opacity-100'
           ]"
         >
           <DocOutline />

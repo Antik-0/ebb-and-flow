@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   app: {
     baseURL: '/ebb-and-flow/',
     head: {
-      link: [{ rel: 'icon', href: '/logo.png' }],
+      link: [{ rel: 'icon', href: '/avatar.png' }],
       htmlAttrs: {
         class: 'dark',
         lang: 'zh-cn'

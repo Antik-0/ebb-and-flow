@@ -44,20 +44,28 @@ export function unlockScrollbar() {
   root.removeAttribute('data-locked')
 }
 
+export function setHtmlLayout(layout: 'home' | 'page' | null) {
+  const root = document.documentElement
+  root.setAttribute('data-layout', layout ?? '')
+}
+
+// * ==================================================
+// * ✨ page data
+// * ==================================================
+
 const page = ref<Page | null>(null)
-
-function setPageData(data: Page | null) {
-  page.value = data
-}
-
-export function usePageData() {
-  return { page, setPageData }
-}
-
 const isLoading = ref(false)
+
+export function usePage() {
+  return { page }
+}
 
 export function usePageLoading() {
   return { isLoading }
+}
+
+export function setPageData(data: Page | null) {
+  page.value = data
 }
 
 let pageMountedCbs: Fn[] = []

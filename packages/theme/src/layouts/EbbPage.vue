@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import ImageViewer from '#/components/ImageViewer.vue'
 import Navbar from '#/components/navbar/Navbar.tsx'
 import Sidebar, {
@@ -10,6 +10,7 @@ import ToolPanel from '#/components/ToolPanel.vue'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
 import {
   provideLayoutCtx,
+  setHtmlLayout,
   useLayout,
   usePageLoading
 } from '#/controller/layout'
@@ -26,6 +27,8 @@ function onSentinelVisibleChange(visible: boolean) {
 }
 
 useUpdateMenuActive()
+
+onMounted(() => setHtmlLayout('page'))
 
 provideLayoutCtx({
   isDesktop,

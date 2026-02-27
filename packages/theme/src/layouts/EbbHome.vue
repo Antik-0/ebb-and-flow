@@ -1,10 +1,11 @@
 <script setup lang='ts'>
 import { navigateTo } from 'nuxt/app'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import CodeMotion from '#/components/CodeMotion.vue'
 import CubeAvatar from '#/components/CubeAvatar.vue'
 import FloatingText from '#/components/FloatingText.vue'
 import MoonAvatar from '#/components/MoonAvatar.vue'
+import { setHtmlLayout } from '#/controller/layout'
 import { Power } from '#/icons'
 import { useTheme } from '#/theme'
 
@@ -16,6 +17,8 @@ const taglineMotion = ref('')
 function handleEnter() {
   navigateTo(theme.defaultActiveLink)
 }
+
+onMounted(() => setHtmlLayout('home'))
 </script>
 
 <template>

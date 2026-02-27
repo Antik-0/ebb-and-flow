@@ -198,10 +198,11 @@ iconify-icon {
     opacity: var(--m-opacity);
     translate: var(--m-value-u);
     animation: ease-in-out forwards;
-    animation-name: motion-opacity, motion-value-u;
+    animation-name: motion-opacity, motion-value-u, lock;
     animation-duration: auto;
     animation-timeline: scroll(root block);
     animation-range: 0 100vh;
+    pointer-events: var(--sidebar-events);
   }
 
   .ebb-sidebar .sidebar-mask {
@@ -210,6 +211,12 @@ iconify-icon {
 
   [data-role='overlay'] {
     display: none;
+  }
+}
+
+@keyframes lock {
+  to {
+    --sidebar-events: none;
   }
 }
 

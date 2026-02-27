@@ -1,3 +1,5 @@
-export { default as AnchorHead } from './AnchorHead.vue'
-export { default as CodeGroup } from './CodeGroup.vue'
-export { default as CustomBlock } from './CustomBlock.vue'
+export { CodeGroup } from './CodeGroup.tsx'
+export { CustomBlock } from './CustomBlock.tsx'
+export { ProseA } from './ProseA.tsx'
+export { ProseH2, ProseH3 } from './ProseH.tsx'
+export { ProsePre } from './ProsePre.tsx'

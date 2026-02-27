@@ -5,17 +5,19 @@ import { builtingLogoIcons } from './logos'
 
 interface IconProps extends IconifyIconAttributes {}
 
-const Icon: FunctionalComponent<IconProps> = props => {
-  return h('iconify-icon', { ...props })
+const Icon: FunctionalComponent<IconProps> = (props, { attrs }) => {
+  return h('iconify-icon', { ...props, ...attrs })
 }
 
 const LogoIconRender: FunctionalComponent<{
   logo: string
-}> = props => {
-  const { logo, ...restProps } = props
+  class: string
+}> = (props, { attrs }) => {
+  const { logo } = props
   const icon = builtingLogoIcons[logo]
-  return icon ? h(icon, { ...restProps }) : null
+  return icon ? h(icon, { ...attrs }) : null
 }
+LogoIconRender.props = ['logo']
 
 export { Icon, LogoIconRender }
 
@@ -31,5 +33,6 @@ export { default as PanelLeftClose } from './PanelLeftClose.vue'
 export { default as PanelLeftOpen } from './PanelLeftOpen.vue'
 export { default as Power } from './Power.vue'
 export { default as Rocket } from './Rocket.vue'
+export { default as TextAlignStart } from './TextAlignStart.vue'
 export { default as ThemeDark } from './ThemeDark.vue'
 export { default as ThemeLight } from './ThemeLight.vue'
