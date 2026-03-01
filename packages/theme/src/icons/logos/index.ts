@@ -1,20 +1,22 @@
 import type { Component } from 'vue'
-import IconBun from './Bun.vue'
-import IconJson from './Json.vue'
-import IconNode from './Node.vue'
-import IconNuxt from './Nuxt.vue'
-import IconPnpm from './Pnpm.vue'
-import IconShell from './Shell.vue'
-import IconTypescript from './Typescript.vue'
-import IconVue from './Vue.vue'
+import {
+  Bun,
+  Json,
+  Node,
+  Nuxt,
+  Pnpm,
+  Shell,
+  Typescript,
+  Vue
+} from './logos.tsx'
 
 export const builtingLogoIcons = {
-  bun: IconBun,
-  json: IconJson,
-  node: IconNode,
-  nuxt: IconNuxt,
-  pnpm: IconPnpm,
-  shell: IconShell,
-  ts: IconTypescript,
-  vue: IconVue
+  bun: Bun,
+  json: Json,
+  node: Node,
+  nuxt: Nuxt,
+  pnpm: Pnpm,
+  shell: Shell,
+  ts: Typescript,
+  vue: Vue
 } as Record<string, Component>
