@@ -1,6 +1,5 @@
 <script setup lang='ts'>
 import '../assets/article.css'
-import { random } from '@repo/utils'
 
 useSeoMeta({ title: formatTitle('归档') })
 
@@ -11,15 +10,19 @@ const articles = data.value
 
 <template>
   <div class="article-page">
-    <div id="container" class="cards-container">
+    <div class="cards-container">
       <ul class="cards">
         <li v-for="(item, index) in articles" :key="index">
-          <NuxtLink class="card" :to="item.path">
-            <img alt="img" :src="item.cover" />
-            <div class="px-2 py-1 bg-black">
-              <p class="text-cyan-50 leading-6 font-bold mb-2 text-center truncate">
+          <NuxtLink class="card relative" :to="item.path">
+            <picture class="overflow-hidden">
+              <img alt="img" :src="item.cover" />
+            </picture>
+            <div class="p-2 bg-black">
+              <p class="leading-6 font-bold mb-2 text-center truncate">
                 {{ item.title }}
               </p>
+            </div>
+            <div class="p-2 bg-black/60 inset-x-0 bottom-10 absolute">
               <p class="text-xs flex gap-2 items-center">
                 <span v-for="(tag, idx) in item.tags" :key="idx">
                   {{ '#' + tag }}

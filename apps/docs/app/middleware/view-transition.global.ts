@@ -5,7 +5,7 @@ function enableTransition() {
   )
 }
 
-async function viewTransition(motion: 'fade-in' | 'fade-out') {
+async function viewTransition(motion: string) {
   if (!enableTransition()) return
 
   const html = document.documentElement
@@ -27,8 +27,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   if (to.path === '/') {
-    viewTransition('fade-in')
+    viewTransition('ebb-in')
   } else if (from.path === '/') {
-    viewTransition('fade-out')
+    viewTransition('ebb-out')
+  } else if (to.path === '/articles') {
+    viewTransition('flow-in')
+  } else if (from.path === '/articles') {
+    viewTransition('flow-out')
   }
 })

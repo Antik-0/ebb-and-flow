@@ -87,34 +87,62 @@ html::view-transition-old(layout) {
   animation-timing-function: ease-in-out;
 }
 
-html[data-motion='fade-in']::view-transition-new(layout) {
-  animation-name: layout-fade-in;
+html[data-motion='ebb-in']::view-transition-new(layout) {
+  animation-name: ebb-in;
 }
 
-html[data-motion='fade-in']::view-transition-old(layout) {
-  animation-name: layout-fade-out;
+html[data-motion='ebb-in']::view-transition-old(layout) {
+  animation-name: ebb-out;
   animation-delay: 400ms;
 }
 
-html[data-motion='fade-out']::view-transition-new(layout) {
-  animation-name: layout-fade-out;
+html[data-motion='ebb-out']::view-transition-new(layout) {
+  animation-name: ebb-out;
   animation-direction: reverse;
 }
 
-html[data-motion='fade-out']::view-transition-old(layout) {
-  animation-name: layout-fade-in;
+html[data-motion='ebb-out']::view-transition-old(layout) {
+  animation-name: ebb-in;
   animation-delay: 400ms;
   animation-direction: reverse;
 }
 
-@keyframes layout-fade-in {
+/* html[data-motion='flow-in']::view-transition-old(layout) {
+
+}
+
+html[data-motion='flow-in']::view-transition-new(layout) {
+
+} */
+
+html[data-motion='flow-out']::view-transition-old(layout) {
+  animation-name: flow-out;
+}
+
+html[data-motion='flow-out']::view-transition-new(layout) {
+  opacity: var(--m-opacity);
+  animation-name: motion-opacity;
+}
+
+@keyframes ebb-in {
   from {
     transform: translateY(-100%);
   }
 }
 
-@keyframes layout-fade-out {
+@keyframes ebb-out {
   to {
     transform: translateY(100%);
+  }
+}
+
+@keyframes flow-out {
+  from {
+    opacity: 1;
+    clip-path: circle(max(50vw, 50vh) at 50% 50%);
+  }
+  to {
+    opacity: 0;
+    clip-path: circle(0 at 50% 50%);
   }
 }
