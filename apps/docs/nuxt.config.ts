@@ -1,4 +1,4 @@
-import { URL, fileURLToPath } from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 import { computeReadingTime, getGitUpdatedTime } from './content-utils'
 
 export default defineNuxtConfig({

@@ -1,4 +1,4 @@
-import type { ProcessorOptions, createProcessor } from '@mdx-js/mdx'
+import type { createProcessor, ProcessorOptions } from '@mdx-js/mdx'
 
 export interface MDXConfig {
   /**

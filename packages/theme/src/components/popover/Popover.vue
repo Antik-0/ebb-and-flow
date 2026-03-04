@@ -2,7 +2,7 @@
 import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { Timer } from '#/types'
 import type { PopoverProps } from './index.ts'
-import { Teleport, computed, h, onMounted, watch } from 'vue'
+import { computed, h, onMounted, Teleport, watch } from 'vue'
 import { useEventListener } from '#/hooks'
 import { usePopoverState } from './state.ts'
 

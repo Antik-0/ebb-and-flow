@@ -17,8 +17,7 @@
       "!**/.data",
       "!**/.output",
       "!**/.next",
-      "!**/out",
-      "!biome.json"
+      "!**/out"
     ]
   },
   "linter": {
@@ -27,22 +26,28 @@
       "recommended": true,
       "a11y": {
         "noStaticElementInteractions": "off",
-        "useValidAnchor": "off",
+        "noSvgWithoutTitle": "off",
         "useKeyWithClickEvents": "off",
-        "noSvgWithoutTitle": "off"
+        "useValidAnchor": "off"
       },
       "correctness": {
-        "useExhaustiveDependencies": "off",
         "noUnusedImports": {
           "level": "error",
           "fix": "safe"
-        }
+        },
+        "useExhaustiveDependencies": "off"
       },
       "performance": {
         "noImgElement": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
+        "useImportType": {
+          "level": "warn",
+          "options": {
+            "style": "separatedType"
+          }
+        },
         "useNumberNamespace": {
           "level": "warn",
           "fix": "safe"
@@ -59,8 +64,8 @@
       },
       "suspicious": {
         "noArrayIndexKey": "off",
-        "noExplicitAny": "off",
         "noAssignInExpressions": "off",
+        "noExplicitAny": "off",
         "noUnknownAtRules": {
           "level": "warn",
           "options": {
@@ -81,8 +86,7 @@
               {
                 "type": true
               }
-            ],
-            "identifierOrder": "lexicographic"
+            ]
           }
         },
         "useSortedAttributes": "on"
@@ -96,11 +100,13 @@
     "indentWidth": 2,
     "lineWidth": 80,
     "attributePosition": "auto",
-    "bracketSpacing": true
+    "bracketSpacing": true,
+    "expand": "auto"
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
       "trailingCommas": "none",
       "semicolons": "asNeeded",
       "arrowParentheses": "asNeeded"
@@ -112,7 +118,8 @@
       "allowTrailingCommas": false
     },
     "formatter": {
-      "trailingCommas": "none"
+      "trailingCommas": "none",
+      "expand": "auto"
     }
   },
   "css": {

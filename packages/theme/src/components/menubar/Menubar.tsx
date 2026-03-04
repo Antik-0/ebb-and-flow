@@ -1,5 +1,5 @@
 import type { MenuViewportRef } from './MenuViewport'
-import { LayoutGroup, animate, motion, useMotionValue } from 'motion-v'
+import { animate, LayoutGroup, motion, useMotionValue } from 'motion-v'
 import { defineComponent, ref, shallowRef, watch } from 'vue'
 import { useCurrActiveNode, useMenus } from '#/controller/menus'
 import {

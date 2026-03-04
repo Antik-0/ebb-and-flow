@@ -26,8 +26,5 @@
     "@unocss/nuxt": "catalog:",
     "zod": "catalog:"
   },
-  "trustedDependencies": [
-    "esbuild",
-    "nuxt"
-  ]
+  "trustedDependencies": ["esbuild", "nuxt"]
 }

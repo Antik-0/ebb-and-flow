@@ -1,5 +1,5 @@
 import type { ViewportRef } from './MenuViewport'
-import { LayoutGroup, animate, motion, useMotionValue } from 'motion/react'
+import { animate, LayoutGroup, motion, useMotionValue } from 'motion/react'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { stylex } from '#/utils'
 import { useMenuActiveNode, useSharedMenus } from '../../controller/menus'

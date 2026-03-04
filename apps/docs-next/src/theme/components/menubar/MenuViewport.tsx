@@ -11,9 +11,9 @@ import {
 import { stylex } from '#/utils'
 import { useSharedMenus } from '../../controller/menus'
 import {
-  ViewportProvider,
   useMenubar,
-  useViewport
+  useViewport,
+  ViewportProvider
 } from '../../controller/navbar'
 import { GlassMask } from '../GlassMask'
 import { MenuViewGroup } from './MenuViewGroup'

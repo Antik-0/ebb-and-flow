@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { URL, fileURLToPath } from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 import ora from 'ora'
 import pc from 'picocolors'
 // @ts-expect-error: no types
