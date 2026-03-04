@@ -3,6 +3,28 @@
   place-items: center;
   min-height: 100vh;
   background-color: hsl(0 0 0);
+  timeline-scope: --card;
+}
+
+.chain {
+  --offset: 100px;
+  --value-u-from: 0;
+  --value-u-to: 600px;
+
+  position: fixed;
+  width: 90vw;
+  height: 32px;
+  z-index: 99;
+  background: url('/chain.png') repeat-x;
+  background-size: 300px 100%;
+  background-position: var(--m-value-u) 50%;
+  animation: motion-value-u linear both;
+  animation-duration: auto;
+  animation-timeline: --card;
+}
+
+.chain[data-reverse='true'] {
+  animation-direction: reverse;
 }
 
 .cards {
@@ -16,6 +38,10 @@
   .cards-container {
     padding: 64px 0;
     width: 80vw;
+  }
+
+  .chain {
+    display: none;
   }
 
   .cards {
@@ -33,6 +59,8 @@
     scrollbar-color: var(--c-scrollbar-thumb) transparent;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
+    scroll-timeline-name: --card;
+    scroll-timeline-axis: inline;
     perspective: 1000px;
   }
 
@@ -73,6 +101,18 @@
     scale: var(--cover-scale, 1);
     transition: scale 600ms ease-in-out;
   }
+
+  .card-mask {
+    visibility: hidden;
+    scale: 1.4;
+    transition: scale 400ms ease;
+    background-color: hsl(0 0 0 / 0.2);
+  }
+
+  .card:hover .card-mask {
+    visibility: var(--mask-show, hidden);
+    scale: 1;
+  }
 }
 
 @keyframes rotate-cover {
@@ -87,6 +127,7 @@
   }
   50% {
     --cover-scale: 1.2;
+    --mask-show: visible;
     transform: rotateY(0deg) translateZ(100px) scale(1.2);
   }
   51% {

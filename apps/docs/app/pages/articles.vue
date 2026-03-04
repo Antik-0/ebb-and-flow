@@ -10,6 +10,8 @@ const articles = data.value
 
 <template>
   <div class="article-page">
+    <div class="chain top-[--offset]"></div>
+    <div class="chain bottom-[--offset]" data-reverse="true"></div>
     <div class="cards-container">
       <ul class="cards">
         <li v-for="(item, index) in articles" :key="index">
@@ -34,6 +36,7 @@ const articles = data.value
                 />
               </p>
             </div>
+            <div class="card-mask inset-0 absolute z-10" data-role="mask"></div>
           </NuxtLink>
         </li>
       </ul>

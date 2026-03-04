@@ -1,4 +1,4 @@
-import { groupBy, random } from '@repo/utils'
+import { groupBy } from '@repo/utils'
 
 interface Article {
   title: string
@@ -15,17 +15,25 @@ export default defineEventHandler(async event => {
     .all()
 
   const covers = [
-    '/wallhaven-rrwvdq.webp',
-    '/cover/wallhaven-6lm9w6.jpg',
-    '/cover/wallhaven-9dwldk.jpg',
-    '/cover/wallhaven-awd13a.jpg',
-    '/cover/wallhaven-eaw661z.jpg',
-    '/cover/wallhaven-jeeypy.jpg',
-    '/cover/wallhaven-qrr12q.jpg',
-    '/cover/wallhaven-xe761z.jpg',
-    '/cover/wallhaven-xezkro.jpg'
+    'https://antik-yuyi.me/webp/wallhaven-9om1lk.webp',
+    'https://antik-yuyi.me/webp/wallhaven-9mxxvd.webp',
+    'https://antik-yuyi.me/webp/wallhaven-576pq3.webp',
+    'https://antik-yuyi.me/webp/wallhaven-6lm9w6.webp',
+    'https://antik-yuyi.me/webp/wallhaven-gjz69l.webp',
+    'https://antik-yuyi.me/webp/wallhaven-xe761z.webp',
+    'https://antik-yuyi.me/webp/wallhaven-jeeypy.webp',
+    'https://antik-yuyi.me/webp/wallhaven-l39zlr.webp',
+    'https://antik-yuyi.me/webp/wallhaven-qrr12q.webp',
+    'https://antik-yuyi.me/webp/wallhaven-z8gg7g.webp',
+    'https://antik-yuyi.me/webp/wallhaven-9dwldk.webp',
+    'https://antik-yuyi.me/webp/wallhaven-4gmloe.webp',
+    'https://antik-yuyi.me/webp/wallhaven-od6v2l.webp',
+    'https://antik-yuyi.me/webp/wallhaven-eaw661z.webp',
+    'https://antik-yuyi.me/webp/wallhaven-awd13a.webp',
+    'https://antik-yuyi.me/webp/wallhaven-rrwvdq.webp'
   ]
   const length = covers.length
+  let index = 0
 
   const articles = groupBy(data, item =>
     new Date(item.lastUpdated!).getFullYear().toString()
@@ -34,8 +42,8 @@ export default defineEventHandler(async event => {
   const res = Object.values(articles)
     .flat()
     .map(item => {
-      const index = random(0, length - 1)
       const cover = covers[index]
+      index = (index + 1) % length
       return { cover, ...item }
     })
 

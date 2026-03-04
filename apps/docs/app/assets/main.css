@@ -88,61 +88,56 @@ html::view-transition-old(layout) {
 }
 
 html[data-motion='ebb-in']::view-transition-new(layout) {
-  animation-name: ebb-in;
+  --value-u-from: -100%;
+  translate: 0 var(--m-value-u);
+  animation-name: motion-value-u;
 }
 
 html[data-motion='ebb-in']::view-transition-old(layout) {
-  animation-name: ebb-out;
+  --value-u-to: 100%;
+  translate: 0 var(--m-value-u);
+  animation-name: motion-value-u;
   animation-delay: 400ms;
 }
 
 html[data-motion='ebb-out']::view-transition-new(layout) {
-  animation-name: ebb-out;
-  animation-direction: reverse;
+  --value-u-from: 100%;
+  translate: 0 var(--m-value-u);
+  animation-name: motion-value-u;
 }
 
 html[data-motion='ebb-out']::view-transition-old(layout) {
-  animation-name: ebb-in;
+  --value-u-to: -100%;
+  translate: 0 var(--m-value-u);
+  animation-name: motion-value-u;
   animation-delay: 400ms;
-  animation-direction: reverse;
 }
 
-/* html[data-motion='flow-in']::view-transition-old(layout) {
+html[data-motion='flow-in']::view-transition-old(layout) {
+  --opacity-from: 1;
+  --opacity-to: 0;
+  --value-u-from: 0%;
+  --value-u-to: 100%;
 
+  opacity: var(--m-opacity);
+  mask-image: linear-gradient(#000), linear-gradient(#000);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-composite: exclude;
+  mask-size:
+    100% 100%,
+    var(--m-value-u) 100%;
+  animation-name: motion-value-u, motion-opacity;
 }
-
-html[data-motion='flow-in']::view-transition-new(layout) {
-
-} */
 
 html[data-motion='flow-out']::view-transition-old(layout) {
-  animation-name: flow-out;
-}
+  --opacity-from: 1;
+  --opacity-to: 0.6;
+  --value-u-from: max(50vw, 50vh);
+  --value-u-to: 0;
 
-html[data-motion='flow-out']::view-transition-new(layout) {
   opacity: var(--m-opacity);
-  animation-name: motion-opacity;
-}
-
-@keyframes ebb-in {
-  from {
-    transform: translateY(-100%);
-  }
-}
-
-@keyframes ebb-out {
-  to {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes flow-out {
-  from {
-    opacity: 1;
-    clip-path: circle(max(50vw, 50vh) at 50% 50%);
-  }
-  to {
-    opacity: 0;
-    clip-path: circle(0 at 50% 50%);
-  }
+  clip-path: circle(var(--m-value-u) at 50% 50%);
+  animation-name: motion-value-u, motion-opacity;
+  z-index: 99;
 }

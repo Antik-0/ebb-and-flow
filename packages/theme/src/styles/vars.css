@@ -3,8 +3,7 @@
 @layer theme {
   :root {
     --foreground: #f0f8ff;
-    --background: #1f1919;
-    --background-deep: #181313;
+    --background: #000;
 
     /**
      * 静音：用于文本或图标等信息的静默态

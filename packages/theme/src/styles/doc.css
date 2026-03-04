@@ -121,39 +121,6 @@
 }
 
 /**
- * Table
- * -------------------------------------------------------------------------- */
-
-.ebb-doc table {
-  display: block;
-  border-collapse: collapse;
-  margin: 20px 0;
-  overflow-x: auto;
-}
-
-.ebb-doc tr {
-  border-top: 1px solid var(--c-divider);
-  background-color: var(--background);
-}
-
-.ebb-doc tr:nth-child(2n) {
-  background-color: var(--background-deep);
-}
-
-.ebb-doc :where(th, td) {
-  border: 1px solid var(--c-divider);
-  padding: 8px 16px;
-  font-size: 14px;
-}
-
-.ebb-doc th {
-  text-align: left;
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-  background-color: var(--background-deep);
-}
-
-/**
  * Decorational elements
  * -------------------------------------------------------------------------- */
 

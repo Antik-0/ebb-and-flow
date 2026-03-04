@@ -19,6 +19,11 @@ export default defineNuxtConfig({
     }
   },
   css: ['~/assets/main.css', 'ebb-theme/style.css'],
+  postcss: {
+    plugins: {
+      autoprefixer: false
+    }
+  },
 
   alias: {
     '@': fileURLToPath(new URL('./app/assets', import.meta.url))
