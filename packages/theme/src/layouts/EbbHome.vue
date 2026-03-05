@@ -11,7 +11,7 @@ import { useTheme } from '#/theme'
 
 const { theme } = useTheme()
 
-const titleAnimating = ref(true)
+const titleMotion = ref('fade')
 const taglineMotion = ref('')
 
 function handleEnter() {
@@ -29,8 +29,8 @@ onMounted(() => setHtmlLayout('home'))
       <h1 class="mt-4 py-8 text-center w-full">
         <span
           class="site-title"
-          :data-animating="titleAnimating"
-          @animationend="titleAnimating = false"
+          :data-motion="titleMotion"
+          @animationend="titleMotion = 'flow'"
         >
           {{ theme.author }}
         </span>
@@ -88,15 +88,22 @@ onMounted(() => setHtmlLayout('home'))
   font-weight: 600;
   letter-spacing: 10px;
   color: transparent;
-  background-image: linear-gradient(135deg, #12998d, #d5e6ff);
-  background-size: cover;
+  background-image: linear-gradient(135deg, #12998d 40%, #d5e6ff 50%, #12998d 60%);
+  background-size: 300% 100%;
   background-clip: text;
 }
 
-.site-title[data-animating='true'] {
+.site-title[data-motion='fade'] {
   --value-u-to: 120px;
   clip-path: circle(var(--m-value-u) at center);
   animation: motion-value-u 2s ease-out;
+}
+
+.site-title[data-motion='flow'] {
+  --value-u-from: 100%;
+  --value-u-to: 0%;
+  background-position-x: var(--m-value-u);
+  animation: motion-value-u 3s linear infinite;
 }
 
 .tagline {
