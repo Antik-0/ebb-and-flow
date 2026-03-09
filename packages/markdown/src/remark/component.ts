@@ -1,9 +1,9 @@
 import type { Plugin } from 'unified'
 import type { MDAST } from '../types/index.ts'
+import { prettyLog } from '../shared/pretty.ts'
 import { getNodeText } from '../shared/visit.ts'
 
 interface LinkNode {
-  root?: boolean
   prev?: LinkNode
   next?: LinkNode
   value?: MDAST.Node
@@ -11,7 +11,7 @@ interface LinkNode {
 }
 
 /**
- * ✨ 自定义组件语法解析
+ * ✨ 自定义组件语法解析，只解析顶层组件
  */
 export const remarkComponent: Plugin<[], MDAST.Root> = () => {
   const prefix = ':::'
@@ -21,58 +21,56 @@ export const remarkComponent: Plugin<[], MDAST.Root> = () => {
     if (node.children?.length) {
       const children = node.children
       const length = children.length
-      let currNode: LinkNode = { root: true }
+      let prevNode: LinkNode = { prev: null! }
 
       for (let i = length - 1; i >= 0; i--) {
         const _node = children[i]!
-        const linkNode: LinkNode = { isBoundary: false }
+        const currNode: LinkNode = { isBoundary: false }
 
         if (_node.type === 'paragraph') {
           const text = getNodeText(_node)
           if (text === prefix) {
             // 组件闭合标识
-            linkNode.isBoundary = true
+            currNode.isBoundary = true
           } else if (text.startsWith(prefix)) {
             const slots: MDAST.Node[] = []
-            while (!currNode.root && !currNode.isBoundary) {
-              slots.push(currNode.value!)
-              currNode = currNode.prev!
+            while (prevNode.prev && !prevNode.isBoundary) {
+              slots.push(prevNode.value!)
+              prevNode = prevNode.prev!
             }
 
-            // todo: fix error
-            if (currNode.root) {
+            if (!prevNode.prev) {
               throw new Error('missing component closed tag')
             }
 
             const template = text.slice(prefix.length)
-            // todo: fix no props
             const component = resolveComponent(template)
 
-            linkNode.value = createComponentNode(
+            currNode.value = createComponentNode(
               component.name,
               component.props,
               slots
             )
-            linkNode.isBoundary = true
+            currNode.isBoundary = true
 
             // 删除组件闭合标签
-            currNode = currNode.prev!
+            prevNode = prevNode.prev!
           }
         }
 
-        if (!linkNode.isBoundary) {
-          linkNode.value = transform(_node as MDAST.Parent)
+        if (!currNode.isBoundary) {
+          currNode.value = _node
         }
 
-        linkNode.prev = currNode
-        currNode.next = linkNode
-        currNode = linkNode
+        currNode.prev = prevNode
+        prevNode.next = currNode
+        prevNode = currNode
       }
 
       const nodes: MDAST.Node[] = []
-      while (!currNode.root) {
-        nodes.push(currNode.value!)
-        currNode = currNode.prev!
+      while (prevNode.prev) {
+        nodes.push(prevNode.value!)
+        prevNode = prevNode.prev!
       }
       root.children = nodes as any
     }
@@ -81,7 +79,9 @@ export const remarkComponent: Plugin<[], MDAST.Root> = () => {
 
   return (ast, vfile) => {
     try {
-      return transform(ast) as MDAST.Root
+      prettyLog(ast)
+      // return transform(ast) as MDAST.Root
+      return ast
     } catch (error) {
       throw new Error(
         `[remarkComponent]: ${(error as Error).message} in ${vfile.path}`
@@ -107,7 +107,7 @@ function createComponentNode(
 
 function resolveComponent(template: string) {
   template = template.trim()
-  const resolveReg = /^([A-Z][A-Za-z0-9]*)\s*\{(.+)\}$/
+  const resolveReg = /^([A-Z][A-Za-z0-9]*)\s*(?:\{(.+)\})?$/
 
   const match = template.match(resolveReg)
   if (!match) {
@@ -141,7 +141,9 @@ function resolveProps(template: string) {
         value = JSON.parse(value)
       }
       j = i + 1
-      props[key] = value
+      if (key) {
+        props[key] = value
+      }
     }
   }
 
