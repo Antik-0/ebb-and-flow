@@ -1,7 +1,7 @@
-import type { Plugin } from 'unified'
 import type { MDAST } from '../types/index.ts'
 import { toHast } from 'mdast-util-to-hast'
+import { withErrorHandler } from '../shared/error.ts'
 
-export const remarkToRehype: Plugin = () => {
-  return ast => toHast(ast as MDAST.Root)
+export function remarkToRehype() {
+  return withErrorHandler<MDAST.Root>('remarkToRehype', ast => toHast(ast))
 }

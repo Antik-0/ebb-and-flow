@@ -1,5 +1,8 @@
 import type { Node, Parent } from 'unist'
 
+/**
+ * ✨ 美化打印调试(去除postions噪音)
+ */
 export function prettyLog(ast: Parent | Node) {
   function dfs(node: Parent | Node) {
     const { position, children, ...attrs } = node as Parent

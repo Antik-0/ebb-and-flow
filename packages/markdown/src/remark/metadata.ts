@@ -1,11 +1,11 @@
-import type { Plugin } from 'unified'
 import type { VFile } from 'vfile'
 import type { Data, MDAST, Metadata } from '../types/index.ts'
+import { withErrorHandler } from '../shared/error.ts'
 import {
   computeReadingTime,
   getGitUpdatedTime,
   sanitizeSelector
-} from '../shared/index.ts'
+} from '../shared/general.ts'
 import { getNodeText, visit } from '../shared/visit.ts'
 
 export interface RemarkMetadataOptions {
@@ -23,13 +23,10 @@ export interface RemarkMetadataOptions {
 /**
  * ✨ 定义 `.md` 文件的元数据
  */
-export const remarkMetadata: Plugin<
-  [RemarkMetadataOptions],
-  MDAST.Root
-> = options => {
-  const { setup, tocDepth = [2, 3] } = options ?? {}
+export function remarkMetadata(options: RemarkMetadataOptions = {}) {
+  const { setup, tocDepth = [2, 3] } = options
 
-  return (ast, file) => {
+  return withErrorHandler<MDAST.Root>('remarkMetadata', (ast, file) => {
     const filepath = file.path
     const lastUpdated = getGitUpdatedTime(filepath)
     const readingTime = computeReadingTime(file.toString())
@@ -69,5 +66,5 @@ export const remarkMetadata: Plugin<
     // 同步数据
     file.data.metadata = metadata
     file.data.tocDepth = tocDepth
-  }
+  })
 }

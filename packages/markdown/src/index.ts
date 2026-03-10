@@ -1,18 +1,7 @@
-import { fileURLToPath, URL } from 'node:url'
-import { rehypePatch } from './rehype/patch.ts'
-import { remarkComponent } from './remark/component.ts'
-import { remarkMetadata } from './remark/metadata.ts'
-import { remarkToRehype } from './remark/to-hast.ts'
-import { createUnified } from './unified.ts'
+import type { MarkdownConfig } from './types/index.ts'
 
-const file = Bun.file(fileURLToPath(new URL('./test.md', import.meta.url)))
+export function defineMarkdownConfig(config: MarkdownConfig): MarkdownConfig {
+  return config
+}
 
-const content = await file.text()
-
-const unified = createUnified()
-unified
-  .use([remarkComponent])
-  .use([remarkMetadata])
-  .use([remarkToRehype])
-  .use([rehypePatch])
-  .process({ path: file.name, value: content })
+export { createSource } from './build.ts'

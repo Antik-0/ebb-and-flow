@@ -1,16 +1,17 @@
-import type { Plugin } from 'unified'
-import type { HAST } from '../types/index.ts'
-import { sanitizeSelector } from '../shared/index.ts'
+import type { HAST, VFileData } from '../types/index.ts'
+import { withErrorHandler } from '../shared/error.ts'
+import { sanitizeSelector } from '../shared/general.ts'
 import { getNodeText, visit } from '../shared/visit.ts'
 
 /**
  * ✨ 完善部分标签 `props`
  */
-export const rehypePatch: Plugin<[], HAST.Root> = () => {
-  return (ast, file) => {
-    const tocDepth = (file.data.tocDepth as number[]) ?? []
+export function rehypePatch() {
+  return withErrorHandler<HAST.Root>('rehypePatch', (ast, file) => {
+    const fileData = file.data as unknown as VFileData
+    const tocDepth = fileData.tocDepth ?? []
     const tocHeads = tocDepth.map(n => `h${n}`)
-    const metadata = file.data.metadata as Record<string, any>
+    const metadata = fileData.metadata
 
     visit<HAST.Element>(
       ast,
@@ -36,5 +37,5 @@ export const rehypePatch: Plugin<[], HAST.Root> = () => {
       },
       { depth: 1 }
     )
-  }
+  })
 }

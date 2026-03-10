@@ -4,20 +4,18 @@ interface VNode extends Node {
   children?: VNode[]
 }
 
-// biome-ignore-start lint/suspicious/noConfusingVoidType: no why
+// biome-ignore-start lint/suspicious/noConfusingVoidType: maybe void
 type Visitor<T extends VNode = VNode> = (
   node: T,
   ctx: VisitorCtx<T>
 ) => number | void
-// biome-ignore-end lint/suspicious/noConfusingVoidType: no why
+// biome-ignore-end lint/suspicious/noConfusingVoidType: maybe void
 
-type VisitorCtx<T> = {
+type VisitorCtx<T = VNode> = {
   index: number
   parent: T | null
   signal: Signal
 }
-
-type Signal = typeof SIGNAL
 
 /**
  * `visitor` 信号量
@@ -27,6 +25,8 @@ const SIGNAL = {
   return: 2, // 停止继续遍历
   delete: 4 // 删除节点
 } as const
+
+type Signal = typeof SIGNAL
 
 interface VisitOptions {
   /**
@@ -53,7 +53,7 @@ export function visit<T extends VNode = VNode>(
 ) {
   const { type, depth = -1, reversed = false } = options
 
-  const delSymbol = Symbol('delete')
+  const needDelete = Symbol('delete')
 
   const dfs = (
     node: VNode,
@@ -63,7 +63,8 @@ export function visit<T extends VNode = VNode>(
   ) => {
     let flag = 0
     if (!type || type === node.type) {
-      flag = visitor(node as T, { index, parent, signal: SIGNAL } as any) ?? 0
+      const ctx = { index, parent, signal: SIGNAL }
+      flag = visitor(node as T, ctx as VisitorCtx<T>) ?? 0
     }
 
     if (depth === 0 || flag > 0 || !node.children) {
@@ -81,7 +82,7 @@ export function visit<T extends VNode = VNode>(
       if (childFlag & SIGNAL.delete) {
         // 标记当前子节点需要删除
         hasChange = true
-        Reflect.set(childNode, delSymbol, true)
+        Reflect.set(childNode, needDelete, true)
       }
       if (childFlag & SIGNAL.return) {
         // 退出树遍历
@@ -91,7 +92,7 @@ export function visit<T extends VNode = VNode>(
     }
 
     if (hasChange) {
-      node.children = node.children.filter(n => !Reflect.has(n, delSymbol))
+      node.children = node.children.filter(n => !Reflect.has(n, needDelete))
     }
 
     return flag

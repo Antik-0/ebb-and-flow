@@ -1,6 +1,22 @@
 export type * as HAST from './hast.d.ts'
 export type * as MDAST from './mdast.d.ts'
 
+export type Data = Record<string, any>
+
+export type Props = Record<string, any>
+
+export type VNode = string | [string, Props, VNode[]]
+
+export type Frontmatter = Record<string, any>
+
+export type PlainObject = Record<string, unknown>
+
+export interface TocItem {
+  to: string
+  text: string
+  level: number
+}
+
 export interface Metadata {
   /**
    * 文章标题
@@ -20,12 +36,25 @@ export interface Metadata {
   readingTime: number
 }
 
-export type Data = Record<string, any>
+export interface VFileData {
+  tocDepth?: number[]
+  metadata: Metadata
+  frontmatter: Frontmatter
+}
 
-export type PlainObject = Record<string, unknown>
+export interface MarkdownData {
+  tree: VNode[]
+  metadata: Metadata
+  frontmatter: Frontmatter
+}
 
-export interface TocItem {
-  to: string
-  text: string
-  level: number
+export interface MarkdownConfig {
+  /**
+   * md 文件源目录
+   */
+  dir: string
+  /**
+   * md 编译后的输出目录
+   */
+  output?: string
 }

@@ -1,5 +1,5 @@
-import type { Plugin } from 'unified'
 import type { Data, HAST } from '../types/index.ts'
+import { withErrorHandler } from '../shared/error.ts'
 import { highlighterPromise } from '../shared/shiki.ts'
 import { getNodeText, visit } from '../shared/visit.ts'
 
@@ -8,14 +8,12 @@ export interface RehypeShikiOptions {
 }
 
 /**
- * ✨ 基于 `shiki` 的语法高亮解析
+ * ✨ 基于 `shiki` 的代码高亮解析
  */
-export const rehypeShiki: Plugin<[RehypeShikiOptions], HAST.Root> = (
-  options = {}
-) => {
+export function rehypeShiki(options: RehypeShikiOptions = {}) {
   const { theme = 'github' } = options
 
-  return async ast => {
+  return withErrorHandler<HAST.Root>('rehypeShiki', async ast => {
     const highlighter = await highlighterPromise
 
     visit<HAST.Element>(
@@ -84,7 +82,7 @@ export const rehypeShiki: Plugin<[RehypeShikiOptions], HAST.Root> = (
       },
       { type: 'element' }
     )
-  }
+  })
 }
 
 const languagePrefix = 'language-'
