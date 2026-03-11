@@ -28,13 +28,14 @@ export const ProsePre = defineComponent<Props>(
           class={clsx(
             'rounded-md flex size-8 cursor-pointer transition-all flex-center right-2 top-2 absolute',
             'text-muted-foreground bg-muted/40 opacity-0',
-            'hover:(text-accent-foreground bg-muted) group-hover:opacity-100'
+            'hover:(text-accent-foreground bg-muted) group-hover:opacity-100',
+            'data-[active=true]:opacity-100'
           )}
-          data-active={copied}
+          data-active={copied.value}
           onClick={handleCopy}
           type="button"
         >
-          {copied ? <CopyCheck /> : <Copy />}
+          {copied.value ? <CopyCheck /> : <Copy />}
         </button>
         {slots.default?.()}
       </pre>

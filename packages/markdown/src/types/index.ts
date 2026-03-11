@@ -43,18 +43,7 @@ export interface VFileData {
 }
 
 export interface MarkdownData {
-  tree: VNode[]
+  body: VNode[]
   metadata: Metadata
-  frontmatter: Frontmatter
-}
-
-export interface MarkdownConfig {
-  /**
-   * md 文件源目录
-   */
-  dir: string
-  /**
-   * md 编译后的输出目录
-   */
-  output?: string
+  frontmatter?: Frontmatter
 }

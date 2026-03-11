@@ -1,61 +1,35 @@
 <script setup lang='ts'>
-import type { OutlineAnchor } from 'ebb-theme'
+import type { MarkdownData } from 'ebb-markdown'
 import { EbbContent } from 'ebb-theme'
+import { ContentRender } from '#/render'
 
 definePageMeta({ layout: 'page' })
 
 const route = useRoute()
 
-const { data: page } = await useAsyncData(route.path, async () => {
-  const result = await queryCollection('content').path(route.path).first()
-  const content = result?.body.value
-  if (content) {
-    // 填充 page-meta props，默认位置位于 `h1` 标题的后一个 dom
-    const pageMeta = content[1] as any[]
-    if (pageMeta && pageMeta[0] === 'page-meta') {
-      pageMeta[1] = {
-        // 非基本类型，需要:语法来动态绑定，值需要序列化
-        ':tags': JSON.stringify(result.tags),
-        readingTime: result.readingTime,
-        lastUpdated: result.lastUpdated
-      }
-    }
-  }
-  return result
+const { data } = await useFetch('/api/page', {
+  method: 'post',
+  body: { path: route.path }
 })
 
-useSeoMeta({ title: formatTitle(page.value?.title) })
+console.log(data.value)
 
-const pageData = createPageData()
+const page = data.value as MarkdownData | null
 
-function createPageData() {
-  if (!page.value) return null
+const metadata = page?.metadata
 
-  const title = page.value.title
-  const links = page.value.body.toc?.links ?? []
-  const toc = buildToc(links)
+useSeoMeta({ title: formatTitle(metadata?.title) })
 
-  function buildToc(items: typeof links) {
-    const result: OutlineAnchor[] = []
-    for (const item of items) {
-      result.push({
-        text: item.text,
-        to: `#${item.id}`,
-        level: item.depth - 1
-      })
-      if (item.children) {
-        result.push(...buildToc(item.children))
-      }
+const pageData = metadata
+  ? {
+      title: metadata.title,
+      toc: metadata.toc
     }
-    return result
-  }
-
-  return { title, toc }
-}
+  : null
 </script>
 
 <template>
   <EbbContent :page="pageData">
-    <ContentRenderer v-if="page" :value="page" />
+    <ContentRender v-if="false" :data="page" :path="route.path" />
   </EbbContent>
 </template>

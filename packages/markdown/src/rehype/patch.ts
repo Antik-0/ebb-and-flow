@@ -32,10 +32,32 @@ export function rehypePatch() {
 
         // ✨ code-group 注入 tabs
         if (tagName === 'CodeGroup') {
+          const tabs = parsePreTab(node.children)
+          Object.assign(node.properties, { tabs })
           return
         }
       },
       { depth: 1 }
     )
   })
+}
+
+interface TabItem {
+  text: string
+  icon: string
+}
+
+function parsePreTab(children: any[]) {
+  const res: TabItem[] = []
+
+  for (const preRoot of children) {
+    const preNode = preRoot?.children[0]
+    if (preNode?.tagName === 'pre') {
+      const props = preNode.properties
+      const text = props.filename || props.language
+      const icon = props.language
+      res.push({ text, icon })
+    }
+  }
+  return []
 }

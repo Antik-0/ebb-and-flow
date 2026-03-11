@@ -8,7 +8,7 @@ const logSuccessd = (duration: number) => {
   console.log(`
       \n${
         pc.yellow('🎉 markdown compile successd ') +
-        pc.gray(`in ${duration.toFixed(2)}ms`)
+        pc.gray(`in ${duration.toFixed(2)} ms`)
       }\n
     `)
 }

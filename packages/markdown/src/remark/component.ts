@@ -1,19 +1,17 @@
 import type { MDAST } from '../types/index.ts'
 import { withErrorHandler } from '../shared/error.ts'
-import { getNodeText } from '../shared/visit.ts'
+import { normalizeKey } from '../shared/general.ts'
 
 interface LinkNode {
   prev?: LinkNode
   value?: MDAST.Node
-  isBoundary?: boolean
+  closeTag?: string
 }
 
 /**
  * ✨ 自定义组件语法解析 - 只支持顶层组件
  */
 export function remarkComponent() {
-  const marker = ':::'
-
   return withErrorHandler<MDAST.Root>('remarkComponent', ast => {
     const children = ast.children
     const length = children.length
@@ -25,19 +23,20 @@ export function remarkComponent() {
       const node = children[i]!
       const currNode: LinkNode = { value: node }
 
-      if (node.type === 'paragraph') {
-        const text = getNodeText(node)
-        if (text === marker) {
+      if (node.type === 'html') {
+        const text = node.value
+        if (closeTagReg.test(text)) {
           // 组件闭合标签
-          currNode.isBoundary = true
-        } else if (text.startsWith(marker)) {
+          currNode.closeTag = text.slice(2, -1)
+        } else {
           // 尝试解析组件
-          const component = parseComponent(text, marker)
+          const component = parseComponent(text)
+          const name = component.name
 
           // 尝试解析插槽
           const slots: MDAST.Node[] = []
           if (!component.inline) {
-            while (prevNode.prev && !prevNode.isBoundary) {
+            while (prevNode.prev && name !== prevNode.closeTag) {
               slots.push(prevNode.value!)
               prevNode = prevNode.prev!
             }
@@ -76,20 +75,17 @@ export function remarkComponent() {
   })
 }
 
-const componentReg = /^([A-Z][A-Za-z0-9]*)\s*(?:\{(.+)\})?$/
+const closeTagReg = /^<\/[A-Z][A-Za-z0-9]*>$/
+const componentReg = /^<([A-Z][A-Za-z0-9]*)(.*)(\S\/)?>$/
+const propsReg = /(:?[a-z]+(?:-[a-z]+)?)\s*=\s*(["'])(.+?)\2/g
 
-function parseComponent(template: string, marker: string) {
-  const inline = template.endsWith(marker)
-  const markerLen = marker.length
-  const start = markerLen
-  const end = template.length - (inline ? markerLen : 0)
-  template = template.slice(start, end).replace(/\r?\n$/, '')
-
+function parseComponent(template: string) {
   const match = template.match(componentReg)
   if (!match) {
     throw new Error(`resolve component failed in template: \`${template}\``)
   }
 
+  const inline = template.endsWith(' />')
   const name = match[1] ?? ''
   const props = resolveProps(match[2] ?? '')
 
@@ -97,30 +93,17 @@ function parseComponent(template: string, marker: string) {
 }
 
 function resolveProps(template: string) {
-  template = template.replaceAll(/([:,])\s+/g, '$1') + ' '
-
+  template = template.trim()
   const props: Record<string, any> = {}
-  const length = template.length
-  let i = 0
-  let key = ''
-  let value: any = ''
 
-  for (let j = 0; j < length; j++) {
-    const s = template[j]
-    if (s === '=') {
-      key = template.slice(i, j)
-      i = j + 1
-    } else if (s === ' ') {
-      value = template.slice(i, j)
-      if (key[0] === ':') {
-        key = key.slice(1)
-        value = JSON.parse(value)
-      }
-      i = j + 1
-      if (key) {
-        props[key] = value
-      }
+  for (const entry of template.matchAll(propsReg)) {
+    let key = entry[1]!
+    let value = entry[3]!
+    if (key[0] === ':') {
+      key = key.slice(1)
+      value = JSON.parse(value)
     }
+    props[normalizeKey(key)] = value
   }
 
   return props

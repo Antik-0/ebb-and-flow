@@ -1,10 +1,9 @@
 import { fileURLToPath, URL } from 'node:url'
-import { computeReadingTime, getGitUpdatedTime } from './content-utils'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: '2026-03-21',
   devtools: { enabled: false },
-
+  modules: ['@unocss/nuxt'],
   app: {
     baseURL: '/ebb-and-flow/',
     head: {
@@ -35,32 +34,10 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
         paths: {
-          '#/*': ['../app/*']
+          '#/*': ['../app/*'],
+          '#source/*': ['../.data/*']
         }
       }
-    }
-  },
-
-  modules: ['@nuxt/content', '@unocss/nuxt'],
-  content: {
-    build: {
-      markdown: {
-        toc: {
-          depth: 3
-        },
-        highlight: {
-          theme: 'github-dark'
-        }
-      }
-    },
-    experimental: { sqliteConnector: 'native' }
-  },
-  hooks: {
-    'content:file:afterParse': ctx => {
-      const { file, content } = ctx
-      const filepath = file.path
-      content.readingTime = computeReadingTime(file.body)
-      content.lastUpdated = getGitUpdatedTime(filepath)
     }
   }
 })

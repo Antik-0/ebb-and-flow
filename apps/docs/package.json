@@ -3,18 +3,20 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#/*": "./app/*"
+    "#/*": "./app/*",
+    "#source/*": "./.data/*"
   },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "prepare": "nuxt prepare",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "source": "bun build-source.ts"
   },
   "dependencies": {
-    "@nuxt/content": "catalog:",
     "@repo/utils": "workspace:*",
+    "ebb-markdown": "workspace:*",
     "ebb-theme": "workspace:*",
     "motion-v": "catalog:",
     "nuxt": "catalog:",

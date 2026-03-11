@@ -59,12 +59,12 @@ const ebbParser: Parser = (document, vfile) => {
 const ebbCompiler: Compiler = (ast, file) => {
   try {
     // 转换为虚拟dom树，便于客户端渲染
-    const tree = createVNodeTree(ast as HAST.Root)
+    const body = createVNodeTree(ast as HAST.Root)
 
     const fileData = file.data as unknown as VFileData
     const { metadata, frontmatter } = fileData
 
-    return { tree, metadata, frontmatter } as CompileResultMap
+    return { body, metadata, frontmatter } as CompileResultMap
   } catch (error) {
     throw new Error('[Compiler Error]: ' + (error as Error).message)
   }

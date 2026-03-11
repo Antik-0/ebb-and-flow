@@ -9,7 +9,7 @@ export function withErrorHandler<T = any>(name: string, handler: Handler<T>) {
     } catch (error) {
       const message = (error as Error).message
       const pluginName = name[0]?.toLocaleUpperCase() + name.slice(1)
-      const errorMsg = `[${pluginName} Error]: ${message}. \n    in file ${vfile.path}`
+      const errorMsg = `[${pluginName} Error]: ${message}. \n\tin file ${vfile.path}`
       throw new Error(errorMsg)
     }
   }

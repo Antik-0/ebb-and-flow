@@ -38,3 +38,10 @@ export function sanitizeSelector(str: string) {
       .replaceAll(/^-|-$/g, '')
   )
 }
+
+/**
+ * props key normalize
+ */
+export function normalizeKey(str: string) {
+  return str.replaceAll(/-([a-z])/g, (_, c) => c.toUpperCase())
+}

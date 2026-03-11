@@ -1,7 +1,6 @@
-import type { MarkdownConfig } from './types/index.ts'
-
-export function defineMarkdownConfig(config: MarkdownConfig): MarkdownConfig {
-  return config
-}
-
+export type {
+  MarkdownData,
+  Metadata,
+  VNode
+} from './types/index.ts'
 export { createSource } from './build.ts'
