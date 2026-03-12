@@ -7,29 +7,26 @@ definePageMeta({ layout: 'page' })
 
 const route = useRoute()
 
-const { data } = await useFetch('/api/page', {
+const page = await useFetch('/api/page', {
   method: 'post',
   body: { path: route.path }
-})
-
-console.log(data.value)
-
-const page = data.value as MarkdownData | null
+}).then(res => res.data.value?.data)
 
 const metadata = page?.metadata
 
 useSeoMeta({ title: formatTitle(metadata?.title) })
 
-const pageData = metadata
-  ? {
-      title: metadata.title,
-      toc: metadata.toc
-    }
-  : null
+const pageData = computed(() => {
+  if (!metadata) return null
+  return {
+    title: metadata.title,
+    toc: metadata.toc
+  }
+})
 </script>
 
 <template>
   <EbbContent :page="pageData">
-    <ContentRender v-if="false" :data="page" :path="route.path" />
+    <ContentRender :data="page" :path="route.path" />
   </EbbContent>
 </template>

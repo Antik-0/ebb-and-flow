@@ -1,5 +1,6 @@
 export { CodeGroup } from './CodeGroup.tsx'
 export { CustomBlock } from './CustomBlock.tsx'
+export { PageMeta } from './PageMeta.tsx'
 export { ProseA } from './ProseA.tsx'
 export { ProseH2, ProseH3 } from './ProseH.tsx'
 export { ProsePre } from './ProsePre.tsx'

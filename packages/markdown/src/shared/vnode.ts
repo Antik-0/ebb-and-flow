@@ -7,14 +7,10 @@ type HNode = HAST.Text | HAST.Element | HAST.Comment
  */
 export function createVNodeTree(ast: HAST.Root) {
   function transform(node: HNode) {
-    // todo: pre node type === root
     if (node.type === 'comment') {
       return null
     }
     if (node.type === 'text') {
-      if (node.value === '\n') {
-        return null
-      }
       return node.value
     }
 

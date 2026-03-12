@@ -3,9 +3,9 @@ import '../assets/article.css'
 
 useSeoMeta({ title: formatTitle('归档') })
 
-const { data } = await useFetch('/api/articles')
-
-const articles = data.value
+const articles = await useFetch('/api/articles').then(
+  res => res.data.value?.data
+)
 </script>
 
 <template>

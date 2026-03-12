@@ -34,8 +34,7 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
         paths: {
-          '#/*': ['../app/*'],
-          '#source/*': ['../.data/*']
+          '#/*': ['../app/*']
         }
       }
     }

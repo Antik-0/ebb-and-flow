@@ -46,10 +46,12 @@ export async function createSource(options: SourceOptions) {
   const rehypePlugins = [[rehypeShiki], [rehypePatch]] as Pluggable[]
   const unified = createUnified({ remarkPlugins, rehypePlugins })
 
+  let totalCount = 0
   let totalDuration = 0
 
   async function handle(path: string) {
     const startTime = performance.now()
+    totalCount += 1
 
     const filepath = resolve(contentDir, path)
     const file = Bun.file(filepath)
@@ -88,7 +90,7 @@ export async function createSource(options: SourceOptions) {
   updateCache(cacheFile, cache)
   updateSource(sourceFile, source)
 
-  logger.successd(totalDuration)
+  logger.successd(totalCount, totalDuration)
 }
 
 type SourceData = Record<string, MarkdownData>

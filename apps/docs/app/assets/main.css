@@ -76,7 +76,6 @@ html[data-layout='page'] #app {
  * 🏷️ layout view-transition
  * ==================================================
  */
-
 html {
   view-transition-name: layout;
 }
@@ -140,4 +139,51 @@ html[data-motion='flow-out']::view-transition-old(layout) {
   clip-path: circle(var(--m-value-u) at 50% 50%);
   animation-name: motion-value-u, motion-opacity;
   z-index: 99;
+}
+
+/**
+ * ==================================================
+ * 🏷️ shiki
+ * ==================================================
+ */
+html .shiki span {
+  color: var(--shiki-default);
+  font-style: var(--shiki-default-font-style);
+  font-weight: var(--shiki-default-font-weight);
+  text-decoration: var(--shiki-default-text-decoration);
+}
+
+html .light .shiki span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+html.light .shiki span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+html .default .shiki span {
+  color: var(--shiki-default);
+  font-style: var(--shiki-default-font-style);
+  font-weight: var(--shiki-default-font-weight);
+  text-decoration: var(--shiki-default-text-decoration);
+}
+
+html .dark .shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
+}
+
+html.dark .shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
 }

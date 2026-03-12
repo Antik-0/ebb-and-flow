@@ -26,9 +26,9 @@ export function remarkComponent() {
       if (node.type === 'html') {
         const text = node.value
         if (closeTagReg.test(text)) {
-          // 组件闭合标签
+          // 组件闭合标签，提取 name
           currNode.closeTag = text.slice(2, -1)
-        } else {
+        } else if (openTagReg.test(text)) {
           // 尝试解析组件
           const component = parseComponent(text)
           const name = component.name
@@ -75,6 +75,7 @@ export function remarkComponent() {
   })
 }
 
+const openTagReg = /^<[A-Z].*>$/
 const closeTagReg = /^<\/[A-Z][A-Za-z0-9]*>$/
 const componentReg = /^<([A-Z][A-Za-z0-9]*)(.*)(\S\/)?>$/
 const propsReg = /(:?[a-z]+(?:-[a-z]+)?)\s*=\s*(["'])(.+?)\2/g

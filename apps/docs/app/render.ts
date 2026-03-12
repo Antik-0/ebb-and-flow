@@ -1,30 +1,43 @@
 import type { MarkdownData } from 'ebb-markdown'
 import type { Component, VNode } from 'vue'
 import { renderMarkdown } from 'ebb-markdown/render'
-import { CodeGroup, CustomBlock } from 'ebb-theme/prose'
-import { default as CssGlass } from './components/content/CssGlass.vue'
-import { default as PageMeta } from './components/content/PageMeta.vue'
-import { default as ProseA } from './components/content/ProseA.vue'
-import { default as ProseH2 } from './components/content/ProseH2.vue'
-import { default as ProseH3 } from './components/content/ProseH3.vue'
-import { default as ProsePre } from './components/content/ProsePre.vue'
-import { default as SvgLoading } from './components/content/SvgLoading.vue'
-
-const components = {
-  PageMeta,
+import {
   CodeGroup,
   CustomBlock,
+  PageMeta,
+  ProseA,
+  ProseH2,
+  ProseH3,
+  ProsePre
+} from 'ebb-theme/prose'
+import { default as CssGlass } from './components/CssGlass.vue'
+import {
+  ColorfulBorder,
+  GridMotion,
+  PlayonMotion,
+  SvgSpinner
+} from './components/effect'
+import { default as SvgLoading } from './components/effect/SvgLoading.vue'
+
+const components = {
   a: ProseA,
   h2: ProseH2,
   h3: ProseH3,
   pre: ProsePre,
+  PageMeta,
+  CodeGroup,
+  CustomBlock,
   CssGlass,
-  SvgLoading
+  SvgLoading,
+  SvgSpinner,
+  ColorfulBorder,
+  GridMotion,
+  PlayonMotion
 }
 
 interface ContentProps {
-  data: MarkdownData
-  path: string
+  data?: MarkdownData | null
+  path?: string
 }
 
 export function ContentRender({ path, data }: ContentProps) {

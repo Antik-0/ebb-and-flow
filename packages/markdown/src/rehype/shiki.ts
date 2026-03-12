@@ -11,7 +11,7 @@ export interface RehypeShikiOptions {
  * ✨ 基于 `shiki` 的代码高亮解析
  */
 export function rehypeShiki(options: RehypeShikiOptions = {}) {
-  const { theme = 'github' } = options
+  const { theme = 'vitesse' } = options
 
   return withErrorHandler<HAST.Root>('rehypeShiki', async ast => {
     const highlighter = await highlighterPromise
@@ -32,7 +32,7 @@ export function rehypeShiki(options: RehypeShikiOptions = {}) {
         let lines = 0
         const codeRaw = getNodeText(codeNode).replaceAll('\r\n', '\n')
 
-        const preHast = highlighter.codeToHast(codeRaw, {
+        const preRoot = highlighter.codeToHast(codeRaw, {
           lang: language ?? 'text',
           themes: {
             light: `${theme}-light`,
@@ -73,8 +73,9 @@ export function rehypeShiki(options: RehypeShikiOptions = {}) {
             }
           ]
         })
+        const preHast = preRoot.children[0]
 
-        if (parent) {
+        if (parent && preHast) {
           parent.children[index] = preHast as any
         }
 

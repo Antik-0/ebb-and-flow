@@ -1,5 +1,4 @@
 import type { MarkdownData } from 'ebb-markdown'
-import source from '#source/source.json' with { type: 'json' }
 
 interface Article {
   title: string
@@ -30,10 +29,13 @@ const covers = [
 const length = covers.length
 
 export default defineEventHandler(async () => {
+  const sourceJSON = (await import('../../.data/source.json', {
+    with: { type: 'json' }
+  })) as any
+  const source = sourceJSON.default as Record<string, MarkdownData>
+
   let index = 0
-
   const res: Article[] = []
-
   for (const path of Object.keys(source)) {
     const data = source[path as keyof typeof source] as unknown as MarkdownData
     const metadata = data.metadata
@@ -50,8 +52,8 @@ export default defineEventHandler(async () => {
   }
 
   // 按修改时间降序
-  const response = res.toSorted(
+  const data = res.toSorted(
     (a, b) => (b.lastUpdated ?? 0) - (a.lastUpdated ?? 0)
   )
-  return response
+  return { data }
 })

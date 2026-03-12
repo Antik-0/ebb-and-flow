@@ -12,6 +12,7 @@ export function rehypePatch() {
     const tocDepth = fileData.tocDepth ?? []
     const tocHeads = tocDepth.map(n => `h${n}`)
     const metadata = fileData.metadata
+    const frontmatter = fileData.frontmatter
 
     visit<HAST.Element>(
       ast,
@@ -26,7 +27,11 @@ export function rehypePatch() {
 
         // ✨ page-meta 注入 metadata
         if (tagName === 'PageMeta') {
-          Object.assign(node.properties, metadata)
+          Object.assign(node.properties, {
+            tags: frontmatter.tags,
+            lastUpdated: metadata.lastUpdated,
+            readingTime: metadata.readingTime
+          })
           return
         }
 

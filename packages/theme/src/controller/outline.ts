@@ -67,7 +67,7 @@ export function createSVGMask(toc: OutlineAnchor[]) {
   const paths = [`M ${ox},4`]
 
   for (const item of toc) {
-    const lv = item.level - 1
+    const lv = item.level - 2
     maxLv = Math.max(maxLv, lv)
     const nx = ox + lv * xStep
     if (nx !== x) {

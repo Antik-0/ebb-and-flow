@@ -12,14 +12,16 @@ export function renderMarkdown<C = any, V = any>(
   components: Record<string, C> = {}
 ) {
   function render(node: VNode): V {
-    if (typeof node === 'string') {
+    if (!node || typeof node === 'string') {
       return node as V
     }
+
     const [tag, props, children] = node
     const vnodes: V[] = []
     for (const element of children) {
       vnodes.push(render(element))
     }
+
     const component = components[tag]
     if (component) {
       return h(component, props, () => vnodes)

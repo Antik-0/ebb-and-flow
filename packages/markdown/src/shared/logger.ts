@@ -4,11 +4,12 @@ const logStart = () => {
   console.log(`\n${pc.yellow('🕔 markdown start compiling ...')}\n`)
 }
 
-const logSuccessd = (duration: number) => {
+const logSuccessd = (total: number, duration: number) => {
   console.log(`
       \n${
         pc.yellow('🎉 markdown compile successd ') +
-        pc.gray(`in ${duration.toFixed(2)} ms`)
+        pc.red(`in ${duration.toFixed(2)} ms `) +
+        pc.gray(`with ${total} files`)
       }\n
     `)
 }

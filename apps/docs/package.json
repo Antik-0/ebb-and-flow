@@ -3,8 +3,7 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#/*": "./app/*",
-    "#source/*": "./.data/*"
+    "#/*": "./app/*"
   },
   "scripts": {
     "build": "nuxt build",
@@ -25,8 +24,7 @@
   },
   "devDependencies": {
     "@config/unocss": "workspace:*",
-    "@unocss/nuxt": "catalog:",
-    "zod": "catalog:"
+    "@unocss/nuxt": "catalog:"
   },
   "trustedDependencies": ["esbuild", "nuxt"]
 }

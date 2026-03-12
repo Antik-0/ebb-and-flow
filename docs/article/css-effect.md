@@ -11,22 +11,7 @@ tags: ["杂谈", "CSS", "动效"]
 
 这个 CSS 特效出自 [Making SVG Loading Spinners: An Interactive Guide](https://www.fffuel.co/svg-spinner/)
 
-<div className="flex flex-center h-60">
-  <svg width="200" height="200" viewBox="-200 -200 400 400">
-    <circle
-      className="svg-spinner"
-      cx="0"
-      cy="0"
-      r="100"
-      fill="none"
-      stroke="#59AFFF"
-      strokeWidth="24"
-      strokeLinecap="round"
-      strokeDasharray="1 314"
-      strokeDashoffset="0"
-    />
-  </svg>
-</div>
+<SvgSpinner />
 
 <CodeGroup>
 
@@ -79,11 +64,7 @@ tags: ["杂谈", "CSS", "动效"]
 
 这个 CSS 特效出自 [turbo 官网](https://turbo.build/)。
 
-<div className="flex flex-center h-60">
-  <div className="border-container">
-    <div className="colorful-border"></div>
-  </div>
-</div>
+<ColorfulBorder />
 
 <CodeGroup>
 
@@ -143,13 +124,7 @@ tags: ["杂谈", "CSS", "动效"]
 
 这个 CSS 特效出自 [turbo 官网](https://turbo.build/)。
 
-<div className="flex flex-center">
-  <div className="grid-view">
-    <div className="grid-stage">
-      <div className="grid-flat"></div>
-    </div>
-  </div>
-</div>
+<GridMotion />
 
 <CodeGroup>
 
@@ -204,41 +179,7 @@ tags: ["杂谈", "CSS", "动效"]
 
 ## playon
 
-<div className="flex flex-center h-60">
-  <svg
-    viewBox="0 0 32 32"
-    width="1em"
-    height="1em"
-    style={{fontSize: '128px', color: 'oklch(0.645 0.246 16.439)'}}
-  >
-    <g stroke="currentColor" strokeWidth="6" strokeLinecap="round">
-      <line x1="7" y1="10" x2="7" y2="26">
-        <animate
-          attributeName="y1"
-          values="10;20;10"
-          dur="0.8s"
-          repeatCount="indefinite"
-        ></animate>
-      </line>
-      <line x1="16" y1="6" x2="16" y2="26">
-        <animate
-          attributeName="y1"
-          values="18;6;18"
-          dur="0.8s"
-          repeatCount="indefinite"
-        ></animate>
-      </line>
-      <line x1="25" y1="8" x2="25" y2="26">
-        <animate
-          attributeName="y1"
-          values="8;20;8"
-          dur="0.8s"
-          repeatCount="indefinite"
-        ></animate>
-      </line>
-    </g>
-  </svg>
-</div>
+<PlayonMotion />
 
 ```html
 <svg
@@ -278,7 +219,7 @@ tags: ["杂谈", "CSS", "动效"]
 
 ## 下拉 Loading
 
-<SVGLoading />
+<SvgLoading />
 
 <CodeGroup>
 

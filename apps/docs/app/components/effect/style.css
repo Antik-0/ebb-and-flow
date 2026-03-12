@@ -1,0 +1,97 @@
+.svg-spinner {
+  animation:
+    rotate 1s linear infinite,
+    motion 2s ease-in-out infinite alternate;
+}
+
+@keyframes rotate {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@keyframes motion {
+  0%,
+  100% {
+    stroke-dasharray: 1 314;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 310 2;
+    stroke-dashoffset: -155;
+  }
+}
+
+.border-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.colorful-border {
+  position: absolute;
+  inset: 0;
+  padding: 10px;
+  mask:
+    linear-gradient(0deg, #fff, #fff) content-box,
+    linear-gradient(0deg, #fff, #fff);
+  mask-composite: exclude;
+}
+
+.colorful-border::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 200%;
+  padding-bottom: 200%;
+  background: conic-gradient(
+    #e92a67 0deg,
+    #a853ba 135deg,
+    #2a8af6 215deg,
+    hsla(0, 0%, 100%, 0.1) 360deg
+  );
+  animation: rotate 2s linear infinite;
+}
+
+.grid-view {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  perspective: 1000px;
+}
+
+.grid-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: rotateX(60deg);
+}
+
+.grid-flat {
+  position: absolute;
+  inset: -100% 0;
+  background: linear-gradient(
+    to right,
+    #b9ddff 45%,
+    transparent 50%,
+    #f8cde8 55%
+  );
+  mask-image:
+    linear-gradient(90deg, #000 2px, transparent 0),
+    linear-gradient(180deg, #000 2px, transparent 0);
+  mask-size: 60px 60px;
+  mask-repeat: repeat;
+  mask-position: 50% 0;
+  animation: grid-flow 10s linear infinite;
+}
+
+@keyframes grid-flow {
+  to {
+    transform: translateY(50%);
+  }
+}

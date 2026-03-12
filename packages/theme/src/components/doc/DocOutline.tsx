@@ -20,7 +20,7 @@ export default defineComponent(
           {anchors.value.map((item, index) => (
             <OutlineItem
               index={index}
-              level={item.level}
+              level={item.level - 1}
               text={item.text}
               to={item.to}
             />

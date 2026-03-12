@@ -14,7 +14,7 @@ tags: ["毛玻璃", "动效", "CSS"]
 
 ## 效果
 
-<CSSGlass />
+<CssGlass />
 
 ## 源码
 
