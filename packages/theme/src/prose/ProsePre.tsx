@@ -3,16 +3,18 @@ import { defineComponent, ref } from 'vue'
 import { Copy, CopyCheck } from '../icons'
 
 interface Props {
+  class?: string
   code?: string
+  lines?: number
   language?: string
   filename?: string
 }
 
 export const ProsePre = defineComponent<Props>(
   (props, { attrs, slots }) => {
-    const { code } = props
-    const copied = ref(false)
+    const { code, lines, language, filename } = props
 
+    const copied = ref(false)
     async function handleCopy() {
       if (copied.value || !code) return
 
@@ -22,7 +24,13 @@ export const ProsePre = defineComponent<Props>(
     }
 
     return () => (
-      <pre class="group rounded-2 relative" {...attrs}>
+      <pre
+        class={['group rounded-2 relative', props.class]}
+        data-filename={filename}
+        data-language={language}
+        data-lines={lines}
+        {...attrs}
+      >
         <button
           aria-label="copy"
           class={clsx(
@@ -41,5 +49,5 @@ export const ProsePre = defineComponent<Props>(
       </pre>
     )
   },
-  { props: ['code', 'language', 'filename'] }
+  { props: ['class', 'code', 'lines', 'language', 'filename'] }
 )

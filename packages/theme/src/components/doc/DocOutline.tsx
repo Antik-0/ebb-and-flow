@@ -6,7 +6,7 @@ import { TextAlignStart } from '#/icons'
 
 export default defineComponent(
   () => {
-    const { anchors } = useOutline()
+    const { toc } = useOutline()
 
     return () => (
       <nav aria-label="outline" class="relative isolate">
@@ -17,12 +17,12 @@ export default defineComponent(
         <OutlineMark />
         <OutlineMask />
         <ul data-role="list">
-          {anchors.value.map((item, index) => (
-            <OutlineItem
+          {toc.value.map((item, index) => (
+            <TocItem
+              id={item.id}
               index={index}
+              label={item.label}
               level={item.level - 1}
-              text={item.text}
-              to={item.to}
             />
           ))}
         </ul>
@@ -32,14 +32,14 @@ export default defineComponent(
   { name: 'Outline' }
 )
 
-interface OutlineItemProps {
-  to: string
-  text: string
+interface TocItemProps {
+  id: string
   index: number
+  label: string
   level: number
 }
 
-const OutlineItem = defineComponent<OutlineItemProps>(
+const TocItem = defineComponent<TocItemProps>(
   props => {
     const activeRange = useActiveRanve()
 
@@ -59,15 +59,15 @@ const OutlineItem = defineComponent<OutlineItemProps>(
         data-active={isActive.value}
         style={{ '--level': props.level }}
       >
-        <a class="block truncate" href={props.to} title={props.text}>
-          {props.text}
+        <a class="block truncate" href={'#' + props.id} title={props.label}>
+          {props.label}
         </a>
       </li>
     )
   },
   {
-    name: 'OutlineItem',
-    props: ['to', 'text', 'index', 'level']
+    name: 'TocItem',
+    props: ['id', 'index', 'label', 'level']
   }
 )
 
@@ -105,13 +105,13 @@ const OutlineMark = defineComponent(
 
 const OutlineMask = defineComponent(
   () => {
-    const { anchors } = useOutline()
+    const { toc } = useOutline()
 
-    const { width, height, path, maskURL } = createSVGMask(anchors.value)
+    const { width, height, path, maskURL } = createSVGMask(toc.value)
     const svg = reactive({ width, height, path, maskURL })
 
     watch(
-      () => anchors.value,
+      () => toc.value,
       newValue => {
         Object.assign(svg, createSVGMask(newValue))
       }

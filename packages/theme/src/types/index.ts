@@ -15,18 +15,18 @@ export interface Page {
   /**
    * 页面导航
    */
-  toc?: OutlineAnchor[]
+  toc?: TocItem[]
 }
 
-export interface OutlineAnchor {
-  /**
-   * 文本
-   */
-  text: string
+export interface TocItem {
   /**
    * 锚点
    */
-  to: string
+  id: string
+  /**
+   * 文本
+   */
+  label: string
   /**
    * 层级
    */

@@ -4,6 +4,6 @@ declare module 'unified' {
   interface CompileResultMap {
     body: VNode[]
     metadata: Metadata
-    frontmatter: Frontmatter
+    frontmatter?: Frontmatter
   }
 }

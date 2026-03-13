@@ -1,4 +1,4 @@
-import type { OutlineAnchor } from '#/types'
+import type { TocItem } from '#/types'
 import { computed, reactive } from 'vue'
 import { createSharedState, useIntersectionObserver } from '#/hooks'
 import { onPageMounted, usePage } from './layout'
@@ -8,28 +8,30 @@ const activeRange = reactive({ start: -1, end: -1 })
 
 export const useOutline = createSharedState(() => {
   const { page } = usePage()
-  const anchors = computed(() => page.value?.toc ?? [])
+  const toc = computed(() => page.value?.toc ?? [])
 
   const { observe, clear } = useIntersectionObserver()
 
   function observeHeading() {
-    const container = document.getElementById('content')
-    if (!container) return
-
-    const size = anchors.value.length
+    const size = toc.value.length
     activeState = Array.from<number>({ length: size }).fill(0)
 
-    for (const [index, item] of anchors.value.entries()) {
-      const target = container.querySelector(item.to)
+    for (const item of toc.value) {
+      const target = document.getElementById(item.id)
       if (target) {
-        target.setAttribute('data-index', index + '')
         observe(target, entry => {
           const index = Number(entry.target.getAttribute('data-index'))
           const isAcitve = entry.isIntersecting
           activeState[index] = isAcitve ? 1 : 0
 
-          activeRange.start = activeState.indexOf(1)
-          activeRange.end = activeState.lastIndexOf(1)
+          const start = activeState.indexOf(1)
+          const end = activeState.lastIndexOf(1)
+          if (end === -1) {
+            activeRange.end = activeRange.start - 1
+          } else {
+            activeRange.start = start
+            activeRange.end = end
+          }
         })
       }
     }
@@ -47,14 +49,14 @@ export const useOutline = createSharedState(() => {
     observeHeading()
   })
 
-  return { anchors }
+  return { toc }
 })
 
 export function useActiveRanve() {
   return activeRange
 }
 
-export function createSVGMask(toc: OutlineAnchor[]) {
+export function createSVGMask(toc: TocItem[]) {
   // toc-item: line-height: 24, padding-block: 4
   const ox = 4 // x 起点
   const xStep = 16 // x 步长

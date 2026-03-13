@@ -32,10 +32,8 @@ export async function createSource(options: SourceOptions) {
   const cacheFile = resolve(outputDir, __cache)
   const sourceFile = resolve(outputDir, __source)
 
-  const [cache, source] = await Promise.all([
-    loadCache(cacheFile),
-    loadSource(sourceFile)
-  ])
+  const cache = await loadCache(cacheFile)
+  const source = await loadSource(sourceFile)
 
   // 创建处理器
   const remarkPlugins = [

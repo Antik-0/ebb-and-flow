@@ -79,7 +79,7 @@ export function rehypeShiki(options: RehypeShikiOptions = {}) {
           parent.children[index] = preHast as any
         }
 
-        return signal.stop
+        return signal.STOP
       },
       { type: 'element' }
     )

@@ -21,9 +21,9 @@ type VisitorCtx<T = VNode> = {
  * `visitor` 信号量
  */
 const SIGNAL = {
-  stop: 1, // 停止继续遍历子节点，会继续遍历兄弟节点
-  return: 2, // 停止继续遍历
-  delete: 4 // 删除节点
+  STOP: 1, // 停止继续遍历子节点，会继续遍历兄弟节点
+  RETURN: 2, // 停止继续遍历
+  DELETE: 4 // 删除节点
 } as const
 
 type Signal = typeof SIGNAL
@@ -35,6 +35,7 @@ interface VisitOptions {
   type?: string
   /**
    * 访问深度, `-1` 表示访问所有节点
+   * @default -1
    */
   depth?: number
   /**
@@ -79,14 +80,14 @@ export function visit<T extends VNode = VNode>(
       const childNode = children[i]!
       const childFlag = dfs(childNode, i, node, depth - 1) ?? 0
 
-      if (childFlag & SIGNAL.delete) {
+      if (childFlag & SIGNAL.DELETE) {
         // 标记当前子节点需要删除
         hasChange = true
         Reflect.set(childNode, needDelete, true)
       }
-      if (childFlag & SIGNAL.return) {
+      if (childFlag & SIGNAL.RETURN) {
         // 退出树遍历
-        flag |= SIGNAL.return
+        flag |= SIGNAL.RETURN
         break
       }
     }

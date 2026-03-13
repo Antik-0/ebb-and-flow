@@ -17,7 +17,7 @@ const articles = await useFetch('/api/articles').then(
         <li v-for="(item, index) in articles" :key="index">
           <NuxtLink class="card relative" :to="item.path">
             <picture class="overflow-hidden">
-              <img alt="img" :src="item.cover" />
+              <img alt="img" loading="lazy" :src="item.cover" />
             </picture>
             <div class="p-2 bg-black">
               <p class="leading-6 font-bold mb-2 text-center truncate">

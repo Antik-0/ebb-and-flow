@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import type { MarkdownData } from 'ebb-markdown'
 import { EbbContent } from 'ebb-theme'
 import { ContentRender } from '#/render'
 

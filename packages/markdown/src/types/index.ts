@@ -5,16 +5,19 @@ export type Data = Record<string, any>
 
 export type Props = Record<string, any>
 
-export type VNode = string | [string, Props, VNode[]]
+export type VNode = string | [string, Props, VNode[]] | null
 
 export type Frontmatter = Record<string, any>
 
-export type PlainObject = Record<string, unknown>
-
 export interface TocItem {
-  to: string
-  text: string
+  id: string
+  label: string
   level: number
+}
+
+export interface TabItem {
+  text: string
+  icon: string
 }
 
 export interface Metadata {
@@ -37,9 +40,8 @@ export interface Metadata {
 }
 
 export interface VFileData {
-  tocDepth?: number[]
   metadata: Metadata
-  frontmatter: Frontmatter
+  frontmatter?: Frontmatter
 }
 
 export interface MarkdownData {

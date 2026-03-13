@@ -1,10 +1,4 @@
-import type {
-  CompileResultMap,
-  Compiler,
-  Parser,
-  Pluggable,
-  Plugin
-} from 'unified'
+import type { Compiler, Parser, Pluggable, Plugin } from 'unified'
 import type { HAST, VFileData } from './types/index.ts'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { unified } from 'unified'
@@ -45,7 +39,7 @@ const ebbParser: Parser = (document, vfile) => {
       const frontmatter = parseFrontmatter(template)
       vfile.data.frontmatter = frontmatter
     } catch (error) {
-      throw new Error('[Parse Error]: ' + (error as Error).message)
+      throw new Error('[Markdown Parse Error]: ' + (error as Error).message)
     }
   }
   // 去除头部的换行符
@@ -64,9 +58,9 @@ const ebbCompiler: Compiler = (ast, file) => {
     const fileData = file.data as unknown as VFileData
     const { metadata, frontmatter } = fileData
 
-    return { body, metadata, frontmatter } as CompileResultMap
+    return { body, metadata, frontmatter }
   } catch (error) {
-    throw new Error('[Compiler Error]: ' + (error as Error).message)
+    throw new Error('[Markdown Compiler Error]: ' + (error as Error).message)
   }
 }
 

@@ -25,11 +25,11 @@ function transform(raw: string) {
   visit<HAST.Element>(hast, (node, { signal }) => {
     if (node.tagName === 'style') {
       target = node
-      return signal.return
+      return signal.RETURN
     }
     if (node.tagName === 'body') {
       target = node.children?.[0] as HAST.Element
-      return signal.return
+      return signal.RETURN
     }
     return
   })

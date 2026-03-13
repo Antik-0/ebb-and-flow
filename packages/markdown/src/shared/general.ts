@@ -10,7 +10,7 @@ export function computeReadingTime(content: string) {
 }
 
 /**
- * 获取文章 git 最后提交时间
+ * 获取文章 `git` 最后提交时间
  */
 export function getGitUpdatedTime(filepath: string) {
   try {
@@ -24,7 +24,7 @@ export function getGitUpdatedTime(filepath: string) {
 }
 
 /**
- * CSS 选择器消毒
+ * `CSS` 选择器消毒
  */
 export function sanitizeSelector(str: string) {
   return (

@@ -5,15 +5,12 @@ interface Props {
   title?: string
 }
 
-export const CustomBlock: FunctionalComponent<Props> = (
-  props,
-  { attrs, slots }
-) => {
+export const CustomBlock: FunctionalComponent<Props> = (props, { slots }) => {
   const { type = 'info' } = props
   const title = props.title ?? type.toUpperCase()
 
   return (
-    <div class="custom-block" data-type={type} {...attrs}>
+    <div class="custom-block" data-type={type}>
       <p class="font-600">{title}</p>
       {slots.default?.()}
     </div>

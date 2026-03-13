@@ -37,6 +37,7 @@ export function remarkMetadata(options: RemarkMetadataOptions = {}) {
       lastUpdated,
       readingTime
     }
+    let index = 0
 
     visit<MDAST.Heading>(
       ast,
@@ -49,22 +50,27 @@ export function remarkMetadata(options: RemarkMetadataOptions = {}) {
         }
         if (tocDepth.includes(depth)) {
           const tocText = text || getNodeText(node)
+          const aid = `${sanitizeSelector(tocText)}-${index}`
           metadata.toc.push({
-            to: `#${sanitizeSelector(tocText)}`,
-            text: tocText,
+            id: aid,
+            label: tocText,
             level: node.depth
           })
+          node.data = {
+            hProperties: {
+              id: aid,
+              'data-index': index
+            }
+          }
+          index += 1
         }
-        return signal.stop
+        return signal.STOP
       },
       { type: 'heading' }
     )
 
     const extendData = setup?.(ast, file) ?? {}
     Object.assign(metadata, extendData)
-
-    // 同步数据
     file.data.metadata = metadata
-    file.data.tocDepth = tocDepth
   })
 }
