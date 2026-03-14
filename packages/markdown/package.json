@@ -13,9 +13,6 @@
       "import": "./src/render.ts"
     }
   },
-  "scripts": {
-    "dev": "bun run src/test/index.ts"
-  },
   "dependencies": {
     "hast-util-from-html": "^2.0.3",
     "mdast-util-from-markdown": "^2.0.3",

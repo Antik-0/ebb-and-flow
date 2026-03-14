@@ -1,13 +1,13 @@
 'use client'
 import type { PropsWithChildren } from 'react'
-import type { PageData } from '../../types'
+import type { Page } from '../../types'
 import { useEffect } from 'react'
 import { pageStore, useLayout } from '../../controller/layout'
 import { DocFooter } from './DocFooter'
 import { DocOutline } from './DocOutline'
 
 interface Props {
-  page: PageData
+  page: Page
 }
 
 export function DocContent(props: PropsWithChildren<Props>) {

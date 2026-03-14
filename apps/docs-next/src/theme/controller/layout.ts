@@ -1,4 +1,4 @@
-import type { PageData } from '../types'
+import type { Page } from '../types'
 import { useMediaQuery } from '../hooks'
 import { defineEbbStore } from '../store'
 
@@ -32,7 +32,7 @@ export function useLayoutState() {
   }
 }
 
-const [usePageData, pageStore] = defineEbbStore<PageData>(() => {
+const [usePageData, pageStore] = defineEbbStore<Page>(() => {
   return {
     title: '',
     toc: [],

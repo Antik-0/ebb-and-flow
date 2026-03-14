@@ -3,13 +3,11 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#/*": "./src/*",
-    "#content": "./.data/index.js"
+    "#/*": "./src/*"
   },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "mdx": "bun scripts/build-source.ts",
     "start": "next start"
   },
   "dependencies": {
@@ -23,11 +21,6 @@
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@config/unocss": "workspace:*",
-    "@ebb/mdx": "workspace:*",
-    "@mdx-js/loader": "catalog:",
-    "@mdx-js/react": "catalog:",
-    "@next/mdx": "catalog:",
-    "@types/mdx": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
