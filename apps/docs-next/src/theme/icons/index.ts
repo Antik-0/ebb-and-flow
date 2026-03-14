@@ -13,8 +13,6 @@ const LogoIconRender: FC<{
   return icon ? createElement(icon, { ...restProps }) : null
 }
 
-export { Icon, LogoIconRender }
-
 export { default as BookOpen } from './BookOpen'
 export { default as ChevronRight } from './ChevronRight.tsx'
 export { default as Copy } from './Copy.tsx'
@@ -29,3 +27,4 @@ export { default as Power } from './Power.tsx'
 export { default as Rocket } from './Rocket.tsx'
 export { default as ThemeDark } from './ThemeDark.tsx'
 export { default as ThemeLight } from './ThemeLight.tsx'
+export { Icon, LogoIconRender }

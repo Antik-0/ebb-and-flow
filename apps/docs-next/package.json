@@ -11,7 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@iconify-icon/react": "catalog:",
+    "@iconify-icon/react": "^3.0.3",
     "@repo/utils": "workspace:*",
     "motion": "catalog:",
     "next": "catalog:",
@@ -21,11 +21,11 @@
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@config/unocss": "workspace:*",
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "@unocss/postcss": "catalog:",
-    "@unocss/reset": "catalog:",
+    "@types/node": "25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@unocss/postcss": "^66.6.6",
+    "@unocss/reset": "^66.6.6",
     "typescript": "catalog:",
     "unocss": "catalog:"
   },

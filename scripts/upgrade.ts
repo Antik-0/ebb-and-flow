@@ -15,7 +15,7 @@ try {
 
   // 计算 workspaces 下的 package.json 路径
   const workspaces = rootPackageJSON.workspaces.packages
-  const pattern = workspaces.map(woks => woks + '/package.json')
+  const pattern = workspaces.map(work => work + '/package.json')
   const packageJSONPaths = await Array.fromAsync(
     fs.glob(pattern, { exclude: ['node_modules/**'] })
   )

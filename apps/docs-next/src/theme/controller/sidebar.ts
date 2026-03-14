@@ -19,7 +19,7 @@ const [useSidebar, sidebarStore] = defineEbbStore<SidebarState>(set => {
   }
 })
 
-export { useSidebar, sidebarStore }
+export { sidebarStore, useSidebar }
 
 export function useSidebarControl() {
   const isOpen = useSidebar(state => state.isOpen)

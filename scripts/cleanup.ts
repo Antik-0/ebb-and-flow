@@ -6,40 +6,29 @@ import pc from 'picocolors'
 // @ts-expect-error: no types
 import prompts from 'prompts'
 
-const cleanFiles = [
-  'node_modules',
-  'bun.lock',
-  'cache',
-  'dist',
-  '.nuxt',
-  '.nitro',
-  '.data',
-  '.output',
-  '.next',
-  '.temp',
-  '.turbo'
-]
-const ignoreFiles = ['.git', '.github', '.vscode', 'assets', 'src']
+const ignoreDirs = ['.git', '.github', '.vscode', 'assets', 'src']
+const rootPath = fileURLToPath(new URL('../', import.meta.url))
 const recursiveDepth = 4
 const spinner = ora({ indent: 2 })
+
+const cleanSet = new Set([
+  'node_modules',
+  'bun.lock',
+  'dist',
+  '.data',
+  '.nuxt',
+  '.next',
+  '.nitro',
+  '.output',
+  '.temp',
+  '.turbo'
+])
 
 try {
   console.log(`\n\n🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)
 
   const response = await prompts(
     [
-      {
-        type: 'multiselect',
-        name: 'files',
-        hint: '(👆 👇 切换, 👈 👉 选择, a 全选, 回车确认)\n',
-        message: pc.red('请选择要清理的路径: '),
-        instructions: false,
-        choices: cleanFiles.map(path => ({
-          title: path,
-          value: path,
-          selected: true
-        }))
-      },
       {
         type: 'confirm',
         name: 'recursive',
@@ -51,9 +40,6 @@ try {
       onCancel: () => Promise.reject(false)
     }
   )
-
-  const rootPath = fileURLToPath(new URL('../', import.meta.url))
-  const cleanSet = new Set<string>(response.files)
   const depth = response.recursive ? recursiveDepth : 1
 
   console.log('\n')
@@ -71,14 +57,15 @@ async function cleanupRecursive(
   cleanSet: Set<string>,
   depth = 1
 ) {
-  if (depth === 0 || cleanSet.size === 0) return
+  if (depth === 0) return
 
   const subDirs = []
   const currDir = await fs.opendir(dirPath)
   for await (const dirent of currDir) {
-    const filePath = resolve(dirPath, dirent.name)
+    const dirname = dirent.name
+    const filePath = resolve(dirPath, dirname)
 
-    if (cleanSet.has(dirent.name)) {
+    if (cleanSet.has(dirname)) {
       try {
         spinner.start(`正在清理 => ${filePath}`)
         await fs.rm(filePath, { force: true, recursive: true })
@@ -89,7 +76,7 @@ async function cleanupRecursive(
       continue
     }
 
-    if (dirent.isDirectory() && !ignoreFiles.includes(dirent.name)) {
+    if (dirent.isDirectory() && !ignoreDirs.includes(dirname)) {
       subDirs.push(filePath)
     }
   }

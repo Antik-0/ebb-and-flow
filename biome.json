@@ -12,12 +12,11 @@
       "tsconfig.json",
       "!**/node_modules",
       "!**/dist",
-      "!**/cache",
-      "!**/.nuxt",
-      "!**/.nitro",
       "!**/.data",
-      "!**/.output",
+      "!**/.nuxt",
       "!**/.next",
+      "!**/.nitro",
+      "!**/.output",
       "!**/out"
     ]
   },

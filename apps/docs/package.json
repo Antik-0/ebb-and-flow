@@ -9,7 +9,6 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "prepare": "nuxt prepare",
     "preview": "nuxt preview"
   },
   "dependencies": {
@@ -20,11 +19,11 @@
     "motion-v": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "^5.0.3"
   },
   "devDependencies": {
     "@config/unocss": "workspace:*",
-    "@unocss/nuxt": "catalog:"
+    "@unocss/nuxt": "^66.6.6"
   },
   "trustedDependencies": ["esbuild", "nuxt"]
 }

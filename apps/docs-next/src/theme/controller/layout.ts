@@ -18,7 +18,7 @@ const [useLayout, layoutStore] = defineEbbStore<LayoutState>(() => {
   }
 })
 
-export { useLayout, layoutStore }
+export { layoutStore, useLayout }
 
 export function useLayoutState() {
   const isDesktop = useMediaQuery('(width >= 1024px)', { initialValue: true })
@@ -42,4 +42,4 @@ const [usePageData, pageStore] = defineEbbStore<Page>(() => {
   }
 })
 
-export { usePageData, pageStore }
+export { pageStore, usePageData }

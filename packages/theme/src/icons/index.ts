@@ -19,8 +19,6 @@ const LogoIconRender: FunctionalComponent<{
 }
 LogoIconRender.props = ['logo']
 
-export { Icon, LogoIconRender }
-
 export { default as BookOpen } from './BookOpen.vue'
 export { default as ChevronRight } from './ChevronRight.vue'
 export { default as Copy } from './Copy.vue'
@@ -36,3 +34,4 @@ export { default as Rocket } from './Rocket.vue'
 export { default as TextAlignStart } from './TextAlignStart.vue'
 export { default as ThemeDark } from './ThemeDark.vue'
 export { default as ThemeLight } from './ThemeLight.vue'
+export { Icon, LogoIconRender }

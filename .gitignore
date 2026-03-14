@@ -1,11 +1,9 @@
 node_modules
 dist
-cache
 
 # Nuxt dev/build outputs
 .nuxt
 .nitro
-.data
 .output
 
 # Next dev/build outputs
@@ -18,11 +16,9 @@ next-env.d.ts
 .env.*
 !.env.example
 
-.cache
+.data
 .temp
 .turbo
-.eslintcache
-
 *.log
 *.local
 *.tsbuildinfo

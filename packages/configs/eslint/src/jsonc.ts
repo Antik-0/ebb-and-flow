@@ -1,14 +1,10 @@
 import { defineConfig } from 'eslint/config'
 import pluginJSONC from 'eslint-plugin-jsonc'
-import parserJSONC from 'jsonc-eslint-parser'
 
 export default defineConfig([
   ...pluginJSONC.configs['flat/recommended-with-jsonc'],
   {
-    files: ['**/*.json', '**/*.jsonc', '**/*.json5'],
-    languageOptions: {
-      parser: parserJSONC
-    },
+    files: ['**/*.json', '**/*.jsonc'],
     rules: {
       'jsonc/indent': ['error', 2],
       'jsonc/key-spacing': [

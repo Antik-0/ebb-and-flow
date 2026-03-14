@@ -10,14 +10,12 @@ export const ebbESLintConfig = defineConfig([
   globalIgnores([
     '**/node_modules',
     '**/dist',
-    '**/cache',
-    '**/.cache',
-    '**/.nuxt',
-    '**/.nitro',
     '**/.data',
+    '**/.nuxt',
+    '**/.next',
+    '**/.nitro',
     '**/.output',
     '**/.turbo',
-    '**/.next',
     '**/out',
     '**/*.ttf',
     '**/*.woff'

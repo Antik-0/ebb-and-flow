@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "prepare": "bun build.ts"
+    "source": "bun build.ts"
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
