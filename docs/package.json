@@ -1,0 +1,19 @@
+{
+  "name": "ebb-docs",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./data.ts",
+      "import": "./data.ts"
+    }
+  },
+  "scripts": {
+    "prepare": "bun build.ts"
+  },
+  "devDependencies": {
+    "@config/tsconfig": "workspace:*",
+    "ebb-markdown": "workspace:*"
+  }
+}

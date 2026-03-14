@@ -3,6 +3,7 @@
   "files": {
     "includes": [
       "apps/**/*",
+      "docs/**/*",
       "packages/**/*",
       "scripts/*",
       "uno.config.ts",

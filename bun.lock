@@ -24,6 +24,7 @@
       "name": "docs",
       "dependencies": {
         "@repo/utils": "workspace:*",
+        "ebb-docs": "workspace:*",
         "ebb-markdown": "workspace:*",
         "ebb-theme": "workspace:*",
         "motion-v": "catalog:",
@@ -61,6 +62,13 @@
         "@unocss/reset": "catalog:",
         "typescript": "catalog:",
         "unocss": "catalog:",
+      },
+    },
+    "docs": {
+      "name": "ebb-docs",
+      "devDependencies": {
+        "@config/tsconfig": "workspace:*",
+        "ebb-markdown": "workspace:*",
       },
     },
     "packages/configs/eslint": {
@@ -1191,6 +1199,8 @@
     "duplexer": ["duplexer@0.1.2", "", {}, "sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg=="],
 
     "eastasianwidth": ["eastasianwidth@0.2.0", "", {}, "sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA=="],
+
+    "ebb-docs": ["ebb-docs@workspace:docs"],
 
     "ebb-markdown": ["ebb-markdown@workspace:packages/markdown"],
 

@@ -1,14 +1,12 @@
-import type { MarkdownData } from 'ebb-markdown'
+import type { MarkdownData } from 'ebb-docs'
+import { loadSource } from 'ebb-docs'
 
 interface RequestBody {
   path: string
 }
 
 export default defineEventHandler(async event => {
-  const sourceJSON = (await import('../../.data/source.json', {
-    with: { type: 'json' }
-  })) as any
-  const source = sourceJSON.default as Record<string, MarkdownData>
+  const source = await loadSource()
 
   const body = (await readBody(event)) as RequestBody
   const path = body.path

@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['@unocss/nuxt'],
   app: {
-    baseURL: '/ebb-and-flow/',
     head: {
       link: [{ rel: 'icon', href: '/avatar.png' }],
       htmlAttrs: {
@@ -23,7 +22,6 @@ export default defineNuxtConfig({
       autoprefixer: false
     }
   },
-
   alias: {
     '@': fileURLToPath(new URL('./app/assets', import.meta.url))
   },

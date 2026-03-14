@@ -10,11 +10,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "prepare": "nuxt prepare",
-    "preview": "nuxt preview",
-    "source": "bun build-source.ts"
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "@repo/utils": "workspace:*",
+    "ebb-docs": "workspace:*",
     "ebb-markdown": "workspace:*",
     "ebb-theme": "workspace:*",
     "motion-v": "catalog:",

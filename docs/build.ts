@@ -1,6 +1,6 @@
 import { createSource } from 'ebb-markdown'
 
 await createSource({
-  dir: '../../docs',
+  dir: './src',
   output: '.data'
 })

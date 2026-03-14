@@ -1,4 +1,5 @@
-import type { MarkdownData } from 'ebb-markdown'
+import type { MarkdownData } from 'ebb-docs'
+import { loadSource } from 'ebb-docs'
 
 interface Article {
   title: string
@@ -29,10 +30,7 @@ const covers = [
 const length = covers.length
 
 export default defineEventHandler(async () => {
-  const sourceJSON = (await import('../../.data/source.json', {
-    with: { type: 'json' }
-  })) as any
-  const source = sourceJSON.default as Record<string, MarkdownData>
+  const source = await loadSource()
 
   let index = 0
   const res: Article[] = []
