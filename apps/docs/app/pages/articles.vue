@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import '../assets/article.css'
+import 'ebb-ui/pages/article.css'
 
 useSeoMeta({ title: formatTitle('归档') })
 

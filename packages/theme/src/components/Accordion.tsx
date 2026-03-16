@@ -153,9 +153,9 @@ export const AccordionContent = defineComponent<
     const style = computed<StyleValue>(() => {
       return [
         props.style,
-        { '--m-value-u': height.value + 'px' },
-        { maxHeight: 'var(--m-value-u)' },
-        { 'transition-property': '--m-value-u' }
+        { '--m-value-x': height.value + 'px' },
+        { maxHeight: 'var(--m-value-x)' },
+        { 'transition-property': '--m-value-x' }
       ]
     })
 

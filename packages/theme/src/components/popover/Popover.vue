@@ -147,14 +147,3 @@ onMounted(() => {
     </div>
   </Teleport>
 </template>
-
-<style>
-.popover {
-  contain: layout;
-  top: 0;
-  left: 0;
-  pointer-events: auto;
-  translate: var(--x) var(--y);
-  z-index: 1000;
-}
-</style>

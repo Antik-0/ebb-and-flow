@@ -54,7 +54,7 @@ function buildGroups(items: MenuItem[]) {
             :class="[
               'text-foreground p-3 rounded-2 block',
               'transition-colors duration-250 ease',
-              'hover:(text-brand-2 bg-brand-2/20)',
+              'hover:text-brand-2 hover:bg-brand-2/20',
             ]"
           >
             <span class="text-sm text-nowrap">{{ item.text }}</span>

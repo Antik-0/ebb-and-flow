@@ -1,0 +1,276 @@
+@scope (.ebb-doc) {
+  /**
+   * Headings
+   * -------------------------------------------------------------------------- */
+  :is(h1, h2, h3, h4, h5, h6) {
+    position: relative;
+    font-weight: 600;
+    outline: none;
+  }
+
+  :is(h2, h3) {
+    scroll-margin-top: calc(var(--h-navbar) + 32px);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  @media (width >= 768px) {
+    h1 {
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+
+  h2 {
+    margin: 48px 0 24px;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  h3 {
+    margin: 32px 0 16px;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  :is(h4, h5, h6) {
+    margin: 24px 0 0;
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  /**
+   * Paragraph and Inline elements
+   * -------------------------------------------------------------------------- */
+
+  p {
+    margin: 16px 0;
+    line-height: 28px;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  blockquote {
+    margin: 16px 0;
+    border-left: 2px solid var(--c-divider);
+    padding-left: 16px;
+    color: var(--accent-foreground);
+  }
+
+  blockquote > p {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  a {
+    font-weight: 500;
+    color: var(--c-brand-2);
+  }
+
+  /**
+   * Lists
+   * -------------------------------------------------------------------------- */
+
+  :where(ul, ol) {
+    margin: 16px 0;
+    padding-left: 20px;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li + li {
+    margin-top: 8px;
+  }
+
+  li > :where(ul, ol) {
+    margin: 8px 0 0;
+  }
+
+  /**
+   * Decorational elements
+   * -------------------------------------------------------------------------- */
+
+  hr {
+    margin: 16px 0;
+    border: none;
+    border-top: 1px solid var(--c-divider);
+  }
+
+  /**
+   * img
+   * -------------------------------------------------------------------------- */
+
+  img {
+    margin: 0 auto;
+  }
+
+  /**
+   * code
+   * -------------------------------------------------------------------------- */
+
+  pre {
+    max-width: 100%;
+    padding: 20px;
+    tab-size: 4;
+    font-family: var(--font-family-mono);
+    font-size: 14px;
+    background-color: color-mix(
+      in oklch,
+      var(--c-bg-code-block) 20%,
+      transparent
+    );
+    white-space: normal;
+    overflow-x: auto;
+  }
+
+  pre code {
+    white-space: pre;
+  }
+
+  :not(pre) > code {
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: var(--c-brand-2);
+    background-color: color-mix(
+      in oklch,
+      var(--c-bg-code-block) 40%,
+      transparent
+    );
+  }
+
+  .pre :is(code, .line) {
+    display: block;
+  }
+}
+
+/**
+ * ==================================================
+ * 🏷️ shiki
+ * ==================================================
+ */
+html .shiki span {
+  color: var(--shiki-default);
+  font-style: var(--shiki-default-font-style);
+  font-weight: var(--shiki-default-font-weight);
+  text-decoration: var(--shiki-default-text-decoration);
+}
+
+html.default .shiki span {
+  color: var(--shiki-default);
+  font-style: var(--shiki-default-font-style);
+  font-weight: var(--shiki-default-font-weight);
+  text-decoration: var(--shiki-default-text-decoration);
+}
+
+html.light .shiki span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+html.dark .shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
+}
+
+/**
+ * ==================================================
+ * 🏷️ link
+ * ==================================================
+ */
+.ebb-link::after {
+  --m-value-x: 0%;
+
+  content: '';
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+  height: 2px;
+  border-radius: 2px;
+  translate: 0 2px;
+  transition: --m-value-x 400ms ease-in-out;
+  background: linear-gradient(
+    to right,
+    var(--c-brand-2) var(--m-value-x),
+    oklch(68.295% 0.00008 271.152 / 0.2) var(--m-value-x)
+  );
+}
+
+.ebb-link:hover::after {
+  --m-value-x: 100%;
+}
+
+/**
+ * ==================================================
+ * 🏷️ code-group
+ * ==================================================
+ */
+.code-group {
+  margin: 16px 0;
+  box-shadow: 0 0 10px 1px oklch(42.024% 0.00005 271.152 / 0.1);
+}
+
+.code-group pre {
+  border-radius: 0;
+}
+
+/**
+ * ==================================================
+ * 🏷️ custom-block
+ * ==================================================
+ */
+.custom-block {
+  margin: 16px 0;
+  padding: 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  color: oklch(97.515% 0.01276 244.483);
+  background-color: color-mix(
+    in oklch,
+    var(--c-bg-code-block) 20%,
+    transparent
+  );
+}
+
+.custom-block[data-type='info'] {
+  --custom-block-bg: oklch(66.638% 0.17851 276.544 / 0.2);
+  --custom-block-code-bg: oklch(66.638% 0.17851 276.544 / 0.4);
+}
+
+.custom-block[data-type='warning'] {
+  --custom-block-bg: oklch(86.826% 0.15057 86.404 / 0.4);
+  --custom-block-code-bg: oklch(86.826% 0.15057 86.404 / 0.4);
+}
+
+.custom-block[data-type='danger'] {
+  --custom-block-bg: oklch(71.218% 0.16488 22.126 / 0.2);
+  --custom-block-code-bg: oklch(71.218% 0.16488 22.126 / 0.4);
+}
+
+.custom-block p {
+  margin: 6px 0 0;
+  line-height: 24px;
+}
+
+.custom-block p:first-child {
+  margin: 0;
+}
+
+.custom-block pre {
+  margin-top: 6px;
+}

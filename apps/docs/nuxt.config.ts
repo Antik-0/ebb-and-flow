@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       id: 'app'
     }
   },
-  css: ['~/assets/main.css', 'ebb-theme/style.css'],
+  css: ['~/assets/main.css', 'ebb-ui/main.css'],
   postcss: {
     plugins: {
       autoprefixer: false
@@ -35,6 +35,16 @@ export default defineNuxtConfig({
           '#/*': ['../app/*']
         }
       }
+    }
+  },
+  vue: {
+    compilerOptions: {
+      isCustomElement: tag => tag === 'iconify-icon'
+    }
+  },
+  vite: {
+    optimizeDeps: {
+      include: ['motion-v', 'iconify-icon']
     }
   }
 })

@@ -1,5 +1,6 @@
 <template>
   <svg
+    class="ebb-icon"
     height="1em"
     viewBox="0 0 24 24"
     width="1em"
@@ -28,16 +29,3 @@
     />
   </svg>
 </template>
-
-<style>
-.moon-body {
-  fill-opacity: var(--m-value);
-  animation: motion-value 0.8s ease 0.6s forwards;
-}
-
-.moon-star {
-  opacity: var(--m-opacity);
-  animation: motion-opacity 4s ease infinite;
-  animation-delay: var(--delay);
-}
-</style>

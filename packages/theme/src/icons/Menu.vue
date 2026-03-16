@@ -1,5 +1,6 @@
 <template>
   <svg
+    class="ebb-icon"
     height="1em"
     viewBox="0 0 24 24"
     width="1em"
@@ -20,14 +21,3 @@
     </g>
   </svg>
 </template>
-
-<style>
-.menu-line {
-  --m-value: 16;
-  --value-from: 16;
-  --value-to: 0;
-  stroke-dashoffset: var(--m-value);
-  animation: motion-value 0.2s ease forwards;
-  animation-delay: var(--delay, 0);
-}
-</style>

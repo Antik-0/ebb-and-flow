@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion-v'
 import { computed, defineComponent, ref, watch } from 'vue'
 import { useMenus } from '#/controller/menus'
 import { useMenubar, useViewport, ViewportProvider } from '#/controller/navbar'
-import GlassMask from '../GlassMask.vue'
+import { GlassMask } from '../Effect.tsx'
 import MenuViewGroup from './MenuViewGroup.vue'
 
 export type MenuViewportRef = {

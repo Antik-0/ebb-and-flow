@@ -1,10 +1,6 @@
 import type { Theme } from '@unocss/preset-wind4'
 import presetWind4 from '@unocss/preset-wind4'
-import {
-  definePreset,
-  transformerDirectives,
-  transformerVariantGroup
-} from 'unocss'
+import { definePreset } from 'unocss'
 
 interface EbbTheme extends Theme {}
 
@@ -48,7 +44,6 @@ export const ebbUnoPreset = definePreset<undefined, EbbTheme>(() => {
       pipeline: {
         include: [/\.(vue|tsx)/]
       }
-    },
-    transformers: [transformerDirectives(), transformerVariantGroup()]
+    }
   }
 })

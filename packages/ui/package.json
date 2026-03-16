@@ -1,0 +1,13 @@
+{
+  "name": "ebb-ui",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./main.css": "./src/styles/main.css",
+    "./pages/*": "./src/styles/pages/*"
+  },
+  "devDependencies": {
+    "@config/tsconfig": "workspace:*"
+  }
+}

@@ -1,0 +1,65 @@
+/* biome-ignore-all lint/correctness/noUnknownTypeSelector: not supported */
+@layer view-transition {
+  html {
+    view-transition-name: layout;
+  }
+
+  html::view-transition-new(layout),
+  html::view-transition-old(layout) {
+    animation-duration: 2000ms;
+    animation-timing-function: ease-in-out;
+  }
+
+  html[data-motion='ebb-in']::view-transition-new(layout) {
+    --value-x-from: -100%;
+    translate: 0 var(--m-value-x);
+    animation-name: motion-value-x;
+  }
+
+  html[data-motion='ebb-in']::view-transition-old(layout) {
+    --value-x-to: 100%;
+    translate: 0 var(--m-value-x);
+    animation-name: motion-value-x;
+    animation-delay: 400ms;
+  }
+
+  html[data-motion='ebb-out']::view-transition-new(layout) {
+    --value-x-from: 100%;
+    translate: 0 var(--m-value-x);
+    animation-name: motion-value-x;
+  }
+
+  html[data-motion='ebb-out']::view-transition-old(layout) {
+    --value-x-to: -100%;
+    translate: 0 var(--m-value-x);
+    animation-name: motion-value-x;
+    animation-delay: 400ms;
+  }
+
+  html[data-motion='flow-in']::view-transition-old(layout) {
+    --opacity-from: 1;
+    --opacity-to: 0;
+    --value-x-from: 0%;
+    --value-x-to: 100%;
+    opacity: var(--m-opacity);
+    mask-image: linear-gradient(#000), linear-gradient(#000);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-composite: exclude;
+    mask-size:
+      100% 100%,
+      var(--m-value-x) 100%;
+    animation-name: motion-value-x, motion-opacity;
+  }
+
+  html[data-motion='flow-out']::view-transition-old(layout) {
+    --opacity-from: 1;
+    --opacity-to: 0.6;
+    --value-x-from: max(50vw, 50vh);
+    --value-x-to: 0;
+    opacity: var(--m-opacity);
+    clip-path: circle(var(--m-value-x) at 50% 50%);
+    animation-name: motion-value-x, motion-opacity;
+    z-index: 99;
+  }
+}

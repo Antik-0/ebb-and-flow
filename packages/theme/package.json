@@ -18,8 +18,7 @@
     "./prose": {
       "types": "./src/prose/index.ts",
       "import": "./src/prose/index.ts"
-    },
-    "./style.css": "./src/styles/main.css"
+    }
   },
   "dependencies": {
     "@repo/utils": "workspace:*",

@@ -4,7 +4,7 @@ import { animate, motion, useMotionValue } from 'motion-v'
 import { defineComponent, onMounted, useTemplateRef, watch } from 'vue'
 import { useSidebarControl, useSidebarMenus } from '#/controller/sidebar'
 import { useEventListener, useResizeObserver } from '#/hooks'
-import GlassMask from '../GlassMask.vue'
+import { GlassMask } from '../Effect.tsx'
 import SidebarGroup from './SidebarGroup.vue'
 
 export default defineComponent(

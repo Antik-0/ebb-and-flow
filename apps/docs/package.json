@@ -16,6 +16,7 @@
     "ebb-docs": "workspace:*",
     "ebb-markdown": "workspace:*",
     "ebb-theme": "workspace:*",
+    "ebb-ui": "workspace:*",
     "motion-v": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",

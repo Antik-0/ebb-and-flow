@@ -1,53 +1,49 @@
-@layer theme, layout;
-
 @layer theme {
   :root {
-    --foreground: #f0f8ff;
-    --background: #000;
+    --foreground: oklch(97.515% 0.01276 244.483);
+    --background: oklch(0% 0 0);
 
     /**
      * 静音：用于文本或图标等信息的静默态
      * -----------------------------------------------------------* */
-    --muted: #2c2c2c;
-    --muted-foreground: #98989f;
+    --muted: oklch(29.313% 0.00003 271.152);
+    --muted-foreground: oklch(68.188% 0.01024 286.021);
 
     /**
      * 强调：用于文本或图标等信息的 hover 态
      * -----------------------------------------------------------* */
-    --accent: #5c5c5c;
-    --accent-foreground: #ceced1;
+    --accent: oklch(47.478% 0.00005 271.152);
+    --accent-foreground: oklch(85.23% 0.0042 285.972);
 
     /**
      * 边框
      * -----------------------------------------------------------* */
-    --c-border: #3c3f44;
-    --c-divider: #424850;
+    --c-border: oklch(36.671% 0.00953 260.773);
+    --c-divider: oklch(39.919% 0.01567 255.654);
 
     /**
      * 品牌色
      * -----------------------------------------------------------* */
-    --c-brand-1: #62d9e9;
-    --c-brand-2: #a8b1ff;
-    --c-brand-3: #ff637e;
+    --c-brand-1: oklch(82.335% 0.10849 207.307);
+    --c-brand-2: oklch(78.287% 0.11158 278.433);
+    --c-brand-3: oklch(70.57% 0.19 12.956);
 
     /**
      * 滚动条
      * -----------------------------------------------------------* */
-    --c-scrollbar-thumb: hsl(0 0% 39%);
+    --c-scrollbar-thumb: oklch(49.97% 0.00006 271.152);
     --c-scrollbar-track: transparent;
 
     /**
      * 布局组件背景色
      * -----------------------------------------------------------* */
-    --c-bg-content: hsl(240 16% 10% / 0.8);
-    --c-bg-overlay: hsl(240 16% 10% / 0.6);
+    --c-bg-content: oklch(20.01% 0.01795 284.655 / 0.8);
+    --c-bg-overlay: oklch(20.01% 0.01795 284.655 / 0.6);
 
-    --c-bg-code-title: hsl(205 58% 6%);
-    --c-bg-code-block: hsl(194 42% 21%);
+    --c-bg-code-title: oklch(17.057% 0.02231 236.609);
+    --c-bg-code-block: oklch(35.743% 0.04394 218.786);
   }
-}
 
-@layer layout {
   :root {
     --h-navbar: 64px;
     --z-index-navbar: 10;

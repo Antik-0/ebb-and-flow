@@ -8,7 +8,7 @@ import {
   useMenubarMotion,
   useMotionCtx
 } from '#/controller/navbar'
-import FlowingLight from '../FlowingLight.vue'
+import { FlowingLight } from '../Effect.tsx'
 import MenubarItem from './MenubarItem.vue'
 import MenuViewport from './MenuViewport.tsx'
 

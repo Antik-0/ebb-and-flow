@@ -7,8 +7,7 @@ import { useSidebarControl } from '#/controller/sidebar.ts'
 import { useFPS } from '#/hooks'
 import { BookOpen, PanelLeftClose, PanelLeftOpen } from '#/icons'
 import BackToTop from './BackToTop.vue'
-import GlassMask from './GlassMask.vue'
-import ScrollIndicator from './ScrollIndicator.vue'
+import { GlassMask, ScrollIndicator } from './Effect.tsx'
 import SidebarTrigger from './sidebar/SidebarTrigger.vue'
 
 const { isMobile, isTriggerSentinel } = useLayoutCtx()
@@ -44,7 +43,7 @@ const { fps } = useFPS()
     :class="[
       'p-1 top-1/2 right-2 fixed z-[--z-index-toolpanel]',
       'opacity-0 translate-x-full transition-all duration-600',
-      'data-[show=true]:(opacity-100 translate-x-0)'
+      'data-[show=true]:opacity-100 data-[show=true]:translate-x-0'
     ]"
     data-role="toolpanel"
     :data-show="isTriggerSentinel"

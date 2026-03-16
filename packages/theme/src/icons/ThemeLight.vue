@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="sun"
+    class="ebb-icon sun"
     height="1em"
     viewBox="0 0 24 24"
     width="1em"
@@ -91,26 +91,3 @@
     />
   </svg>
 </template>
-
-<style>
-.sun {
-  rotate: var(--m-angle);
-  animation: motion-angle 10s linear 0.2s infinite;
-}
-
-.sun-body {
-  --value-from: 10;
-  --value-to: 6;
-  r: var(--m-value);
-  animation: motion-value 1s ease forwards;
-}
-
-.sun-light {
-  --m-value: 2;
-  --value-from: 2;
-  --value-to: 0;
-  stroke-dashoffset: var(--m-value);
-  animation: motion-value 0.2s ease forwards;
-  animation-delay: var(--delay);
-}
-</style>

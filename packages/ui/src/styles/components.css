@@ -1,0 +1,424 @@
+/**
+ * ==================================================
+ * 🏷️ menubar
+ * ==================================================
+ */
+@scope (.menubar) {
+  :scope {
+    --rounded: 999px;
+    --shadow-1: oklch(86.509% 0.11539 207.124 / 0.1);
+    --shadow-2: oklch(75.394% 0.12008 255.191 / 0.4);
+    isolation: isolate;
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: var(--rounded);
+    box-shadow:
+      inset 0 0 20px 2px var(--shadow-1),
+      0 1px 10px 0 var(--shadow-2);
+  }
+
+  .menubar-indicator {
+    --shadow: oklch(82.368% 0.1079 207.382 / 0.4);
+    position: absolute;
+    z-index: -1;
+    height: 32px;
+    border-radius: var(--rounded);
+    box-shadow: inset 0 0 12px 1px var(--shadow);
+  }
+
+  .menubar-background {
+    --bg-color: color-mix(in oklch, var(--c-brand-1) 20%, transparent);
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    border-radius: var(--rounded);
+    opacity: 0;
+    transition: opacity ease-in 200ms;
+    background: radial-gradient(
+      100px circle at 50% 50%,
+      var(--bg-color),
+      transparent 65%
+    );
+    background-position-x: var(--offset-x);
+  }
+
+  :scope:hover .menubar-background {
+    opacity: 1;
+  }
+
+  .menu-content {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    animation-duration: 600ms;
+    animation-timing-function: ease;
+
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .menu-content[data-active='true'] {
+    position: relative;
+    z-index: 20;
+  }
+
+  .menu-content[data-motion='from-start'] {
+    animation-name: enter-from-start;
+  }
+
+  .menu-content[data-motion='from-end'] {
+    animation-name: enter-from-end;
+  }
+
+  .menu-content[data-motion='to-start'] {
+    animation-name: exit-to-start;
+  }
+
+  .menu-content[data-motion='to-end'] {
+    animation-name: exit-to-end;
+  }
+}
+
+/**
+ * ==================================================
+ * 🏷️ sidebar
+ * ==================================================
+ */
+.sidebar-container {
+  grid-area: sidebar;
+  container: sidebar / inline-size;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@scope (.ebb-sidebar) {
+  :where(:scope) {
+    position: fixed;
+    left: 0;
+    inset-block: 0;
+    width: 320px;
+    display: grid;
+    z-index: var(--z-index-sidebar);
+  }
+
+  .sidebar-item,
+  .sidebar-item__button {
+    --m-color: transparent;
+
+    padding: 4px 8px;
+    padding-left: calc(var(--level, 0) * 16px + 8px);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: --m-color ease 250ms;
+    box-shadow: inset 0 0 12px 2px var(--m-color);
+
+    &:hover {
+      --m-color: hsl(186 49% 73% / 0.2);
+    }
+  }
+
+  .sidebar-item:hover a {
+    translate: 12px;
+  }
+
+  .sidebar-item[data-active='true'] [data-role='text'] {
+    color: var(--c-brand-2);
+  }
+
+  .sidebar-item__button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+
+    &:hover span:last-child {
+      color: var(--accent-foreground);
+    }
+
+    &[aria-expanded='true'] svg {
+      rotate: 90deg;
+    }
+  }
+
+  .sidebar-item__button[data-active='true'] > [data-role='text'] {
+    color: var(--c-brand-1);
+  }
+}
+
+@container sidebar (width >= 320px) {
+  .ebb-sidebar {
+    --opacity-from: 1;
+    --opacity-to: 0;
+    --value-x-to: -100%;
+    position: sticky;
+    top: calc(var(--h-navbar) + 16px);
+    height: 90vh;
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: var(--m-opacity);
+    translate: var(--m-value-x);
+    animation: ease-in-out forwards;
+    animation-name: motion-opacity, motion-value-x, lock;
+    animation-duration: auto;
+    animation-timeline: scroll(root block);
+    animation-range: 0 100vh;
+    pointer-events: var(--sidebar-events);
+  }
+
+  .ebb-sidebar .sidebar-mask {
+    width: 320px;
+  }
+
+  [data-role='overlay'] {
+    display: none;
+  }
+}
+
+@keyframes lock {
+  to {
+    --sidebar-events: none;
+  }
+}
+
+/**
+ * ==================================================
+ * 🏷️ aside
+ * ==================================================
+ */
+.aside-container {
+  grid-area: aside;
+  container: aside / inline-size;
+}
+
+@container aside (width >= 60px) {
+  .aside-container [data-role='toolpanel'] {
+    right: auto;
+  }
+}
+
+.tool-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: color 200ms ease;
+
+  &:hover {
+    color: var(--c-brand-2);
+  }
+}
+
+@scope (.moon-avatar) {
+  :scope:hover img {
+    scale: 1.2;
+  }
+
+  .moon-bg {
+    --value-from: 1;
+    --value-to: 1.2;
+    --opacity-from: 0.4;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    border-radius: 999px;
+    background: linear-gradient(45deg, #00dc82, #36e4da, #0047e1);
+    filter: blur(80px);
+    scale: var(--m-value);
+    opacity: var(--m-opacity);
+    animation: 4s infinite alternate;
+    animation-name: motion-value, motion-opacity;
+  }
+
+  .moon-mask {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    border-radius: 50%;
+    box-shadow:
+      0 2px 10px 1px hsl(175 30% 40% / 0.8),
+      inset 0 0 40px 0px hsl(175 78% 90% / 0.4),
+      inset 0 10px 20px 0px hsl(175 78% 80% / 0.8);
+  }
+}
+
+@scope (.cube-avatar) {
+  :scope {
+    --size: 100px;
+    --rounded: 10px;
+    isolation: isolate;
+    perspective: 400px;
+    cursor: pointer;
+  }
+
+  .cube {
+    --angle-to: -1turn;
+    display: grid;
+    width: var(--size);
+    height: var(--size);
+    transform-style: preserve-3d;
+    rotate: 0 1 0 var(--m-angle);
+    animation: motion-angle 4s linear infinite;
+  }
+
+  .cube-face {
+    --m-value-x: calc(var(--size) / 2);
+    grid-area: 1 / 1;
+    opacity: 0.6;
+    border-radius: var(--rounded);
+    backface-visibility: visible;
+    background-image: var(--avatar);
+    background-size: cover;
+    filter: drop-shadow(0 0 var(--rounded) var(--c-brand-1));
+    transition: 400ms ease-in;
+    transition-property: --m-value-x, opacity;
+  }
+
+  .cube-face[data-state='front'] {
+    transform: translateZ(var(--m-value-x));
+  }
+
+  .cube-face[data-state='back'] {
+    transform: rotateY(180deg) translateZ(var(--m-value-x));
+  }
+
+  .cube-face[data-state='top'] {
+    transform: rotateX(90deg) translateZ(var(--m-value-x));
+  }
+
+  .cube-face[data-state='bottom'] {
+    transform: rotateX(-90deg) translateZ(var(--m-value-x));
+  }
+
+  .cube-face[data-state='left'] {
+    transform: rotateY(-90deg) translateZ(var(--m-value-x));
+  }
+
+  .cube-face[data-state='right'] {
+    transform: rotateY(90deg) translateZ(var(--m-value-x));
+  }
+}
+
+@scope (.flowing-light) {
+  :scope {
+    --color: oklch(86.509% 0.11539 207.124);
+    contain: content;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 2px;
+    border-radius: 999px;
+    mask-image: linear-gradient(#fff), linear-gradient(#fff);
+    mask-clip: content-box, border-box;
+    mask-composite: exclude;
+  }
+
+  .flowing-light__line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    rotate: var(--m-angle);
+    background: conic-gradient(
+      var(--color),
+      transparent 40deg,
+      transparent 320deg,
+      var(--color)
+    );
+    animation: motion-angle 2s cubic-bezier(0.65, 0.05, 0.36, 1) infinite
+      alternate;
+  }
+}
+
+@scope (.glass-mask) {
+  :scope {
+    --fit-size: cover;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 2px 16px 1px hsl(0 0% 60% / 0.1),
+      inset 0 0 10px 4px hsl(0 0% 80% / 0.1),
+      inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
+      inset -1px -1px 4px hsl(0 0% 100% / 0.1);
+  }
+
+  .mask-image {
+    grid-area: 1 / 1;
+    opacity: 0.1;
+    background-image: url('/glass-mask.png');
+    background-size: var(--fit-size);
+    background-repeat: repeat;
+  }
+}
+
+@scope (.scroll-indicator) {
+  :scope {
+    stroke-dashoffset: var(--m-value);
+    animation: motion-value linear forwards;
+    animation-duration: auto;
+    animation-timeline: scroll(block);
+  }
+}
+
+@scope (.ebb-icon) {
+  .menu-line {
+    --m-value: 16;
+    --value-from: 16;
+    --value-to: 0;
+    stroke-dashoffset: var(--m-value);
+    animation: motion-value 0.2s ease forwards;
+    animation-delay: var(--delay, 0);
+  }
+
+  .moon-body {
+    fill-opacity: var(--m-value);
+    animation: motion-value 0.8s ease 0.6s forwards;
+  }
+
+  .moon-star {
+    opacity: var(--m-opacity);
+    animation: motion-opacity 4s ease infinite;
+    animation-delay: var(--delay);
+  }
+
+  :scope.sun {
+    rotate: var(--m-angle);
+    animation: motion-angle 10s linear 0.2s infinite;
+  }
+
+  .sun-body {
+    --value-from: 10;
+    --value-to: 6;
+    r: var(--m-value);
+    animation: motion-value 1s ease forwards;
+  }
+
+  .sun-light {
+    --m-value: 2;
+    --value-from: 2;
+    --value-to: 0;
+    stroke-dashoffset: var(--m-value);
+    animation: motion-value 0.2s ease forwards;
+    animation-delay: var(--delay);
+  }
+}
+
+@scope (.popover) {
+  :scope {
+    contain: layout;
+    top: 0;
+    left: 0;
+    pointer-events: auto;
+    translate: var(--x) var(--y);
+    z-index: 1000;
+  }
+}
