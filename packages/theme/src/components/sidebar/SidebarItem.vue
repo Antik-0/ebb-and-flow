@@ -44,7 +44,7 @@ const isActive = useMenuNodeIsActive(props.item.index)
         <span
           class="text-4.5 text-muted-foreground flex size-6 flex-center"
         >
-          <ChevronRight class="transition-transform duration-250" />
+          <ChevronRight class="transition-transform duration-300" />
         </span>
       </button>
     </AccordionTrigger>
@@ -65,7 +65,7 @@ const isActive = useMenuNodeIsActive(props.item.index)
     data-role="route"
   >
     <Link
-      class="flex gap-2 truncate transition-transform duration-250 items-center"
+      class="flex gap-2 truncate transition-transform duration-300 items-center"
       :href="item.link"
     >
       <Icon
@@ -74,7 +74,7 @@ const isActive = useMenuNodeIsActive(props.item.index)
         :icon="item.icon"
       />
       <span
-        class="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-250 hover:text-brand-2"
+        class="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-300 hover:text-brand-2"
         data-role="text"
       >
         {{ item.text }}

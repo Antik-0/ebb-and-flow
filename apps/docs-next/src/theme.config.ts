@@ -15,7 +15,7 @@ export const themeConfig = defineThemeConfig(() => {
       'The Motion',
       'TypeScript'
     ],
-    defaultActiveLink: '/docs/articles',
+    defaultActiveLink: '/docs/archive',
     navMenus: [
       {
         text: '首页',
@@ -95,7 +95,7 @@ export const themeConfig = defineThemeConfig(() => {
       {
         text: '归档',
         icon: 'ic:twotone-signpost',
-        link: '/articles',
+        link: '/archive',
         items: []
       }
     ],

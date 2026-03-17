@@ -1,4 +1,4 @@
-@scope (.article-page) {
+@scope (.archive-page) {
   :scope {
     display: grid;
     place-items: center;
@@ -99,19 +99,19 @@
       height: 100%;
       object-fit: cover;
       scale: var(--cover-scale, 1);
-      transition: scale 600ms ease-in-out;
+      transition: scale 400ms var(--ease-feedback);
     }
 
     .card-mask {
       visibility: hidden;
       scale: 1.4;
-      transition: scale 400ms ease;
+      transition: scale 400ms var(--ease-feedback);
       background-color: oklch(0 0 0 / 0.2);
     }
 
     .card:hover .card-mask {
-      visibility: var(--mask-show, hidden);
       scale: 1;
+      visibility: var(--mask-show, hidden);
     }
   }
 

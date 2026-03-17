@@ -55,13 +55,13 @@ const Anchor: FunctionalComponent<{ id?: string }> = (props, { slots }) => {
       <span
         class={clsx(
           'rounded-md flex size-5 cursor-pointer flex-center absolute',
-          'text-muted-foreground bg-muted duration-250 hover:text-brand',
+          'text-muted-foreground bg-muted duration-300 hover:text-brand',
           'opacity-0 transition-opacity group-hover:opacity-100'
         )}
       >
         <Hash />
       </span>
-      <span class="transition-transform duration-250 group-hover:translate-x-6">
+      <span class="transition-transform duration-300 group-hover:translate-x-6">
         {children}
       </span>
     </a>

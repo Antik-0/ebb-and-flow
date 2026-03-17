@@ -161,7 +161,7 @@ export const AccordionContent = defineComponent<
 
     return () => (
       <div
-        class={clsx('duration-250 ease overflow-hidden', props.class)}
+        class={clsx('duration-300 ease-out overflow-hidden', props.class)}
         data-collapsed={collapsed.value}
         onTransitionend={onTransitionEnd}
         ref={scope}

@@ -16,7 +16,7 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
     <nav aria-label="pager" class="pt-6 gap-4 grid grid-cols-1 sm:grid-cols-2">
       <div
         v-if="prevNav"
-        class="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2"
+        class="border border-divider rounded-2 transition-colors duration-300 hover:border-brand-2"
       >
         <Link
           class="px-4 py-3 flex-col"
@@ -32,7 +32,7 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
       </div>
       <div
         v-if="nextNav"
-        class="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2 sm:col-2"
+        class="border border-divider rounded-2 transition-colors duration-300 hover:border-brand-2 sm:col-2"
       >
         <Link
           class="px-4 py-3 text-right flex-col"

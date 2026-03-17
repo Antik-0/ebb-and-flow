@@ -29,18 +29,12 @@
     initial-value: transparent;
   }
 
-  @property --m-time {
-    syntax: '<time>';
-    inherits: false;
-    initial-value: 200ms;
-  }
-
   @keyframes motion-value {
     from {
       --m-value: var(--value-from, 0);
     }
     to {
-      --m-value: var(--value-to, 1);
+      --m-value: var(--value-to, 0);
     }
   }
 
@@ -112,17 +106,6 @@
     to {
       opacity: 0;
       transform: translateX(200px);
-    }
-  }
-
-  @keyframes motion-image {
-    from {
-      opacity: 0;
-      clip-path: inset(0 40% round 20px);
-    }
-    to {
-      opacity: 1;
-      clip-path: inset(0 0 round 0);
     }
   }
 }

@@ -1,15 +1,15 @@
 <script setup lang='ts'>
-import 'ebb-ui/pages/article.css'
+import 'ebb-ui/pages/archive.css'
 
 useSeoMeta({ title: formatTitle('归档') })
 
-const articles = await useFetch('/api/articles').then(
+const articles = await useFetch('/api/archive').then(
   res => res.data.value?.data
 )
 </script>
 
 <template>
-  <div class="article-page">
+  <div class="archive-page">
     <div class="chain top-[--offset]"></div>
     <div class="chain bottom-[--offset]" data-reverse="true"></div>
     <div class="cards-container">

@@ -30,9 +30,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     viewTransition('ebb-in')
   } else if (from.path === '/') {
     viewTransition('ebb-out')
-  } else if (to.path === '/articles') {
+  } else if (to.path === '/archive') {
     viewTransition('flow-in')
-  } else if (from.path === '/articles') {
+  } else if (from.path === '/archive') {
     viewTransition('flow-out')
   }
 })

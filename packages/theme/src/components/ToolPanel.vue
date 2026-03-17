@@ -42,7 +42,7 @@ const { fps } = useFPS()
   <div
     :class="[
       'p-1 top-1/2 right-2 fixed z-[--z-index-toolpanel]',
-      'opacity-0 translate-x-full transition-all duration-600',
+      'opacity-0 translate-x-full transition-all duration-600 ease-out',
       'data-[show=true]:opacity-100 data-[show=true]:translate-x-0'
     ]"
     data-role="toolpanel"

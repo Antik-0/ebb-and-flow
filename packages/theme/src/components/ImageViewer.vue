@@ -21,13 +21,13 @@ const pictureDOM = useTemplateRef('picture')
 const [enterAnimation] = useAnimation(null, {
   target: pictureDOM,
   duration: 400,
-  easing: 'ease-in-out'
+  easing: 'ease-out'
 })
 
 const [leaveAnimation] = useAnimation([{ opacity: '0' }], {
   target: pictureDOM,
   duration: 400,
-  easing: 'ease-in-out'
+  easing: 'ease-out'
 })
 
 async function handleOpen() {

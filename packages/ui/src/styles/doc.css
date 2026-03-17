@@ -167,13 +167,6 @@ html .shiki span {
   text-decoration: var(--shiki-default-text-decoration);
 }
 
-html.default .shiki span {
-  color: var(--shiki-default);
-  font-style: var(--shiki-default-font-style);
-  font-weight: var(--shiki-default-font-weight);
-  text-decoration: var(--shiki-default-text-decoration);
-}
-
 html.light .shiki span {
   color: var(--shiki-light);
   font-style: var(--shiki-light-font-style);
@@ -195,38 +188,24 @@ html.dark .shiki span {
  */
 .ebb-link::after {
   --m-value-x: 0%;
-
+  --c-muted: oklch(68.295% 0.00008 271.152 / 0.2);
   content: '';
   position: absolute;
-  top: 100%;
   inset-inline: 0;
+  top: 100%;
   height: 2px;
   border-radius: 2px;
   translate: 0 2px;
-  transition: --m-value-x 400ms ease-in-out;
+  transition: --m-value-x 400ms var(--ease-feedback);
   background: linear-gradient(
     to right,
     var(--c-brand-2) var(--m-value-x),
-    oklch(68.295% 0.00008 271.152 / 0.2) var(--m-value-x)
+    var(--c-muted) var(--m-value-x)
   );
 }
 
 .ebb-link:hover::after {
   --m-value-x: 100%;
-}
-
-/**
- * ==================================================
- * 🏷️ code-group
- * ==================================================
- */
-.code-group {
-  margin: 16px 0;
-  box-shadow: 0 0 10px 1px oklch(42.024% 0.00005 271.152 / 0.1);
-}
-
-.code-group pre {
-  border-radius: 0;
 }
 
 /**
@@ -240,11 +219,24 @@ html.dark .shiki span {
   font-size: 14px;
   border-radius: 8px;
   color: oklch(97.515% 0.01276 244.483);
-  background-color: color-mix(
-    in oklch,
-    var(--c-bg-code-block) 20%,
-    transparent
-  );
+  background-color: var(--custom-block-bg);
+
+  p {
+    margin: 6px 0 0;
+    line-height: 24px;
+  }
+
+  p:first-child {
+    margin: 0;
+  }
+
+  pre {
+    margin-top: 6px;
+  }
+
+  code {
+    background-color: var(--custom-block-code-bg);
+  }
 }
 
 .custom-block[data-type='info'] {
@@ -253,24 +245,11 @@ html.dark .shiki span {
 }
 
 .custom-block[data-type='warning'] {
-  --custom-block-bg: oklch(86.826% 0.15057 86.404 / 0.4);
+  --custom-block-bg: oklch(86.826% 0.15057 86.404 / 0.2);
   --custom-block-code-bg: oklch(86.826% 0.15057 86.404 / 0.4);
 }
 
 .custom-block[data-type='danger'] {
   --custom-block-bg: oklch(71.218% 0.16488 22.126 / 0.2);
   --custom-block-code-bg: oklch(71.218% 0.16488 22.126 / 0.4);
-}
-
-.custom-block p {
-  margin: 6px 0 0;
-  line-height: 24px;
-}
-
-.custom-block p:first-child {
-  margin: 0;
-}
-
-.custom-block pre {
-  margin-top: 6px;
 }

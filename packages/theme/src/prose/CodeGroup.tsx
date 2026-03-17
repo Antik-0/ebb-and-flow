@@ -20,7 +20,7 @@ export const CodeGroup = defineComponent<Props>(
     })
 
     return () => (
-      <div class="code-group rounded-2 relative overflow-hidden">
+      <div class="my-4 rounded-2 relative overflow-hidden">
         <div class="p-2 bg-[--c-bg-code-title]/80 flex gap-1 items-center">
           {props.tabs.map((item, index) => (
             <button

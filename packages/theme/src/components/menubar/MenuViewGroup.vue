@@ -53,7 +53,7 @@ function buildGroups(items: MenuItem[]) {
           <span
             :class="[
               'text-foreground p-3 rounded-2 block',
-              'transition-colors duration-250 ease',
+              'transition-colors duration-300 ease-out',
               'hover:text-brand-2 hover:bg-brand-2/20',
             ]"
           >

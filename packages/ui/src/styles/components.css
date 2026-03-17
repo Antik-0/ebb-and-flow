@@ -34,7 +34,7 @@
     z-index: -2;
     border-radius: var(--rounded);
     opacity: 0;
-    transition: opacity ease-in 200ms;
+    transition: opacity 200ms var(--ease-motion);
     background: radial-gradient(
       100px circle at 50% 50%,
       var(--bg-color),
@@ -52,7 +52,7 @@
     inset: 0;
     z-index: -1;
     animation-duration: 600ms;
-    animation-timing-function: ease;
+    animation-timing-function: var(--ease-motion);
 
     .grid {
       grid-template-columns: repeat(3, 1fr);
@@ -106,16 +106,15 @@
   .sidebar-item,
   .sidebar-item__button {
     --m-color: transparent;
-
     padding: 4px 8px;
     padding-left: calc(var(--level, 0) * 16px + 8px);
     border-radius: 8px;
     cursor: pointer;
-    transition: --m-color ease 250ms;
+    transition: --m-color 250ms var(--ease-feedback);
     box-shadow: inset 0 0 12px 2px var(--m-color);
 
     &:hover {
-      --m-color: hsl(186 49% 73% / 0.2);
+      --m-color: oklch(83.402% 0.06279 205.05 / 0.2);
     }
   }
 
@@ -159,7 +158,7 @@
     overflow: hidden;
     opacity: var(--m-opacity);
     translate: var(--m-value-x);
-    animation: ease-in-out forwards;
+    animation: var(--ease-motion) forwards;
     animation-name: motion-opacity, motion-value-x, lock;
     animation-duration: auto;
     animation-timeline: scroll(root block);
@@ -207,7 +206,7 @@
   font-size: 20px;
   color: var(--muted-foreground);
   cursor: pointer;
-  transition: color 200ms ease;
+  transition: color 200ms var(--ease-feedback);
 
   &:hover {
     color: var(--c-brand-2);
@@ -223,6 +222,7 @@
     --value-from: 1;
     --value-to: 1.2;
     --opacity-from: 0.4;
+    --opacity-to: 1;
     position: absolute;
     inset: 0;
     z-index: 10;
@@ -236,14 +236,17 @@
   }
 
   .moon-mask {
+    --shadow-1: oklch(57.368% 0.06491 188.799 / 0.8);
+    --shadow-2: oklch(95.376% 0.04035 190.937 / 0.4);
+    --shadow-3: oklch(91.365% 0.07884 189.015 / 0.8);
     position: absolute;
     inset: 0;
     z-index: 30;
     border-radius: 50%;
     box-shadow:
-      0 2px 10px 1px hsl(175 30% 40% / 0.8),
-      inset 0 0 40px 0px hsl(175 78% 90% / 0.4),
-      inset 0 10px 20px 0px hsl(175 78% 80% / 0.8);
+      0 2px 10px 1px var(--shadow-1),
+      inset 0 0 40px 0px var(--shadow-2),
+      inset 0 10px 20px 0px var(--shadow-3);
   }
 }
 
@@ -275,7 +278,7 @@
     background-image: var(--avatar);
     background-size: cover;
     filter: drop-shadow(0 0 var(--rounded) var(--c-brand-1));
-    transition: 400ms ease-in;
+    transition: 400ms var(--ease-motion);
     transition-property: --m-value-x, opacity;
   }
 
@@ -318,7 +321,7 @@
     mask-composite: exclude;
   }
 
-  .flowing-light__line {
+  .light-line {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -340,15 +343,19 @@
 @scope (.glass-mask) {
   :scope {
     --fit-size: cover;
+    --shadow-1: oklch(0.6 0.0001 0 / 0.1);
+    --shadow-2: oklch(0.8 0.0001 0 / 0.1);
+    --shadow-3: oklch(0.6 0.0001 0 / 0.1);
+    --shadow-4: oklch(1 0.0001 0 / 0.1);
     width: 100%;
     height: 100%;
     display: grid;
     backdrop-filter: blur(10px);
     box-shadow:
-      0 2px 16px 1px hsl(0 0% 60% / 0.1),
-      inset 0 0 10px 4px hsl(0 0% 80% / 0.1),
-      inset 0 0 50px 4px hsl(0 0% 60% / 0.1),
-      inset -1px -1px 4px hsl(0 0% 100% / 0.1);
+      0 2px 16px 1px var(--shadow-1),
+      inset 0 0 10px 4px var(--shadow-2),
+      inset 0 0 50px 4px var(--shadow-3),
+      inset -1px -1px 4px var(--shadow-4);
   }
 
   .mask-image {
@@ -371,20 +378,22 @@
 
 @scope (.ebb-icon) {
   .menu-line {
-    --m-value: 16;
     --value-from: 16;
     --value-to: 0;
+    --m-value: 16;
     stroke-dashoffset: var(--m-value);
-    animation: motion-value 0.2s ease forwards;
+    animation: motion-value 200ms ease forwards;
     animation-delay: var(--delay, 0);
   }
 
   .moon-body {
+    --value-to: 1;
     fill-opacity: var(--m-value);
-    animation: motion-value 0.8s ease 0.6s forwards;
+    animation: motion-value 800ms ease 600ms forwards;
   }
 
   .moon-star {
+    --opacity-to: 1;
     opacity: var(--m-opacity);
     animation: motion-opacity 4s ease infinite;
     animation-delay: var(--delay);
@@ -392,7 +401,7 @@
 
   :scope.sun {
     rotate: var(--m-angle);
-    animation: motion-angle 10s linear 0.2s infinite;
+    animation: motion-angle 10s linear 200ms infinite;
   }
 
   .sun-body {
@@ -404,10 +413,8 @@
 
   .sun-light {
     --m-value: 2;
-    --value-from: 2;
-    --value-to: 0;
     stroke-dashoffset: var(--m-value);
-    animation: motion-value 0.2s ease forwards;
+    animation: motion-value 200ms ease forwards;
     animation-delay: var(--delay);
   }
 }

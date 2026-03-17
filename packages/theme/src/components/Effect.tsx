@@ -1,14 +1,13 @@
-import type { FunctionalComponent } from 'vue'
-import type { FuncProps } from '#/types'
+import type { ClassValue, FunctionalComponent, StyleValue } from 'vue'
 
 interface AvatarProps {
   avatar: string
 }
 
-export const Avatar: FunctionalComponent<
-  FuncProps<AvatarProps>,
-  { click: [] }
-> = ({ avatar }, { emit, attrs }) => {
+export const Avatar: FunctionalComponent<AvatarProps, { click: [] }> = (
+  { avatar },
+  { emit, attrs }
+) => {
   return (
     <button
       aria-label="avatar"
@@ -31,7 +30,7 @@ export const Avatar: FunctionalComponent<
 Avatar.props = ['avatar']
 Avatar.emits = ['click']
 
-export const MoonAvatar: FunctionalComponent<FuncProps<AvatarProps>> = (
+export const MoonAvatar: FunctionalComponent<AvatarProps> = (
   { avatar },
   { attrs }
 ) => {
@@ -40,7 +39,7 @@ export const MoonAvatar: FunctionalComponent<FuncProps<AvatarProps>> = (
       <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
         <img
           alt="site owner avatar"
-          class="transition-transform duration-800 ease-in-out"
+          class="transition-transform duration-600 ease-out"
           src={avatar}
         />
       </div>
@@ -51,7 +50,7 @@ export const MoonAvatar: FunctionalComponent<FuncProps<AvatarProps>> = (
 }
 MoonAvatar.props = ['avatar']
 
-export const CubeAvatar: FunctionalComponent<FuncProps<AvatarProps>> = (
+export const CubeAvatar: FunctionalComponent<AvatarProps> = (
   { avatar },
   { attrs }
 ) => {
@@ -70,16 +69,19 @@ export const CubeAvatar: FunctionalComponent<FuncProps<AvatarProps>> = (
 }
 CubeAvatar.props = ['avatar']
 
-export const FlowingLight: FunctionalComponent<FuncProps> = (_, { attrs }) => {
+export const FlowingLight: FunctionalComponent = (_, { attrs }) => {
   return (
     <div aria-hidden="true" class="flowing-light" {...attrs}>
-      <div class="flowing-light__line" style="--angle-to: 180deg"></div>
-      <div class="flowing-light__line" style="--angle-to: -180deg"></div>
+      <div class="light-line" style="--angle-to: 180deg"></div>
+      <div class="light-line" style="--angle-to: -180deg"></div>
     </div>
   )
 }
 
-export const GlassMask: FunctionalComponent<FuncProps> = (_, { attrs }) => {
+export const GlassMask: FunctionalComponent<{
+  class?: ClassValue
+  style?: StyleValue
+}> = (_, { attrs }) => {
   return (
     <div aria-hidden="true" class="glass-mask" {...attrs}>
       <div class="mask-image"></div>

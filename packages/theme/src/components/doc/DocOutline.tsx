@@ -90,7 +90,7 @@ const OutlineMark = defineComponent(
         aria-hidden="true"
         class={clsx(
           'bg-brand-2/10 h-8 inset-x-0 top-8 absolute -z-2',
-          'transform-origin-top-center transition-transform duration-200'
+          'transform-origin-top-center transition-transform duration-300'
         )}
         data-role="mark"
         style={{

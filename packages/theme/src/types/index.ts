@@ -1,12 +1,5 @@
-import type { ClassValue, StyleValue } from 'vue'
-
 export * from './menu.ts'
 export * from './theme.ts'
-
-export type FuncProps<T extends Record<string, any> = Empty> = T & {
-  class?: ClassValue
-  style?: StyleValue
-}
 
 export type Fn = (...args: any[]) => any
 
