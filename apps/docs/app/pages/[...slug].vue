@@ -13,7 +13,10 @@ const page = await useFetch('/api/page', {
 
 const metadata = page?.metadata
 
-useSeoMeta({ title: formatTitle(metadata?.title) })
+useSeoMeta({
+  title: formatTitle(metadata?.title),
+  description: `潮起潮落 - ${metadata?.title ?? 404}`
+})
 
 const pageData = computed(() => {
   if (!metadata) return null
