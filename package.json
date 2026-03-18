@@ -9,6 +9,7 @@
     "boot": "bun install && bun stub",
     "build": "turbo run build --filter=docs",
     "clean": "bun run ./scripts/cleanup.ts",
+    "compress": "bun run ./scripts/compress.ts",
     "dev": "turbo run dev --filter=docs",
     "dev:next": "turbo run dev --filter=docs-next",
     "ebb-docs": "bun run --elide-lines 0 --filter ebb-docs source",
