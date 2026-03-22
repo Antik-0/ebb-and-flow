@@ -2,14 +2,14 @@ import type { ViewportRef } from './MenuViewport'
 import { animate, LayoutGroup, motion, useMotionValue } from 'motion/react'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { stylex } from '#/utils'
-import { useMenuActiveNode, useSharedMenus } from '../../controller/menus'
+import { useMenuActiveNode, useMenus } from '../../controller/menus'
 import {
   MenubarProvider,
   MotionProvider,
   useMenubarMotion,
   useMotion
 } from '../../controller/navbar'
-import { FlowingLight } from '../FlowingLight'
+import { FlowingLight } from '../Effect'
 import { MenubarItem } from './MenubarItem'
 import { MenuViewport } from './MenuViewport'
 
@@ -18,7 +18,7 @@ const MenubarItemMemo = memo(MenubarItem, () => true)
 type HoverChangeCallback = (index: number) => void
 
 export function Menubar() {
-  const menus = useSharedMenus()
+  const menus = useMenus()
   const currActiveNode = useMenuActiveNode()
   const { scope, updateMotion, onMotionChange } = useMenubarMotion()
 
@@ -28,13 +28,12 @@ export function Menubar() {
 
   useEffect(() => {
     const prevActiveIndex = activeIndex.current
-
-    let activeNode = currActiveNode
-    while (activeNode?.parent) {
-      activeNode = activeNode.parent
+    if (!currActiveNode) {
+      activeIndex.current = -1
+      return
     }
 
-    const index = menus.indexOf(activeNode!)
+    const index = Number(currActiveNode.index.split('_')[0]!)
     if (prevActiveIndex !== index) {
       activeIndex.current = index
       updateMotion(index)
@@ -80,7 +79,12 @@ export function Menubar() {
   )
 
   return (
-    <nav className="menubar" onPointerLeave={onMouseLeave} ref={scope}>
+    <nav
+      className="menubar"
+      data-role="menubar"
+      onPointerLeave={onMouseLeave}
+      ref={scope}
+    >
       <MotionProvider value={motionValue}>
         <MenubarBackground />
         <MenubarIndicator />
@@ -142,13 +146,9 @@ function MenubarIndicator() {
   return (
     <motion.div
       aria-hidden="true"
-      className="rounded-[--rounded] h-8 absolute -z-1"
+      className="menubar-indicator"
       data-role="indicator"
-      style={{
-        x: motionX,
-        width: motionW,
-        boxShadow: 'inset 0 0 12px 1px hsl(187 75% 65% / 0.4)'
-      }}
+      style={{ x: motionX, width: motionW }}
     />
   )
 }

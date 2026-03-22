@@ -40,6 +40,9 @@
   "workspaces": {
     "packages": ["docs", "apps/*", "packages/*", "packages/configs/*"],
     "catalog": {
+      "@unocss/nuxt": "^66.6.6",
+      "@unocss/postcss": "^66.6.6",
+      "@unocss/reset": "^66.6.6",
       "eslint": "^10.0.3",
       "iconify-icon": "^3.0.2",
       "motion": "^12.36.0",

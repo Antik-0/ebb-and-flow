@@ -4,17 +4,11 @@ import { memo, useEffect, useRef } from 'react'
 import { stylex } from '#/utils'
 import { useSidebarControl, useSidebarMenus } from '../../controller/sidebar'
 import { useEventListener, useResizeObserver } from '../../hooks'
-import { GlassMask } from '../GlassMask'
+import { GlassMask } from '../Effect'
 import { SidebarGroup } from './SidebarGroup'
-
-Sidebar.Overlay = SidebarOverlay
-Sidebar.Container = SidebarContainer
-
-export { Sidebar }
 
 function Sidebar() {
   const { isOpen, close } = useSidebarControl()
-
   const x = useMotionValue('0')
 
   const { addEventListener } = useEventListener()
@@ -44,7 +38,11 @@ function Sidebar() {
 
   return (
     <motion.aside className="ebb-sidebar" data-role="sidebar" style={{ x }}>
-      <div className="grid-full px-1 py-4 flex-col min-h-0" ref={sidebar}>
+      <div
+        className="grid-full px-1 py-4 flex-col min-h-0"
+        data-role="content"
+        ref={sidebar}
+      >
         <SidebarContent />
       </div>
       <SidebarMask />
@@ -52,25 +50,51 @@ function Sidebar() {
   )
 }
 
+const SidebarContent = memo(() => {
+  const sidebarMenus = useSidebarMenus()
+
+  return (
+    <div className="scrollbar-thin px-3 flex-1 overflow-x-hidden overflow-y-auto">
+      {sidebarMenus.map((item, index) => (
+        <SidebarGroup item={item} key={index} />
+      ))}
+    </div>
+  )
+})
+
+function SidebarMask() {
+  return (
+    <div
+      className="sidebar-mask w-100 inset-y-0 right-0 absolute -z-1"
+      data-role="mask"
+    >
+      <GlassMask style={stylex({ '--fit-size': 'contain' })} />
+    </div>
+  )
+}
+
 function SidebarContainer({ children }: PropsWithChildren) {
   const container = useRef<HTMLDivElement>(null!)
+  const { open, close, setDisabled } = useSidebarControl()
   const { observe } = useResizeObserver()
-  const { open, close } = useSidebarControl()
 
   useEffect(() => {
+    setDisabled(false)
     observe(container, entry => {
       const boxSize = entry.borderBoxSize[0]!
       const inlineSize = boxSize.inlineSize
       if (inlineSize >= 320) {
         open()
+        setDisabled(true)
       } else {
         close()
+        setDisabled(false)
       }
     })
   }, [])
 
   return (
-    <div className="sidebar-container" ref={container}>
+    <div className="sidebar-container" data-role="container" ref={container}>
       {children}
     </div>
   )
@@ -82,35 +106,15 @@ function SidebarOverlay() {
   return (
     <div
       aria-hidden="true"
-      className="sidebar-overlay bg-black/20 inset-0 fixed"
+      className="bg-black/20 inset-0 fixed z-[--z-index-sidebar-overlay]"
+      data-role="overlay"
       onClick={close}
       style={stylex({ display: !isOpen && 'none' })}
     ></div>
   )
 }
 
-function SidebarMask() {
-  return (
-    <div className="sidebar-mask w-100 inset-y-0 right-0 absolute -z-1">
-      <GlassMask style={stylex({ '--fit-size': 'contain' })} />
-    </div>
-  )
-}
+Sidebar.Overlay = SidebarOverlay
+Sidebar.Container = SidebarContainer
 
-const SidebarContent = memo(() => {
-  const sidebarMenus = useSidebarMenus()
-
-  return (
-    <div
-      className="px-3 flex-1 overflow-x-hidden overflow-y-auto"
-      style={{
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--c-scrollbar) transparent'
-      }}
-    >
-      {sidebarMenus.map((item, index) => (
-        <SidebarGroup item={item} key={index} />
-      ))}
-    </div>
-  )
-})
+export { Sidebar }

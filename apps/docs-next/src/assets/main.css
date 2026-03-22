@@ -1,4 +1,3 @@
-/* biome-ignore-all lint/correctness/noUnknownTypeSelector: not supported */
 @unocss all;
 
 #app {
@@ -9,64 +8,65 @@
   background-attachment: fixed;
 }
 
+html[data-layout='page'] #app {
+  --m-opacity: 0;
+  --opacity-to: 0.6;
+  background-color: oklch(0 0 0 / var(--m-opacity));
+  background-blend-mode: darken;
+  animation: motion-opacity forwards;
+  animation-duration: auto;
+  animation-timeline: scroll(root block);
+  animation-range-start: 400px;
+}
+
+@media screen and (width >= 800px) {
+  #app {
+    --moving-duration: 40s;
+  }
+}
+@media screen and (width >= 1280px) {
+  #app {
+    --moving-duration: 20s;
+  }
+}
+@media screen and (width >= 1600px) {
+  #app {
+    --moving-duration: 10s;
+  }
+}
+
+@media screen and (width >= 800px) {
+  /* html[data-layout='home'] #app {
+    animation: moving linear infinite;
+    animation-duration: var(--moving-duration);
+  } */
+}
+
+@keyframes moving {
+  0%,
+  50% {
+    background-position-x: 50%;
+  }
+
+  25% {
+    background-position-x: 100%;
+  }
+
+  75% {
+    background-position-x: 0%;
+  }
+}
+
 #loading-mask {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: hsl(0deg 0% 0% / 0.8);
+  background-color: oklch(0% 0 0 / 0.9);
   z-index: 999;
 
   img {
     object-fit: contain;
-  }
-}
-
-/**
- * ==================================================
- * 🏷️ layout view-transition
- * ==================================================
- */
-
-html {
-  view-transition-name: layout;
-}
-
-html::view-transition-new(layout),
-html::view-transition-old(layout) {
-  animation-duration: 2000ms;
-  animation-timing-function: ease-in-out;
-}
-
-html[data-motion='fade-in']::view-transition-new(layout) {
-  animation-name: layout-fade-in;
-}
-
-html[data-motion='fade-in']::view-transition-old(layout) {
-  animation-name: layout-fade-out;
-  animation-delay: 400ms;
-}
-
-html[data-motion='fade-out']::view-transition-new(layout) {
-  animation-name: layout-fade-out;
-  animation-direction: reverse;
-}
-
-html[data-motion='fade-out']::view-transition-old(layout) {
-  animation-name: layout-fade-in;
-  animation-delay: 400ms;
-  animation-direction: reverse;
-}
-
-@keyframes layout-fade-in {
-  from {
-    transform: translateY(-100%);
-  }
-}
-
-@keyframes layout-fade-out {
-  to {
-    transform: translateY(100%);
   }
 }

@@ -52,7 +52,7 @@ export const useOutline = createSharedState(() => {
   return { toc }
 })
 
-export function useActiveRanve() {
+export function useActiveRange() {
   return activeRange
 }
 

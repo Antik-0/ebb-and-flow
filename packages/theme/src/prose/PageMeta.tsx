@@ -40,6 +40,7 @@ function PageTags({ tags }: { tags: string[] }) {
           #{tag}
         </span>
       ))}
+      <span class="text-sm ml-1">🏷️</span>
     </div>
   )
 }

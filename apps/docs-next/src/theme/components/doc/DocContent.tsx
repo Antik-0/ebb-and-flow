@@ -1,8 +1,9 @@
 'use client'
 import type { PropsWithChildren } from 'react'
 import type { Page } from '../../types'
+import { clsx } from '@repo/utils'
 import { useEffect } from 'react'
-import { pageStore, useLayout } from '../../controller/layout'
+import { pageStore, triggerPageMounted } from '../../controller/layout'
 import { DocFooter } from './DocFooter'
 import { DocOutline } from './DocOutline'
 
@@ -13,31 +14,36 @@ interface Props {
 export function DocContent(props: PropsWithChildren<Props>) {
   const { page, children } = props
 
-  const isDesktop = useLayout(state => state.isDesktop)
-
   useEffect(() => {
     pageStore.setState(page)
   }, [page])
 
+  useEffect(() => {
+    triggerPageMounted()
+  }, [])
+
   return (
     <div className="flex" data-role="doc-content">
       <div className="px-8 pb-24 flex-1 min-w-0">
-        <article className="ebb-doc" id="ebb-content">
+        <article className="ebb-doc" id="content">
           {children}
         </article>
         <DocFooter />
       </div>
 
-      {isDesktop && (
-        <div className="pl-8 w-64">
-          <aside className="doc-aside">
-            <div className="aside-content">
-              <DocOutline />
-              <div className="flex-1"></div>
-            </div>
-          </aside>
-        </div>
-      )}
+      <div className="pl-4 w-64" data-role="doc-aside">
+        <aside className="pb-12 pt-[calc(var(--h-navbar)+48px)] flex-col w-56 inset-y-0 fixed">
+          <div
+            className={clsx(
+              'flex-col flex-1 overflow-x-hidden overflow-y-auto',
+              'opacity-60 transition-opacity hover:opacity-100'
+            )}
+          >
+            <DocOutline />
+            <div className="flex-1"></div>
+          </div>
+        </aside>
+      </div>
     </div>
   )
 }

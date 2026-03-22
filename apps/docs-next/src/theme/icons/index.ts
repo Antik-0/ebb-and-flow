@@ -25,6 +25,7 @@ export { default as PanelLeftClose } from './PanelLeftClose.tsx'
 export { default as PanelLeftOpen } from './PanelLeftOpen.tsx'
 export { default as Power } from './Power.tsx'
 export { default as Rocket } from './Rocket.tsx'
+export { default as TextAlignStart } from './TextAlignStart.tsx'
 export { default as ThemeDark } from './ThemeDark.tsx'
 export { default as ThemeLight } from './ThemeLight.tsx'
 export { Icon, LogoIconRender }

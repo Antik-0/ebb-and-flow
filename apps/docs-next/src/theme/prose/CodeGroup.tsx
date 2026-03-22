@@ -5,13 +5,13 @@ import { useState } from 'react'
 import { stylex } from '#/utils'
 import { LogoIconRender } from '../icons'
 
+interface Props {
+  tabs?: TabItem[]
+}
+
 interface TabItem {
   text: string
   icon?: string
-}
-
-interface Props {
-  tabs?: TabItem[]
 }
 
 export function CodeGroup(props: PropsWithChildren<Props>) {
@@ -21,7 +21,7 @@ export function CodeGroup(props: PropsWithChildren<Props>) {
   const contents = Array.isArray(children) ? children : [children]
 
   return (
-    <div className="code-group rounded-2 relative overflow-hidden">
+    <div className="my-4 rounded-2 relative overflow-hidden">
       <div className="p-2 bg-[--c-bg-code-title]/80 flex gap-1 items-center">
         {tabs.map((item, index) => (
           <button

@@ -35,7 +35,7 @@
       },
       "devDependencies": {
         "@config/unocss": "workspace:*",
-        "@unocss/nuxt": "^66.6.6",
+        "@unocss/nuxt": "catalog:",
       },
     },
     "apps/docs-next": {
@@ -54,8 +54,11 @@
         "@types/node": "25.5.0",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
-        "@unocss/postcss": "^66.6.6",
-        "@unocss/reset": "^66.6.6",
+        "@unocss/postcss": "catalog:",
+        "@unocss/reset": "catalog:",
+        "ebb-docs": "workspace:*",
+        "ebb-markdown": "workspace:*",
+        "ebb-ui": "workspace:*",
         "typescript": "catalog:",
         "unocss": "catalog:",
       },
@@ -139,6 +142,9 @@
     "sharp",
   ],
   "catalog": {
+    "@unocss/nuxt": "^66.6.6",
+    "@unocss/postcss": "^66.6.6",
+    "@unocss/reset": "^66.6.6",
     "eslint": "^10.0.3",
     "iconify-icon": "^3.0.2",
     "motion": "^12.36.0",

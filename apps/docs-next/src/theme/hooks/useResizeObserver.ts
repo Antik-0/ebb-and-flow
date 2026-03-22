@@ -78,13 +78,13 @@ export function useResizeObserver() {
     _observe(document.documentElement, callback)
   }, [])
 
-  useEffect(() => {
-    return () => {
-      for (const { element, callback } of observeEntries.current) {
-        unobserve(element, callback)
-      }
+  const clear = useCallback(() => {
+    for (const { element, callback } of observeEntries.current) {
+      unobserve(element, callback)
     }
   }, [])
+
+  useEffect(() => clear, [])
 
   return { observe: _observe, onWindowResize }
 }

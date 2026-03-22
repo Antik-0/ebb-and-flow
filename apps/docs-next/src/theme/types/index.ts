@@ -1,5 +1,8 @@
 import type { HTMLAttributes } from 'react'
 
+export * from './menu.ts'
+export * from './theme.ts'
+
 export type Fn = (...args: any[]) => any
 
 export type Timer = NodeJS.Timeout | number
@@ -31,6 +34,3 @@ export interface TocItem {
 }
 
 export type WithHTMLProps<T = HTMLDivElement> = HTMLAttributes<T>
-
-export * from './menu.ts'
-export * from './theme.ts'

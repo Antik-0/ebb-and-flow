@@ -1,21 +1,25 @@
 import type { MenuItem } from '../types'
 import { useMemo } from 'react'
 import { defineEbbStore } from '../store'
-import { useSharedMenus } from './menus'
+import { useMenus } from './menus'
 
 interface SidebarState {
   isOpen: boolean
+  disabled: boolean
   open: () => void
   close: () => void
   toggle: () => void
+  setDisabled: (value: boolean) => void
 }
 
 const [useSidebar, sidebarStore] = defineEbbStore<SidebarState>(set => {
   return {
     isOpen: false,
+    disabled: false,
     open: () => set({ isOpen: true }),
     close: () => set({ isOpen: false }),
-    toggle: () => set(state => ({ isOpen: !state.isOpen }))
+    toggle: () => set(state => ({ isOpen: !state.isOpen })),
+    setDisabled: (value: boolean) => set({ disabled: value })
   }
 })
 
@@ -23,12 +27,13 @@ export { sidebarStore, useSidebar }
 
 export function useSidebarControl() {
   const isOpen = useSidebar(state => state.isOpen)
-  const { open, close, toggle } = sidebarStore.getState()
-  return { isOpen, open, close, toggle }
+  const disabled = useSidebar(state => state.disabled)
+  const { open, close, toggle, setDisabled } = sidebarStore.getState()
+  return { isOpen, disabled, open, close, toggle, setDisabled }
 }
 
 export function useSidebarMenus() {
-  const menus = useSharedMenus()
+  const menus = useMenus()
 
   const sidebarMenus = useMemo<MenuItem[]>(
     () => menus.filter(item => !item.hiddenInSidebar),

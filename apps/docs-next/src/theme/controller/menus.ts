@@ -3,10 +3,6 @@ import { isExternalLink } from '@repo/utils'
 import { useSyncExternalStore } from 'react'
 import { useTheme } from '../theme'
 
-let menus: MenuItem[] = []
-let currActiveNode: MenuItem | null = null
-let activeNodes: number[] = []
-
 /**
  * ----------------------------------------
  * ✨ 节点激活订阅状态
@@ -27,28 +23,38 @@ function notify() {
   })
 }
 
+let menus: MenuItem[] = []
+let menuIndexMap: Record<string, string> = {}
+
+let currActiveIndex = ''
+let currActiveNode: MenuItem | null = null
+
 function createMenuTree(menus: NavMenuRecord[]) {
   let nodeId = 0
   let prevNavNode: MenuItem | undefined
+  menuIndexMap = {}
 
   function buildMenuTree(
-    root: NavMenuRecord[],
+    menus: NavMenuRecord[],
     parent: MenuItem | null = null,
     depth = 0
   ) {
     if (depth === 3) return []
 
     const tree: MenuItem[] = []
-    for (const item of root) {
-      const { items, link, ...restProps } = item
+    for (const [index, item] of menus.entries()) {
+      const { items, ...restProps } = item
+      const pathIndex = parent ? `${parent.index}_${index}` : String(index)
 
       const node = {
         id: nodeId++,
+        index: pathIndex,
         parent,
         ...restProps
       } as MenuItem
 
       // 建立导航链接
+      const link = node.link
       if (link && link !== '/' && !isExternalLink(link)) {
         // 内部链接添加 `/docs` 前缀
         node.link = '/docs' + link
@@ -57,6 +63,10 @@ function createMenuTree(menus: NavMenuRecord[]) {
         }
         node.prevNav = prevNavNode
         prevNavNode = node
+      }
+
+      if (node.link) {
+        menuIndexMap[node.link] = pathIndex
       }
 
       if (Array.isArray(items) && items.length) {
@@ -70,37 +80,36 @@ function createMenuTree(menus: NavMenuRecord[]) {
   return buildMenuTree(menus)
 }
 
-export function updateActiveLink(pathname: string) {
-  currActiveNode = matchActiveNode(menus, pathname)
-  let node = currActiveNode
-  const nodeIds = []
-  while (node) {
-    nodeIds.push(node.id)
-    node = node.parent
+/**
+ * 更新菜单激活状态
+ */
+export function updateActiveLink(path: string) {
+  const activeIndex = menuIndexMap[path]
+  if (!activeIndex) {
+    currActiveIndex = ''
+    currActiveNode = null
+    notify()
+    return
   }
-  activeNodes = nodeIds
+
+  let tree = menus
+  let node: MenuItem = null!
+  const paths = activeIndex.split('_')
+  for (const path of paths) {
+    const index = Number(path)
+    node = tree[index]!
+    tree = node.items!
+  }
+
+  currActiveNode = node
+  currActiveIndex = activeIndex
   notify()
-}
-
-function matchActiveNode(menus: MenuItem[], currentPath: string) {
-  const queue = [...menus]
-
-  while (queue.length) {
-    const node = queue.shift()!
-    if (node.link === currentPath) {
-      return node
-    }
-    if (node.items) {
-      queue.push(...node.items)
-    }
-  }
-  return null
 }
 
 /**
  * 获取共享菜单
  */
-export function useSharedMenus() {
+export function useMenus() {
   const { theme } = useTheme()
   if (menus.length === 0) {
     menus = createMenuTree(theme.navMenus)
@@ -109,10 +118,10 @@ export function useSharedMenus() {
 }
 
 /**
- * 根据菜单 id 判断当前菜单节点是否激活
+ * 根据 `index` 判断当前菜单节点是否激活
  */
-export function useMenuNodeIsActive(id: number) {
-  const getSnapshot = () => activeNodes.includes(id)
+export function useMenuNodeIsActive(index: string) {
+  const getSnapshot = () => currActiveIndex.startsWith(index)
   const isActive = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   return isActive
 }

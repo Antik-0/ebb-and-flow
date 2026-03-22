@@ -4,8 +4,7 @@ import { useSidebarControl } from '../controller/sidebar'
 import { useFPS } from '../hooks'
 import { PanelLeftClose, PanelLeftOpen } from '../icons'
 import { BackToTop } from './BackToTop'
-import { GlassMask } from './GlassMask'
-import { ScrollIndicator } from './ScrollIndicator'
+import { GlassMask, ScrollIndicator } from './Effect'
 import { SidebarTrigger } from './sidebar/SidebarTrigger'
 
 interface Props {

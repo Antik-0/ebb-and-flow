@@ -9,13 +9,13 @@ import {
   useState
 } from 'react'
 import { stylex } from '#/utils'
-import { useSharedMenus } from '../../controller/menus'
+import { useMenus } from '../../controller/menus'
 import {
   useMenubar,
   useViewport,
   ViewportProvider
 } from '../../controller/navbar'
-import { GlassMask } from '../GlassMask'
+import { GlassMask } from '../Effect'
 import { MenuViewGroup } from './MenuViewGroup'
 
 export interface ViewportRef {
@@ -29,7 +29,7 @@ interface MenuViewportProps {
 }
 
 export function MenuViewport(props: MenuViewportProps) {
-  const menus = useSharedMenus()
+  const menus = useMenus()
   const contents = useMemo(() => menus.map(item => item.items), [menus])
 
   const { onHoverIndexChange } = useMenubar()

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { toValue } from '#/utils'
 
 interface AddEventListener {
   <E extends keyof WindowEventMap>(
@@ -30,15 +31,8 @@ interface AddEventListener {
   ): void
 }
 
-interface EventEntry {
-  el: Element
-  type: string
-  listener: (...args: any[]) => void
-}
-
 export function useEventListener() {
   const controller = useRef(new AbortController())
-  const eventEntries = useRef<EventEntry[]>([])
 
   const addEventListener: AddEventListener = useCallback(
     (
@@ -47,24 +41,19 @@ export function useEventListener() {
       listener: any,
       options: AddEventListenerOptions = {}
     ) => {
-      if (!el) return
-      ;(el as Element).addEventListener(type, listener, {
+      const element = toValue(el)
+      if (!element) return
+
+      element.addEventListener(type, listener, {
         signal: controller.current.signal,
         ...options
       })
-      eventEntries.current.push({ el, type, listener })
-
-      return () => {
-        if (!el) return
-        ;(el as Element).removeEventListener(type, listener)
-      }
     },
     []
   )
 
   const clearEventListener = useCallback(() => {
     controller.current.abort()
-    eventEntries.current.length = 0
   }, [])
 
   useEffect(() => {

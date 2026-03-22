@@ -10,7 +10,7 @@ export function SidebarGroup({ item }: SidebarGroupProps) {
   const isGrouped = !!item.grouped
 
   return (
-    <section className="sidebar-group" data-role="group">
+    <section className="py-3" data-role="group">
       {isGrouped ? (
         <>
           <div className="mb-2 px-2 flex">
@@ -26,12 +26,12 @@ export function SidebarGroup({ item }: SidebarGroupProps) {
           </div>
           {item.items?.map(subItem => (
             <section className="py-1" key={subItem.id}>
-              <SidebarItem item={subItem} />
+              <SidebarItem item={subItem} level={1} />
             </section>
           ))}
         </>
       ) : (
-        <SidebarItem item={item} />
+        <SidebarItem item={item} level={1} />
       )}
     </section>
   )

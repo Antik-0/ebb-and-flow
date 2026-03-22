@@ -2,7 +2,7 @@ import { EbbThemeProvider } from '#/theme'
 import { themeConfig } from '#/theme.config.ts'
 
 import '@unocss/reset/tailwind-v4.css'
-import '#/theme/styles/main.css'
+import 'ebb-ui/main.css'
 import '#/assets/main.css'
 
 export default function RootLayout({
@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html data-scroll-behavior="smooth" lang="zh-CN">
+    <html className="dark" data-scroll-behavior="smooth" lang="zh-CN">
       <body>
         <div id="app">
           <EbbThemeProvider config={themeConfig}>{children}</EbbThemeProvider>

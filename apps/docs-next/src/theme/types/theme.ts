@@ -1,6 +1,3 @@
-/**
- * ebb theme config
- */
 export interface ThemeConfig {
   /**
    * 网站默认标题
@@ -33,7 +30,7 @@ export interface ThemeConfig {
   tagline: string
 
   /**
-   * 技术栈
+   * 编程技能
    */
   codes: string[]
 

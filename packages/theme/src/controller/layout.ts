@@ -68,11 +68,11 @@ export function setPageData(data: Page | null) {
   page.value = data
 }
 
-let pageMountedCbs: Fn[] = []
+const pageMountedCbs = new Set<Fn>([])
 
 export function onPageMounted(callback: Fn) {
-  pageMountedCbs.push(callback)
-  return () => (pageMountedCbs = pageMountedCbs.filter(f => f !== callback))
+  pageMountedCbs.add(callback)
+  return () => pageMountedCbs.delete(callback)
 }
 
 export function triggerPageMounted() {

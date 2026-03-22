@@ -7,13 +7,13 @@ import { Copy, CopyCheck } from '../icons'
 
 interface Props extends WithHTMLProps<HTMLPreElement> {
   code?: string
+  lines?: number
   language: string
   filename?: string
-  lines: string
 }
 
 export function ProsePre(props: PropsWithChildren<Props>) {
-  const { className, code, language, filename, lines, children, ...attrs } =
+  const { className, code, lines, language, filename, children, ...attrs } =
     props
 
   const [copied, setCopied] = useState(false)
@@ -27,13 +27,20 @@ export function ProsePre(props: PropsWithChildren<Props>) {
   }
 
   return (
-    <pre className={clsx('group rounded-2 relative', className)} {...attrs}>
+    <pre
+      className={clsx('group rounded-2 relative', className)}
+      data-filename={filename}
+      data-language={language}
+      data-lines={lines}
+      {...attrs}
+    >
       <button
         aria-label="copy"
         className={clsx(
           'rounded-md flex size-8 cursor-pointer transition-all flex-center right-2 top-2 absolute',
           'text-muted-foreground bg-muted/40 opacity-0',
-          'hover:(text-accent-foreground bg-muted) group-hover:opacity-100'
+          'hover:text-accent-foreground hover:bg-muted group-hover:opacity-100',
+          'data-[active=true]:opacity-100'
         )}
         data-active={copied}
         onClick={handleCopy}

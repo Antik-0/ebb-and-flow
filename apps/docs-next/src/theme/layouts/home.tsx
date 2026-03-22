@@ -1,20 +1,22 @@
 'use client'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CodeMotion } from '../components/CodeMotion'
-import { CubeAvatar } from '../components/CubeAvatar'
+import { CubeAvatar, MoonAvatar } from '../components/Effect'
 import { FloatingText } from '../components/FloatingText'
+import { setHtmlLayout } from '../controller/layout'
 import { Power } from '../icons'
 import { useTheme } from '../theme'
 
 export function EbbLayoutHome() {
   const { theme } = useTheme()
 
+  useEffect(() => setHtmlLayout('home'), [])
+
   return (
-    <div className="flex-col h-screen w-screen isolate" data-label="home">
+    <div className="home-page flex-col h-screen w-screen isolate">
       <div className="px-10 pb-20 pt-40 flex-col flex-1 items-center">
-        <EbbMoonAvatar avatar={theme.avatar} />
+        <MoonAvatar avatar={theme.avatar} />
 
         <EbbAuthor author={theme.author} />
 
@@ -40,14 +42,14 @@ interface AuthorProps {
 }
 
 function EbbAuthor(props: AuthorProps) {
-  const [animating, setAnimating] = useState(true)
+  const [motion, setMotion] = useState('fade')
 
   return (
     <h1 className="mt-4 py-8 text-center w-full">
       <span
         className="site-title"
-        data-animating={animating}
-        onAnimationEnd={() => setAnimating(false)}
+        data-motion={motion}
+        onAnimationEnd={() => setMotion('flow')}
       >
         {props.author}
       </span>
@@ -65,10 +67,7 @@ function EbbTagline(props: TaglineProps) {
 
   return (
     <h2 className="text-6 py-4">
-      <p
-        className="tagline flex gap-2 items-center"
-        data-motion="taglineMotion"
-      >
+      <p className="tagline flex gap-2 items-center" data-motion={motion}>
         <FloatingText
           onMotionEnd={() => setMotion('fade')}
           text={props.tagline}
@@ -76,29 +75,6 @@ function EbbTagline(props: TaglineProps) {
         <CodeMotion codes={props.codes} cycle paused={motion !== 'fade'} />
       </p>
     </h2>
-  )
-}
-
-interface MoonAvatarProps {
-  avatar: string
-}
-
-function EbbMoonAvatar(props: MoonAvatarProps) {
-  return (
-    <div className="moon-avatar size-50 cursor-pointer relative isolate">
-      <div className="rounded-full inset-0 absolute z-20 overflow-hidden">
-        <Image
-          alt="site owner avatar"
-          className="transition-transform duration-800 ease-in-out"
-          height={200}
-          loading="eager"
-          src={props.avatar}
-          width={200}
-        />
-      </div>
-      <div className="moon-bg"></div>
-      <div className="moon-mask"></div>
-    </div>
   )
 }
 

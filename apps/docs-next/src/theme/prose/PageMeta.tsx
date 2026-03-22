@@ -1,6 +1,13 @@
-import { clsx, formatDateTime } from '@repo/utils'
+'use client'
+import { clsx, formatDate, formatDateTime } from '@repo/utils'
 
-export function PageMeta(props: PageMetadata) {
+interface Props {
+  tags?: string[]
+  readingTime?: number
+  lastUpdated?: number
+}
+
+export function PageMeta(props: Props) {
   const { tags = [], lastUpdated, readingTime } = props
 
   return (
@@ -16,12 +23,7 @@ export function PageMeta(props: PageMetadata) {
           <span className="mr-1">🕝</span>
           <span>预计阅读时间 {readingTime} 分钟</span>
         </span>
-        {!!lastUpdated && (
-          <span className="text-xs text-accent-foreground flex-1">
-            <span className="mr-1">最后更新于</span>
-            {formatDateTime(lastUpdated)}
-          </span>
-        )}
+        <PageLastUpdated value={lastUpdated} />
       </div>
     </div>
   )
@@ -39,6 +41,19 @@ function PageTags({ tags }: { tags: string[] }) {
         </span>
       ))}
       <span className="text-sm ml-1">🏷️</span>
+    </div>
+  )
+}
+
+function PageLastUpdated(props: { value?: number }) {
+  if (!props.value) return null
+
+  const lastUpdated = formatDate(props.value)
+  const fulltime = formatDateTime(props.value, { timeStyle: 'full' })
+  return (
+    <div className="text-xs text-accent-foreground flex-1">
+      <span className="mr-1">最后更新于</span>
+      <time dateTime={fulltime}>{lastUpdated}</time>
     </div>
   )
 }

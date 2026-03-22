@@ -6,14 +6,14 @@ import { Icon } from '../../icons'
 import { EbbLink } from '../Link'
 
 interface Props {
-  item: MenuItem
   index: number
+  item: MenuItem
 }
 
 export function MenubarItem(props: Props) {
   const { item, index } = props
   const { onMenuItemHover } = useMenubar()
-  const isActive = useMenuNodeIsActive(item.id)
+  const isActive = useMenuNodeIsActive(item.index)
 
   return (
     <motion.li

@@ -1,20 +1,22 @@
 import type { FC, SVGProps } from 'react'
-import IconBun from './Bun.tsx'
-import IconJson from './Json.tsx'
-import IconNode from './Node.tsx'
-import IconNuxt from './Nuxt.tsx'
-import IconPnpm from './Pnpm.tsx'
-import IconShell from './Shell.tsx'
-import IconTypescript from './Typescript.tsx'
-import IconVue from './Vue.tsx'
+import {
+  Bun,
+  Json,
+  Node,
+  Nuxt,
+  Pnpm,
+  Shell,
+  Typescript,
+  Vue
+} from './logos.tsx'
 
 export const builtingLogoIcons = {
-  bun: IconBun,
-  json: IconJson,
-  node: IconNode,
-  nuxt: IconNuxt,
-  pnpm: IconPnpm,
-  shell: IconShell,
-  ts: IconTypescript,
-  vue: IconVue
+  bun: Bun,
+  json: Json,
+  node: Node,
+  nuxt: Nuxt,
+  pnpm: Pnpm,
+  shell: Shell,
+  ts: Typescript,
+  vue: Vue
 } as Record<string, FC<SVGProps<SVGSVGElement>>>

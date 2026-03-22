@@ -5,12 +5,34 @@ import { clsx } from '@repo/utils'
 import { createElement } from 'react'
 import { Hash } from '../icons'
 
+interface HProps extends WithHTMLProps<HTMLHeadingElement> {
+  id?: string
+}
+
+export function ProseH2(props: HProps) {
+  const { id, children, ...attrs } = props
+  return (
+    <AnchorHead id={id} tag="h2" {...attrs}>
+      {children}
+    </AnchorHead>
+  )
+}
+
+export function ProseH3(props: HProps) {
+  const { id, children, ...attrs } = props
+  return (
+    <AnchorHead id={id} tag="h3" {...attrs}>
+      {children}
+    </AnchorHead>
+  )
+}
+
 interface Props extends WithHTMLProps<HTMLHeadingElement> {
   tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   id?: string
 }
 
-export function AnchorHead(props: PropsWithChildren<Props>) {
+function AnchorHead(props: PropsWithChildren<Props>) {
   const { tag, id, children, ...attrs } = props
   return createElement(
     tag,

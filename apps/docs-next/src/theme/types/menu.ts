@@ -1,4 +1,4 @@
-import type { NavMenuRecord } from './theme'
+import type { NavMenuRecord } from './theme.ts'
 
 export interface MenuItem extends NavMenuRecord {
   /**
@@ -6,13 +6,17 @@ export interface MenuItem extends NavMenuRecord {
    */
   id: number
   /**
-   * 父节点
+   * 节点位置
    */
-  parent: MenuItem | null
+  index: string
   /**
    * 子节点
    */
   items?: MenuItem[]
+  /**
+   * 父节点
+   */
+  parent?: MenuItem
   /**
    * 导航
    */

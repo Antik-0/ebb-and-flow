@@ -5,7 +5,7 @@ import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useTheme } from '#/theme'
 
 const menus = shallowRef<MenuItem[]>([])
-let menusIndexMap: Record<string, string> = {}
+let menuIndexMap: Record<string, string> = {}
 
 const currActiveIndex = shallowRef('')
 const currActiveNode = shallowRef<MenuItem | null>(null)
@@ -13,7 +13,7 @@ const currActiveNode = shallowRef<MenuItem | null>(null)
 function createMenuTree(menus: NavMenuRecord[]) {
   let nodeId = 0
   let prevNavNode: MenuItem | undefined
-  menusIndexMap = {}
+  menuIndexMap = {}
 
   function buildMenuTree(
     menus: NavMenuRecord[],
@@ -25,7 +25,7 @@ function createMenuTree(menus: NavMenuRecord[]) {
     const tree: MenuItem[] = []
     for (const [index, item] of menus.entries()) {
       const { items, ...restProps } = item
-      const pathIndex = parent ? parent.index + '_' + index : String(index)
+      const pathIndex = parent ? `${parent.index}_${index}` : String(index)
 
       const node = {
         id: nodeId++,
@@ -34,18 +34,18 @@ function createMenuTree(menus: NavMenuRecord[]) {
         ...restProps
       } as MenuItem
 
-      const link = node.link
-      if (link) {
-        menusIndexMap[link] = pathIndex
-      }
-
       // 建立导航链接
+      const link = node.link
       if (link && link !== '/' && !isExternalLink(link)) {
         if (prevNavNode) {
           prevNavNode.nextNav = node
         }
         node.prevNav = prevNavNode
         prevNavNode = node
+      }
+
+      if (link) {
+        menuIndexMap[link] = pathIndex
       }
 
       if (Array.isArray(items) && items.length) {
@@ -102,7 +102,7 @@ export function useUpdateMenuActive() {
 }
 
 function updateActiveLink(path: string) {
-  const activeIndex = menusIndexMap[path]
+  const activeIndex = menuIndexMap[path]
   if (!activeIndex) {
     currActiveIndex.value = ''
     currActiveNode.value = null

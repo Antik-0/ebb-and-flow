@@ -1,14 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
-import { useMenuActiveNode } from '../controller/menus'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  lockScrollbar,
+  onPageMounted,
+  unlockScrollbar
+} from '../controller/layout'
 import { useAnimation } from '../hooks'
 
 export function ImageViewer() {
-  const activeNode = useMenuActiveNode()
   const [previewURL, setPreviewURL] = useState('')
-
   const viewerDOM = useRef<HTMLDivElement | null>(null)
   const triggerDOM = useRef<HTMLImageElement | null>(null)
   const pictureDOM = useRef<HTMLPictureElement | null>(null)
+  const controller = useRef<AbortController | null>(null)
 
   const [enterAnimation] = useAnimation(null, {
     target: () => pictureDOM.current,
@@ -27,6 +30,7 @@ export function ImageViewer() {
     viewerDOM.current?.style.removeProperty('display')
     triggerDOM.current?.setAttribute('data-hidden', 'true')
     enterAnimation.play()
+    lockScrollbar()
   }
 
   async function handleClose() {
@@ -35,6 +39,7 @@ export function ImageViewer() {
     await leaveAnimation.finished
     viewerDOM.current?.style.setProperty('display', 'none')
     triggerDOM.current?.removeAttribute('data-hidden')
+    unlockScrollbar()
   }
 
   function handlePreview(event: MouseEvent) {
@@ -54,20 +59,29 @@ export function ImageViewer() {
     handleOpen()
   }
 
-  useEffect(() => {
-    const container = document.getElementById('ebb-content')
+  const bindImageClickEvent = useCallback(() => {
+    controller.current?.abort()
+    unlockScrollbar()
+
+    const container = document.getElementById('content')
     const imageList = container?.querySelectorAll('img') ?? []
 
-    const controller = new AbortController()
+    controller.current = new AbortController()
     for (const element of imageList) {
       element.addEventListener('click', handlePreview, {
-        signal: controller.signal
+        signal: controller.current.signal
       })
       element.classList.add('motion-image')
     }
+  }, [])
 
-    return () => controller.abort()
-  }, [activeNode])
+  useEffect(() => {
+    const stop = onPageMounted(bindImageClickEvent)
+    return () => {
+      controller.current?.abort()
+      stop()
+    }
+  }, [])
 
   return (
     <div
@@ -78,7 +92,7 @@ export function ImageViewer() {
     >
       <picture className="max-h-full max-w-full" ref={pictureDOM}>
         {previewURL && (
-          <img alt="preview" className="size-full" src={previewURL} />
+          <img alt="preview img" className="size-full" src={previewURL} />
         )}
       </picture>
     </div>

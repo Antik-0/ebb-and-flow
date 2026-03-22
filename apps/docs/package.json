@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@config/unocss": "workspace:*",
-    "@unocss/nuxt": "^66.6.6"
+    "@unocss/nuxt": "catalog:"
   },
   "trustedDependencies": ["esbuild", "nuxt"]
 }

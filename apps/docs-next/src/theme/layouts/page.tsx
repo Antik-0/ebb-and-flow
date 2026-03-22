@@ -7,31 +7,33 @@ import { Navbar } from '../components/Navbar'
 import { Sidebar } from '../components/sidebar/Sidebar'
 import { ToolPanel } from '../components/ToolPanel'
 import { ViewportSentinel } from '../components/ViewportSentinel'
-import { layoutStore, useLayoutState } from '../controller/layout'
+import {
+  layoutStore,
+  setHtmlLayout,
+  useLayoutState
+} from '../controller/layout'
 import { updateActiveLink } from '../controller/menus'
 
 export function EbbLayoutPage({ children }: PropsWithChildren) {
   return (
     <div className="ebb-page" data-label="page">
-      <LayoutWatcher />
-      <MenusWatcher />
-
       <Navbar />
-
-      <main className="grid-area-[main] md:p-4" data-role="main">
-        <section className="p-6 bg-[--c-bg-content] min-h-200vh min-w-0 w-full relative md:rounded-4">
+      <main className="grid-area-[main] min-w-0 md:p-4" data-role="main">
+        <section className="p-6 bg-[--c-bg-content] min-w-0 w-full relative md:rounded-4">
           {children}
         </section>
       </main>
-
       <Sidebar.Container>
         <Sidebar />
         <Sidebar.Overlay />
       </Sidebar.Container>
+      <div className="aside-container" data-role="aside">
+        <ToolPanel />
+        <ImageViewer />
+      </div>
 
-      {false && <ToolPanel />}
-
-      {false && <ImageViewer />}
+      <LayoutWatcher />
+      <MenusWatcher />
       <SentinelWatcher />
     </div>
   )
@@ -46,6 +48,21 @@ function LayoutWatcher() {
   useEffect(() => {
     layoutStore.setState({ isDesktop, isMobile, isLargeScreen })
   }, [isDesktop, isMobile, isLargeScreen])
+
+  useEffect(() => setHtmlLayout('page'), [])
+
+  return null
+}
+
+/**
+ * ✨ 菜单激活状态观察器
+ */
+function MenusWatcher() {
+  const pathname = usePathname()
+
+  useEffect(() => {
+    updateActiveLink(pathname)
+  }, [pathname])
 
   return null
 }
@@ -65,17 +82,4 @@ function SentinelWatcher() {
   }
 
   return <ViewportSentinel onVisibleChange={onVisibleChange} top={200} />
-}
-
-/**
- * ✨ 菜单激活状态观察器
- */
-function MenusWatcher() {
-  const pathname = usePathname()
-
-  useEffect(() => {
-    updateActiveLink(pathname)
-  }, [pathname])
-
-  return null
 }

@@ -74,13 +74,13 @@ export function useIntersectionObserver() {
     []
   )
 
-  useEffect(() => {
-    return () => {
-      for (const { element, callback } of observeEntries.current) {
-        unobserve(element, callback)
-      }
+  const clear = useCallback(() => {
+    for (const { element, callback } of observeEntries.current) {
+      unobserve(element, callback)
     }
   }, [])
 
-  return { observe: _observe }
+  useEffect(() => clear, [])
+
+  return { observe: _observe, clear }
 }

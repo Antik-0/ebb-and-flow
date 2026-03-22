@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', href: '/avatar.png' }],
       htmlAttrs: {
         class: 'dark',
-        lang: 'zh-cn'
+        lang: 'zh-CN'
       }
     },
     rootAttrs: {

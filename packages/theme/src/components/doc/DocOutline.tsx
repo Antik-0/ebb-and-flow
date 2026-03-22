@@ -1,7 +1,7 @@
 import type { FunctionalComponent } from 'vue'
 import { clsx } from '@repo/utils'
 import { computed, defineComponent, reactive, watch } from 'vue'
-import { createSVGMask, useActiveRanve, useOutline } from '#/controller/outline'
+import { createSVGMask, useActiveRange, useOutline } from '#/controller/outline'
 import { TextAlignStart } from '#/icons'
 
 export default defineComponent(
@@ -41,7 +41,7 @@ interface TocItemProps {
 
 const TocItem = defineComponent<TocItemProps>(
   props => {
-    const activeRange = useActiveRanve()
+    const activeRange = useActiveRange()
 
     const isActive = computed(() => {
       const { start, end } = activeRange
@@ -73,7 +73,7 @@ const TocItem = defineComponent<TocItemProps>(
 
 const OutlineMark = defineComponent(
   () => {
-    const activeRange = useActiveRanve()
+    const activeRange = useActiveRange()
 
     const offset = computed(() => {
       return activeRange.start * 32
@@ -138,7 +138,7 @@ const OutlineMask = defineComponent(
 )
 
 const MaskIndicator = defineComponent(() => {
-  const activeRange = useActiveRanve()
+  const activeRange = useActiveRange()
 
   const offset = computed(() => {
     return activeRange.start * 32 + 4

@@ -75,6 +75,19 @@ export function useMenubarMotion() {
   return { scope, updateMotion, onMotionChange }
 }
 
+function createCtx<T>() {
+  const Context = createContext({} as T)
+
+  const Provider = (props: PropsWithChildren<{ value: T }>) => {
+    const { value, children } = props
+    return createElement(Context, { value }, children)
+  }
+
+  const useCtx = () => useContext(Context)
+
+  return [Provider, useCtx] as const
+}
+
 interface MenubarContext {
   onMenuItemHover: (index: number) => void
   onHoverIndexChange: (callback: (index: number) => void) => void
@@ -89,45 +102,6 @@ interface ViewportContext {
   currIndex: number
 }
 
-function createMenubar() {
-  const MenubarCtx = createContext({} as MenubarContext)
-
-  const Provider = (props: PropsWithChildren<{ value: MenubarContext }>) => {
-    const { value, children } = props
-    return createElement(MenubarCtx, { value }, children)
-  }
-
-  const useCtx = () => useContext(MenubarCtx)
-
-  return [Provider, useCtx] as const
-}
-
-function createMenubarMotion() {
-  const MotionCtx = createContext({} as MotionContext)
-
-  const Provider = (props: PropsWithChildren<{ value: MotionContext }>) => {
-    const { value, children } = props
-    return createElement(MotionCtx, { value }, children)
-  }
-
-  const useCtx = () => useContext(MotionCtx)
-
-  return [Provider, useCtx] as const
-}
-
-function createMenubarViewport() {
-  const ViewportCtx = createContext({} as ViewportContext)
-
-  const Provider = (props: PropsWithChildren<{ value: ViewportContext }>) => {
-    const { value, children } = props
-    return createElement(ViewportCtx, { value }, children)
-  }
-
-  const useCtx = () => useContext(ViewportCtx)
-
-  return [Provider, useCtx] as const
-}
-
-export const [MotionProvider, useMotion] = createMenubarMotion()
-export const [MenubarProvider, useMenubar] = createMenubar()
-export const [ViewportProvider, useViewport] = createMenubarViewport()
+export const [MotionProvider, useMotion] = createCtx<MotionContext>()
+export const [MenubarProvider, useMenubar] = createCtx<MenubarContext>()
+export const [ViewportProvider, useViewport] = createCtx<ViewportContext>()

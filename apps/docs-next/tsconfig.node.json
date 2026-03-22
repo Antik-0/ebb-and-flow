@@ -5,5 +5,5 @@
     "incremental": true,
     "types": ["bun"]
   },
-  "include": ["scripts"]
+  "include": ["scripts", "uno.config.ts"]
 }

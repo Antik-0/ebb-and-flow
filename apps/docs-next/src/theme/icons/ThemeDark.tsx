@@ -4,6 +4,7 @@ import { stylex } from '#/utils'
 export default function ThemeDark(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
+      className="ebb-icon"
       height="1em"
       viewBox="0 0 24 24"
       width="1em"
