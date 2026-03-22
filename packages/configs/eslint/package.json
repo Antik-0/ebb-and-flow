@@ -16,8 +16,8 @@
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@eslint/js": "^10.0.1",
-    "@typescript-eslint/parser": "^8.57.0",
-    "@unocss/eslint-plugin": "^66.6.6",
+    "@typescript-eslint/parser": "^8.57.1",
+    "@unocss/eslint-plugin": "^66.6.7",
     "eslint": "catalog:",
     "eslint-plugin-jsonc": "^3.1.2",
     "eslint-plugin-vue": "^10.8.0",
