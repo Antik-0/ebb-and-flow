@@ -1,28 +1,23 @@
-import type { ComputedRef, InjectionKey } from 'vue'
-import type { Fn, Page } from '#/types'
+import type { ComputedRef, InjectionKey, Ref } from 'vue'
+import type { Page } from '#/types'
 import { computed, inject, provide, ref } from 'vue'
 import { useMediaQuery } from '#/hooks'
 
-export function useLayout() {
+export function useLayoutState() {
   const isDesktop = useMediaQuery('(width >= 1024px)', { initialValue: true })
   const isMobile = computed(() => !isDesktop.value)
-  const isLargeScreen = useMediaQuery('(width >= 1536px)')
+  const isTriggerSentinel = ref(false)
 
-  return {
-    isMobile,
-    isDesktop,
-    isLargeScreen
-  }
+  return { isMobile, isDesktop, isTriggerSentinel }
 }
 
 interface LayoutContext {
   isMobile: ComputedRef<boolean>
   isDesktop: ComputedRef<boolean>
-  isLargeScreen: ComputedRef<boolean>
-  isTriggerSentinel: ComputedRef<boolean>
+  isTriggerSentinel: Ref<boolean>
 }
 
-function createLayoutCtx() {
+function createLayoutContext() {
   const contextKey = Symbol() as InjectionKey<LayoutContext>
 
   const provider = (value: LayoutContext) => provide(contextKey, value)
@@ -32,7 +27,7 @@ function createLayoutCtx() {
   return [provider, useContext] as const
 }
 
-export const [provideLayoutCtx, useLayoutCtx] = createLayoutCtx()
+export const [provideLayout, useLayout] = createLayoutContext()
 
 export function lockScrollbar() {
   const root = document.documentElement
@@ -57,26 +52,9 @@ const page = ref<Page | null>(null)
 const isLoading = ref(false)
 
 export function usePage() {
-  return { page }
-}
-
-export function usePageLoading() {
-  return { isLoading }
+  return { page, isLoading }
 }
 
 export function setPageData(data: Page | null) {
   page.value = data
-}
-
-const pageMountedCbs = new Set<Fn>([])
-
-export function onPageMounted(callback: Fn) {
-  pageMountedCbs.add(callback)
-  return () => pageMountedCbs.delete(callback)
-}
-
-export function triggerPageMounted() {
-  for (const cb of pageMountedCbs) {
-    cb()
-  }
 }

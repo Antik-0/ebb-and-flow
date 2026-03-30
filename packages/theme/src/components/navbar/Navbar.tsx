@@ -1,6 +1,6 @@
 import { navigateTo } from 'nuxt/app'
 import { defineComponent, h } from 'vue'
-import { useLayoutCtx } from '#/controller/layout'
+import { useLayout } from '#/controller/layout'
 import { Menu } from '#/icons'
 import { useTheme } from '#/theme'
 import { Avatar, CubeAvatar, GlassMask } from '../Effect.tsx'
@@ -12,7 +12,7 @@ import SocialLinks from './SocialLinks.vue'
 export default defineComponent(
   () => {
     const { theme } = useTheme()
-    const { isMobile } = useLayoutCtx()
+    const { isMobile } = useLayout()
 
     return () => (
       <header
@@ -47,7 +47,7 @@ export default defineComponent(
 )
 
 function NavbarAction(props: { avatar: string; isMobile: boolean }) {
-  const { isMobile, avatar } = props
+  const { avatar, isMobile } = props
 
   if (isMobile) {
     return (

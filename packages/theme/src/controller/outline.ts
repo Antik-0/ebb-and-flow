@@ -1,16 +1,29 @@
 import type { TocItem } from '#/types'
-import { computed, reactive } from 'vue'
+import { computed, onWatcherCleanup, reactive, watch } from 'vue'
 import { createSharedState, useIntersectionObserver } from '#/hooks'
-import { onPageMounted, usePage } from './layout'
+import { usePage } from './layout'
 
-let activeState: number[] = []
 const activeRange = reactive({ start: -1, end: -1 })
+
+export function useTocActive() {
+  return activeRange
+}
 
 export const useOutline = createSharedState(() => {
   const { page } = usePage()
   const toc = computed(() => page.value?.toc ?? [])
+  let activeState: number[] = []
 
   const { observe, clear } = useIntersectionObserver()
+
+  watch(
+    () => page.value,
+    () => {
+      observeHeading()
+      onWatcherCleanup(clearObserver)
+    },
+    { flush: 'post' }
+  )
 
   function observeHeading() {
     const size = toc.value.length
@@ -44,17 +57,8 @@ export const useOutline = createSharedState(() => {
     activeRange.end = -1
   }
 
-  onPageMounted(() => {
-    clearObserver()
-    observeHeading()
-  })
-
   return { toc }
 })
-
-export function useActiveRange() {
-  return activeRange
-}
 
 export function createSVGMask(toc: TocItem[]) {
   // toc-item: line-height: 24, padding-block: 4

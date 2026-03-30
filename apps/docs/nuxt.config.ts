@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2026-03-21',
+  compatibilityDate: '2026-03-30',
   devtools: { enabled: false },
   modules: ['@unocss/nuxt'],
   app: {
@@ -16,7 +16,6 @@ export default defineNuxtConfig({
       id: 'app'
     }
   },
-  css: ['~/assets/main.css', 'ebb-ui/main.css'],
   postcss: {
     plugins: {
       autoprefixer: false

@@ -4,7 +4,7 @@ interface AvatarProps {
   avatar: string
 }
 
-export const Avatar: FunctionalComponent<AvatarProps, { click: [] }> = (
+export const Avatar: FunctionalComponent<AvatarProps, { click: () => void }> = (
   { avatar },
   { emit, attrs }
 ) => {

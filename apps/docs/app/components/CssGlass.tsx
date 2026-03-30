@@ -1,8 +1,20 @@
-<script setup lang="ts">
 import type { ShallowRef } from 'vue'
-import { onMounted, reactive, shallowRef } from 'vue'
+import { defineComponent, onMounted, reactive, shallowRef } from 'vue'
+import 'ebb-ui/pages/css-glass.css'
 
-const glassEl = shallowRef<HTMLDivElement>()
+export const CssGlass = defineComponent(() => {
+  const glass = shallowRef<HTMLDivElement>()
+
+  useMove(glass)
+
+  return () => (
+    <div class="glass-container">
+      <div class="glass" ref={glass}>
+        <div class="glass-text">Drag Me</div>
+      </div>
+    </div>
+  )
+})
 
 function useMove(target: ShallowRef<HTMLElement | undefined | null>) {
   const pressedDelta = reactive({ x: 0, y: 0 })
@@ -51,64 +63,3 @@ function useMove(target: ShallowRef<HTMLElement | undefined | null>) {
     document.addEventListener('pointerup', end)
   })
 }
-
-useMove(glassEl)
-</script>
-
-<template>
-  <div class="glass-container">
-    <div ref="glassEl" class="glass">
-      <div class="glass-text">Drag Me</div>
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.glass-container {
-  position: relative;
-  isolation: isolate;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 12px;
-  background: url('/docs/css-glass-bg.png') no-repeat;
-  background-size: cover;
-}
-
-.glass {
-  position: absolute;
-  top: 30%;
-  left: 40%;
-  width: 100px;
-  aspect-ratio: 1 / 1.5;
-  border-radius: 8px;
-  overflow: hidden;
-  z-index: 99;
-  backdrop-filter: blur(10px);
-  box-shadow:
-    4px 2px 10px 2px hsl(0 0% 0% / 0.25),
-    inset 0 0 10px 4px hsl(0 0% 100% / 0.025),
-    inset 0 0 50px 4px hsl(0 0% 100% / 0.025),
-    inset -1px -1px hsl(0 0% 100% / 0.025),
-    inset 1px 1px hsl(0 0% 100% / 0.025);
-}
-
-.glass::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: url('/glass-mask.png') no-repeat;
-  background-size: cover;
-  opacity: 0.05;
-}
-
-.glass-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-  font-size: 18px;
-  color: #b8bfbe;
-  background-color: hsl(210 8% 5% /0.75);
-}
-</style>

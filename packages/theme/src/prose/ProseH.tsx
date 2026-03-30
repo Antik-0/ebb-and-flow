@@ -1,42 +1,36 @@
-import type { FunctionalComponent } from 'vue'
+import type { FunctionalComponent, SetupContext } from 'vue'
 import { clsx } from '@repo/utils'
 import { h } from 'vue'
 import { Hash } from '#/icons'
 
-export const ProseH2: FunctionalComponent<{ id?: string }> = (
-  props,
-  { attrs, slots }
-) => {
-  return (
-    <AnchorHead id={props.id} tag="h2" {...attrs}>
-      {slots.default?.()}
-    </AnchorHead>
-  )
-}
-ProseH2.props = ['id']
-
-export const ProseH3: FunctionalComponent<{ id?: string }> = (
-  props,
-  { attrs, slots }
-) => {
-  return (
-    <AnchorHead id={props.id} tag="h3" {...attrs}>
-      {slots.default?.()}
-    </AnchorHead>
-  )
-}
-ProseH3.props = ['id']
-
-interface Props {
-  tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+interface HeadingProps {
   id?: string
 }
 
-const AnchorHead: FunctionalComponent<Props> = (
-  props: Props,
-  { attrs, slots }
-) => {
-  const { tag, id } = props
+export function ProseH2(props: HeadingProps, { slots }: SetupContext) {
+  const { id, ...attrs } = props
+  return (
+    <AnchorHead id={id} tag="h2" {...attrs}>
+      {slots.default?.()}
+    </AnchorHead>
+  )
+}
+
+export function ProseH3(props: HeadingProps, { slots }: SetupContext) {
+  const { id, ...attrs } = props
+  return (
+    <AnchorHead id={id} tag="h3" {...attrs}>
+      {slots.default?.()}
+    </AnchorHead>
+  )
+}
+
+interface Props extends HeadingProps {
+  tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+}
+
+function AnchorHead(props: Props, { slots }: SetupContext) {
+  const { tag, id, ...attrs } = props
 
   return h(
     tag,
@@ -44,14 +38,10 @@ const AnchorHead: FunctionalComponent<Props> = (
     h(Anchor, { id }, { default: () => slots.default?.() })
   )
 }
-AnchorHead.props = ['tag', 'id']
 
-const Anchor: FunctionalComponent<{ id?: string }> = (props, { slots }) => {
-  const { id } = props
-  const children = slots.default?.()
-
+const Anchor: FunctionalComponent<HeadingProps> = (props, { slots }) => {
   return (
-    <a class="group inline-flex items-center relative" href={`#${id}`}>
+    <a class="group inline-flex items-center relative" href={`#${props.id}`}>
       <span
         class={clsx(
           'rounded-md flex size-5 cursor-pointer flex-center absolute',
@@ -62,9 +52,8 @@ const Anchor: FunctionalComponent<{ id?: string }> = (props, { slots }) => {
         <Hash />
       </span>
       <span class="transition-transform duration-300 group-hover:translate-x-6">
-        {children}
+        {slots.default?.()}
       </span>
     </a>
   )
 }
-Anchor.props = ['id']

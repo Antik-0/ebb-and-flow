@@ -24,6 +24,25 @@
     color: var(--foreground);
     background-color: var(--background);
   }
+
+  #app {
+    background-image: url('/ebb-and-flow.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  html[data-layout='page'] #app {
+    --m-opacity: 0;
+    --opacity-to: 0.6;
+    background-color: oklch(0 0 0 / var(--m-opacity));
+    background-blend-mode: darken;
+    animation: motion-opacity forwards;
+    animation-duration: auto;
+    animation-timeline: scroll(root block);
+    animation-range-start: 400px;
+  }
 }
 
 iconify-icon {

@@ -1,5 +1,5 @@
 import type { MarkdownData } from 'ebb-markdown'
-import type { Component, VNode } from 'vue'
+import type { VNode } from 'vue'
 import { renderMarkdown } from 'ebb-markdown/render'
 import {
   CodeGroup,
@@ -8,22 +8,24 @@ import {
   ProseA,
   ProseH2,
   ProseH3,
+  ProseImg,
   ProsePre
 } from 'ebb-theme/prose'
-import { default as CssGlass } from './components/CssGlass.vue'
 import {
   ColorfulBorder,
   GridMotion,
   PlayonMotion,
+  SvgLoading,
   SvgSpinner
-} from './components/effect'
-import { default as SvgLoading } from './components/effect/SvgLoading.vue'
+} from './components/CssEffect'
+import { CssGlass } from './components/CssGlass'
 
 const components = {
   a: ProseA,
   h2: ProseH2,
   h3: ProseH3,
   pre: ProsePre,
+  img: ProseImg,
   PageMeta,
   CodeGroup,
   CustomBlock,
@@ -43,7 +45,7 @@ interface ContentProps {
 export function ContentRender({ path, data }: ContentProps) {
   if (!data) return null
 
-  const children = renderMarkdown<Component, VNode>(data.body, h, components)
+  const children = renderMarkdown<any, VNode>(data.body, h, components)
   return h(
     'div',
     {

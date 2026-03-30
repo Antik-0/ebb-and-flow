@@ -2,7 +2,7 @@ import type { InjectionKey, SlotsType, VNodeChild } from 'vue'
 import type { Empty, ThemeConfig } from './types'
 import { useNuxtApp } from 'nuxt/app'
 import { defineComponent, inject, provide } from 'vue'
-import { usePageLoading } from './controller/layout'
+import { usePage } from './controller/layout'
 
 // 类型推导
 export function defineThemeConfig(config: ThemeConfig): ThemeConfig
@@ -34,7 +34,7 @@ const EbbThemeProvider = defineComponent<
 >(
   (props, { slots }) => {
     const nuxtApp = useNuxtApp()
-    const { isLoading } = usePageLoading()
+    const { isLoading } = usePage()
 
     const loadingDelay = 200
     let loadingStart = 0

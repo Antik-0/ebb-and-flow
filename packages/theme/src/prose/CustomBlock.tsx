@@ -1,11 +1,11 @@
-import type { FunctionalComponent } from 'vue'
+import type { SetupContext } from 'vue'
 
 interface Props {
   type?: 'info' | 'warning' | 'danger'
   title?: string
 }
 
-export const CustomBlock: FunctionalComponent<Props> = (props, { slots }) => {
+export function CustomBlock(props: Props, { slots }: SetupContext) {
   const { type = 'info' } = props
   const title = props.title ?? type.toUpperCase()
 
@@ -16,4 +16,3 @@ export const CustomBlock: FunctionalComponent<Props> = (props, { slots }) => {
     </div>
   )
 }
-CustomBlock.props = ['type', 'title']

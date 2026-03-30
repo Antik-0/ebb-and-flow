@@ -11,8 +11,8 @@ import {
 import { useResizeObserver } from '#/hooks'
 
 interface MenubarMotion {
+  width: number
   offsetX: number
-  itemWidth: number
 }
 
 type MotionCallback = (motion: MenubarMotion) => void
@@ -55,7 +55,7 @@ export function useMenubarMotion() {
     const offsetWidth = target.offsetWidth
     const offsetX = offsetLeft + offsetWidth / 2 - scopeHalfWidth
 
-    const motion = { offsetX, itemWidth: offsetWidth }
+    const motion = { offsetX, width: offsetWidth }
     for (const cb of motionCbs) {
       cb(motion)
     }

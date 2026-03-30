@@ -1,26 +1,24 @@
 <script setup lang='ts'>
-import { computed, onMounted, ref } from 'vue'
-import ImageViewer from '#/components/ImageViewer.vue'
+import { onMounted } from 'vue'
+import ImageViewer from '#/components/ImageViewer.tsx'
 import Navbar from '#/components/navbar/Navbar.tsx'
 import Sidebar, {
   SidebarContainer,
   SidebarOverlay
 } from '#/components/sidebar/Sidebar.tsx'
-import ToolPanel from '#/components/ToolPanel.vue'
+import ToolPanel from '#/components/ToolPanel.tsx'
 import ViewportSentinel from '#/components/ViewportSentinel.vue'
 import {
-  provideLayoutCtx,
+  provideLayout,
   setHtmlLayout,
-  useLayout,
-  usePageLoading
+  useLayoutState,
+  usePage
 } from '#/controller/layout'
 import { useUpdateMenuActive } from '#/controller/menus'
 
-const { isDesktop, isMobile, isLargeScreen } = useLayout()
+const { isDesktop, isMobile, isTriggerSentinel } = useLayoutState()
 
-const { isLoading } = usePageLoading()
-
-const isTriggerSentinel = ref(false)
+const { isLoading } = usePage()
 
 function onSentinelVisibleChange(visible: boolean) {
   isTriggerSentinel.value = !visible
@@ -30,11 +28,10 @@ useUpdateMenuActive()
 
 onMounted(() => setHtmlLayout('page'))
 
-provideLayoutCtx({
+provideLayout({
   isDesktop,
   isMobile,
-  isLargeScreen,
-  isTriggerSentinel: computed(() => isTriggerSentinel.value)
+  isTriggerSentinel
 })
 </script>
 

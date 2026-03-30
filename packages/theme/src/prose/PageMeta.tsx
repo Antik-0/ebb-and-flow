@@ -1,4 +1,3 @@
-import type { FunctionalComponent } from 'vue'
 import { clsx, formatDate, formatDateTime } from '@repo/utils'
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
   lastUpdated?: number
 }
 
-export const PageMeta: FunctionalComponent<Props> = props => {
+export function PageMeta(props: Props) {
   const { tags = [], readingTime, lastUpdated } = props
 
   return (
@@ -28,7 +27,6 @@ export const PageMeta: FunctionalComponent<Props> = props => {
     </div>
   )
 }
-PageMeta.props = ['tags', 'readingTime', 'lastUpdated']
 
 function PageTags({ tags }: { tags: string[] }) {
   if (!tags.length) return null
@@ -44,7 +42,6 @@ function PageTags({ tags }: { tags: string[] }) {
     </div>
   )
 }
-PageTags.props = ['tags']
 
 function PageLastUpdated(props: { value?: number }) {
   if (!props.value) return null
@@ -58,4 +55,3 @@ function PageLastUpdated(props: { value?: number }) {
     </div>
   )
 }
-PageLastUpdated.props = ['value']

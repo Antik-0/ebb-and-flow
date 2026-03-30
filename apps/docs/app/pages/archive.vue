@@ -19,11 +19,9 @@ const articles = await useFetch('/api/archive').then(
       <ul class="cards">
         <li v-for="(item, index) in articles" :key="index">
           <NuxtLink class="card relative" :to="item.path">
-            <picture class="overflow-hidden">
-              <img alt="img" loading="lazy" :src="item.cover" />
-            </picture>
+            <CardCover :src="item.cover" />
             <div class="p-2 bg-black">
-              <p class="leading-6 font-bold mb-2 text-center truncate">
+              <p class="leading-6 font-bold text-center truncate">
                 {{ item.title }}
               </p>
             </div>

@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 import type { Page } from '#/types'
-import { onMounted, watch } from 'vue'
-import { setPageData, triggerPageMounted } from '#/controller/layout'
-import NotFound from '#/not-found.vue'
+import { watch } from 'vue'
+import { setPageData } from '#/controller/layout'
+import NotFound from '../NotFound.tsx'
 import DocFooter from './DocFooter.vue'
 import DocOutline from './DocOutline.tsx'
 
@@ -13,10 +13,6 @@ watch(
   value => setPageData(value ?? null),
   { immediate: true }
 )
-
-onMounted(() => {
-  triggerPageMounted()
-})
 </script>
 
 <template>

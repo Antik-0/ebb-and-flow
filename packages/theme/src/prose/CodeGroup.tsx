@@ -2,16 +2,14 @@ import { clsx } from '@repo/utils'
 import { computed, defineComponent, ref } from 'vue'
 import { LogoIconRender } from '#/icons'
 
-interface Props {
-  tabs: TabItem[]
-}
-
 interface TabItem {
   text: string
   icon: string
 }
 
-export const CodeGroup = defineComponent<Props>(
+export const CodeGroup = defineComponent<{
+  tabs: TabItem[]
+}>(
   (props, { slots }) => {
     const activeIndex = ref(0)
 

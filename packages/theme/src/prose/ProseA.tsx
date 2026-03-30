@@ -1,15 +1,10 @@
-import type { FunctionalComponent } from 'vue'
+import type { SetupContext } from 'vue'
+import Link from '#/components/Link.vue'
 
-interface Props {
-  href: string
-  target?: string
-}
-
-export const ProseA: FunctionalComponent<Props> = (props, { slots }) => {
-  const { href, target } = props
+export function ProseA(props: { href?: string }, { slots }: SetupContext) {
   return (
-    <a class="ebb-link relative" href={href} target={target}>
+    <Link class="ebb-link relative" href={props.href}>
       {slots.default?.()}
-    </a>
+    </Link>
   )
 }

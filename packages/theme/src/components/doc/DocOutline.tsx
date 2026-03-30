@@ -1,7 +1,7 @@
 import type { FunctionalComponent } from 'vue'
 import { clsx } from '@repo/utils'
 import { computed, defineComponent, reactive, watch } from 'vue'
-import { createSVGMask, useActiveRange, useOutline } from '#/controller/outline'
+import { createSVGMask, useOutline, useTocActive } from '#/controller/outline'
 import { TextAlignStart } from '#/icons'
 
 export default defineComponent(
@@ -16,11 +16,12 @@ export default defineComponent(
         </div>
         <OutlineMark />
         <OutlineMask />
-        <ul data-role="list">
+        <ul data-role="toclist">
           {toc.value.map((item, index) => (
             <TocItem
               id={item.id}
               index={index}
+              key={index}
               label={item.label}
               level={item.level - 1}
             />
@@ -41,10 +42,10 @@ interface TocItemProps {
 
 const TocItem = defineComponent<TocItemProps>(
   props => {
-    const activeRange = useActiveRange()
+    const tocActive = useTocActive()
 
     const isActive = computed(() => {
-      const { start, end } = activeRange
+      const { start, end } = tocActive
       const index = props.index
       return index >= start && index <= end
     })
@@ -73,14 +74,14 @@ const TocItem = defineComponent<TocItemProps>(
 
 const OutlineMark = defineComponent(
   () => {
-    const activeRange = useActiveRange()
+    const tocActive = useTocActive()
 
     const offset = computed(() => {
-      return activeRange.start * 32
+      return tocActive.start * 32
     })
 
     const scale = computed(() => {
-      const { start, end } = activeRange
+      const { start, end } = tocActive
       if (start === -1) return 0
       return end - start + 1
     })
@@ -138,14 +139,14 @@ const OutlineMask = defineComponent(
 )
 
 const MaskIndicator = defineComponent(() => {
-  const activeRange = useActiveRange()
+  const tocActive = useTocActive()
 
   const offset = computed(() => {
-    return activeRange.start * 32 + 4
+    return tocActive.start * 32 + 4
   })
 
   const scale = computed(() => {
-    const { start, end } = activeRange
+    const { start, end } = tocActive
     const height = (end - start + 1) * 32
     return (height - 8) / 24
   })
