@@ -2,23 +2,16 @@ import type { TocItem } from '../types'
 import { useEffect } from 'react'
 import { useIntersectionObserver } from '../hooks'
 import { defineEbbStore } from '../store'
-import { onPageMounted, uesPage } from './layout'
+import { uesPage } from './layout'
 
-interface TocActiveState {
+export const [useTocActive, tocActiveStore] = defineEbbStore<{
   start: number
   end: number
-}
+}>(() => {
+  return { start: -1, end: -1 }
+})
 
 let activeState: number[] = []
-export const [useActiveRange, tocActiveStore] = defineEbbStore<TocActiveState>(
-  () => {
-    return {
-      start: -1,
-      end: -1
-    }
-  }
-)
-
 export function useOutline() {
   const toc = uesPage(state => state.toc ?? [])
 
@@ -55,12 +48,9 @@ export function useOutline() {
   }
 
   useEffect(() => {
-    const stop = onPageMounted(() => {
-      clearObserver()
-      observeHeading()
-    })
-    return stop
-  }, [])
+    observeHeading()
+    return clearObserver
+  }, [toc])
 
   return { toc }
 }

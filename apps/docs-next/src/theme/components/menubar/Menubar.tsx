@@ -137,9 +137,9 @@ function MenubarIndicator() {
 
   useEffect(() => {
     onMotionChange(motion => {
-      const { offsetX, itemWidth } = motion
+      const { width, offsetX } = motion
+      animate(motionW, width, { type: 'spring', duration: 0.6 })
       animate(motionX, offsetX, { type: 'spring', duration: 0.6 })
-      animate(motionW, itemWidth, { type: 'spring', duration: 0.6 })
     })
   }, [])
 

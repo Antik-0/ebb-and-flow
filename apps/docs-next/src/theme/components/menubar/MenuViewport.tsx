@@ -133,7 +133,7 @@ function MenuViewContent(props: PropsWithChildren<{ index: number }>) {
       data-index={index}
       data-motion={motion}
       onAnimationEnd={onAnimationEnd}
-      style={stylex({ display: !show && 'none' })}
+      style={stylex(!show && { display: 'none' })}
     >
       {children}
     </div>

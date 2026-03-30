@@ -12,7 +12,7 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params
-  const path = '/' + slug.join('/')
+  const path = '/' + slug.map(s => decodeURIComponent(s)).join('/')
   const data = await getPageData(path)
 
   if (!data) {

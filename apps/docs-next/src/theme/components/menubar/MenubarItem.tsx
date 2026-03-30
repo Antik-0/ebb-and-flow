@@ -1,5 +1,7 @@
 import type { MenuItem } from '../../types'
 import { motion } from 'motion/react'
+import { useCallback } from 'react'
+import { withViewTransition } from '#/utils'
 import { useMenuNodeIsActive } from '../../controller/menus'
 import { useMenubar } from '../../controller/navbar'
 import { Icon } from '../../icons'
@@ -15,6 +17,12 @@ export function MenubarItem(props: Props) {
   const { onMenuItemHover } = useMenubar()
   const isActive = useMenuNodeIsActive(item.index)
 
+  const onNavigate = useCallback(() => {
+    if (item.link === '/docs/archive') {
+      withViewTransition('', '/archive')
+    }
+  }, [])
+
   return (
     <motion.li
       className="cursor-pointer relative data-[active=true]:text-brand hover:text-brand"
@@ -23,7 +31,11 @@ export function MenubarItem(props: Props) {
       layout
       onPointerEnter={() => onMenuItemHover(index)}
     >
-      <EbbLink className="px-4 py-2.5 flex items-center" href={item.link}>
+      <EbbLink
+        className="px-4 py-2.5 flex items-center"
+        href={item.link}
+        onNavigate={onNavigate}
+      >
         {item.icon && isActive && (
           <motion.span
             className="text-4 mr-1 inline-flex flex-center"

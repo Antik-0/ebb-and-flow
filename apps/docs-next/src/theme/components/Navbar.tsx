@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { stylex } from '#/utils'
+import { stylex, withViewTransition } from '#/utils'
 import { useLayout } from '../controller/layout'
 import { Menu } from '../icons'
 import { useTheme } from '../theme'
@@ -37,9 +37,15 @@ export function Navbar() {
 }
 
 function NavbarAction() {
-  const router = useRouter()
   const { theme } = useTheme()
   const isMobile = useLayout(state => state.isMobile)
+
+  const router = useRouter()
+
+  function handleClick() {
+    withViewTransition('', '/')
+    router.push('/')
+  }
 
   if (isMobile) {
     return (
@@ -53,22 +59,27 @@ function NavbarAction() {
     <CubeAvatar
       avatar={theme.avatar}
       className="mx-auto"
-      onClick={() => router.push('/')}
+      onClick={handleClick}
       style={stylex({ '--size': '40px', '--rounded': '4px' })}
     />
   )
 }
 
 function NavbarCenter() {
-  const router = useRouter()
   const { theme } = useTheme()
+  const router = useRouter()
+
+  function handleClick() {
+    withViewTransition('', '/')
+    router.push('/')
+  }
 
   return (
     <>
       <Avatar
         avatar={theme.avatar}
         data-role="site-logo"
-        onClick={() => router.push('/')}
+        onClick={handleClick}
       />
       <Menubar />
     </>

@@ -109,7 +109,7 @@ function SidebarOverlay() {
       className="bg-black/20 inset-0 fixed z-[--z-index-sidebar-overlay]"
       data-role="overlay"
       onClick={close}
-      style={stylex({ display: !isOpen && 'none' })}
+      style={stylex(!isOpen && { display: 'none' })}
     ></div>
   )
 }

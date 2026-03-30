@@ -3,7 +3,7 @@ import type { PropsWithChildren } from 'react'
 import type { Page } from '../../types'
 import { clsx } from '@repo/utils'
 import { useEffect } from 'react'
-import { pageStore, triggerPageMounted } from '../../controller/layout'
+import { pageStore } from '../../controller/layout'
 import { DocFooter } from './DocFooter'
 import { DocOutline } from './DocOutline'
 
@@ -17,10 +17,6 @@ export function DocContent(props: PropsWithChildren<Props>) {
   useEffect(() => {
     pageStore.setState(page)
   }, [page])
-
-  useEffect(() => {
-    triggerPageMounted()
-  }, [])
 
   return (
     <div className="flex" data-role="doc-content">

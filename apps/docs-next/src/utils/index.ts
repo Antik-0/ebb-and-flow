@@ -3,6 +3,7 @@ import { isFunction } from '@repo/utils'
 import { themeConfig } from '#/theme.config'
 
 export { stylex } from './stylex'
+export { withViewTransition } from './view-transition'
 
 export type MaybeRefOrGetter<T = any> = T | RefObject<T> | (() => T)
 

@@ -14,19 +14,22 @@ import {
 } from '../controller/layout'
 import { updateActiveLink } from '../controller/menus'
 
-export function EbbLayoutPage({ children }: PropsWithChildren) {
+export function EbbPage({ children }: PropsWithChildren) {
   return (
     <div className="ebb-page" data-label="page">
       <Navbar />
+
       <main className="grid-area-[main] min-w-0 md:p-4" data-role="main">
         <section className="p-6 bg-[--c-bg-content] min-w-0 w-full relative md:rounded-4">
           {children}
         </section>
       </main>
+
       <Sidebar.Container>
         <Sidebar />
         <Sidebar.Overlay />
       </Sidebar.Container>
+
       <div className="aside-container" data-role="aside">
         <ToolPanel />
         <ImageViewer />
@@ -43,11 +46,11 @@ export function EbbLayoutPage({ children }: PropsWithChildren) {
  * ✨ 布局状态观察器
  */
 function LayoutWatcher() {
-  const { isDesktop, isMobile, isLargeScreen } = useLayoutState()
+  const { isDesktop, isMobile } = useLayoutState()
 
   useEffect(() => {
-    layoutStore.setState({ isDesktop, isMobile, isLargeScreen })
-  }, [isDesktop, isMobile, isLargeScreen])
+    layoutStore.setState({ isDesktop, isMobile })
+  }, [isDesktop, isMobile])
 
   useEffect(() => setHtmlLayout('page'), [])
 

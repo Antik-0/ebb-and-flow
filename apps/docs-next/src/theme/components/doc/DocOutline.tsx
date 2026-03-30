@@ -3,8 +3,8 @@ import { stylex } from '#/utils'
 import { uesPage } from '../../controller/layout'
 import {
   createSVGMask,
-  useActiveRange,
-  useOutline
+  useOutline,
+  useTocActive
 } from '../../controller/outline'
 import { TextAlignStart } from '../../icons'
 
@@ -24,6 +24,7 @@ export function DocOutline() {
           <TocItem
             id={item.id}
             index={index}
+            key={index}
             label={item.label}
             level={item.level - 1}
           />
@@ -42,7 +43,7 @@ interface TocItemProps {
 
 function TocItem(props: TocItemProps) {
   const { id, index, label, level } = props
-  const { start, end } = useActiveRange(state => state)
+  const { start, end } = useTocActive(state => state)
   const isActive = index >= start && index <= end
 
   return (
@@ -63,7 +64,7 @@ function TocItem(props: TocItemProps) {
 }
 
 function OutlineMark() {
-  const { start, end } = useActiveRange(state => state)
+  const { start, end } = useTocActive(state => state)
   const offset = start * 32
   const scale = start === -1 ? 0 : end - start + 1
 
@@ -106,7 +107,7 @@ function OutlineMask() {
 }
 
 function MaskIndicator() {
-  const { start, end } = useActiveRange(state => state)
+  const { start, end } = useTocActive(state => state)
   const offset = start * 32 + 4
   const height = (end - start + 1) * 32
   const scale = (height - 8) / 24
@@ -141,7 +142,7 @@ function MaskSvg(props: MaskSvgProps) {
       width={width}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d={path} fill="none" stroke="currentColor" stroke-width={1} />
+      <path d={path} fill="none" stroke="currentColor" strokeWidth={1} />
     </svg>
   )
 }

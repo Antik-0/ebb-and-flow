@@ -5,7 +5,7 @@ export function DocFooter() {
   return (
     <footer className="mt-16">
       <div className="bg-divider h-px"></div>
-      <FooterNavigation />
+      {/* <FooterNavigation /> */}
     </footer>
   )
 }

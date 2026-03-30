@@ -1,6 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { withViewTransition } from '#/utils'
 import { CodeMotion } from '../components/CodeMotion'
 import { CubeAvatar, MoonAvatar } from '../components/Effect'
 import { FloatingText } from '../components/FloatingText'
@@ -8,7 +9,7 @@ import { setHtmlLayout } from '../controller/layout'
 import { Power } from '../icons'
 import { useTheme } from '../theme'
 
-export function EbbLayoutHome() {
+export function EbbHome() {
   const { theme } = useTheme()
 
   useEffect(() => setHtmlLayout('home'), [])
@@ -86,10 +87,15 @@ type CarouselProps = {
 function EbbCarousel(props: CarouselProps) {
   const router = useRouter()
 
+  function handleClick() {
+    withViewTransition('/', '')
+    router.push(props.activeLink)
+  }
+
   return (
     <div
       className="cube-motion flex flex-center relative isolate"
-      onClick={() => router.push(props.activeLink)}
+      onClick={handleClick}
     >
       <CubeAvatar avatar={props.avatar} />
 

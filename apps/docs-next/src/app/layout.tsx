@@ -3,7 +3,6 @@ import { themeConfig } from '#/theme.config.ts'
 
 import '@unocss/reset/tailwind-v4.css'
 import 'ebb-ui/main.css'
-import '#/assets/main.css'
 
 export default function RootLayout({
   children

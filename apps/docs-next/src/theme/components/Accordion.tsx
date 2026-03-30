@@ -139,7 +139,7 @@ export function AccordionContent(
     hidden && { display: 'none' },
     { '--m-value-x': height + 'px' },
     { maxHeight: 'var(--m-value-x)' },
-    { 'transition-property': '--m-value-x' }
+    { transitionProperty: '--m-value-x' }
   )
 
   return (

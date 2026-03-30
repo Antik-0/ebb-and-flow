@@ -1,9 +1,9 @@
-import { EbbLayoutPage } from '#/theme'
+import { EbbPage } from '#/theme'
 
-export default function PageLayout({
+export default function Layout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <EbbLayoutPage>{children}</EbbLayoutPage>
+  return <EbbPage>{children}</EbbPage>
 }

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
-import { EbbLayoutHome } from '#/theme'
+import { EbbHome } from '#/theme'
 import 'ebb-ui/pages/home.css'
+import '#/assets/main.css'
 
-export default function Home() {
-  return <EbbLayoutHome />
+export default function Page() {
+  return <EbbHome />
 }
 
 export const metadata: Metadata = {

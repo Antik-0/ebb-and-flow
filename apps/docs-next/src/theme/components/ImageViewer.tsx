@@ -1,12 +1,10 @@
+'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  lockScrollbar,
-  onPageMounted,
-  unlockScrollbar
-} from '../controller/layout'
+import { lockScrollbar, uesPage, unlockScrollbar } from '../controller/layout'
 import { useAnimation } from '../hooks'
 
 export function ImageViewer() {
+  const title = uesPage(state => state.title)
   const [previewURL, setPreviewURL] = useState('')
   const viewerDOM = useRef<HTMLDivElement | null>(null)
   const triggerDOM = useRef<HTMLImageElement | null>(null)
@@ -71,17 +69,15 @@ export function ImageViewer() {
       element.addEventListener('click', handlePreview, {
         signal: controller.current.signal
       })
-      element.classList.add('motion-image')
     }
   }, [])
 
   useEffect(() => {
-    const stop = onPageMounted(bindImageClickEvent)
+    bindImageClickEvent()
     return () => {
       controller.current?.abort()
-      stop()
     }
-  }, [])
+  }, [title])
 
   return (
     <div

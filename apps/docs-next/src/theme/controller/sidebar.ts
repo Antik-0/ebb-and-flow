@@ -12,13 +12,22 @@ interface SidebarState {
   setDisabled: (value: boolean) => void
 }
 
-const [useSidebar, sidebarStore] = defineEbbStore<SidebarState>(set => {
+const [useSidebar, sidebarStore] = defineEbbStore<SidebarState>((set, get) => {
   return {
     isOpen: false,
     disabled: false,
-    open: () => set({ isOpen: true }),
-    close: () => set({ isOpen: false }),
-    toggle: () => set(state => ({ isOpen: !state.isOpen })),
+    open: () => {
+      const state = get()
+      !state.disabled && set({ isOpen: true })
+    },
+    close: () => {
+      const state = get()
+      !state.disabled && set({ isOpen: false })
+    },
+    toggle: () => {
+      const state = get()
+      !state.disabled && set({ isOpen: !state.isOpen })
+    },
     setDisabled: (value: boolean) => set({ disabled: value })
   }
 })

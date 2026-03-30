@@ -2,15 +2,10 @@
 import type { PropsWithChildren } from 'react'
 import { EbbLink } from '../components/Link'
 
-interface Props {
-  href: string
-  target?: string
-}
-
-export function ProseA(props: PropsWithChildren<Props>) {
-  const { href, target, children } = props
+export function ProseA(props: PropsWithChildren<{ href?: string }>) {
+  const { href, children } = props
   return (
-    <EbbLink className="ebb-link relative" href={href} target={target}>
+    <EbbLink className="ebb-link relative" href={href}>
       {children}
     </EbbLink>
   )

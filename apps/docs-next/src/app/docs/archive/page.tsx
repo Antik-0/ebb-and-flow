@@ -1,8 +1,8 @@
-import 'ebb-ui/pages/archive.css'
 import type { Metadata } from 'next'
-import { EbbLink } from '#/theme/components/Link'
 import { formatTitle } from '#/utils'
 import { getArchiveData } from './_data'
+import { TransitionLink } from './Link'
+import 'ebb-ui/pages/archive.css'
 
 export const metadata: Metadata = {
   title: formatTitle('归档'),
@@ -20,7 +20,7 @@ export default async function Page() {
         <ul className="cards">
           {articles.map((item, index) => (
             <li key={index}>
-              <EbbLink className="card relative" href={`/docs/${item.path}`}>
+              <TransitionLink to={`/docs/${item.path}`}>
                 <picture className="overflow-hidden">
                   <img alt="img" loading="lazy" src={item.cover} />
                 </picture>
@@ -41,7 +41,7 @@ export default async function Page() {
                   className="card-mask inset-0 absolute z-10"
                   data-role="mask"
                 ></div>
-              </EbbLink>
+              </TransitionLink>
             </li>
           ))}
         </ul>

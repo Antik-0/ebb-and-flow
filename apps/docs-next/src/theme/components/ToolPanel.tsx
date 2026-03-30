@@ -1,21 +1,25 @@
+import { clsx } from '@repo/utils'
 import { memo, useEffect } from 'react'
 import { useLayout } from '../controller/layout'
 import { useSidebarControl } from '../controller/sidebar'
-import { useFPS } from '../hooks'
-import { PanelLeftClose, PanelLeftOpen } from '../icons'
-import { BackToTop } from './BackToTop'
+import { useAnimation, useFPS } from '../hooks'
+import { PanelLeftClose, PanelLeftOpen, Rocket } from '../icons'
 import { GlassMask, ScrollIndicator } from './Effect'
 import { SidebarTrigger } from './sidebar/SidebarTrigger'
 
-interface Props {
-  aside?: boolean
-}
-
-export function ToolPanel({ aside }: Props) {
+export function ToolPanel() {
   const isTriggerSentinel = useLayout(state => state.isTriggerSentinel)
 
   return (
-    <div className="toolpanel" data-aside={aside} data-show={isTriggerSentinel}>
+    <div
+      className={clsx(
+        'p-1 right-2 top-1/2 fixed z-[--z-index-toolpanel]',
+        'opacity-0 translate-x-full transition-all duration-600 ease-out',
+        'data-[show=true]:opacity-100 data-[show=true]:translate-x-0'
+      )}
+      data-role="toolpanel"
+      data-show={isTriggerSentinel}
+    >
       <div className="rounded-5 flex flex-col gap-1">
         <SidebarButton />
         <Indicator />
@@ -28,6 +32,7 @@ export function ToolPanel({ aside }: Props) {
 }
 
 const SidebarButton = memo(() => {
+  const isMobile = useLayout(state => state.isMobile)
   const isTriggerSentinel = useLayout(state => state.isTriggerSentinel)
   const { isOpen, close } = useSidebarControl()
 
@@ -37,8 +42,12 @@ const SidebarButton = memo(() => {
     }
   }, [isTriggerSentinel])
 
+  if (!isMobile) {
+    return null
+  }
+
   return (
-    <SidebarTrigger className="tool-button">
+    <SidebarTrigger className="tool-button" title="侧边导航">
       {isOpen ? <PanelLeftOpen /> : <PanelLeftClose />}
     </SidebarTrigger>
   )
@@ -61,3 +70,31 @@ const FPS = memo(() => {
     </div>
   )
 })
+
+function BackToTop() {
+  const [animation, scope] = useAnimation<HTMLButtonElement>(
+    [{ transform: 'translateY(10px)' }, { transform: 'translateY(-100px)' }],
+    {
+      duration: 1000,
+      easing: 'cubic-bezier(0.6, -0.28, 0.74, 0.05)'
+    }
+  )
+
+  function backToTop() {
+    animation.play()
+    document.documentElement.scrollIntoView()
+  }
+
+  return (
+    <button
+      aria-label="back to top"
+      className="text-6 text-muted-foreground flex size-10 cursor-pointer flex-center hover:text-brand-3"
+      onClick={backToTop}
+      ref={scope}
+      title="回到顶部"
+      type="button"
+    >
+      <Rocket />
+    </button>
+  )
+}
