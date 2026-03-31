@@ -58,7 +58,7 @@ export function SidebarItem(props: SidebarItemProps) {
         {item.icon && <Icon className="text-brand" icon={item.icon} />}
         <span
           className="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-300 hover:text-brand-2"
-          data-role="title"
+          data-role="text"
         >
           {item.text}
         </span>

@@ -26,8 +26,10 @@ function notify() {
 let menus: MenuItem[] = []
 let menuIndexMap: Record<string, string> = {}
 
-let currActiveIndex = ''
-let currActiveNode: MenuItem | null = null
+const menuState = {
+  index: '',
+  node: null as MenuItem | null
+}
 
 function createMenuTree(menus: NavMenuRecord[]) {
   let nodeId = 0
@@ -86,8 +88,8 @@ function createMenuTree(menus: NavMenuRecord[]) {
 export function updateActiveLink(path: string) {
   const activeIndex = menuIndexMap[path]
   if (!activeIndex) {
-    currActiveIndex = ''
-    currActiveNode = null
+    menuState.node = null
+    menuState.index = ''
     notify()
     return
   }
@@ -101,8 +103,8 @@ export function updateActiveLink(path: string) {
     tree = node.items!
   }
 
-  currActiveNode = node
-  currActiveIndex = activeIndex
+  menuState.node = node
+  menuState.index = activeIndex
   notify()
 }
 
@@ -121,7 +123,7 @@ export function useMenus() {
  * 根据 `index` 判断当前菜单节点是否激活
  */
 export function useMenuNodeIsActive(index: string) {
-  const getSnapshot = () => currActiveIndex.startsWith(index)
+  const getSnapshot = () => menuState.index.startsWith(index)
   const isActive = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
   return isActive
 }
@@ -130,7 +132,10 @@ export function useMenuNodeIsActive(index: string) {
  * 获取当前激活的菜单节点
  */
 export function useMenuActiveNode() {
-  const getSnapshot = () => currActiveNode
-  const node = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  const node = useSyncExternalStore(
+    subscribe,
+    () => menuState.node,
+    () => null
+  )
   return node
 }

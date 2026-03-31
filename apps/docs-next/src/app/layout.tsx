@@ -2,6 +2,7 @@ import { EbbThemeProvider } from '#/theme'
 import { themeConfig } from '#/theme.config.ts'
 
 import '@unocss/reset/tailwind-v4.css'
+import '#/assets/main.css'
 import 'ebb-ui/main.css'
 
 export default function RootLayout({

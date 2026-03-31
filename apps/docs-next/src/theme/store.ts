@@ -1,5 +1,5 @@
 import { isFunction, isPlainObject } from '@repo/utils'
-import { useCallback, useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from 'react'
 
 type StateRecord = Record<string, any>
 
@@ -11,11 +11,8 @@ type GetState<S = any> = () => S
 
 type SetState<S = any> = (value: MaybeStateOrSetter<S>) => void
 
-interface EbbStoreState<S = any> {
-  value: S
-}
-
 interface EbbStore<S = any> {
+  state: S
   getState: GetState<S>
   setState: SetState<S>
   reset: () => void
@@ -31,9 +28,6 @@ export function defineEbbStore<S extends StateRecord = any>(
 ) {
   // 创建一个纯净对象
   const store = Object.create(null) as EbbStore<S>
-  const state: EbbStoreState = {
-    value: undefined!
-  }
 
   const subscribers = new Set<Subscriber>()
 
@@ -60,9 +54,9 @@ export function defineEbbStore<S extends StateRecord = any>(
   }
 
   const setState: SetState<S> = value => {
-    const oldState = state.value
+    const oldState = store.state
     // 传入浅复制，不允许 `update` 内部原地修改 `state`
-    const newState = isFunction(value) ? value({ ...state.value }) : value
+    const newState = isFunction(value) ? value({ ...oldState }) : value
 
     // 做一层浅引用对比
     let hasChange = false
@@ -76,12 +70,12 @@ export function defineEbbStore<S extends StateRecord = any>(
     }
 
     if (hasChange) {
-      state.value = { ...oldState, ...newState }
+      store.state = { ...oldState, ...newState }
       notify()
     }
   }
 
-  const getState: GetState<S> = () => state.value
+  const getState: GetState<S> = () => store.state
 
   const initState = setup(setState, getState)
 
@@ -94,13 +88,13 @@ export function defineEbbStore<S extends StateRecord = any>(
     )
   }
 
-  state.value = initState
+  store.state = initState
   const reset = () => setState(initState)
 
   Object.assign(store, { getState, setState, reset })
 
   const useStore = <T>(getter: (state: S) => T) => {
-    const getSnapshop = useCallback(() => getter(state.value), [getter])
+    const getSnapshop = () => getter(store.state)
     return useSyncExternalStore(subscribe, getSnapshop, getSnapshop)
   }
 

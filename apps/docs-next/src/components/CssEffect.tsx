@@ -158,8 +158,8 @@ export function SvgLoading() {
         >
           <g
             opacity={opacitValue}
+            style={{ transformOrigin: '16px 16px' }}
             transform={`rotate(${rotateValue})`}
-            transform-origin="16 16"
           >
             <circle
               cx="16"
@@ -168,8 +168,8 @@ export function SvgLoading() {
               strokeDasharray="100"
               strokeDashoffset={dashoffset}
               strokeLinecap="round"
+              style={{ transformOrigin: '16px 16px' }}
               transform="rotate(-45)"
-              transform-origin="16 16"
             />
           </g>
         </svg>

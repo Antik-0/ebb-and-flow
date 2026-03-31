@@ -9,7 +9,7 @@ import { SidebarGroup } from './SidebarGroup'
 
 function Sidebar() {
   const { isOpen, close } = useSidebarControl()
-  const x = useMotionValue('0')
+  const x = useMotionValue(isOpen ? '0' : '-100%')
 
   const { addEventListener } = useEventListener()
   const sidebar = useRef<HTMLDivElement | null>(null)

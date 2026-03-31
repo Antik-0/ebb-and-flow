@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { formatTitle } from '#/utils'
 import { getArchiveData } from './_data'
+import { CardCover } from './CardCover'
 import { TransitionLink } from './Link'
 import 'ebb-ui/pages/archive.css'
 
@@ -21,9 +22,7 @@ export default async function Page() {
           {articles.map((item, index) => (
             <li key={index}>
               <TransitionLink to={`/docs/${item.path}`}>
-                <picture className="overflow-hidden">
-                  <img alt="img" loading="lazy" src={item.cover} />
-                </picture>
+                <CardCover src={item.cover} />
                 <div className="p-2 bg-black">
                   <p className="leading-6 font-bold mb-2 text-center truncate">
                     {item.title}

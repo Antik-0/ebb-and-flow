@@ -47,7 +47,13 @@ const SidebarButton = memo(() => {
   }
 
   return (
-    <SidebarTrigger className="tool-button" title="侧边导航">
+    <SidebarTrigger
+      className={clsx(
+        'text-5 text-muted-foreground flex size-10 cursor-pointer flex-center',
+        'transition-color duration-200 hover:text-brand-2'
+      )}
+      title="侧边导航"
+    >
       {isOpen ? <PanelLeftOpen /> : <PanelLeftClose />}
     </SidebarTrigger>
   )
