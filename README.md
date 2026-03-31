@@ -1,3 +1,7 @@
-[传送门](https://antik-0.github.io/ebb-and-flow/)
+# ✨[Ebb And Flow](https://antik-yuyi.me/)✨
 
-![preview](./preview.png)
+## 🏷️ Home
+![home](./docs/assets//web-site-home.webp)
+
+## 🔖 Archive
+![archive](./docs/assets//web-site-archive.webp)

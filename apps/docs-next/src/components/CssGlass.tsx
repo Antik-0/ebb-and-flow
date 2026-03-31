@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useRef } from 'react'
-import 'ebb-ui/pages/css-glass.css'
 
 export function CssGlass() {
   const glass = useRef<HTMLDivElement>(null!)

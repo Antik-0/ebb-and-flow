@@ -1,5 +1,4 @@
 import { defineComponent, ref } from 'vue'
-import 'ebb-ui/pages/css-effect.css'
 
 export function SvgSpinner() {
   return (

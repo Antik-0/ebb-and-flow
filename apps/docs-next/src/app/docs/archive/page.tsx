@@ -3,7 +3,6 @@ import { formatTitle } from '#/utils'
 import { getArchiveData } from './_data'
 import { CardCover } from './CardCover'
 import { TransitionLink } from './Link'
-import 'ebb-ui/pages/archive.css'
 
 export const metadata: Metadata = {
   title: formatTitle('归档'),

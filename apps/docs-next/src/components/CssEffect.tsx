@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import 'ebb-ui/pages/css-effect.css'
 
 export function SvgSpinner() {
   return (

@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import 'ebb-ui/pages/archive.css'
-
 useSeoMeta({
   title: formatTitle('归档'),
   description: '潮起潮落-归档'

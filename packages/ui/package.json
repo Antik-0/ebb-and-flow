@@ -4,8 +4,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./main.css": "./src/styles/main.css",
-    "./pages/*": "./src/styles/pages/*"
+    "./main.css": "./src/styles/main.css"
   },
   "devDependencies": {
     "@config/tsconfig": "workspace:*"

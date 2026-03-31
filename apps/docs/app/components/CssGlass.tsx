@@ -1,6 +1,5 @@
 import type { ShallowRef } from 'vue'
 import { defineComponent, onMounted, reactive, shallowRef } from 'vue'
-import 'ebb-ui/pages/css-glass.css'
 
 export const CssGlass = defineComponent(() => {
   const glass = shallowRef<HTMLDivElement>()

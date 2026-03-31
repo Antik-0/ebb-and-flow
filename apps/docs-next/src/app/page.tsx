@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { EbbHome } from '#/theme'
-import 'ebb-ui/pages/home.css'
 
 export default function Page() {
   return <EbbHome />

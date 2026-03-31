@@ -1,5 +1,3 @@
-import { fileURLToPath, URL } from 'node:url'
-
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-30',
   devtools: { enabled: false },
@@ -20,9 +18,6 @@ export default defineNuxtConfig({
     plugins: {
       autoprefixer: false
     }
-  },
-  alias: {
-    '@': fileURLToPath(new URL('./app/assets', import.meta.url))
   },
   experimental: {
     localLayerAliases: false
