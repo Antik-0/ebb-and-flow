@@ -1,5 +1,5 @@
 import type { TocItem } from '#/types'
-import { computed, onWatcherCleanup, reactive, watch } from 'vue'
+import { computed, nextTick, onWatcherCleanup, reactive, watch } from 'vue'
 import { createSharedState, useIntersectionObserver } from '#/hooks'
 import { usePage } from './layout'
 
@@ -17,18 +17,19 @@ export const useOutline = createSharedState(() => {
   const { observe, clear } = useIntersectionObserver()
 
   watch(
-    () => page.value,
+    () => toc.value,
     () => {
       observeHeading()
       onWatcherCleanup(clearObserver)
     },
-    { flush: 'post' }
+    { immediate: true, flush: 'post' }
   )
 
-  function observeHeading() {
+  async function observeHeading() {
     const size = toc.value.length
     activeState = Array.from<number>({ length: size }).fill(0)
 
+    await nextTick()
     for (const item of toc.value) {
       const target = document.getElementById(item.id)
       if (target) {
