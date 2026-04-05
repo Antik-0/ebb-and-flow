@@ -5,7 +5,6 @@
     "checkJs": false,
     "useDefineForClassFields": true,
 
-    "baseUrl": "./",
     "allowArbitraryExtensions": true,
     "allowUmdGlobalAccess": false,
     "noUncheckedSideEffectImports": false,
