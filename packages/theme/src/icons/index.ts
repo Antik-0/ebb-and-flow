@@ -19,6 +19,7 @@ const LogoIconRender: FunctionalComponent<{
 }
 LogoIconRender.props = ['logo']
 
+export { default as ArrowUpRight } from './ArrowUpRight.vue'
 export { default as BookOpen } from './BookOpen.vue'
 export { default as ChevronRight } from './ChevronRight.vue'
 export { default as Copy } from './Copy.vue'
