@@ -8,11 +8,6 @@ export const isPlainObject = (value: unknown): value is Record<string, any> =>
 export const isArray = Array.isArray
 
 /**
- * 空函数
- */
-export const noop = () => {}
-
-/**
  * 睡眠指定时间
  */
 export const sleep = (time: number) =>

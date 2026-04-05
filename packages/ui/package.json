@@ -4,9 +4,11 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./main.css": "./src/styles/main.css"
+    "./main.css": "./src/styles/main.css",
+    "./animation/*": "./src/animation/*"
   },
   "devDependencies": {
-    "@config/tsconfig": "workspace:*"
+    "@config/tsconfig": "workspace:*",
+    "@repo/utils": "workspace:*"
   }
 }

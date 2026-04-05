@@ -127,6 +127,7 @@
       "name": "ebb-ui",
       "devDependencies": {
         "@config/tsconfig": "workspace:*",
+        "@repo/utils": "workspace:*",
       },
     },
     "packages/utils": {

@@ -136,6 +136,7 @@
   }
 
   pre code {
+    display: block;
     white-space: pre;
   }
 
@@ -148,10 +149,6 @@
       var(--c-bg-code-block) 40%,
       transparent
     );
-  }
-
-  .pre :is(code, .line) {
-    display: block;
   }
 }
 
@@ -186,6 +183,11 @@ html.dark .shiki span {
  * 🏷️ link
  * ==================================================
  */
+.ebb-link {
+  display: inline flex;
+  align-items: flex-start;
+}
+
 .ebb-link::after {
   --m-value-x: 0%;
   --c-muted: oklch(68.295% 0.00008 271.152 / 0.2);
