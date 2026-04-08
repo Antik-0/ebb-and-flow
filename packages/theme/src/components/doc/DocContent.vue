@@ -2,6 +2,7 @@
 import type { Page } from '#/types'
 import { watch } from 'vue'
 import { setPageData } from '#/controller/layout'
+import { useTocMotion } from '#/controller/outline'
 import NotFound from '../NotFound.tsx'
 import DocFooter from './DocFooter.vue'
 import DocOutline from './DocOutline.tsx'
@@ -13,6 +14,8 @@ watch(
   value => setPageData(value ?? null),
   { immediate: true }
 )
+
+useTocMotion()
 </script>
 
 <template>

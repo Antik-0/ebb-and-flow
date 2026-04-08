@@ -40,5 +40,6 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ['motion-v', 'iconify-icon']
     }
-  }
+  },
+  telemetry: false
 })

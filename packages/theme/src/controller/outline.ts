@@ -1,7 +1,13 @@
 import type { TocItem } from '#/types'
-import { computed, nextTick, onWatcherCleanup, reactive, watch } from 'vue'
-import { createSharedState, useIntersectionObserver } from '#/hooks'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive } from 'vue'
+import { useIntersectionObserver } from '#/hooks'
 import { usePage } from './layout'
+
+export function useOutline() {
+  const { page } = usePage()
+  const toc = computed(() => page.value?.toc ?? [])
+  return { toc }
+}
 
 const activeRange = reactive({ start: -1, end: -1 })
 
@@ -9,27 +15,17 @@ export function useTocActive() {
   return activeRange
 }
 
-export const useOutline = createSharedState(() => {
-  const { page } = usePage()
-  const toc = computed(() => page.value?.toc ?? [])
-  let activeState: number[] = []
+let activeState: number[] = []
+
+export function useTocMotion() {
+  const { toc } = useOutline()
 
   const { observe, clear } = useIntersectionObserver()
 
-  watch(
-    () => toc.value,
-    () => {
-      observeHeading()
-      onWatcherCleanup(clearObserver)
-    },
-    { immediate: true, flush: 'post' }
-  )
-
-  async function observeHeading() {
+  function observeHeading() {
     const size = toc.value.length
     activeState = Array.from<number>({ length: size }).fill(0)
 
-    await nextTick()
     for (const item of toc.value) {
       const target = document.getElementById(item.id)
       if (target) {
@@ -58,8 +54,13 @@ export const useOutline = createSharedState(() => {
     activeRange.end = -1
   }
 
-  return { toc }
-})
+  onMounted(async () => {
+    await nextTick()
+    observeHeading()
+  })
+
+  onBeforeUnmount(clearObserver)
+}
 
 export function createSVGMask(toc: TocItem[]) {
   // toc-item: line-height: 24, padding-block: 4
