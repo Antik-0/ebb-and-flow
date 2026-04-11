@@ -27,15 +27,15 @@ export function SidebarItem(props: SidebarItemProps) {
             type="button"
           >
             {item.icon && (
-              <Icon className="text-brand mr-2 h-8" icon={item.icon} />
+              <Icon className="mr-2 h-8 text-brand" icon={item.icon} />
             )}
             <span
-              className="text-sm text-accent-foreground leading-8 font-700 flex-1 text-nowrap truncate"
+              className="flex-1 truncate text-nowrap font-700 text-accent-foreground text-sm leading-8"
               data-role="text"
             >
               {item.text}
             </span>
-            <span className="text-4.5 text-muted-foreground flex size-6 flex-center">
+            <span className="flex size-6 flex-center text-4.5 text-muted-foreground">
               <ChevronRight className="transition-transform duration-300" />
             </span>
           </button>
@@ -52,12 +52,12 @@ export function SidebarItem(props: SidebarItemProps) {
   return (
     <li className="sidebar-item" data-active={isActive} data-role="route">
       <EbbLink
-        className="flex gap-2 truncate transition-transform duration-300 items-center"
+        className="flex items-center gap-2 truncate transition-transform duration-300"
         href={item.link}
       >
         {item.icon && <Icon className="text-brand" icon={item.icon} />}
         <span
-          className="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-300 hover:text-brand-2"
+          className="flex-1 text-muted-foreground text-sm leading-8 transition-color duration-300 hover:text-brand-2"
           data-role="text"
         >
           {item.text}

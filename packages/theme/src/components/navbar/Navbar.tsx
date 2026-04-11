@@ -16,11 +16,11 @@ export default defineComponent(
 
     return () => (
       <header
-        class="flex grid-area-[navbar] flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
+        class="grid-area-[navbar] fixed inset-x-0 top-0 z-[--z-index-navbar] flex flex-center"
         data-role="navbar"
       >
-        <div class="grid cols-[120px_1fr_120px] h-[--h-navbar] max-w-320 w-full">
-          <div class="px-4 flex items-center">
+        <div class="cols-[120px_1fr_120px] grid h-[--h-navbar] w-full max-w-320">
+          <div class="flex items-center px-4">
             <NavbarAction avatar={theme.avatar} isMobile={isMobile.value} />
           </div>
 
@@ -33,13 +33,13 @@ export default defineComponent(
             <Menubar />
           </div>
 
-          <div class="pr-4 flex gap-2 items-center justify-end">
+          <div class="flex items-center justify-end gap-2 pr-4">
             <ThemeToggle />
             <SocialLinks />
           </div>
         </div>
 
-        <GlassMask class="inset-0 absolute -z-1" />
+        <GlassMask class="absolute inset-0 -z-1" />
       </header>
     )
   },
@@ -51,7 +51,7 @@ function NavbarAction(props: { avatar: string; isMobile: boolean }) {
 
   if (isMobile) {
     return (
-      <SidebarTrigger class="text-6 size-10">
+      <SidebarTrigger class="size-10 text-6">
         <Menu />
       </SidebarTrigger>
     )

@@ -15,8 +15,8 @@ export function EbbHome() {
   useEffect(() => setHtmlLayout('home'), [])
 
   return (
-    <div className="home-page flex-col h-screen w-screen isolate">
-      <div className="px-10 pb-20 pt-40 flex-col flex-1 items-center">
+    <div className="home-page isolate h-screen w-screen flex-col">
+      <div className="flex-1 flex-col items-center px-10 pt-40 pb-20">
         <MoonAvatar avatar={theme.avatar} />
 
         <EbbAuthor author={theme.author} />
@@ -31,7 +31,7 @@ export function EbbHome() {
         />
       </div>
 
-      <div className="flex items-end inset-0 fixed -z-1">
+      <div className="fixed inset-0 -z-1 flex items-end">
         <div className="tidewater"></div>
       </div>
     </div>
@@ -46,7 +46,7 @@ function EbbAuthor(props: AuthorProps) {
   const [motion, setMotion] = useState('fade')
 
   return (
-    <h1 className="mt-4 py-8 text-center w-full">
+    <h1 className="mt-4 w-full py-8 text-center">
       <span
         className="site-title"
         data-motion={motion}
@@ -67,8 +67,8 @@ function EbbTagline(props: TaglineProps) {
   const [motion, setMotion] = useState<'fade' | ''>('')
 
   return (
-    <h2 className="text-6 py-4">
-      <p className="tagline flex gap-2 items-center" data-motion={motion}>
+    <h2 className="py-4 text-6">
+      <p className="tagline flex items-center gap-2" data-motion={motion}>
         <FloatingText
           onMotionEnd={() => setMotion('fade')}
           text={props.tagline}
@@ -94,7 +94,7 @@ function EbbCarousel(props: CarouselProps) {
 
   return (
     <div
-      className="cube-motion flex flex-center relative isolate"
+      className="cube-motion relative isolate flex flex-center"
       onClick={handleClick}
     >
       <CubeAvatar avatar={props.avatar} />
@@ -102,7 +102,7 @@ function EbbCarousel(props: CarouselProps) {
       <div className="entry-button">
         <button
           aria-label="entry"
-          className="text-teal p-3 rounded-full bg-black/10 flex cursor-pointer flex-center"
+          className="flex flex-center cursor-pointer rounded-full bg-black/10 p-3 text-teal"
           type="button"
         >
           <Power className="text-10" />

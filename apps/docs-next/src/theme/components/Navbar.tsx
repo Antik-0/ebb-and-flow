@@ -13,11 +13,11 @@ import { ThemeToggle } from './ThemeToggle'
 export function Navbar() {
   return (
     <div
-      className="flex grid-area-[navbar] flex-center inset-x-0 top-0 fixed z-[--z-index-navbar]"
+      className="grid-area-[navbar] fixed inset-x-0 top-0 z-[--z-index-navbar] flex flex-center"
       data-role="navbar"
     >
-      <header className="grid cols-[120px_1fr_120px] h-[--h-navbar] max-w-320 w-full">
-        <div className="px-4 flex items-center">
+      <header className="cols-[120px_1fr_120px] grid h-[--h-navbar] w-full max-w-320">
+        <div className="flex items-center px-4">
           <NavbarAction />
         </div>
 
@@ -25,13 +25,13 @@ export function Navbar() {
           <NavbarCenter />
         </div>
 
-        <div className="pr-4 flex gap-2 items-center justify-end">
+        <div className="flex items-center justify-end gap-2 pr-4">
           <ThemeToggle />
           <SocialLinks />
         </div>
       </header>
 
-      <GlassMask className="inset-0 absolute -z-1" />
+      <GlassMask className="absolute inset-0 -z-1" />
     </div>
   )
 }
@@ -49,7 +49,7 @@ function NavbarAction() {
 
   if (isMobile) {
     return (
-      <SidebarTrigger className="text-6 size-10">
+      <SidebarTrigger className="size-10 text-6">
         <Menu />
       </SidebarTrigger>
     )

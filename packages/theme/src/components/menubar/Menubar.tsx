@@ -83,7 +83,7 @@ export default defineComponent(
 
         <MenubarProvider value={contextValue}>
           <menu
-            class="grid-full px-4 flex"
+            class="grid-full flex px-4"
             data-role="menu"
             onPointerenter={onMouseEnter}
           >

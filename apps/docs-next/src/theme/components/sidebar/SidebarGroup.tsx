@@ -13,14 +13,14 @@ export function SidebarGroup({ item }: SidebarGroupProps) {
     <section className="py-3" data-role="group">
       {isGrouped ? (
         <>
-          <div className="mb-2 px-2 flex">
+          <div className="mb-2 flex px-2">
             {item.icon && (
               <Icon
-                className="text-18px text-brand mr-2 flex h-8"
+                className="mr-2 flex h-8 text-18px text-brand"
                 icon={item.icon}
               />
             )}
-            <span className="text-14px text-muted-foreground leading-8 font-700">
+            <span className="font-700 text-14px text-muted-foreground leading-8">
               {item.text}
             </span>
           </div>

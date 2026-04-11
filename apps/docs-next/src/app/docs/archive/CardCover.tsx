@@ -18,7 +18,7 @@ export function CardCover({ src }: { src: string }) {
   return (
     <picture className="relative overflow-hidden">
       {isLoading && (
-        <div className="p-8 bg-black inset-0 absolute z-10">
+        <div className="absolute inset-0 z-10 bg-black p-8">
           <img
             alt="loading"
             className="size-full object-contain"

@@ -21,14 +21,14 @@ export function CodeGroup(props: PropsWithChildren<Props>) {
   const contents = Array.isArray(children) ? children : [children]
 
   return (
-    <div className="my-4 rounded-2 relative overflow-hidden">
-      <div className="p-2 bg-[--c-bg-code-title]/80 flex gap-1 items-center">
+    <div className="relative my-4 overflow-hidden rounded-2">
+      <div className="flex items-center gap-1 bg-[--c-bg-code-title]/80 p-2">
         {tabs.map((item, index) => (
           <button
             className={clsx(
-              'text-muted-foreground px-2 py-1.5 rounded-md flex gap-1 transition-colors items-center',
-              'cursor-pointer hover:text-accent-foreground hover:bg-[--c-bg-code-block]',
-              'data-[active=true]:text-accent-foreground data-[active=true]:bg-[--c-bg-code-block]'
+              'flex items-center gap-1 rounded-md px-2 py-1.5 text-muted-foreground transition-colors',
+              'cursor-pointer hover:bg-[--c-bg-code-block] hover:text-accent-foreground',
+              'data-[active=true]:bg-[--c-bg-code-block] data-[active=true]:text-accent-foreground'
             )}
             data-active={activeIndex === index}
             key={index}

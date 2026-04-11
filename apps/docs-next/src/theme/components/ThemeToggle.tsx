@@ -15,8 +15,8 @@ export function ThemeToggle() {
       aria-checked={isDark}
       aria-label="dark-toggle"
       className={clsx(
-        'text-5 border border-divider bg-[--c-bg-mutate]/20',
-        'p-0.5 rounded-4 flex w-12 cursor-pointer items-center'
+        'border border-divider bg-[--c-bg-mutate]/20 text-5',
+        'flex w-12 cursor-pointer items-center rounded-4 p-0.5'
       )}
       data-state={isDark ? 'dark' : 'light'}
       onClick={toggle}

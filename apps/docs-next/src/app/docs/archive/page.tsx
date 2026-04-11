@@ -22,13 +22,13 @@ export default async function Page() {
             <li key={index}>
               <TransitionLink to={`/docs/${item.path}`}>
                 <CardCover src={item.cover} />
-                <div className="p-2 bg-black">
-                  <p className="leading-6 font-bold mb-2 text-center truncate">
+                <div className="bg-black p-2">
+                  <p className="mb-2 truncate text-center font-bold leading-6">
                     {item.title}
                   </p>
                 </div>
-                <div className="p-2 bg-black/60 inset-x-0 bottom-10 absolute">
-                  <p className="text-xs flex gap-2 items-center">
+                <div className="absolute inset-x-0 bottom-10 bg-black/60 p-2">
+                  <p className="flex items-center gap-2 text-xs">
                     {item.tags?.map((tag, idx) => (
                       <span key={idx}>{`#${tag}`}</span>
                     ))}
@@ -36,7 +36,7 @@ export default async function Page() {
                   </p>
                 </div>
                 <div
-                  className="card-mask inset-0 absolute z-10"
+                  className="card-mask absolute inset-0 z-10"
                   data-role="mask"
                 ></div>
               </TransitionLink>

@@ -46,7 +46,7 @@ export default defineComponent(
     return () => (
       <motion.aside class="ebb-sidebar" data-role="sidebar" style={{ x }}>
         <div
-          class="grid-full px-1 py-4 flex-col min-h-0"
+          class="grid-full min-h-0 flex-col px-1 py-4"
           data-role="content"
           ref="sidebar"
         >
@@ -64,7 +64,7 @@ const SidebarContent = defineComponent(
     const sidebarMenus = useSidebarMenus()
 
     return () => (
-      <div class="scrollbar-thin px-3 flex-1 overflow-x-hidden overflow-y-auto">
+      <div class="scrollbar-thin flex-1 overflow-y-auto overflow-x-hidden px-3">
         {sidebarMenus.value.map((item, index) => (
           <SidebarGroup item={item} key={index} />
         ))}
@@ -77,7 +77,7 @@ const SidebarContent = defineComponent(
 function SidebarMask() {
   return (
     <div
-      class="sidebar-mask w-100 inset-y-0 right-0 absolute -z-1"
+      class="sidebar-mask absolute inset-y-0 right-0 -z-1 w-100"
       data-role="mask"
     >
       <GlassMask style={{ '--fit-size': 'contain' }} />
@@ -130,7 +130,7 @@ export const SidebarOverlay = defineComponent(
     return () => (
       <div
         aria-hidden="true"
-        class="bg-black/20 inset-0 fixed z-[--z-index-sidebar-overlay]"
+        class="fixed inset-0 z-[--z-index-sidebar-overlay] bg-black/20"
         data-role="overlay"
         onClick={close}
         v-show={isOpen.value}

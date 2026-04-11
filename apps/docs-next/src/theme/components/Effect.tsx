@@ -14,7 +14,7 @@ export function Avatar(props: AvatarProps) {
     <button
       aria-label="avatar"
       className={clsx(
-        'cursor-pointer drop-shadow-sm drop-shadow-color-cyan-300',
+        'cursor-pointer drop-shadow-color-cyan-300 drop-shadow-sm',
         className
       )}
       type="button"
@@ -39,8 +39,8 @@ interface MoonAvatarProps {
 
 export function MoonAvatar(props: MoonAvatarProps) {
   return (
-    <div className="moon-avatar size-50 cursor-pointer relative isolate">
-      <div className="rounded-full inset-0 absolute z-20 overflow-hidden">
+    <div className="moon-avatar relative isolate size-50 cursor-pointer">
+      <div className="absolute inset-0 z-20 overflow-hidden rounded-full">
         <Image
           alt="site owner avatar"
           className="transition-transform duration-600 ease-out"

@@ -41,11 +41,11 @@ function AnchorHead(props: Props, { slots }: SetupContext) {
 
 const Anchor: FunctionalComponent<HeadingProps> = (props, { slots }) => {
   return (
-    <a class="group inline-flex items-center relative" href={`#${props.id}`}>
+    <a class="group relative inline-flex items-center" href={`#${props.id}`}>
       <span
         class={clsx(
-          'rounded-md flex size-5 cursor-pointer flex-center absolute',
-          'text-muted-foreground bg-muted duration-300 hover:text-brand',
+          'absolute flex size-5 flex-center cursor-pointer rounded-md',
+          'bg-muted text-muted-foreground duration-300 hover:text-brand',
           'opacity-0 transition-opacity group-hover:opacity-100'
         )}
       >

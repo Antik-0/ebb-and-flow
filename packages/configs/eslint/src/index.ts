@@ -1,6 +1,5 @@
 import { defineConfig, globalIgnores } from 'eslint/config'
 import JSONC from './jsonc.ts'
-import Unocss from './unocss.ts'
 import Vue from './vue.ts'
 
 /**
@@ -20,5 +19,5 @@ export const ebbESLintConfig = defineConfig([
     '**/*.ttf',
     '**/*.woff'
   ]),
-  { extends: [JSONC, Vue, Unocss] }
+  { extends: [JSONC, Vue] }
 ])

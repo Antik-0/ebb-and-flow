@@ -4,10 +4,11 @@
   "description": "潮起潮落的个人博客",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.3.10",
+  "packageManager": "bun@1.3.12",
   "scripts": {
     "boot": "bun install && bun stub",
-    "build": "turbo run build --filter=docs",
+    "build": "turbo run generate --filter=docs",
+    "build:next": "turbo run build --filter=docs-next",
     "clean": "bun run ./scripts/cleanup.ts",
     "compress": "bun run ./scripts/compress.ts",
     "dev": "turbo run dev --filter=docs",

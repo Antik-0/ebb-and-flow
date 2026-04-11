@@ -128,8 +128,8 @@ export const SvgLoading = defineComponent(() => {
 
   return () => (
     <div class="flex h-60 flex-center">
-      <div class="flex-col gap-4 flex-center">
-        <div class="text-zinc text-center">
+      <div class="flex-center flex-col gap-4">
+        <div class="text-center text-zinc">
           <input
             max={maxValue}
             min="0"

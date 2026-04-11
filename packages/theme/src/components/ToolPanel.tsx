@@ -32,14 +32,14 @@ export default defineComponent(
     return () => (
       <div
         class={[
-          'p-1 top-1/2 right-2 fixed z-[--z-index-toolpanel]',
-          'opacity-0 translate-x-full transition-all duration-600 ease-out',
-          'data-[show=true]:opacity-100 data-[show=true]:translate-x-0'
+          'fixed top-1/2 right-2 z-[--z-index-toolpanel] p-1',
+          'translate-x-full opacity-0 transition-all duration-600 ease-out',
+          'data-[show=true]:translate-x-0 data-[show=true]:opacity-100'
         ]}
         data-role="toolpanel"
         data-show={isTriggerSentinel.value}
       >
-        <div class="rounded-5 flex flex-col gap-1">
+        <div class="flex flex-col gap-1 rounded-5">
           {isMobile.value && (
             <>
               <SidebarButton />
@@ -53,7 +53,7 @@ export default defineComponent(
           <FPS />
           <BackToTop />
         </div>
-        <GlassMask class="rounded-5 inset-0 absolute -z-1" />
+        <GlassMask class="absolute inset-0 -z-1 rounded-5" />
       </div>
     )
   },
@@ -67,7 +67,7 @@ const SidebarButton = defineComponent(
     return () => (
       <SidebarTrigger
         class={[
-          'text-5 text-muted-foreground flex size-10 cursor-pointer flex-center',
+          'flex size-10 flex-center cursor-pointer text-5 text-muted-foreground',
           'transition-color duration-200 hover:text-brand-2'
         ]}
       >
@@ -107,7 +107,7 @@ const OutlineButton = defineComponent<
               aria-checked={props.show}
               aria-label="outline-button"
               class={[
-                'text-5 text-muted-foreground flex size-10 cursor-pointer flex-center',
+                'flex size-10 flex-center cursor-pointer text-5 text-muted-foreground',
                 'transition-color duration-200 hover:text-brand-2'
               ]}
               role="switch"
@@ -117,9 +117,9 @@ const OutlineButton = defineComponent<
             </button>
           ),
           default: () => (
-            <div class="p-4 min-w-60 relative isolate" onClick={onOutlineClick}>
+            <div class="relative isolate min-w-60 p-4" onClick={onOutlineClick}>
               <DocOutline />
-              <GlassMask class="rounded-4 inset-0 absolute -z-1" />
+              <GlassMask class="absolute inset-0 -z-1 rounded-4" />
             </div>
           )
         }}
@@ -151,7 +151,7 @@ const BackToTop = defineComponent(
     return () => (
       <button
         aria-label="back to top"
-        class="text-6 text-muted-foreground flex size-10 cursor-pointer flex-center hover:text-brand-3"
+        class="flex size-10 flex-center cursor-pointer text-6 text-muted-foreground hover:text-brand-3"
         onClick={backToTop}
         ref={scope}
         title="回到顶部"
@@ -169,7 +169,7 @@ const FPS = defineComponent(
     const fps = useFPS()
 
     return () => (
-      <div class="text-teal flex-col size-10 items-center justify-between">
+      <div class="size-10 flex-col items-center justify-between text-teal">
         <span class="text-3 leading-[1]">fps</span>
         <span class="text-14px leading-6">{fps.value}</span>
       </div>
@@ -180,7 +180,7 @@ const FPS = defineComponent(
 
 function Indicator() {
   return (
-    <div class="text-6 text-teal flex size-10 flex-center">
+    <div class="flex size-10 flex-center text-6 text-teal">
       <ScrollIndicator />
     </div>
   )

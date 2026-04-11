@@ -81,7 +81,7 @@ export function ImageViewer() {
 
   return (
     <div
-      className="bg-black/40 grid contain-paint inset-0 place-content-center place-items-center fixed z-100"
+      className="fixed inset-0 z-100 grid place-content-center place-items-center bg-black/40 contain-paint"
       onClick={handleClose}
       ref={viewerDOM}
       style={{ display: 'none' }}

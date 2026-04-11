@@ -13,7 +13,7 @@ export function SidebarTrigger(
     <button
       aria-checked={isOpen}
       aria-label="sidebar-button"
-      className={clsx('flex cursor-pointer flex-center', className)}
+      className={clsx('flex flex-center cursor-pointer', className)}
       onClick={toggle}
       role="switch"
       type="button"

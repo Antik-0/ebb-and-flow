@@ -92,7 +92,7 @@ export function Menubar() {
 
       <MenubarProvider value={contextValue}>
         <menu
-          className="grid-full px-4 flex"
+          className="grid-full flex px-4"
           data-role="menu"
           onPointerEnter={onMouseEnter}
         >

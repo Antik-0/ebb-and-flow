@@ -20,7 +20,7 @@ export function EbbPage({ children }: PropsWithChildren) {
       <Navbar />
 
       <main className="grid-area-[main] min-w-0 md:p-4" data-role="main">
-        <section className="p-6 bg-[--c-bg-content] min-w-0 w-full relative md:rounded-4">
+        <section className="relative w-full min-w-0 bg-[--c-bg-content] p-6 md:rounded-4">
           {children}
         </section>
       </main>

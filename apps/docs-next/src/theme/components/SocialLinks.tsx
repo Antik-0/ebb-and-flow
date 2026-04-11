@@ -28,7 +28,7 @@ export function SocialLinks() {
       {socialLinks.map(item => (
         <EbbLink
           aria-label={item.label}
-          className="text-6 flex size-9 cursor-pointer flex-center"
+          className="flex size-9 flex-center cursor-pointer text-6"
           href={item.link}
           key={item.label}
         >

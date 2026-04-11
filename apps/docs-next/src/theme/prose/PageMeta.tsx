@@ -13,10 +13,10 @@ export function PageMeta(props: Props) {
   return (
     <div className="my-4">
       <PageTags tags={tags} />
-      <div className="mx-auto py-2 flex gap-8 flex-center">
+      <div className="mx-auto flex flex-center gap-8 py-2">
         <span
           className={clsx(
-            'text-xs text-accent-foreground flex-1',
+            'flex-1 text-accent-foreground text-xs',
             lastUpdated ? 'text-right' : 'text-center'
           )}
         >
@@ -33,14 +33,14 @@ function PageTags({ tags }: { tags: string[] }) {
   if (!tags.length) return null
 
   return (
-    <div className="mx-auto flex gap-2 w-[max-content] items-center">
-      <span className="text-sm mr-1">🏷️</span>
+    <div className="mx-auto flex w-[max-content] items-center gap-2">
+      <span className="mr-1 text-sm">🏷️</span>
       {tags.map((tag, index) => (
-        <span className="text-sm text-brand" key={index}>
+        <span className="text-brand text-sm" key={index}>
           #{tag}
         </span>
       ))}
-      <span className="text-sm ml-1">🏷️</span>
+      <span className="ml-1 text-sm">🏷️</span>
     </div>
   )
 }
@@ -51,7 +51,7 @@ function PageLastUpdated(props: { value?: number }) {
   const lastUpdated = formatDate(props.value)
   const fulltime = formatDateTime(props.value, { timeStyle: 'full' })
   return (
-    <div className="text-xs text-accent-foreground flex-1">
+    <div className="flex-1 text-accent-foreground text-xs">
       <span className="mr-1">最后更新于</span>
       <time dateTime={fulltime}>{lastUpdated}</time>
     </div>

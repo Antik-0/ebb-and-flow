@@ -180,7 +180,7 @@ function PopoverContent(props: PropsWithChildren<PopoverContentProps>) {
   const content = (
     <div
       className={clsx(
-        'contain-layout pointer-events-none left-0 top-0 z-1000',
+        'pointer-events-none top-0 left-0 z-1000 contain-layout',
         className
       )}
       onPointerEnter={onPointerEnter}

@@ -15,21 +15,21 @@ export function MenuViewGroup(props: MenuViewGroupProps) {
       {groups.map((group, index) => (
         <div className={index === 0 ? undefined : 'mt-4'} key={index}>
           {group.label && (
-            <div className="text-sm text-brand leading-8 font-600 mb-3">
+            <div className="mb-3 font-600 text-brand text-sm leading-8">
               {group.label}
             </div>
           )}
-          <section className="gap-4 grid">
+          <section className="grid gap-4">
             {group.children.map(item => (
               <EbbLink href={item.link} key={item.text}>
                 <span
                   className={clsx(
-                    'text-foreground p-3 rounded-2 block',
-                    'transition-colors duration-250 ease',
-                    'hover:text-brand-2 hover:bg-brand-2/20'
+                    'block rounded-2 p-3 text-foreground',
+                    'ease transition-colors duration-250',
+                    'hover:bg-brand-2/20 hover:text-brand-2'
                   )}
                 >
-                  <span className="text-sm text-nowrap">{item.text}</span>
+                  <span className="text-nowrap text-sm">{item.text}</span>
                 </span>
               </EbbLink>
             ))}

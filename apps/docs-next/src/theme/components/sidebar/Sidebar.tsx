@@ -39,7 +39,7 @@ function Sidebar() {
   return (
     <motion.aside className="ebb-sidebar" data-role="sidebar" style={{ x }}>
       <div
-        className="grid-full px-1 py-4 flex-col min-h-0"
+        className="grid-full min-h-0 flex-col px-1 py-4"
         data-role="content"
         ref={sidebar}
       >
@@ -54,7 +54,7 @@ const SidebarContent = memo(() => {
   const sidebarMenus = useSidebarMenus()
 
   return (
-    <div className="scrollbar-thin px-3 flex-1 overflow-x-hidden overflow-y-auto">
+    <div className="scrollbar-thin flex-1 overflow-y-auto overflow-x-hidden px-3">
       {sidebarMenus.map((item, index) => (
         <SidebarGroup item={item} key={index} />
       ))}
@@ -65,7 +65,7 @@ const SidebarContent = memo(() => {
 function SidebarMask() {
   return (
     <div
-      className="sidebar-mask w-100 inset-y-0 right-0 absolute -z-1"
+      className="sidebar-mask absolute inset-y-0 right-0 -z-1 w-100"
       data-role="mask"
     >
       <GlassMask style={stylex({ '--fit-size': 'contain' })} />
@@ -106,7 +106,7 @@ function SidebarOverlay() {
   return (
     <div
       aria-hidden="true"
-      className="bg-black/20 inset-0 fixed z-[--z-index-sidebar-overlay]"
+      className="fixed inset-0 z-[--z-index-sidebar-overlay] bg-black/20"
       data-role="overlay"
       onClick={close}
       style={stylex(!isOpen && { display: 'none' })}

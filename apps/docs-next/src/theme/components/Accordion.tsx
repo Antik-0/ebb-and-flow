@@ -144,7 +144,7 @@ export function AccordionContent(
 
   return (
     <div
-      className={clsx('duration-300 ease-out overflow-hidden', className)}
+      className={clsx('overflow-hidden duration-300 ease-out', className)}
       data-collapsed={collapsed}
       onTransitionEnd={onTransitionEnd}
       ref={scope}

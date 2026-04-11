@@ -13,9 +13,9 @@ export function DocOutline() {
 
   return (
     <nav aria-label="outline" className="relative isolate">
-      <div className="text-accent-foreground flex gap-2 items-center">
+      <div className="flex items-center gap-2 text-accent-foreground">
         <TextAlignStart className="size-5" />
-        <span className="text-14px leading-8 font-600 flex-1">页面导航</span>
+        <span className="flex-1 font-600 text-14px leading-8">页面导航</span>
       </div>
       <OutlineMark />
       <OutlineMask />
@@ -49,9 +49,9 @@ function TocItem(props: TocItemProps) {
   return (
     <li
       className={clsx(
-        'text-14px text-muted-foreground leading-8 overflow-hidden',
-        'pl-[calc(var(--level)*16px)] pr-4',
-        'data-[active=true]:text-brand-2 hover:text-brand-2'
+        'overflow-hidden text-14px text-muted-foreground leading-8',
+        'pr-4 pl-[calc(var(--level)*16px)]',
+        'hover:text-brand-2 data-[active=true]:text-brand-2'
       )}
       data-active={isActive}
       style={stylex({ '--level': level })}
@@ -72,7 +72,7 @@ function OutlineMark() {
     <div
       aria-hidden="true"
       className={clsx(
-        'bg-brand-2/10 h-8 inset-x-0 top-8 absolute -z-2',
+        'absolute inset-x-0 top-8 -z-2 h-8 bg-brand-2/10',
         'transform-origin-top-center transition-transform duration-300'
       )}
       data-role="mark"
@@ -91,13 +91,13 @@ function OutlineMask() {
   return (
     <div
       aria-hidden="true"
-      className="text-muted-foreground left-0 top-8 absolute -z-1"
+      className="absolute top-8 left-0 -z-1 text-muted-foreground"
       data-role="mask"
       style={{ width: width + 'px', height: height + 'px' }}
     >
       <MaskSvg height={height} path={path} width={width} />
       <div
-        className="inset-0 absolute z-10"
+        className="absolute inset-0 z-10"
         style={{ maskImage: `url('${maskURL}')` }}
       >
         <MaskIndicator />
@@ -115,7 +115,7 @@ function MaskIndicator() {
   return (
     <div
       className={clsx(
-        'bg-brand-2 h-6 w-full absolute',
+        'absolute h-6 w-full bg-brand-2',
         'transform-origin-top-center transition-transform duration-600'
       )}
       data-role="indicator"

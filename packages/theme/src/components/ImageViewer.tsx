@@ -107,7 +107,7 @@ export default defineComponent(
 
     return () => (
       <div
-        class="bg-black/40 grid contain-paint inset-0 place-content-center place-items-center fixed z-100"
+        class="fixed inset-0 z-100 grid place-content-center place-items-center bg-black/40 contain-paint"
         data-role="imageviewer"
         onClick={handleClose}
         v-show={show.value}

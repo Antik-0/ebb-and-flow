@@ -28,7 +28,7 @@ export function ProsePre(props: PropsWithChildren<Props>) {
 
   return (
     <pre
-      className={clsx('group rounded-2 relative', className)}
+      className={clsx('group relative rounded-2', className)}
       data-filename={filename}
       data-language={language}
       data-lines={lines}
@@ -37,9 +37,9 @@ export function ProsePre(props: PropsWithChildren<Props>) {
       <button
         aria-label="copy"
         className={clsx(
-          'rounded-md flex size-8 cursor-pointer transition-all flex-center right-2 top-2 absolute',
-          'text-muted-foreground bg-muted/40 opacity-0',
-          'hover:text-accent-foreground hover:bg-muted group-hover:opacity-100',
+          'absolute top-2 right-2 flex size-8 flex-center cursor-pointer rounded-md transition-all',
+          'bg-muted/40 text-muted-foreground opacity-0',
+          'hover:bg-muted hover:text-accent-foreground group-hover:opacity-100',
           'data-[active=true]:opacity-100'
         )}
         data-active={copied}

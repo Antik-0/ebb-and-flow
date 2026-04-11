@@ -13,20 +13,20 @@ export function ToolPanel() {
   return (
     <div
       className={clsx(
-        'p-1 right-2 top-1/2 fixed z-[--z-index-toolpanel]',
-        'opacity-0 translate-x-full transition-all duration-600 ease-out',
-        'data-[show=true]:opacity-100 data-[show=true]:translate-x-0'
+        'fixed top-1/2 right-2 z-[--z-index-toolpanel] p-1',
+        'translate-x-full opacity-0 transition-all duration-600 ease-out',
+        'data-[show=true]:translate-x-0 data-[show=true]:opacity-100'
       )}
       data-role="toolpanel"
       data-show={isTriggerSentinel}
     >
-      <div className="rounded-5 flex flex-col gap-1">
+      <div className="flex flex-col gap-1 rounded-5">
         <SidebarButton />
         <Indicator />
         <FPS />
         <BackToTop />
       </div>
-      <GlassMask className="rounded-5 inset-0 absolute -z-1" />
+      <GlassMask className="absolute inset-0 -z-1 rounded-5" />
     </div>
   )
 }
@@ -49,7 +49,7 @@ const SidebarButton = memo(() => {
   return (
     <SidebarTrigger
       className={clsx(
-        'text-5 text-muted-foreground flex size-10 cursor-pointer flex-center',
+        'flex size-10 flex-center cursor-pointer text-5 text-muted-foreground',
         'transition-color duration-200 hover:text-brand-2'
       )}
       title="侧边导航"
@@ -61,7 +61,7 @@ const SidebarButton = memo(() => {
 
 const Indicator = memo(() => {
   return (
-    <div className="text-6 text-teal flex size-10 flex-center">
+    <div className="flex size-10 flex-center text-6 text-teal">
       <ScrollIndicator />
     </div>
   )
@@ -70,7 +70,7 @@ const Indicator = memo(() => {
 const FPS = memo(() => {
   const fps = useFPS()
   return (
-    <div className="text-teal flex-col size-10 items-center justify-between">
+    <div className="size-10 flex-col items-center justify-between text-teal">
       <span className="text-3 leading-[1]">fps</span>
       <span className="text-14px leading-6">{fps}</span>
     </div>
@@ -94,7 +94,7 @@ function BackToTop() {
   return (
     <button
       aria-label="back to top"
-      className="text-6 text-muted-foreground flex size-10 cursor-pointer flex-center hover:text-brand-3"
+      className="flex size-10 flex-center cursor-pointer text-6 text-muted-foreground hover:text-brand-3"
       onClick={backToTop}
       ref={scope}
       title="回到顶部"

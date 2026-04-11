@@ -45,7 +45,7 @@ export default defineComponent<Empty, { close: () => void }>(
         {show.value && (
           <motion.div
             animate={{ y: 0 }}
-            class="pt-2 min-w-full contain-layout left-1/2 top-full absolute isolate -translate-x-1/2"
+            class="absolute top-full left-1/2 isolate min-w-full -translate-x-1/2 pt-2 contain-layout"
             data-role="menuviewport"
             exit={{ opacity: 0, y: 40 }}
             initial={{ y: 40 }}
@@ -53,7 +53,7 @@ export default defineComponent<Empty, { close: () => void }>(
           >
             <div class="relative isolate">
               <ViewportProvider value={contextValue}>
-                <div class="rounded-4 relative overflow-hidden">
+                <div class="relative overflow-hidden rounded-4">
                   {contents.value.map((content, index) => (
                     <MenuViewContent index={index} key={index}>
                       {content && <MenuViewGroup items={content} />}
@@ -61,7 +61,7 @@ export default defineComponent<Empty, { close: () => void }>(
                   ))}
                 </div>
               </ViewportProvider>
-              <GlassMask class="rounded-4 inset-0 absolute -z-1" />
+              <GlassMask class="absolute inset-0 -z-1 rounded-4" />
             </div>
           </motion.div>
         )}

@@ -11,7 +11,7 @@ export const Avatar: FunctionalComponent<AvatarProps, { click: () => void }> = (
   return (
     <button
       aria-label="avatar"
-      class="cursor-pointer drop-shadow-sm drop-shadow-color-cyan-300"
+      class="cursor-pointer drop-shadow-color-cyan-300 drop-shadow-sm"
       onClick={() => emit('click')}
       type="button"
       {...attrs}
@@ -35,8 +35,8 @@ export const MoonAvatar: FunctionalComponent<AvatarProps> = (
   { attrs }
 ) => {
   return (
-    <div class="moon-avatar size-50 cursor-pointer relative isolate" {...attrs}>
-      <div class="rounded-full inset-0 absolute z-20 overflow-hidden">
+    <div class="moon-avatar relative isolate size-50 cursor-pointer" {...attrs}>
+      <div class="absolute inset-0 z-20 overflow-hidden rounded-full">
         <img
           alt="site owner avatar"
           class="transition-transform duration-600 ease-out"

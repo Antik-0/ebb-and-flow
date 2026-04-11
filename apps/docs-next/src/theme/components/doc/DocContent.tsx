@@ -20,18 +20,18 @@ export function DocContent(props: PropsWithChildren<Props>) {
 
   return (
     <div className="flex" data-role="doc-content">
-      <div className="px-8 pb-24 flex-1 min-w-0">
+      <div className="min-w-0 flex-1 px-8 pb-24">
         <article className="ebb-doc" id="content">
           {children}
         </article>
         <DocFooter />
       </div>
 
-      <div className="pl-4 w-64" data-role="doc-aside">
-        <aside className="pb-12 pt-[calc(var(--h-navbar)+48px)] flex-col w-56 inset-y-0 fixed">
+      <div className="w-64 pl-4" data-role="doc-aside">
+        <aside className="fixed inset-y-0 w-56 flex-col pt-[calc(var(--h-navbar)+48px)] pb-12">
           <div
             className={clsx(
-              'flex-col flex-1 overflow-x-hidden overflow-y-auto',
+              'flex-1 flex-col overflow-y-auto overflow-x-hidden',
               'opacity-60 transition-opacity hover:opacity-100'
             )}
           >

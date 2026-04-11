@@ -35,7 +35,7 @@ export function useScroll() {
   useEffect(() => {
     const animationFrame = () => {
       const _stl = stl.current
-      if (!_stl || !_stl.currentTime) return
+      if (!_stl?.currentTime) return
 
       const progressVal = (_stl.currentTime as any).value / 100
       setY(maxScrollTop.current * progressVal)

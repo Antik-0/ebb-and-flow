@@ -25,20 +25,20 @@ export function MenubarItem(props: Props) {
 
   return (
     <motion.li
-      className="cursor-pointer relative data-[active=true]:text-brand hover:text-brand"
+      className="relative cursor-pointer hover:text-brand data-[active=true]:text-brand"
       data-active={isActive}
       data-role="menuitem"
       layout
       onPointerEnter={() => onMenuItemHover(index)}
     >
       <EbbLink
-        className="px-4 py-2.5 flex items-center"
+        className="flex items-center px-4 py-2.5"
         href={item.link}
         onNavigate={onNavigate}
       >
         {item.icon && isActive && (
           <motion.span
-            className="text-4 mr-1 inline-flex flex-center"
+            className="mr-1 inline-flex flex-center text-4"
             layout-id="menuitem-icon"
           >
             <Icon icon={item.icon} />
@@ -50,7 +50,7 @@ export function MenubarItem(props: Props) {
       </EbbLink>
       {isActive && (
         <motion.span
-          className="h-px inset-x-px absolute from-transparent to-transparent via-brand/70 bg-linear-to-r -bottom-px"
+          className="absolute inset-x-px -bottom-px h-px bg-linear-to-r from-transparent via-brand/70 to-transparent"
           layout-id="menuitem-line"
         />
       )}

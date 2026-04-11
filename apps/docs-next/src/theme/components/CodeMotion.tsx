@@ -103,8 +103,8 @@ export function CodeMotion(props: Props) {
   return (
     <span
       className={clsx(
-        'px-2 rounded-2 inline-flex contain-content items-center',
-        'text-brand-2 font-mono bg-zinc-600/40',
+        'inline-flex items-center rounded-2 px-2 contain-content',
+        'bg-zinc-600/40 font-mono text-brand-2',
         'transition-opacity duration-600 data-[paused=true]:opacity-20'
       )}
       data-paused={paused}

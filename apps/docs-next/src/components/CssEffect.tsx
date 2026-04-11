@@ -129,8 +129,8 @@ export function SvgLoading() {
 
   return (
     <div className="flex h-60 flex-center">
-      <div className="flex-col gap-4 flex-center">
-        <div className="text-zinc text-center">
+      <div className="flex-center flex-col gap-4">
+        <div className="text-center text-zinc">
           <input
             max={maxValue}
             min="0"

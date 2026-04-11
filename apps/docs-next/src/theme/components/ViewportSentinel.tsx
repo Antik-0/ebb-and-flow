@@ -30,7 +30,7 @@ export function ViewportSentinel(props: Props) {
   return (
     <div
       aria-hidden="true"
-      className="h-1 inset-x-0 absolute -z-1"
+      className="absolute inset-x-0 -z-1 h-1"
       data-role="sentinel"
       ref={sentinel}
       style={style}

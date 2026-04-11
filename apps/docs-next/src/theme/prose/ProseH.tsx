@@ -45,11 +45,11 @@ function Anchor(props: PropsWithChildren<{ id?: string }>) {
   const { id = '', children } = props
 
   return (
-    <a className="group inline-flex items-center relative" href={`#${id}`}>
+    <a className="group relative inline-flex items-center" href={`#${id}`}>
       <span
         className={clsx(
-          'rounded-md flex size-5 cursor-pointer flex-center absolute',
-          'text-muted-foreground bg-muted duration-250 hover:text-brand',
+          'absolute flex size-5 flex-center cursor-pointer rounded-md',
+          'bg-muted text-muted-foreground duration-250 hover:text-brand',
           'opacity-0 transition-opacity group-hover:opacity-100'
         )}
       >

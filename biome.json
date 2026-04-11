@@ -72,6 +72,16 @@
             "ignore": ["unocss"]
           }
         }
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "attributes": ["class", "className"],
+            "functions": ["clsx"]
+          }
+        }
       }
     }
   },

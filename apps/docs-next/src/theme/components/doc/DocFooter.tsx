@@ -4,7 +4,7 @@ import { EbbLink } from '../Link'
 export function DocFooter() {
   return (
     <footer className="mt-16">
-      <div className="bg-divider h-px"></div>
+      <div className="h-px bg-divider"></div>
       <FooterNavigation />
     </footer>
   )
@@ -19,11 +19,11 @@ function FooterNavigation() {
   return (
     <nav
       aria-label="pager"
-      className="pt-6 gap-4 grid grid-cols-1 sm:grid-cols-2"
+      className="grid grid-cols-1 gap-4 pt-6 sm:grid-cols-2"
     >
       {prevNav && (
-        <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2">
-          <EbbLink className="px-4 py-3 flex-col" href={prevNav.link}>
+        <div className="rounded-2 border border-divider transition-colors duration-250 hover:border-brand-2">
+          <EbbLink className="flex-col px-4 py-3" href={prevNav.link}>
             <span className="text-12px text-muted-foreground leading-20px">
               上一页
             </span>
@@ -34,9 +34,9 @@ function FooterNavigation() {
         </div>
       )}
       {nextNav && (
-        <div className="border border-divider rounded-2 transition-colors duration-250 hover:border-brand-2 sm:col-2">
+        <div className="rounded-2 border border-divider transition-colors duration-250 hover:border-brand-2 sm:col-2">
           <EbbLink
-            className="px-4 py-3 text-right flex-col"
+            className="flex-col px-4 py-3 text-right"
             href={nextNav.link}
           >
             <span className="text-12px text-muted-foreground leading-20px">

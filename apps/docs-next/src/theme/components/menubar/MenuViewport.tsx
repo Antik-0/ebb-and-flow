@@ -67,7 +67,7 @@ export function MenuViewport(props: MenuViewportProps) {
       {show && (
         <motion.div
           animate={{ y: 0 }}
-          className="pt-2 min-w-full contain-layout left-1/2 top-full absolute isolate -translate-x-1/2"
+          className="absolute top-full left-1/2 isolate min-w-full -translate-x-1/2 pt-2 contain-layout"
           data-role="viewport"
           exit={{ opacity: 0, y: 40 }}
           initial={{ y: 40 }}
@@ -75,7 +75,7 @@ export function MenuViewport(props: MenuViewportProps) {
         >
           <div className="relative isolate">
             <ViewportProvider value={contextValue}>
-              <div className="rounded-4 relative overflow-hidden">
+              <div className="relative overflow-hidden rounded-4">
                 {contents.map((content, index) => (
                   <MenuViewContent index={index} key={index}>
                     {content && <MenuViewGroupMemo items={content} />}
@@ -83,7 +83,7 @@ export function MenuViewport(props: MenuViewportProps) {
                 ))}
               </div>
             </ViewportProvider>
-            <GlassMask className="rounded-4 inset-0 absolute -z-1" />
+            <GlassMask className="absolute inset-0 -z-1 rounded-4" />
           </div>
         </motion.div>
       )}
