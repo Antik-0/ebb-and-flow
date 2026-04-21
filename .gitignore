@@ -19,6 +19,4 @@ next-env.d.ts
 .data
 .temp
 .turbo
-*.log
-*.local
 *.tsbuildinfo

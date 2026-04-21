@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises'
+import * as fs from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 import ora from 'ora'
@@ -6,33 +6,49 @@ import pc from 'picocolors'
 // @ts-expect-error: no types
 import prompts from 'prompts'
 
-const ignoreDirs = ['.git', '.github', '.vscode', 'assets', 'src']
-const rootPath = fileURLToPath(new URL('../', import.meta.url))
-const recursiveDepth = 4
-const spinner = ora({ indent: 2 })
+const packages = ['docs', 'apps/*', 'packages/*', 'packages/configs/*']
+const effects = [
+  'apps/docs/{.nuxt,.nitro,.output}',
+  'apps/docs-next/{.next,out}',
+  'packages/*/{dist,.turbo}',
+  'packages/configs/*/{dist,.turbo}'
+]
 
-const cleanSet = new Set([
-  'node_modules',
-  'bun.lock',
-  'dist',
-  '.data',
-  '.nuxt',
-  '.next',
-  '.nitro',
-  '.output',
-  '.temp',
-  '.turbo'
-])
+async function collectCleanupPaths(patterns: string[]) {
+  const res: string[] = []
+  for (const pattern of patterns) {
+    const glob = new Bun.Glob(pattern)
+    for await (const file of glob.scan({ onlyFiles: false, dot: true })) {
+      res.push(file)
+    }
+  }
+  return res
+}
+
+const rootPath = fileURLToPath(new URL('../', import.meta.url))
+const spinner = ora({ indent: 2 })
 
 try {
   console.log(`\n\n🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)
+
+  const nodeModules = await collectCleanupPaths(
+    packages.map(pkg => pkg + '/node_modules')
+  )
+  const effectsList = await collectCleanupPaths(effects)
+  const cleanupList = [
+    'node_modules',
+    ...nodeModules,
+    ...effectsList,
+    '.turbo',
+    'docs/.data'
+  ]
 
   const response = await prompts(
     [
       {
         type: 'confirm',
-        name: 'recursive',
-        message: pc.red('是否递归删除?'),
+        name: 'includeLockFile',
+        message: pc.red('是否删除 bun.lock 文件?'),
         initial: true
       }
     ],
@@ -40,48 +56,25 @@ try {
       onCancel: () => Promise.reject(false)
     }
   )
-  const depth = response.recursive ? recursiveDepth : 1
+  if (response.includeLockFile) {
+    cleanupList.push('bun.lock')
+  }
 
   console.log('\n')
-  await cleanupRecursive(rootPath, cleanSet, depth)
+  for (const path of cleanupList) {
+    const filePath = resolve(rootPath, path)
+    try {
+      spinner.start(`正在清理 => ${path}`)
+      await fs.rm(filePath, { force: true, recursive: true })
+      spinner.succeed(pc.green(`清理成功 => ${path}`))
+    } catch {
+      spinner.fail(pc.red(`清理失败 => ${path}`))
+    }
+  }
 
   console.log(`\n\n🧹${pc.green('---------- 清 理 完 成 ----------')}🧹\n\n`)
 } catch {
   console.log(`\n\n🧹${pc.red('---------- 清 理 取 消 ----------')}🧹\n\n`)
 } finally {
   spinner.stop()
-}
-
-async function cleanupRecursive(
-  dirPath: string,
-  cleanSet: Set<string>,
-  depth = 1
-) {
-  if (depth === 0) return
-
-  const subDirs = []
-  const currDir = await fs.opendir(dirPath)
-  for await (const dirent of currDir) {
-    const dirname = dirent.name
-    const filePath = resolve(dirPath, dirname)
-
-    if (cleanSet.has(dirname)) {
-      try {
-        spinner.start(`正在清理 => ${filePath}`)
-        await fs.rm(filePath, { force: true, recursive: true })
-        spinner.succeed(pc.green(`清理成功 => ${filePath}`))
-      } catch {
-        spinner.fail(pc.red(`清理失败 => ${filePath}`))
-      }
-      continue
-    }
-
-    if (dirent.isDirectory() && !ignoreDirs.includes(dirname)) {
-      subDirs.push(filePath)
-    }
-  }
-
-  for (const dir of subDirs) {
-    await cleanupRecursive(dir, cleanSet, depth - 1)
-  }
 }

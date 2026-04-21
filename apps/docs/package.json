@@ -6,9 +6,9 @@
     "#/*": "./app/*"
   },
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt generate",
+    "build:ssr": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
     "preview": "nuxt preview"
   },
   "dependencies": {
