@@ -1,9 +1,5 @@
 {
   "editor.formatOnPaste": false,
-  "explorer.fileNesting.patterns": {
-    "biome.json": "eslint.config.*, uno.config.*",
-    "bunfig.toml": "bun.lock"
-  },
   "editor.codeActionsOnSave": {
     "source.addMissingImports.ts": "never",
     "source.biome": "explicit",
