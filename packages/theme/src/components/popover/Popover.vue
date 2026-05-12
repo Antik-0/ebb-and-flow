@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { Timer } from '#/types'
 import type { PopoverProps } from './index.ts'
@@ -18,6 +18,8 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   delayClose: 200
 })
 
+const model = defineModel<boolean>('open')
+
 const slots = defineSlots<{
   default(): any[]
   trigger(): any[]
@@ -30,8 +32,6 @@ const hiddenStyle = computed(() => {
   if (!isHidden.value) return undefined
   return { opacity: 0, visibility: 'hidden' } as StyleValue
 })
-
-const model = defineModel<boolean>('open')
 
 const handleOpen = () => {
   model.value = true
@@ -136,7 +136,7 @@ onMounted(() => {
         {
           '--x': `${translate.x}px`,
           '--y': `${translate.y}px`,
-          position: fixed ? 'fixed' : 'absolute',
+          position: fixed ? 'fixed' : 'absolute'
         },
         hiddenStyle
       ]"

@@ -13,9 +13,21 @@
       stroke-linejoin="round"
       stroke-width="1"
     >
-      <path class="moon-star" d="M13 4h1.5M13 4h-1.5M13 4v1.5M13 4v-1.5" style="--delay: 1s" />
-      <path class="moon-star" d="M19 11h1.5M19 11h-1.5M19 11v1.5M19 11v-1.5" style="--delay: 2s" />
-      <path class="moon-star" d="M19 4h1.5M19 4h-1.5M19 4v1.5M19 4v-1.5" style="--delay: 0" />
+      <path
+        class="moon-star"
+        d="M13 4h1.5M13 4h-1.5M13 4v1.5M13 4v-1.5"
+        style="--delay: 1s"
+      />
+      <path
+        class="moon-star"
+        d="M19 11h1.5M19 11h-1.5M19 11v1.5M19 11v-1.5"
+        style="--delay: 2s"
+      />
+      <path
+        class="moon-star"
+        d="M19 4h1.5M19 4h-1.5M19 4v1.5M19 4v-1.5"
+        style="--delay: 0"
+      />
     </g>
     <path
       class="moon-body"

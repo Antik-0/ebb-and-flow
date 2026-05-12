@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { EbbHome, useResizeObserver } from 'ebb-theme'
 import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue'
 
@@ -47,5 +47,8 @@ onBeforeUnmount(() => {
 
 <template>
   <EbbHome />
-  <canvas ref="animation" class="size-screen pointer-events-none left-0 top-0 fixed z-1"></canvas>
+  <canvas
+    ref="animation"
+    class="size-screen pointer-events-none left-0 top-0 fixed z-1"
+  ></canvas>
 </template>

@@ -10,8 +10,8 @@ tags: ["技术", "Vue", "源码"]
 
 ```vue
 <script setup lang="ts">
-import type { Component, FunctionalComponent, App } from 'vue'
-import { createApp, h } from 'vue'
+import type { Component, FunctionalComponent, App } from "vue"
+import { createApp, h } from "vue"
 
 interface Props {
   msg: string
@@ -19,7 +19,7 @@ interface Props {
 
 const ShowMessage: FunctionalComponent<Props> = props => {
   const message = `组件接收消息：${props.msg}`
-  return h('div', message)
+  return h("div", message)
 }
 
 interface Options {
@@ -37,7 +37,7 @@ function createRender(component: Component, options: Options) {
     if (app !== null) return
 
     const target = document.getElementById(appendTo)!
-    const container = document.createElement('div')
+    const container = document.createElement("div")
 
     app = createApp(component, props)
     app.mount(container)
@@ -56,9 +56,9 @@ function createRender(component: Component, options: Options) {
 }
 
 const { mount, unmount } = createRender(ShowMessage, {
-  appendTo: 'render-app-view',
+  appendTo: "render-app-view",
   props: {
-    msg: 'hello,world'
+    msg: "hello,world"
   }
 })
 </script>
@@ -68,8 +68,8 @@ const { mount, unmount } = createRender(ShowMessage, {
 
 ```vue
 <script setup lang="ts">
-import type { Component, FunctionalComponent } from 'vue'
-import { createVNode, render, h } from 'vue'
+import type { Component, FunctionalComponent } from "vue"
+import { createVNode, render, h } from "vue"
 
 interface Props {
   msg: string
@@ -77,7 +77,7 @@ interface Props {
 
 const ShowMessage: FunctionalComponent<Props> = props => {
   const message = `组件接收消息：${props.msg}`
-  return h('div', message)
+  return h("div", message)
 }
 
 interface Options {
@@ -90,7 +90,7 @@ interface Options {
 function createRender(component: Component, options: Options) {
   const { appendTo, props } = options
 
-  const container = document.createElement('div')
+  const container = document.createElement("div")
   let mounted = false
 
   const mount = () => {
@@ -113,9 +113,9 @@ function createRender(component: Component, options: Options) {
 }
 
 const { mount, unmount } = createRender(ShowMessage, {
-  appendTo: 'render-vnode-view',
+  appendTo: "render-vnode-view",
   props: {
-    msg: 'hello,world'
+    msg: "hello,world"
   }
 })
 </script>

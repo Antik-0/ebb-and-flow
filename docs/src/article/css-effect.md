@@ -6,7 +6,6 @@ tags: ["杂谈", "CSS", "动效"]
 
 <PageMeta />
 
-
 ## SVG spinner
 
 这个 CSS 特效出自 [Making SVG Loading Spinners: An Interactive Guide](https://www.fffuel.co/svg-spinner/)
@@ -46,7 +45,8 @@ tags: ["杂谈", "CSS", "动效"]
 }
 
 @keyframes spin2 {
-  0%, 100% {
+  0%,
+  100% {
     stroke-dasharray: 1 314;
     stroke-dashoffset: 0;
   }
@@ -72,7 +72,6 @@ tags: ["杂谈", "CSS", "动效"]
 <div class="border-container">
   <div class="colorful-border"></div>
 </div>
-
 ```
 
 ```css
@@ -95,7 +94,7 @@ tags: ["杂谈", "CSS", "动效"]
 }
 
 .colorful-border::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -160,7 +159,8 @@ tags: ["杂谈", "CSS", "动效"]
     transparent 50%,
     #f8cde8 55%
   );
-  mask-image: linear-gradient(90deg, #000 2px, transparent 0),
+  mask-image:
+    linear-gradient(90deg, #000 2px, transparent 0),
     linear-gradient(180deg, #000 2px, transparent 0);
   mask-size: 60px 60px;
   mask-repeat: repeat;
@@ -280,7 +280,7 @@ tags: ["杂谈", "CSS", "动效"]
   box-shadow: 0 0 10px 4px hsl(263 100% 70% / 0.4);
 }
 
-.svg-loading[data-loading='true'] {
+.svg-loading[data-loading="true"] {
   animation: rotate 1s linear infinite;
 }
 ```

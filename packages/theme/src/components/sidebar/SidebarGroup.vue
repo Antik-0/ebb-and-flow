@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { MenuItem } from '#/types'
 import { computed } from 'vue'
 import { Icon } from '#/icons'
@@ -20,15 +20,14 @@ const isGrouped = computed(() => !!props.item.grouped)
           class="text-18px text-brand mr-2 flex h-8"
           :icon="item.icon"
         />
-        <span :aria-label="item.text" class="text-14px text-muted-foreground leading-8 font-700">
+        <span
+          :aria-label="item.text"
+          class="text-14px text-muted-foreground leading-8 font-700"
+        >
           {{ item.text }}
         </span>
       </div>
-      <section
-        v-for="(subItem, index) in item.items"
-        :key="index"
-        class="py-1"
-      >
+      <section v-for="(subItem, index) in item.items" :key="index" class="py-1">
         <SidebarItem :item="subItem" :level="1" />
       </section>
     </template>

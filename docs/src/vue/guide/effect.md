@@ -120,9 +120,9 @@ export const createDep = (
 
 ```ts
 export enum TrackOpTypes {
-  GET = 'get',
-  HAS = 'has',
-  ITERATE = 'iterate'
+  GET = "get",
+  HAS = "has",
+  ITERATE = "iterate"
 }
 ```
 
@@ -197,7 +197,7 @@ export function trackRefValue(ref: RefBase<any>) {
         ? {
             target: ref,
             type: TrackOpTypes.GET,
-            key: 'value'
+            key: "value"
           }
         : void 0
     )
@@ -269,10 +269,10 @@ const targetMap = new WeakMap<object, KeyToDepMap>()
 
 ```ts
 export enum TriggerOpTypes {
-  SET = 'set',
-  ADD = 'add', // Add 不是特指set.add方法，而是指代一个属性是新添加的情况
-  DELETE = 'delete',
-  CLEAR = 'clear'
+  SET = "set",
+  ADD = "add", // Add 不是特指set.add方法，而是指代一个属性是新添加的情况
+  DELETE = "delete",
+  CLEAR = "clear"
 }
 ```
 
@@ -373,7 +373,7 @@ export function triggerRefValue(
         ? {
             target: ref,
             type: TriggerOpTypes.SET,
-            key: 'value',
+            key: "value",
             newValue: newVal
           }
         : void 0
@@ -418,11 +418,11 @@ export function trigger(
     // trigger all effects for target
     // ✨调用MAP/Set的clear方法，依赖是集合所有的value，因此需要触发所有的effects
     deps = [...depsMap.values()]
-  } else if (key === 'length' && isArray(target)) {
+  } else if (key === "length" && isArray(target)) {
     // ✨如果数组的长度被修改了，依赖是length属性以及所有下标>=新长度的key
     const newLength = Number(newValue)
     depsMap.forEach((dep, key) => {
-      if (key === 'length' || (!isSymbol(key) && key >= newLength)) {
+      if (key === "length" || (!isSymbol(key) && key >= newLength)) {
         deps.push(dep)
       }
     })
@@ -447,7 +447,7 @@ export function trigger(
 
   if (type === TriggerOpTypes.CLEAR) {
     // 第1部分
-  } else if (key === 'length' && isArray(target)) {
+  } else if (key === "length" && isArray(target)) {
     // 第1部分
   } else {
     // schedule runs for SET | ADD | DELETE
@@ -471,7 +471,7 @@ export function trigger(
           }
         } else if (isIntegerKey(key)) {
           // new index added to array -> length changes
-          deps.push(depsMap.get('length'))
+          deps.push(depsMap.get("length"))
         }
         break
       case TriggerOpTypes.DELETE:

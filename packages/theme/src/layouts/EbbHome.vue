@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { navigateTo } from 'nuxt/app'
 import { onMounted, ref } from 'vue'
 import CodeMotion from '#/components/CodeMotion.vue'
@@ -36,10 +36,7 @@ onMounted(() => setHtmlLayout('home'))
       </h1>
 
       <h2 class="text-6 py-4">
-        <p
-          class="tagline flex gap-2 items-center"
-          :data-motion="taglineMotion"
-        >
+        <p class="tagline flex gap-2 items-center" :data-motion="taglineMotion">
           <FloatingText
             :text="theme.tagline"
             @motion-end="taglineMotion = 'fade'"

@@ -99,11 +99,11 @@ function createReactiveObject(
 
 ```ts
 export enum ReactiveFlags {
-  SKIP = '__v_skip', // 跳过代理 => markRaw()
-  IS_REACTIVE = '__v_isReactive', // 响应 => reactive() | shallowReactive()
-  IS_READONLY = '__v_isReadonly', // 只读 => readonly() | shallowReadonly()
-  IS_SHALLOW = '__v_isShallow', // 浅层 => shallowReactive() | shallowReadonly()
-  RAW = '__v_raw' // 返回代理的原始target => toRaw()
+  SKIP = "__v_skip", // 跳过代理 => markRaw()
+  IS_REACTIVE = "__v_isReactive", // 响应 => reactive() | shallowReactive()
+  IS_READONLY = "__v_isReadonly", // 只读 => readonly() | shallowReadonly()
+  IS_SHALLOW = "__v_isShallow", // 浅层 => shallowReactive() | shallowReadonly()
+  RAW = "__v_raw" // 返回代理的原始target => toRaw()
 }
 ```
 
@@ -130,7 +130,7 @@ console.log(shallowReadonly(b) === b) // false
 const a = reactive({ id: 1 })
 const b = readonly(a)
 watch(b, () => {
-  console.log('watch => ', b.id)
+  console.log("watch => ", b.id)
 })
 a.id += 1 // 触发watch
 b.id += 1 // 警告：b是一个只读对象，不会触发watch
@@ -151,13 +151,13 @@ enum TargetType {
 
 function targetTypeMap(rawType: string) {
   switch (rawType) {
-    case 'Object':
-    case 'Array':
+    case "Object":
+    case "Array":
       return TargetType.COMMON
-    case 'Map':
-    case 'Set':
-    case 'WeakMap':
-    case 'WeakSet':
+    case "Map":
+    case "Set":
+    case "WeakMap":
+    case "WeakSet":
       return TargetType.COLLECTION
     default:
       return TargetType.INVALID
@@ -199,14 +199,14 @@ import {
   readonlyHandlers,
   shallowReactiveHandlers,
   shallowReadonlyHandlers
-} from './baseHandlers'
+} from "./baseHandlers"
 // COLLECTION 类型的 handlers
 import {
   mutableCollectionHandlers,
   readonlyCollectionHandlers,
   shallowCollectionHandlers,
   shallowReadonlyCollectionHandlers
-} from './collectionHandlers'
+} from "./collectionHandlers"
 
 // ...
 

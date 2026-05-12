@@ -12,7 +12,7 @@ scope.run(() => {
 
   watch(doubled, () => console.log(doubled.value))
 
-  watchEffect(() => console.log('Count: ', doubled.value))
+  watchEffect(() => console.log("Count: ", doubled.value))
 })
 
 // 处理掉当前作用域内的所有 effect

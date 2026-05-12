@@ -22,7 +22,7 @@ tags: ["毛玻璃", "动效", "CSS"]
 
 ```vue
 <script setup lang="ts">
-import { type ShallowRef, shallowRef, onMounted, reactive } from 'vue'
+import { type ShallowRef, shallowRef, onMounted, reactive } from "vue"
 
 const glassEl = shallowRef<HTMLDivElement>()
 
@@ -42,8 +42,8 @@ function useMove(target: ShallowRef<HTMLElement | undefined | null>) {
     pressedDelta.x = e.offsetX
     pressedDelta.y = e.offsetY
 
-    targetElement.style.cursor = 'move'
-    document.addEventListener('pointermove', move)
+    targetElement.style.cursor = "move"
+    document.addEventListener("pointermove", move)
   }
 
   function move(e: PointerEvent) {
@@ -53,24 +53,24 @@ function useMove(target: ShallowRef<HTMLElement | undefined | null>) {
     let y = e.clientY - pressedDelta.y - containerRect.top
     y = Math.min(Math.max(0, y), containerRect.height - targetRect.height)
 
-    targetElement.style.top = y + 'px'
-    targetElement.style.left = x + 'px'
+    targetElement.style.top = y + "px"
+    targetElement.style.left = x + "px"
   }
 
   function end() {
     pressedDelta.x = 0
     pressedDelta.y = 0
 
-    targetElement.style.cursor = ''
-    document.removeEventListener('pointermove', move)
+    targetElement.style.cursor = ""
+    document.removeEventListener("pointermove", move)
   }
 
   onMounted(() => {
     targetElement = target.value!
-    containerElement = document.querySelector('.glass-container')!
+    containerElement = document.querySelector(".glass-container")!
 
-    targetElement.addEventListener('pointerdown', start)
-    document.addEventListener('pointerup', end)
+    targetElement.addEventListener("pointerdown", start)
+    document.addEventListener("pointerup", end)
   })
 }
 
@@ -93,7 +93,7 @@ useMove(glassEl)
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 12px;
-  background: url('../images/css-glass-bg.png') no-repeat;
+  background: url("../images/css-glass-bg.png") no-repeat;
   background-size: cover;
 }
 
@@ -116,11 +116,11 @@ useMove(glassEl)
 }
 
 .glass::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: url('/glass-mask.png') no-repeat;
+  background: url("/glass-mask.png") no-repeat;
   background-size: cover;
   opacity: 0.05;
 }

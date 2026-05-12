@@ -57,12 +57,12 @@ function get(
 const raw = new Map()
 const reactiveProxy = reactive(raw)
 watchEffect(() => {
-  console.log('>>>', reactiveProxy.get(1))
+  console.log(">>>", reactiveProxy.get(1))
 })
 
 const readonlyProxy = readonly(reactiveProxy)
 watchEffect(() => {
-  console.log('>>>', readonlyProxy.get(1))
+  console.log(">>>", readonlyProxy.get(1))
 })
 ```
 
@@ -78,7 +78,7 @@ const reactiveProxy = reactive(raw)
 const readonlyProxy = readonly(reactiveProxy)
 
 watchEffect(() => {
-  console.log('>>>', readonlyProxy.get(1))
+  console.log(">>>", readonlyProxy.get(1))
 })
 
 setTimeout(() => {
@@ -230,7 +230,7 @@ function size(target: IterableCollections, isReadonly = false) {
 
   // ✨注意track的key为ITERATE_KEY，这是一个常量，而不是size
   !isReadonly && track(toRaw(target), TrackOpTypes.ITERATE, ITERATE_KEY)
-  return Reflect.get(target, 'size', target)
+  return Reflect.get(target, "size", target)
 }
 ```
 
@@ -324,10 +324,10 @@ function createIterableMethod(
 
     // ✨Map的forof循环等价于entries
     const isPair =
-      method === 'entries' || (method === Symbol.iterator && targetIsMap)
+      method === "entries" || (method === Symbol.iterator && targetIsMap)
 
     // ✨调用Map.keys()的情况
-    const isKeyOnly = method === 'keys' && targetIsMap
+    const isKeyOnly = method === "keys" && targetIsMap
 
     // ✨获取方法的迭代器Iterator
     const innerIterator = target[method](...args)
@@ -380,8 +380,8 @@ function createReadonlyMethod(type: TriggerOpTypes): Function {
     return type === TriggerOpTypes.DELETE
       ? false
       : type === TriggerOpTypes.CLEAR
-      ? undefined
-      : this
+        ? undefined
+        : this
   }
 }
 ```
@@ -495,9 +495,9 @@ function createInstrumentations() {
 
   // ✨迭代器方法重载
   const iteratorMethods = [
-    'keys',
-    'values',
-    'entries',
+    "keys",
+    "values",
+    "entries",
     Symbol.iterator
   ] as const
 
@@ -538,8 +538,8 @@ function createInstrumentationGetter(isReadonly: boolean, shallow: boolean) {
       ? shallowReadonlyInstrumentations
       : shallowInstrumentations
     : isReadonly
-    ? readonlyInstrumentations
-    : mutableInstrumentations
+      ? readonlyInstrumentations
+      : mutableInstrumentations
 
   // ✨proxy.get的统一处理
   return (

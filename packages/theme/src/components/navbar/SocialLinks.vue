@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { Component } from 'vue'
 import { h, shallowRef } from 'vue'
 import { Github } from '#/icons'

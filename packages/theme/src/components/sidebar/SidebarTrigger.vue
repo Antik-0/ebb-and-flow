@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { useSidebarControl } from '#/controller/sidebar.ts'
 
 const { isOpen, toggle } = useSidebarControl()

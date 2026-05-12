@@ -19,7 +19,7 @@ export function computed<T>(
     getter = getterOrOptions
     setter = __DEV__
       ? () => {
-          warn('Write operation failed: computed value is readonly')
+          warn("Write operation failed: computed value is readonly")
         }
       : NOOP
   } else {

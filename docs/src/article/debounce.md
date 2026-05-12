@@ -116,7 +116,7 @@ export function debounce(
 ```
 
 ```ts [throttle]
-type ThrottleOptions = Omit<DebounceOptions, 'maxWait'>
+type ThrottleOptions = Omit<DebounceOptions, "maxWait">
 
 export function throttle(
   func: Function,

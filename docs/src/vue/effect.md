@@ -9,12 +9,12 @@ tags: ["Vue 源码解析", "Effect"]
 ## 源码
 
 ```ts
-import { extend, hasChanged } from '@vue/shared'
-import type { ComputedRefImpl } from './computed'
-import type { TrackOpTypes, TriggerOpTypes } from './constants'
-import { type Link, globalVersion } from './dep'
-import { activeEffectScope } from './effectScope'
-import { warn } from './warning'
+import { extend, hasChanged } from "@vue/shared"
+import type { ComputedRefImpl } from "./computed"
+import type { TrackOpTypes, TriggerOpTypes } from "./constants"
+import { type Link, globalVersion } from "./dep"
+import { activeEffectScope } from "./effectScope"
+import { warn } from "./warning"
 
 export type EffectScheduler = (...args: any[]) => any
 
@@ -210,8 +210,8 @@ export class ReactiveEffect<T = any>
       if (__DEV__ && activeSub !== this) {
         // ✨内部 bug 提示，effect 上下文不对
         warn(
-          'Active effect was not restored correctly - ' +
-            'this is likely a Vue internal bug.'
+          "Active effect was not restored correctly - " +
+            "this is likely a Vue internal bug."
         )
       }
 

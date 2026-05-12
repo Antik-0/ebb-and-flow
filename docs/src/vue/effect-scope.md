@@ -9,8 +9,8 @@ tags: ["Vue 源码解析", "EffectScope"]
 ## 源码
 
 ```ts
-import type { ReactiveEffect } from './effect'
-import { warn } from './warning'
+import type { ReactiveEffect } from "./effect"
+import { warn } from "./warning"
 
 export let activeEffectScope: EffectScope | undefined
 

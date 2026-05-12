@@ -13,7 +13,7 @@ tags: ["动效", "JS"]
 <CodeGroup>
 
 ```ts [useCount]
-import { ref, toValue, computed } from 'vue'
+import { ref, toValue, computed } from "vue"
 
 interface Options {
   from: number
@@ -140,7 +140,7 @@ export function useCountDown(count: number, options: CountDownOptions = {}) {
     if (stateVal === 3) {
       return finishText || countVal
     }
-    return countVal + 's'
+    return countVal + "s"
   })
 
   return {

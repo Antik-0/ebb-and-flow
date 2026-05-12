@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { isExternalLink } from '@repo/utils'
 import { computed, resolveComponent } from 'vue'
 

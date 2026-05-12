@@ -119,7 +119,7 @@ Object.assign(router, {
     // 主页滑出
     const base = site.value.base
     const isBase = route.path === base
-    if (isBase && to === withBase('/guide/reactive')) {
+    if (isBase && to === withBase("/guide/reactive")) {
       viewTransitionStart(true)
       // 为了保证能正确获取当前路由的快照，延迟一点时间再进行路由跳转
       return await sleep(100)
@@ -136,14 +136,14 @@ Object.assign(router, {
 
 ```ts [useViewTransition.ts]
 const enableTransitions = () =>
-  'startViewTransition' in document &&
-  window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+  "startViewTransition" in document &&
+  window.matchMedia("(prefers-reduced-motion: no-preference)").matches
 
 export function useViewTransition() {
   async function viewTransitionStart(out: boolean) {
     if (!enableTransitions()) return
 
-    const transitionClass = out ? 'home-slide-out' : 'home-slide-in'
+    const transitionClass = out ? "home-slide-out" : "home-slide-in"
     const transition = (document as any).startViewTransition(() => {
       document.documentElement.classList.add(transitionClass)
     })

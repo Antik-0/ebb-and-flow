@@ -16,9 +16,9 @@ import {
   toRaw,
   toReactive,
   toReadonly
-} from './reactive'
-import { ITERATE_KEY, MAP_KEY_ITERATE_KEY, track, trigger } from './dep'
-import { ReactiveFlags, TrackOpTypes, TriggerOpTypes } from './constants'
+} from "./reactive"
+import { ITERATE_KEY, MAP_KEY_ITERATE_KEY, track, trigger } from "./dep"
+import { ReactiveFlags, TrackOpTypes, TriggerOpTypes } from "./constants"
 import {
   capitalize,
   extend,
@@ -26,8 +26,8 @@ import {
   hasOwn,
   isMap,
   toRawType
-} from '@vue/shared'
-import { warn } from './warning'
+} from "@vue/shared"
+import { warn } from "./warning"
 
 type CollectionTypes = IterableCollections | WeakCollections
 
@@ -60,9 +60,9 @@ function createIterableMethod(
 
     // ✨用 forof 循环遍历 Map 类型，或者对 Map 解构的效果等于 Map.entries()
     const isPair =
-      method === 'entries' || (method === Symbol.iterator && targetIsMap)
+      method === "entries" || (method === Symbol.iterator && targetIsMap)
 
-    const isKeyOnly = method === 'keys' && targetIsMap
+    const isKeyOnly = method === "keys" && targetIsMap
     const innerIterator = target[method](...args)
     const wrap = isShallow ? toShallow : isReadonly ? toReadonly : toReactive
 
@@ -111,8 +111,8 @@ function createReadonlyMethod(type: TriggerOpTypes): Function {
     return type === TriggerOpTypes.DELETE
       ? false
       : type === TriggerOpTypes.CLEAR
-      ? undefined
-      : this
+        ? undefined
+        : this
   }
 }
 
@@ -162,7 +162,7 @@ function createInstrumentations(
     get size() {
       const target = (this as unknown as IterableCollections)[ReactiveFlags.RAW]
       !readonly && track(toRaw(target), TrackOpTypes.ITERATE, ITERATE_KEY)
-      return Reflect.get(target, 'size', target)
+      return Reflect.get(target, "size", target)
     },
     has(this: CollectionTypes, key: unknown): boolean {
       // ✨逻辑同 get
@@ -292,9 +292,9 @@ function createInstrumentations(
   )
 
   const iteratorMethods = [
-    'keys',
-    'values',
-    'entries',
+    "keys",
+    "values",
+    "entries",
     Symbol.iterator
   ] as const
 

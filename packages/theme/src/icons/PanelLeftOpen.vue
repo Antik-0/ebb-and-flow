@@ -12,13 +12,7 @@
       stroke-linejoin="round"
       stroke-width="2"
     >
-      <rect
-        height="18"
-        rx="2"
-        width="18"
-        x="3"
-        y="3"
-      />
+      <rect height="18" rx="2" width="18" x="3" y="3" />
       <path d="M9 3v18m5-12l3 3l-3 3" />
     </g>
   </svg>

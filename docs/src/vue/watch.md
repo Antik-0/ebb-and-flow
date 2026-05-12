@@ -20,10 +20,10 @@ import {
   isPlainObject,
   isSet,
   remove
-} from '@vue/shared'
-import { warn } from './warning'
-import type { ComputedRef } from './computed'
-import { ReactiveFlags } from './constants'
+} from "@vue/shared"
+import { warn } from "./warning"
+import type { ComputedRef } from "./computed"
+import { ReactiveFlags } from "./constants"
 import {
   type DebuggerOptions,
   EffectFlags,
@@ -31,10 +31,10 @@ import {
   ReactiveEffect,
   pauseTracking,
   resetTracking
-} from './effect'
-import { isReactive, isShallow } from './reactive'
-import { type Ref, isRef } from './ref'
-import { getCurrentScope } from './effectScope'
+} from "./effect"
+import { isReactive, isShallow } from "./reactive"
+import { type Ref, isRef } from "./ref"
+import { getCurrentScope } from "./effectScope"
 
 // These errors were transferred from `packages/runtime-core/src/errorHandling.ts`
 // to @vue/reactivity to allow co-location with the moved base watch logic, hence
@@ -323,8 +323,8 @@ export function watch(
             oldValue === INITIAL_WATCHER_VALUE
               ? undefined
               : isMultiSource && oldValue[0] === INITIAL_WATCHER_VALUE
-              ? []
-              : oldValue,
+                ? []
+                : oldValue,
             boundCleanup
           ]
 

@@ -1,49 +1,19 @@
 {
   "name": "ebb-and-flow",
   "version": "2.0.0",
-  "description": "潮起潮落的个人博客",
   "private": true,
-  "type": "module",
-  "packageManager": "bun@1.3.12",
-  "scripts": {
-    "boot": "bun install && bun stub",
-    "build": "turbo run build --filter=docs",
-    "build:next": "turbo run build --filter=docs-next",
-    "clean": "bun run ./scripts/cleanup.ts",
-    "compress": "bun run ./scripts/compress.ts",
-    "dev": "turbo run dev --filter=docs",
-    "dev:next": "turbo run dev --filter=docs-next",
-    "ebb-docs": "bun run --elide-lines 0 --filter ebb-docs source",
-    "lint": "biome check --fix && bun run eslint",
-    "lint:debug": "bunx @eslint/config-inspector@latest",
-    "stub": "turbo run stub",
-    "up-deps": "bun run ./scripts/upgrade.ts"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,vue,json}": ["bun biome check --fix"]
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
-    "@config/eslint": "workspace:*",
-    "@config/tsconfig": "workspace:*",
-    "@config/unocss": "workspace:*",
-    "@types/bun": "^1.3.13",
-    "eslint": "catalog:",
-    "lint-staged": "^17.0.4",
-    "ora": "^9.4.0",
-    "picocolors": "^1.1.1",
-    "prompts": "^2.4.2",
-    "turbo": "^2.9.12",
-    "unbuild": "^3.6.1",
-    "unocss": "catalog:"
-  },
+  "description": "潮起潮落的个人博客",
   "workspaces": {
-    "packages": ["docs", "apps/*", "packages/*", "packages/configs/*"],
+    "packages": [
+      "docs",
+      "apps/*",
+      "packages/*",
+      "packages/configs/*"
+    ],
     "catalog": {
       "@unocss/nuxt": "^66.6.8",
       "@unocss/postcss": "^66.6.8",
       "@unocss/reset": "^66.6.8",
-      "eslint": "^10.3.0",
       "iconify-icon": "^3.0.2",
       "motion": "^12.38.0",
       "motion-v": "^2.2.1",
@@ -55,5 +25,38 @@
       "unocss": "^66.6.8",
       "vue": "^3.5.34"
     }
-  }
+  },
+  "type": "module",
+  "scripts": {
+    "boot": "bun install",
+    "build": "turbo run build --filter=docs",
+    "build:next": "turbo run build --filter=docs-next",
+    "check": "oxfmt && biome check --fix",
+    "clean": "bun run ./scripts/cleanup.ts",
+    "compress": "bun run ./scripts/compress.ts",
+    "dev": "turbo run dev --filter=docs",
+    "dev:next": "turbo run dev --filter=docs-next",
+    "ebb-docs": "bun run --elide-lines 0 --filter ebb-docs source",
+    "up-deps": "bun run ./scripts/upgrade.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
+    "@config/tsconfig": "workspace:*",
+    "@config/unocss": "workspace:*",
+    "@types/bun": "^1.3.13",
+    "lint-staged": "^17.0.4",
+    "ora": "^9.4.0",
+    "oxfmt": "^0.49.0",
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2",
+    "turbo": "^2.9.12",
+    "unbuild": "^3.6.1",
+    "unocss": "catalog:"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css,vue,json}": [
+      "bun run check"
+    ]
+  },
+  "packageManager": "bun@1.3.13"
 }

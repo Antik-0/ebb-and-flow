@@ -29,56 +29,16 @@
       />
     </g>
     <mask id="SVGu6kfobeu">
-      <circle
-        cx="12"
-        cy="12"
-        fill="#fff"
-        r="12"
-      />
-      <circle
-        cx="18"
-        cy="6"
-        fill="#fff"
-        r="12"
-      >
-        <animate
-          attributeName="cx"
-          dur="0.4s"
-          fill="freeze"
-          values="18;22"
-        />
-        <animate
-          attributeName="cy"
-          dur="0.4s"
-          fill="freeze"
-          values="6;2"
-        />
-        <animate
-          attributeName="r"
-          dur="0.4s"
-          fill="freeze"
-          values="12;3"
-        />
+      <circle cx="12" cy="12" fill="#fff" r="12" />
+      <circle cx="18" cy="6" fill="#fff" r="12">
+        <animate attributeName="cx" dur="0.4s" fill="freeze" values="18;22" />
+        <animate attributeName="cy" dur="0.4s" fill="freeze" values="6;2" />
+        <animate attributeName="r" dur="0.4s" fill="freeze" values="12;3" />
       </circle>
       <circle cx="18" cy="6" r="10">
-        <animate
-          attributeName="cx"
-          dur="0.4s"
-          fill="freeze"
-          values="18;22"
-        />
-        <animate
-          attributeName="cy"
-          dur="0.4s"
-          fill="freeze"
-          values="6;2"
-        />
-        <animate
-          attributeName="r"
-          dur="0.4s"
-          fill="freeze"
-          values="10;1"
-        />
+        <animate attributeName="cx" dur="0.4s" fill="freeze" values="18;22" />
+        <animate attributeName="cy" dur="0.4s" fill="freeze" values="6;2" />
+        <animate attributeName="r" dur="0.4s" fill="freeze" values="10;1" />
       </circle>
     </mask>
     <circle

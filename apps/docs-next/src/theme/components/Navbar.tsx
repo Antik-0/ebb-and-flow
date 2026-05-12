@@ -6,8 +6,8 @@ import { Menu } from '../icons'
 import { useTheme } from '../theme'
 import { Avatar, CubeAvatar, GlassMask } from './Effect'
 import { Menubar } from './menubar/Menubar'
-import { SocialLinks } from './SocialLinks'
 import { SidebarTrigger } from './sidebar/SidebarTrigger'
+import { SocialLinks } from './SocialLinks'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Navbar() {

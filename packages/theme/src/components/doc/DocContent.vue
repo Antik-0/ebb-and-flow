@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { Page } from '#/types'
 import { watch } from 'vue'
 import { setPageData } from '#/controller/layout'
@@ -28,7 +28,9 @@ useTocMotion()
     </div>
 
     <div class="pl-4 w-64" data-role="doc-aside">
-      <aside class="pb-12 pt-[calc(var(--h-navbar)+48px)] flex-col w-56 inset-y-0 fixed">
+      <aside
+        class="pb-12 pt-[calc(var(--h-navbar)+48px)] flex-col w-56 inset-y-0 fixed"
+      >
         <div
           :class="[
             'flex-col flex-1 overflow-x-hidden overflow-y-auto',

@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { onBeforeUnmount, onMounted, shallowRef, watch } from 'vue'
 import { useAnimationFrame } from '#/hooks'
 

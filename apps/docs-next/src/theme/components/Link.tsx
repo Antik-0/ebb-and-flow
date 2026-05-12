@@ -5,8 +5,7 @@ import { isExternalLink, isString } from '@repo/utils'
 import NextLink from 'next/link'
 
 interface EbbLinkProps
-  extends Omit<NextLinkProps, 'href'>,
-    WithHTMLProps<HTMLAnchorElement> {
+  extends Omit<NextLinkProps, 'href'>, WithHTMLProps<HTMLAnchorElement> {
   href?: NextLinkProps['href']
 }
 

@@ -2,11 +2,11 @@
   "name": "@config/tsconfig",
   "private": true,
   "license": "MIT",
-  "type": "module",
   "files": [
     "tsconfig.base.json",
     "tsconfig.app.json",
     "tsconfig.node.json",
     "tsconfig.repo.json"
-  ]
+  ],
+  "type": "module"
 }

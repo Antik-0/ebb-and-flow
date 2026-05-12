@@ -15,8 +15,8 @@ import {
   isArray,
   isFunction,
   isObject
-} from '@vue/shared'
-import { Dep, getDepFromReactive } from './dep'
+} from "@vue/shared"
+import { Dep, getDepFromReactive } from "./dep"
 import {
   type Builtin,
   type ShallowReactiveMarker,
@@ -26,10 +26,10 @@ import {
   isShallow,
   toRaw,
   toReactive
-} from './reactive'
-import type { ComputedRef, WritableComputedRef } from './computed'
-import { ReactiveFlags, TrackOpTypes, TriggerOpTypes } from './constants'
-import { warn } from './warning'
+} from "./reactive"
+import type { ComputedRef, WritableComputedRef } from "./computed"
+import { ReactiveFlags, TrackOpTypes, TriggerOpTypes } from "./constants"
+import { warn } from "./warning"
 
 declare const RefSymbol: unique symbol
 export declare const RawSymbol: unique symbol
@@ -139,7 +139,7 @@ class RefImpl<T = any> {
       this.dep.track({
         target: this,
         type: TrackOpTypes.GET,
-        key: 'value'
+        key: "value"
       })
     } else {
       this.dep.track()
@@ -163,7 +163,7 @@ class RefImpl<T = any> {
         this.dep.trigger({
           target: this,
           type: TriggerOpTypes.SET,
-          key: 'value',
+          key: "value",
           newValue,
           oldValue
         })
@@ -207,7 +207,7 @@ export function triggerRef(ref: Ref): void {
       ;(ref as unknown as RefImpl).dep.trigger({
         target: ref,
         type: TriggerOpTypes.SET,
-        key: 'value',
+        key: "value",
         newValue: (ref as unknown as RefImpl)._value
       })
     } else {
@@ -308,8 +308,8 @@ export type CustomRefFactory<T> = (
 class CustomRefImpl<T> {
   public dep: Dep
 
-  private readonly _get: ReturnType<CustomRefFactory<T>>['get']
-  private readonly _set: ReturnType<CustomRefFactory<T>>['set']
+  private readonly _get: ReturnType<CustomRefFactory<T>>["get"]
+  private readonly _set: ReturnType<CustomRefFactory<T>>["set"]
 
   public readonly [ReactiveFlags.IS_REF] = true
 
@@ -457,8 +457,8 @@ export function toRef<T>(
 ): T extends () => infer R
   ? Readonly<Ref<R>>
   : T extends Ref
-  ? T
-  : Ref<UnwrapRef<T>>
+    ? T
+    : Ref<UnwrapRef<T>>
 export function toRef<T extends object, K extends keyof T>(
   object: T,
   key: K
@@ -516,11 +516,12 @@ export type ShallowUnwrapRef<T> = {
 
 type DistributeRef<T> = T extends Ref<infer V, unknown> ? V : T
 
-export type UnwrapRef<T> = T extends ShallowRef<infer V, unknown>
-  ? V
-  : T extends Ref<infer V, unknown>
-  ? UnwrapRefSimple<V>
-  : UnwrapRefSimple<T>
+export type UnwrapRef<T> =
+  T extends ShallowRef<infer V, unknown>
+    ? V
+    : T extends Ref<infer V, unknown>
+      ? UnwrapRefSimple<V>
+      : UnwrapRefSimple<T>
 
 export type UnwrapRefSimple<T> = T extends
   | Builtin
@@ -529,18 +530,19 @@ export type UnwrapRefSimple<T> = T extends
   | { [RawSymbol]?: true }
   ? T
   : T extends Map<infer K, infer V>
-  ? Map<K, UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Map<any, any>>>
-  : T extends WeakMap<infer K, infer V>
-  ? WeakMap<K, UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof WeakMap<any, any>>>
-  : T extends Set<infer V>
-  ? Set<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Set<any>>>
-  : T extends WeakSet<infer V>
-  ? WeakSet<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof WeakSet<any>>>
-  : T extends ReadonlyArray<any>
-  ? { [K in keyof T]: UnwrapRefSimple<T[K]> }
-  : T extends object & { [ShallowReactiveMarker]?: never }
-  ? {
-      [P in keyof T]: P extends symbol ? T[P] : UnwrapRef<T[P]>
-    }
-  : T
+    ? Map<K, UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Map<any, any>>>
+    : T extends WeakMap<infer K, infer V>
+      ? WeakMap<K, UnwrapRefSimple<V>> &
+          UnwrapRef<Omit<T, keyof WeakMap<any, any>>>
+      : T extends Set<infer V>
+        ? Set<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Set<any>>>
+        : T extends WeakSet<infer V>
+          ? WeakSet<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof WeakSet<any>>>
+          : T extends ReadonlyArray<any>
+            ? { [K in keyof T]: UnwrapRefSimple<T[K]> }
+            : T extends object & { [ShallowReactiveMarker]?: never }
+              ? {
+                  [P in keyof T]: P extends symbol ? T[P] : UnwrapRef<T[P]>
+                }
+              : T
 ````

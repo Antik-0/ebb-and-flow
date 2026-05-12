@@ -9,11 +9,11 @@ tags: ["Vue 源码解析", "数组代理"]
 ## 源码
 
 ```ts
-import { TrackOpTypes } from './constants'
-import { endBatch, pauseTracking, resetTracking, startBatch } from './effect'
-import { isProxy, isShallow, toRaw, toReactive } from './reactive'
-import { ARRAY_ITERATE_KEY, track } from './dep'
-import { isArray } from '@vue/shared'
+import { TrackOpTypes } from "./constants"
+import { endBatch, pauseTracking, resetTracking, startBatch } from "./effect"
+import { isProxy, isShallow, toRaw, toReactive } from "./reactive"
+import { ARRAY_ITERATE_KEY, track } from "./dep"
+import { isArray } from "@vue/shared"
 
 /**
  * ✨创建响应性数组，若入参经过reactive/readonly包装，则对每个数组成员进行响应式转换，否则返回原始数据
@@ -50,7 +50,7 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
   },
 
   entries() {
-    return iterator(this, 'entries', (value: [number, unknown]) => {
+    return iterator(this, "entries", (value: [number, unknown]) => {
       value[1] = toReactive(value[1])
       return value
     })
@@ -60,42 +60,42 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
     fn: (item: unknown, index: number, array: unknown[]) => unknown,
     thisArg?: unknown
   ) {
-    return apply(this, 'every', fn, thisArg, undefined, arguments)
+    return apply(this, "every", fn, thisArg, undefined, arguments)
   },
 
   filter(
     fn: (item: unknown, index: number, array: unknown[]) => unknown,
     thisArg?: unknown
   ) {
-    return apply(this, 'filter', fn, thisArg, v => v.map(toReactive), arguments)
+    return apply(this, "filter", fn, thisArg, v => v.map(toReactive), arguments)
   },
 
   find(
     fn: (item: unknown, index: number, array: unknown[]) => boolean,
     thisArg?: unknown
   ) {
-    return apply(this, 'find', fn, thisArg, toReactive, arguments)
+    return apply(this, "find", fn, thisArg, toReactive, arguments)
   },
 
   findIndex(
     fn: (item: unknown, index: number, array: unknown[]) => boolean,
     thisArg?: unknown
   ) {
-    return apply(this, 'findIndex', fn, thisArg, undefined, arguments)
+    return apply(this, "findIndex", fn, thisArg, undefined, arguments)
   },
 
   findLast(
     fn: (item: unknown, index: number, array: unknown[]) => boolean,
     thisArg?: unknown
   ) {
-    return apply(this, 'findLast', fn, thisArg, toReactive, arguments)
+    return apply(this, "findLast", fn, thisArg, toReactive, arguments)
   },
 
   findLastIndex(
     fn: (item: unknown, index: number, array: unknown[]) => boolean,
     thisArg?: unknown
   ) {
-    return apply(this, 'findLastIndex', fn, thisArg, undefined, arguments)
+    return apply(this, "findLastIndex", fn, thisArg, undefined, arguments)
   },
 
   // ✨flat，flatMap 底层走的遍历器接口，因而无需重载
@@ -105,15 +105,15 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
     fn: (item: unknown, index: number, array: unknown[]) => unknown,
     thisArg?: unknown
   ) {
-    return apply(this, 'forEach', fn, thisArg, undefined, arguments)
+    return apply(this, "forEach", fn, thisArg, undefined, arguments)
   },
 
   includes(...args: unknown[]) {
-    return searchProxy(this, 'includes', args)
+    return searchProxy(this, "includes", args)
   },
 
   indexOf(...args: unknown[]) {
-    return searchProxy(this, 'indexOf', args)
+    return searchProxy(this, "indexOf", args)
   },
 
   join(separator?: string) {
@@ -124,22 +124,22 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
   // keys() iterator only reads `length`, no optimisation required
 
   lastIndexOf(...args: unknown[]) {
-    return searchProxy(this, 'lastIndexOf', args)
+    return searchProxy(this, "lastIndexOf", args)
   },
 
   map(
     fn: (item: unknown, index: number, array: unknown[]) => unknown,
     thisArg?: unknown
   ) {
-    return apply(this, 'map', fn, thisArg, undefined, arguments)
+    return apply(this, "map", fn, thisArg, undefined, arguments)
   },
 
   pop() {
-    return noTracking(this, 'pop')
+    return noTracking(this, "pop")
   },
 
   push(...args: unknown[]) {
-    return noTracking(this, 'push', args)
+    return noTracking(this, "push", args)
   },
 
   reduce(
@@ -151,7 +151,7 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
     ) => unknown,
     ...args: unknown[]
   ) {
-    return reduce(this, 'reduce', fn, args)
+    return reduce(this, "reduce", fn, args)
   },
 
   reduceRight(
@@ -163,11 +163,11 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
     ) => unknown,
     ...args: unknown[]
   ) {
-    return reduce(this, 'reduceRight', fn, args)
+    return reduce(this, "reduceRight", fn, args)
   },
 
   shift() {
-    return noTracking(this, 'shift')
+    return noTracking(this, "shift")
   },
 
   // slice could use ARRAY_ITERATE but also seems to beg for range tracking
@@ -176,11 +176,11 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
     fn: (item: unknown, index: number, array: unknown[]) => unknown,
     thisArg?: unknown
   ) {
-    return apply(this, 'some', fn, thisArg, undefined, arguments)
+    return apply(this, "some", fn, thisArg, undefined, arguments)
   },
 
   splice(...args: unknown[]) {
-    return noTracking(this, 'splice', args)
+    return noTracking(this, "splice", args)
   },
 
   toReversed() {
@@ -199,11 +199,11 @@ export const arrayInstrumentations: Record<string | symbol, Function> = <any>{
   },
 
   unshift(...args: unknown[]) {
-    return noTracking(this, 'unshift', args)
+    return noTracking(this, "unshift", args)
   },
 
   values() {
-    return iterator(this, 'values', toReactive)
+    return iterator(this, "values", toReactive)
   }
 }
 
@@ -229,7 +229,7 @@ function iterator(
   // ✨注意这里，对整个数据对象只 track 一次
   const arr = shallowReadArray(self)
   const iter = (arr[method] as any)() as IterableIterator<unknown> & {
-    _next: IterableIterator<unknown>['next']
+    _next: IterableIterator<unknown>["next"]
   }
   if (arr !== self && !isShallow(self)) {
     // ✨对每个生成器的返回值进行响应式转换
@@ -247,7 +247,7 @@ function iterator(
 
 // in the codebase we enforce es2016, but user code may run in environments
 // higher than that
-type ArrayMethods = keyof Array<any> | 'findLast' | 'findLastIndex'
+type ArrayMethods = keyof Array<any> | "findLast" | "findLastIndex"
 
 // ✨数组的方法都是部署在 Array 原型上的
 const arrayProto = Array.prototype

@@ -32,7 +32,10 @@ class RefImpl<T> {
   public dep?: Dep = undefined
   public readonly __v_isRef = true
 
-  constructor(value: T, public readonly __v_isShallow: boolean) {
+  constructor(
+    value: T,
+    public readonly __v_isShallow: boolean
+  ) {
     // ✨reactive mode 保存value的raw版本，返回value的reactive版本
     // ✨shallow mode 不做任何转换
     this._rawValue = __v_isShallow ? value : toRaw(value)
@@ -132,8 +135,8 @@ export function customRef<T>(factory: CustomRefFactory<T>): Ref<T> {
 
 class CustomRefImpl<T> {
   public dep?: Dep = undefined
-  private readonly _get: ReturnType<CustomRefFactory<T>>['get']
-  private readonly _set: ReturnType<CustomRefFactory<T>>['set']
+  private readonly _get: ReturnType<CustomRefFactory<T>>["get"]
+  private readonly _set: ReturnType<CustomRefFactory<T>>["set"]
   public readonly __v_isRef = true
 
   constructor(factory: CustomRefFactory<T>) {
@@ -245,9 +248,9 @@ class ObjectRefImpl<T extends object, K extends keyof T> {
 通过观察 `ObjectRefImpl` 的 `getter/setter`，我们可以发现一个点，就是：`ObjectRefImpl` 内部也没有进行 `track/trigger` 操作，其 `get/set` 操作都是直接作用在原对象上，因此如果传入的 `object` 参数不是一个 `reactive`，那么返回的 `ref` 实例也就不是响应式的。
 
 ```ts
-const target = toRef({ id: 1 }, 'id')
+const target = toRef({ id: 1 }, "id")
 watchEffect(() => {
-  console.log('>>>', target.value)
+  console.log(">>>", target.value)
 })
 // 不会再次触发watchEffect，因为target不是一个响应式ref
 target.value = 100

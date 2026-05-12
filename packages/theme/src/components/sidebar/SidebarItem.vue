@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { MenuItem } from '#/types'
 import { computed } from 'vue'
 import Link from '#/components/Link.vue'
@@ -30,20 +30,14 @@ const isActive = useMenuNodeIsActive(props.item.index)
         :data-active="isActive"
         type="button"
       >
-        <Icon
-          v-if="item.icon"
-          class="text-brand mr-2 h-8"
-          :icon="item.icon"
-        />
+        <Icon v-if="item.icon" class="text-brand mr-2 h-8" :icon="item.icon" />
         <span
           class="text-sm text-accent-foreground leading-8 font-700 flex-1 text-nowrap truncate"
           data-role="text"
         >
           {{ item.text }}
         </span>
-        <span
-          class="text-4.5 text-muted-foreground flex size-6 flex-center"
-        >
+        <span class="text-4.5 text-muted-foreground flex size-6 flex-center">
           <ChevronRight class="transition-transform duration-300" />
         </span>
       </button>
@@ -58,21 +52,12 @@ const isActive = useMenuNodeIsActive(props.item.index)
     </AccordionContent>
   </Accordion>
 
-  <div
-    v-else
-    class="sidebar-item"
-    :data-active="isActive"
-    data-role="route"
-  >
+  <div v-else class="sidebar-item" :data-active="isActive" data-role="route">
     <Link
       class="flex gap-2 truncate transition-transform duration-300 items-center"
       :href="item.link"
     >
-      <Icon
-        v-if="item.icon"
-        class="text-brand"
-        :icon="item.icon"
-      />
+      <Icon v-if="item.icon" class="text-brand" :icon="item.icon" />
       <span
         class="text-sm text-muted-foreground leading-8 flex-1 transition-color duration-300 hover:text-brand-2"
         data-role="text"

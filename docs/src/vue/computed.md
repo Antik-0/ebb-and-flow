@@ -9,7 +9,7 @@ tags: ["Vue 源码解析", "Computed"]
 ## 源码
 
 ````ts
-import { isFunction } from '@vue/shared'
+import { isFunction } from "@vue/shared"
 import {
   type DebuggerEvent,
   type DebuggerOptions,
@@ -18,11 +18,11 @@ import {
   activeSub,
   batch,
   refreshComputed
-} from './effect'
-import type { Ref } from './ref'
-import { warn } from './warning'
-import { Dep, type Link, globalVersion } from './dep'
-import { ReactiveFlags, TrackOpTypes } from './constants'
+} from "./effect"
+import type { Ref } from "./ref"
+import { warn } from "./warning"
+import { Dep, type Link, globalVersion } from "./dep"
+import { ReactiveFlags, TrackOpTypes } from "./constants"
 
 declare const ComputedRefSymbol: unique symbol
 declare const WritableComputedRefSymbol: unique symbol
@@ -149,7 +149,7 @@ export class ComputedRefImpl<T = any> implements Subscriber {
       ? this.dep.track({
           target: this,
           type: TrackOpTypes.GET,
-          key: 'value'
+          key: "value"
         })
       : this.dep.track()
     refreshComputed(this)
@@ -165,7 +165,7 @@ export class ComputedRefImpl<T = any> implements Subscriber {
     if (this.setter) {
       this.setter(newValue)
     } else if (__DEV__) {
-      warn('Write operation failed: computed value is readonly')
+      warn("Write operation failed: computed value is readonly")
     }
   }
 }

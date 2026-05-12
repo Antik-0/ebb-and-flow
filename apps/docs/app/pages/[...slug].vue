@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { EbbContent } from 'ebb-theme'
 import { ContentRender } from '#/render'
 

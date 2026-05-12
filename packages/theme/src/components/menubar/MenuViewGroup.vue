@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { MenuItem } from '#/types'
 import { shallowRef } from 'vue'
 import Link from '../Link.vue'
@@ -45,16 +45,12 @@ function buildGroups(items: MenuItem[]) {
         {{ group.label }}
       </div>
       <section class="gap-4 grid">
-        <Link
-          v-for="item in group.children"
-          :key="item.text"
-          :href="item.link"
-        >
+        <Link v-for="item in group.children" :key="item.text" :href="item.link">
           <span
             :class="[
               'text-foreground p-3 rounded-2 block',
               'transition-colors duration-300 ease-out',
-              'hover:text-brand-2 hover:bg-brand-2/20',
+              'hover:text-brand-2 hover:bg-brand-2/20'
             ]"
           >
             <span class="text-sm text-nowrap">{{ item.text }}</span>

@@ -20,10 +20,10 @@ import {
   shallowReactiveMap,
   shallowReadonlyMap,
   toRaw
-} from './reactive'
-import { arrayInstrumentations } from './arrayInstrumentations'
-import { ReactiveFlags, TrackOpTypes, TriggerOpTypes } from './constants'
-import { ITERATE_KEY, track, trigger } from './dep'
+} from "./reactive"
+import { arrayInstrumentations } from "./arrayInstrumentations"
+import { ReactiveFlags, TrackOpTypes, TriggerOpTypes } from "./constants"
+import { ITERATE_KEY, track, trigger } from "./dep"
 import {
   hasChanged,
   hasOwn,
@@ -32,9 +32,9 @@ import {
   isObject,
   isSymbol,
   makeMap
-} from '@vue/shared'
-import { isRef } from './ref'
-import { warn } from './warning'
+} from "@vue/shared"
+import { isRef } from "./ref"
+import { warn } from "./warning"
 
 const isNonTrackableKeys = /*@__PURE__*/ makeMap(`__proto__,__v_isRef,__isVue`)
 
@@ -44,7 +44,7 @@ const builtInSymbols = new Set(
     // ios10.x Object.getOwnPropertyNames(Symbol) can enumerate 'arguments' and 'caller'
     // but accessing them on Symbol leads to TypeError because Symbol is a strict mode
     // function
-    .filter(key => key !== 'arguments' && key !== 'caller')
+    .filter(key => key !== "arguments" && key !== "caller")
     .map(key => Symbol[key as keyof SymbolConstructor])
     .filter(isSymbol)
 )
@@ -86,8 +86,8 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
               ? shallowReadonlyMap
               : readonlyMap
             : isShallow
-            ? shallowReactiveMap
-            : reactiveMap
+              ? shallowReactiveMap
+              : reactiveMap
           ).get(target) ||
         // receiver is not the reactive proxy, but has the same prototype
         // this means the receiver is a user proxy of the reactive proxy
@@ -116,7 +116,7 @@ class BaseReactiveHandler implements ProxyHandler<Target> {
       if (targetIsArray && (fn = arrayInstrumentations[key])) {
         return fn
       }
-      if (key === 'hasOwnProperty') {
+      if (key === "hasOwnProperty") {
         return hasOwnProperty
       }
     }
@@ -252,7 +252,7 @@ class MutableReactiveHandler extends BaseReactiveHandler {
     track(
       target,
       TrackOpTypes.ITERATE,
-      isArray(target) ? 'length' : ITERATE_KEY
+      isArray(target) ? "length" : ITERATE_KEY
     )
     return Reflect.ownKeys(target)
   }

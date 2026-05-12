@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { motion } from 'motion-v'
 import { shallowRef } from 'vue'
 import { ThemeDark, ThemeLight } from '#/icons'
@@ -16,7 +16,7 @@ function toggle() {
     aria-label="dark-toggle"
     :class="[
       'text-5 border border-divider bg-[--c-bg-mutate]/20',
-      'flex items-center p-0.5 rounded-4 w-12 cursor-pointer',
+      'flex items-center p-0.5 rounded-4 w-12 cursor-pointer'
     ]"
     :data-state="isDark ? 'dark' : 'light'"
     role="switch"
@@ -27,7 +27,7 @@ function toggle() {
     <motion.span
       :transition="{
         type: 'spring',
-        visualDuration: 0.8,
+        visualDuration: 0.8
       }"
       layout
     >

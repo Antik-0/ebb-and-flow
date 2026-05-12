@@ -17,7 +17,7 @@ export interface FetchClientOptions extends FetchInternalConfig {
 }
 
 export interface FetchRequestOptions extends FetchInternalConfig {
-  format?: 'arrayBuffer' | 'blob' | 'json' | 'text' | 'formData'
+  format?: "arrayBuffer" | "blob" | "json" | "text" | "formData"
   timeout?: number
   onError?: (ctx: FetchErrorContext) => void
 }
@@ -55,22 +55,22 @@ export type FetchAfterHook = (
 export type FetchErrorHook = (ctx: FetchErrorContext) => FetchErrorContext
 
 export enum FetchHookType {
-  BEFORE = 'before',
-  AFTER = 'after',
-  ERROR = 'error'
+  BEFORE = "before",
+  AFTER = "after",
+  ERROR = "error"
 }
 
 export enum FetchErrorType {
-  HTTP = 'http',
-  SERVER = 'server',
-  NETWORK = 'network',
-  TIMEOUT = 'timeout',
-  NATIVE = 'native'
+  HTTP = "http",
+  SERVER = "server",
+  NETWORK = "network",
+  TIMEOUT = "timeout",
+  NATIVE = "native"
 }
 
 export function createErrorContext(
   type: FetchErrorType,
-  options: Omit<FetchErrorContext, 'type'> = {}
+  options: Omit<FetchErrorContext, "type"> = {}
 ): FetchErrorContext {
   const { cause, message } = options
   return { type, cause, message }
@@ -79,12 +79,12 @@ export function createErrorContext(
 type PlainObject = Record<string, unknown>
 
 export function isPlainObject(value: unknown) {
-  return Object.prototype.toString.call(value) === '[object Object]'
+  return Object.prototype.toString.call(value) === "[object Object]"
 }
 
 function isFunction(value: unknown): asserts value is Function {
-  if (typeof value !== 'function') {
-    throw new TypeError('Invalid argument: Expected fn is a function')
+  if (typeof value !== "function") {
+    throw new TypeError("Invalid argument: Expected fn is a function")
   }
 }
 
@@ -200,7 +200,7 @@ export class FetchClient {
     options: FetchRequestOptions = {}
   ) {
     try {
-      const { timeout, format = 'json', ...config } = options
+      const { timeout, format = "json", ...config } = options
       const mergedConfig = this.mergeConfig(this._config, config)
 
       let context: FetchBeforeContext = {
@@ -272,10 +272,10 @@ export class FetchClient {
     }
 
     options.headers = {
-      'Content-Type': 'text/plain; charset=UTF-8',
+      "Content-Type": "text/plain; charset=UTF-8",
       ...headersToObject(options.headers)
     }
-    return this.request<T>(url, { ...options, method: 'get' })
+    return this.request<T>(url, { ...options, method: "get" })
   }
 
   public post<T>(
@@ -284,19 +284,19 @@ export class FetchClient {
     options: FetchRequestOptions = {}
   ) {
     const isJSON = isPlainObject(payload)
-    const defaultType = isJSON ? 'application/json' : 'text/plain'
+    const defaultType = isJSON ? "application/json" : "text/plain"
 
     options.headers = {
-      'Content-Type': `${defaultType}; charset=utf-8`,
+      "Content-Type": `${defaultType}; charset=utf-8`,
       ...headersToObject(options.headers)
     }
 
     if (payload instanceof FormData) {
-      options.headers['Content-Type'] = ''
+      options.headers["Content-Type"] = ""
     }
 
     const body = isJSON ? JSON.stringify(payload) : payload
-    return this.request<T>(url, { ...options, body, method: 'post' })
+    return this.request<T>(url, { ...options, body, method: "post" })
   }
 
   public upload<T>(
@@ -305,14 +305,14 @@ export class FetchClient {
     options: FetchRequestOptions = {}
   ) {
     if (!(payload instanceof FormData)) {
-      throw new TypeError('Expected payload is FormData instance')
+      throw new TypeError("Expected payload is FormData instance")
     }
 
     options.headers = {
       ...headersToObject(options.headers),
-      'Content-Type': ''
+      "Content-Type": ""
     }
-    return this.request<T>(url, { ...options, body: payload, method: 'post' })
+    return this.request<T>(url, { ...options, body: payload, method: "post" })
   }
 
   public download<T>(
@@ -320,9 +320,9 @@ export class FetchClient {
     payload: any,
     options: FetchRequestOptions = {}
   ) {
-    const method = options.method ?? 'get'
-    options.format = 'blob'
-    if (method === 'get') {
+    const method = options.method ?? "get"
+    options.format = "blob"
+    if (method === "get") {
       return this.get(url, payload, options)
     }
     return this.post(url, payload, options)
@@ -335,20 +335,20 @@ export class FetchClient {
 <CodeGroup>
 
 ```ts [index.ts]
-import { FetchClient } from './request.ts'
+import { FetchClient } from "./request.ts"
 import {
   createHeadersUpdateHook,
   responseInterceptorHook,
   genErrorMessageHook,
   createMakeMessageHook
-} from './preset-hooks.ts'
+} from "./preset-hooks.ts"
 
 function installBeforeHooks(instance: FetchClient) {
   const formatToken = (token: string | null) => {
-    return token ? `Bearer ${token}` : ''
+    return token ? `Bearer ${token}` : ""
   }
 
-  const tokenGetter = () => formatToken('token')
+  const tokenGetter = () => formatToken("token")
 
   instance.onFetchBefore(createHeadersUpdateHook(tokenGetter))
   return instance
@@ -361,7 +361,7 @@ function installAfterHooks(instance: FetchClient) {
 
 function installErrorHooks(instance: FetchClient) {
   const makeErrorMessage = (message: string) => {
-    console.log('makeErrorMessage', message)
+    console.log("makeErrorMessage", message)
   }
 
   instance.onFetchError(genErrorMessageHook)
@@ -387,12 +387,12 @@ import {
   FetchErrorType,
   isPlainObject,
   createErrorContext
-} from './request.ts'
+} from "./request.ts"
 
 export function createHeadersUpdateHook(tokenGetter: () => string) {
   return (ctx: FetchBeforeContext) => {
-    ctx.options.headers.set('Authorization', tokenGetter())
-    ctx.options.headers.set('Accept-Language', 'zh-cn')
+    ctx.options.headers.set("Authorization", tokenGetter())
+    ctx.options.headers.set("Accept-Language", "zh-cn")
     return ctx
   }
 }
@@ -408,7 +408,7 @@ export function responseInterceptorHook(ctx: FetchAfterContext) {
 }
 
 export function genErrorMessageHook(ctx: FetchErrorContext) {
-  let message: string = ''
+  let message: string = ""
 
   switch (ctx.type) {
     case FetchErrorType.HTTP:
@@ -418,10 +418,10 @@ export function genErrorMessageHook(ctx: FetchErrorContext) {
       message = handleServerErrorMessage(ctx.cause)
       break
     case FetchErrorType.TIMEOUT:
-      message = 'feedback.http.requestTimeout'
+      message = "feedback.http.requestTimeout"
       break
     case FetchErrorType.NETWORK:
-      message = 'feedback.http.networkError'
+      message = "feedback.http.networkError"
       break
     case FetchErrorType.NATIVE:
       break
@@ -444,25 +444,25 @@ export function createMakeMessageHook(makeMessage: (message: string) => void) {
 
 function handleHttpStatusMessage(response: Response) {
   const { status, statusText } = response
-  let feedbackMessage = ''
+  let feedbackMessage = ""
   switch (status) {
     case 400:
-      feedbackMessage = 'feedback.http.badRequest'
+      feedbackMessage = "feedback.http.badRequest"
       break
     case 401:
-      feedbackMessage = 'feedback.http.unauthorized'
+      feedbackMessage = "feedback.http.unauthorized"
       break
     case 403:
-      feedbackMessage = 'feedback.http.forbidden'
+      feedbackMessage = "feedback.http.forbidden"
       break
     case 404:
-      feedbackMessage = 'feedback.http.notFound'
+      feedbackMessage = "feedback.http.notFound"
       break
     case 408:
-      feedbackMessage = 'feedback.http.requestTimeout'
+      feedbackMessage = "feedback.http.requestTimeout"
       break
     case 500:
-      feedbackMessage = 'feedback.http.serverError'
+      feedbackMessage = "feedback.http.serverError"
       break
     default:
       feedbackMessage = statusText
@@ -478,8 +478,8 @@ interface HttpResponseData<T = any> {
 }
 
 function handleServerErrorMessage(data: HttpResponseData) {
-  if (!isPlainObject(data)) return ''
-  return data.msg || ''
+  if (!isPlainObject(data)) return ""
+  return data.msg || ""
 }
 ```
 

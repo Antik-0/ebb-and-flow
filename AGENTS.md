@@ -12,11 +12,11 @@
 
 ## 项目介绍
 
-这是一个基于 `markdown` 的个人博客站点，项目基于 `monorepo` 架构。主要技术栈有：`nuxt`, `next`, `unocss`, `bun`，动画库使用 `motion`。代码风格与格式化使用 `biome` 控制，只对 `**/package.json` 和 `**/*.vue` 文件使用 `eslint` 控制
+这是一个基于 `markdown` 的个人博客站点，项目基于 `monorepo` 架构。主要技术栈有：`nuxt`, `next`, `unocss`, `bun`，动画库使用 `motion`。代码格式化使用 `oxfmt`，lint 使用 `biome` 控制
 
 ## workspaces
 
-### apps/*
+### apps/\*
 
 项目有 `nuxt` 和 `next` 两个版本，`nuxt` 是主版本，其主题来自 `ebb-theme` 子包，`next` 是兼容版本，主题集成在本地
 
@@ -24,17 +24,17 @@
 
 博客文章数据，基于 `ebb-markdown` 子包构建，永远不要扫描这个包，只需要知道这个包提供了站点所需的文章源，类型为 `MarkdownData`，在 `ebb-markdown` 子包中定义。
 
-### packages/*
+### packages/\*
 
 - `ebb-markdown`: 负责解析/编译 `.md` 文件，没有特殊指明，不要扫描这个包
 - `ebb-theme`: 主站点的主题配置
 - `ebb-ui`: 站点共享样式
 - `@repo/utils`: 通用工具包
 
-### packages/configs/*
+### packages/configs/\*
 
-项目共享的基本配置: `tsconfig.json`, `eslint` 和 `unocss`
+项目共享的基本配置: `tsconfig.json` 和 `unocss`
 
-### scripts/*
+### scripts/\*
 
 包含一个清理脚本和依赖升级脚本

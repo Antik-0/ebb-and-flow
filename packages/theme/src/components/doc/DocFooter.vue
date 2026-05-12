@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useCurrActiveNode } from '#/controller/menus'
 import Link from '../Link.vue'
@@ -18,10 +18,7 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
         v-if="prevNav"
         class="border border-divider rounded-2 transition-colors duration-300 hover:border-brand-2"
       >
-        <Link
-          class="px-4 py-3 flex-col"
-          :href="prevNav.link"
-        >
+        <Link class="px-4 py-3 flex-col" :href="prevNav.link">
           <span class="text-12px text-muted-foreground leading-20px">
             上一页
           </span>
@@ -34,10 +31,7 @@ const nextNav = computed(() => currActiveNode.value?.nextNav)
         v-if="nextNav"
         class="border border-divider rounded-2 transition-colors duration-300 hover:border-brand-2 sm:col-2"
       >
-        <Link
-          class="px-4 py-3 text-right flex-col"
-          :href="nextNav.link"
-        >
+        <Link class="px-4 py-3 text-right flex-col" :href="nextNav.link">
           <span class="text-12px text-muted-foreground leading-20px">
             下一页
           </span>

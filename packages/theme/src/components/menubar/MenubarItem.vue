@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import type { MenuItem } from '#/types'
 import { motion } from 'motion-v'
 import { useMenuNodeIsActive } from '#/controller/menus'
@@ -23,10 +23,7 @@ const isActive = useMenuNodeIsActive(props.item.index)
     layout
     @pointerenter="() => onMenuItemHover(index)"
   >
-    <Link
-      class="px-4 py-2.5 flex items-center"
-      :href="item.link"
-    >
+    <Link class="px-4 py-2.5 flex items-center" :href="item.link">
       <motion.span
         v-if="item.icon && isActive"
         class="text-4 mr-1 inline-flex flex-center"

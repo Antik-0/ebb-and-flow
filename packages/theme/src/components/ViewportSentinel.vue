@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { computed, onMounted, useTemplateRef } from 'vue'
 import { useIntersectionObserver } from '#/hooks'
 

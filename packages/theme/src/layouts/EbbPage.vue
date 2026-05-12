@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { onMounted } from 'vue'
 import ImageViewer from '#/components/ImageViewer.tsx'
 import Navbar from '#/components/navbar/Navbar.tsx'
@@ -40,13 +40,12 @@ provideLayout({
     <Navbar />
 
     <main class="grid-area-[main] min-w-0 md:p-4" data-role="main">
-      <section class="p-6 bg-[--c-bg-content] min-w-0 w-full relative md:rounded-4">
+      <section
+        class="p-6 bg-[--c-bg-content] min-w-0 w-full relative md:rounded-4"
+      >
         <slot></slot>
 
-        <div
-          v-if="isLoading"
-          class="p-8 bg-black/60 inset-0 absolute"
-        >
+        <div v-if="isLoading" class="p-8 bg-black/60 inset-0 absolute">
           <slot name="loading"></slot>
         </div>
       </section>
@@ -62,9 +61,6 @@ provideLayout({
       <ImageViewer />
     </div>
 
-    <ViewportSentinel
-      :top="200"
-      @visible-change="onSentinelVisibleChange"
-    />
+    <ViewportSentinel :top="200" @visible-change="onSentinelVisibleChange" />
   </div>
 </template>

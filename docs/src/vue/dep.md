@@ -9,9 +9,9 @@ tags: ["Vue 源码解析", "Dep"]
 ## 源码
 
 ```ts
-import { extend, isArray, isIntegerKey, isMap, isSymbol } from '@vue/shared'
-import type { ComputedRefImpl } from './computed'
-import { type TrackOpTypes, TriggerOpTypes } from './constants'
+import { extend, isArray, isIntegerKey, isMap, isSymbol } from "@vue/shared"
+import type { ComputedRefImpl } from "./computed"
+import { type TrackOpTypes, TriggerOpTypes } from "./constants"
 import {
   type DebuggerEventExtraInfo,
   EffectFlags,
@@ -20,7 +20,7 @@ import {
   endBatch,
   shouldTrack,
   startBatch
-} from './effect'
+} from "./effect"
 
 /**
  * ✨每当 trigger 一次 effect 的时候就自增一次
@@ -60,7 +60,10 @@ export class Link {
   prevSub?: Link
   prevActiveLink?: Link
 
-  constructor(public sub: Subscriber, public dep: Dep) {
+  constructor(
+    public sub: Subscriber,
+    public dep: Dep
+  ) {
     this.version = dep.version
     this.nextDep =
       this.prevDep =
@@ -292,13 +295,13 @@ type KeyToDepMap = Map<any, Dep>
 export const targetMap: WeakMap<object, KeyToDepMap> = new WeakMap()
 
 export const ITERATE_KEY: unique symbol = Symbol(
-  __DEV__ ? 'Object iterate' : ''
+  __DEV__ ? "Object iterate" : ""
 )
 export const MAP_KEY_ITERATE_KEY: unique symbol = Symbol(
-  __DEV__ ? 'Map keys iterate' : ''
+  __DEV__ ? "Map keys iterate" : ""
 )
 export const ARRAY_ITERATE_KEY: unique symbol = Symbol(
-  __DEV__ ? 'Array iterate' : ''
+  __DEV__ ? "Array iterate" : ""
 )
 
 /**
@@ -386,11 +389,11 @@ export function trigger(
     const targetIsArray = isArray(target)
     const isArrayIndex = targetIsArray && isIntegerKey(key)
 
-    if (targetIsArray && key === 'length') {
+    if (targetIsArray && key === "length") {
       const newLength = Number(newValue)
       depsMap.forEach((dep, key) => {
         if (
-          key === 'length' ||
+          key === "length" ||
           key === ARRAY_ITERATE_KEY ||
           (!isSymbol(key) && key >= newLength)
         ) {
@@ -418,7 +421,7 @@ export function trigger(
             }
           } else if (isArrayIndex) {
             // new index added to array -> length changes
-            run(depsMap.get('length'))
+            run(depsMap.get("length"))
           }
           break
         case TriggerOpTypes.DELETE:
