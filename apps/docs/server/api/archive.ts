@@ -10,22 +10,21 @@ interface Article {
 }
 
 const covers = [
-  'https://antik-yuyi.me/webp/wallhaven-9om1lk.webp',
+  'https://antik-yuyi.me/webp/wallhaven-3qrol9.webp',
+  'https://antik-yuyi.me/webp/wallhaven-gw2zpq.webp',
+  'https://antik-yuyi.me/webp/wallhaven-yqv7xx.webp',
+  'https://antik-yuyi.me/webp/wallhaven-8grg3j.webp',
+  'https://antik-yuyi.me/webp/wallhaven-k8kgz1.webp',
   'https://antik-yuyi.me/webp/wallhaven-9mxxvd.webp',
+  'https://antik-yuyi.me/webp/wallhaven-9om1lk.webp',
+  'https://antik-yuyi.me/webp/wallhaven-eov7yl.webp',
+  'https://antik-yuyi.me/webp/wallhaven-lykqqq.webp',
+  'https://antik-yuyi.me/webp/wallhaven-zp5pwy.webp',
+  'https://antik-yuyi.me/webp/wallhaven-1qr1y3.webp',
   'https://antik-yuyi.me/webp/wallhaven-576pq3.webp',
-  'https://antik-yuyi.me/webp/wallhaven-6lm9w6.webp',
-  'https://antik-yuyi.me/webp/wallhaven-gjz69l.webp',
-  'https://antik-yuyi.me/webp/wallhaven-xe761z.webp',
-  'https://antik-yuyi.me/webp/wallhaven-jeeypy.webp',
   'https://antik-yuyi.me/webp/wallhaven-l39zlr.webp',
-  'https://antik-yuyi.me/webp/wallhaven-qrr12q.webp',
-  'https://antik-yuyi.me/webp/wallhaven-z8gg7g.webp',
-  'https://antik-yuyi.me/webp/wallhaven-9dwldk.webp',
-  'https://antik-yuyi.me/webp/wallhaven-4gmloe.webp',
-  'https://antik-yuyi.me/webp/wallhaven-od6v2l.webp',
-  'https://antik-yuyi.me/webp/wallhaven-eaw661z.webp',
-  'https://antik-yuyi.me/webp/wallhaven-awd13a.webp',
-  'https://antik-yuyi.me/webp/wallhaven-rrwvdq.webp'
+  'https://antik-yuyi.me/webp/wallhaven-rrwvdq.webp',
+  'https://antik-yuyi.me/webp/wallhaven-xepeld.webp'
 ]
 const length = covers.length
 

@@ -61,36 +61,42 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="archive-page">
-    <div class="chain top-[--offset]"></div>
-    <div class="chain bottom-[--offset]" data-reverse="true"></div>
+  <div class="archive-page" data-page="archive">
     <div class="cards-container">
       <ul class="cards">
-        <li v-for="(item, index) in articles" :key="index">
-          <NuxtLink class="card relative" :to="item.path">
-            <CardCover :src="item.cover" />
-            <div class="p-2 bg-black">
-              <p class="leading-6 font-bold text-center truncate">
-                {{ item.title }}
-              </p>
-            </div>
-            <div class="p-2 bg-black/60 inset-x-0 bottom-10 absolute">
-              <p class="text-xs flex gap-2 items-center">
-                <span v-for="(tag, idx) in item.tags" :key="idx">
-                  {{ '#' + tag }}
-                </span>
-                <span class="flex-1"></span>
-                <NuxtTime
-                  class="text-xs text-muted-foreground"
-                  :datetime="item.lastUpdated"
-                />
-              </p>
-            </div>
-            <div class="card-mask inset-0 absolute z-10" data-role="mask"></div>
+        <li v-for="(item, index) in articles" :key="index" class="card-item">
+          <NuxtLink class="block transform-3d" :to="item.path">
+            <article class="card relative">
+              <figure class="card-content">
+                <CardCover :src="item.cover" />
+                <figcaption class="card-summary">
+                  <p
+                    class="leading-8 text-4 font-bold text-center text-brand truncate tracking-px"
+                  >
+                    {{ item.title }}
+                  </p>
+                  <p class="text-sm p-2 flex gap-2 items-center text-brand-2">
+                    <span v-for="(tag, idx) in item.tags" :key="idx">
+                      {{ '#' + tag }}
+                    </span>
+                    <span class="flex-1"></span>
+                    <NuxtTime
+                      class="text-sm text-muted-foreground"
+                      :datetime="item.lastUpdated"
+                    />
+                  </p>
+                </figcaption>
+              </figure>
+              <div class="card-mask inset-0 absolute z-10"></div>
+            </article>
           </NuxtLink>
         </li>
       </ul>
     </div>
+    <div class="chain" data-pos="bs" aria-hidden="true"></div>
+    <div class="chain" data-pos="be" aria-hidden="true"></div>
+    <div class="shadow-mask" data-pos="is" aria-hidden="true"></div>
+    <div class="shadow-mask" data-pos="ie" aria-hidden="true"></div>
   </div>
   <canvas
     ref="animation"

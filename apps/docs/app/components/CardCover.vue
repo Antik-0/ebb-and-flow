@@ -16,14 +16,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <picture class="relative overflow-hidden">
+  <picture class="overflow-hidden">
     <div v-if="isLoading" class="p-8 bg-black inset-0 absolute z-10">
       <img alt="loading" class="size-full object-contain" src="/loading.webp" />
     </div>
     <img
       ref="cover"
       alt="cover"
-      class="card-cover"
+      class="card-cover size-full"
       loading="lazy"
       :src="props.src"
       @load="onLoad"
