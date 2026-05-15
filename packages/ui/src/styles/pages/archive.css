@@ -24,11 +24,11 @@
   }
 
   .chain[data-pos='bs'] {
-    top: 4vw;
+    top: 4vh;
   }
 
   .chain[data-pos='be'] {
-    bottom: 4vw;
+    bottom: 4vh;
     animation-direction: reverse;
   }
 
@@ -39,7 +39,6 @@
     height: 100%;
     background: linear-gradient(to right, oklch(52% 0 270 / 0.2), transparent);
     filter: blur(10px);
-    pointer-events: none;
   }
 
   .shadow-mask[data-pos='is'] {
@@ -56,22 +55,105 @@
     white-space: nowrap;
   }
 
-  @media screen and (width < 1024px) {
-    :is(.chain, .shadow-mask) {
+  .card {
+    --m-value: 1;
+    isolation: isolate;
+    aspect-ratio: 1920 / 1080;
+    filter: contrast(var(--m-value)) saturate(var(--m-value));
+  }
+
+  .card-content {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .card-cover {
+    --m-value: 1;
+    object-fit: cover;
+    scale: var(--m-value);
+    transition: --m-value 400ms ease-out;
+  }
+
+  .card-summary {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 40%;
+    align-content: end;
+    background: linear-gradient(to top, oklch(0.4 0 0 / 0.6) 40%, transparent);
+  }
+
+  .card-mask {
+    --m-opacity: 0;
+    --m-value: 1.4;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    border-radius: 12px;
+    background-color: oklch(0.4 0 0 / 0.2);
+    opacity: var(--m-opacity);
+    scale: var(--m-value);
+    transition: 400ms ease-out;
+    transition-property: --m-opacity, --m-value;
+    pointer-events: none;
+  }
+
+  @media (width < 1024px) {
+    :is(.chain, .shadow-mask, .indicator-shadow) {
       display: none;
     }
 
     .cards-container {
-      padding: 64px 0;
-      width: 80vw;
+      padding: 32px;
     }
 
     .cards {
       flex-direction: column;
+      gap: 32px;
+    }
+
+    .card-item {
+      --value-from: 0.6;
+      --value-to: 1;
+      --value-x-from: 0;
+      contain: layout;
+      scale: var(--m-value);
+      translate: var(--m-value-x);
+      animation: linear both;
+      animation-name: motion-value, motion-value-x;
+      animation-duration: auto;
+      animation-timeline: view(block);
+      animation-range:
+        entry 0% entry 100%,
+        exit 0% exit 100%;
+
+      &:nth-child(2n) {
+        --value-x-to: 100%;
+      }
+
+      &:nth-child(2n + 1) {
+        --value-x-to: -100%;
+      }
+    }
+
+    .card:hover {
+      --m-value: 1.1;
+
+      .card-cover {
+        --m-value: 1.2;
+      }
+
+      .card-mask {
+        --m-opacity: 1;
+        --m-value: 1;
+      }
     }
   }
 
-  @media screen and (width >= 1024px) {
+  @media (width >= 1024px) {
     .cards-container {
       padding: 100px 0 300px;
       width: 96cqi;
@@ -83,6 +165,7 @@
       scrollbar-width: none;
       scroll-behavior: smooth;
       scroll-snap-type: x mandatory;
+      scroll-marker-group: after;
       scroll-timeline-name: --card;
       scroll-timeline-axis: inline;
       perspective: 1000px;
@@ -105,9 +188,6 @@
     }
 
     .card {
-      --m-value: 1;
-      isolation: isolate;
-      aspect-ratio: 1920 / 1080;
       width: 400px;
       animation: rotate-cover linear both;
       animation-duration: auto;
@@ -116,60 +196,36 @@
       will-change: transform;
       transform-style: preserve-3d;
       filter: contrast(var(--m-value)) saturate(var(--m-value));
-      transition: --m-value 400ms var(--ease-feedback);
+      transition: --m-value 400ms ease-out;
     }
 
     .card-content {
-      position: relative;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      overflow: hidden;
       -webkit-box-reflect: below 8px
         linear-gradient(transparent, oklch(0 0 0 / 0.6));
     }
 
-    .card-cover {
-      --m-value: 1;
-      object-fit: cover;
-      scale: var(--m-value);
-      transition: --m-value 400ms var(--ease-feedback);
-    }
-
     .card-summary {
       --m-value-x: 100%;
-      position: absolute;
-      inset-inline: 0;
-      bottom: 0;
-      height: 40%;
-      align-content: end;
       translate: 0 var(--m-value-x);
-      transition: --m-value-x 400ms var(--ease-feedback);
-      background: linear-gradient(to top, oklch(0 0 0 / 0.8) 40%, transparent);
-    }
-
-    .card-mask {
-      --m-opacity: 0;
-      --m-value: 1.4;
-      opacity: var(--m-opacity);
-      scale: var(--m-value);
-      border-radius: 12px;
-      background-color: oklch(0.4 0 0 / 0.2);
-      transition: 400ms var(--ease-feedback);
-      transition-property: --m-opacity, --m-value;
+      transition: --m-value-x 400ms ease-out;
+      background: linear-gradient(
+        to top,
+        oklch(0.2 0 0 / 0.8) 60%,
+        transparent
+      );
     }
 
     @container scroll-state(snapped: inline) {
+      .card {
+        --m-value: 1.1;
+      }
+
       .card-cover {
         --m-value: 1.4;
       }
 
       .card-summary {
         --m-value-x: 0;
-      }
-
-      .card {
-        --m-value: 1.1;
       }
 
       .card:hover .card-mask {
@@ -179,7 +235,159 @@
     }
   }
 
-  @media screen and (width >= 1280px) {
+  @media (width >= 1024px) {
+    /* 轮播视图 */
+    .cards-container::scroll-button(*) {
+      --m-opacity: 0.4;
+      --m-value: 1;
+      --m-color: var(--c-brand-1);
+
+      position: absolute;
+      position-anchor: --card;
+      z-index: 999;
+      cursor: pointer;
+      display: inline grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      font-size: 24px;
+      font-weight: 600;
+      outline: none;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--m-color);
+      opacity: var(--m-opacity);
+      scale: var(--m-value);
+      color: var(--muted-foreground);
+      background: linear-gradient(
+        var(--m-angle),
+        oklch(76.369% 0.05096 256.991 / 0.6),
+        transparent
+      );
+      box-shadow: 0 0 12px 1px
+        color-mix(in oklch, var(--c-brand-1), transparent 40%);
+      transition: 400ms ease-out;
+      transition-property: --m-opacity, --m-value, --m-color, color, transform;
+    }
+
+    .cards-container::scroll-button(*):disabled {
+      cursor: not-allowed;
+    }
+
+    .cards-container::scroll-button(*):not(:disabled):hover {
+      --m-opacity: 1;
+      --m-value: 1.1;
+      --m-color: #c0c0c0;
+      color: var(--c-brand-1);
+      transform: translateX(var(--m-value-x));
+    }
+
+    .cards-container::scroll-button(*):not(:disabled):active {
+      --m-value: 0.9;
+    }
+
+    .cards-container::scroll-button(inline-start) {
+      --m-value-x: 16px;
+      --m-angle: -135deg;
+      content: '↢' / 'left';
+      position-area: left center;
+      translate: 100%;
+    }
+
+    .cards-container::scroll-button(inline-end) {
+      --m-value-x: -16px;
+      --m-angle: 135deg;
+      content: '↣' / 'right';
+      position-area: right center;
+      translate: -100%;
+    }
+
+    .cards-container::scroll-marker-group {
+      --m-value-x: 80%;
+      anchor-name: --indicator;
+      isolation: isolate;
+      position: absolute;
+      position-anchor: --card;
+      position-area: bottom;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      translate: 0 16px;
+      transition: --m-value-x 400ms ease-out;
+      box-shadow:
+        inset -1px -1px 6px 1px oklch(70.065% 0.1962 10.597 / 0.4),
+        0 2px 16px 0
+          color-mix(in oklch, var(--c-brand-3), transparent var(--m-value-x));
+    }
+
+    .indicator {
+      --value-from: 0;
+      --value-to: 1;
+      position: absolute;
+      position-anchor: --indicator;
+      position-area: center;
+      z-index: 1;
+      display: grid;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        scale: var(--m-value) 1;
+        background-color: oklch(0.4 0 0 / 0.4);
+        transform-origin: left center;
+        animation: motion-value linear both;
+        animation-duration: auto;
+        animation-timeline: --card;
+      }
+    }
+
+    .cards-container::scroll-marker-group:hover {
+      --m-value-x: 20%;
+    }
+
+    .card-item:where(:first-child, :last-child, :nth-child(3n))::scroll-marker {
+      --m-opacity: 0.6;
+      --m-color: oklch(85.019% 0.02271 356.185 / 0.4);
+      content: '';
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-radius: 100px;
+      opacity: var(--m-opacity);
+      background-color: var(--m-color);
+      translate: 0 var(--m-value-x);
+      transition: 200ms ease-out;
+      transition-property: --m-opacity, --m-color, --m-value-x;
+    }
+
+    .card-item::scroll-marker:hover {
+      --m-opacity: 1;
+      --m-value-x: -6px;
+    }
+
+    .card-item::scroll-marker:target-current {
+      --m-opacity: 1;
+      --m-color: color-mix(in oklch, var(--c-brand-3), transparent 20%);
+      box-shadow:
+        inset -1px -1px 8px 0 #fff,
+        0 0 16px 4px var(--c-brand-3);
+      filter: brightness(1.1) contrast(1.1);
+    }
+
+    .card-item::scroll-marker:target-before {
+      --m-opacity: 0.8;
+      --m-color: color-mix(in oklch, var(--c-brand-3), transparent 40%);
+      box-shadow: inset -1px -1px 8px 0 #fff;
+    }
+  }
+
+  @media (width >= 1280px) {
     .cards {
       gap: 8cqi;
     }
@@ -187,72 +395,6 @@
     .card {
       width: 480px;
     }
-  }
-
-  /* 滚动视图 */
-  .cards-container::scroll-button(*) {
-    --m-opacity: 0.4;
-    --m-value: 1;
-    --m-color: var(--c-muted-foreground);
-
-    position: absolute;
-    position-anchor: --card;
-    z-index: 999;
-    cursor: pointer;
-    display: inline grid;
-    place-items: center;
-    width: 48px;
-    height: 48px;
-    font-size: 24px;
-    font-weight: 600;
-    outline: none;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid var(--m-color);
-    opacity: var(--m-opacity);
-    scale: var(--m-value);
-    color: var(--c-muted-foreground);
-    background: linear-gradient(
-      var(--m-angle),
-      oklch(76.369% 0.05096 256.991 / 0.6),
-      transparent
-    );
-    box-shadow: 0 0 12px 1px
-      color-mix(in oklch, var(--c-brand-1), transparent 40%);
-    transition: 400ms var(--ease-feedback);
-    transition-property: --m-opacity, --m-value, --m-color, color, transform;
-  }
-
-  .cards-container::scroll-button(*):disabled {
-    cursor: not-allowed;
-  }
-
-  .cards-container::scroll-button(*):not(:disabled):hover {
-    --m-opacity: 1;
-    --m-value: 1.1;
-    --m-color: #c0c0c0;
-    color: var(--c-brand-1);
-    transform: translateX(var(--m-value-x));
-  }
-
-  .cards-container::scroll-button(*):not(:disabled):active {
-    --m-value: 0.9;
-  }
-
-  .cards-container::scroll-button(inline-start) {
-    --m-value-x: 16px;
-    --m-angle: -135deg;
-    content: '↢' / 'left';
-    position-area: left center;
-    translate: 100%;
-  }
-
-  .cards-container::scroll-button(inline-end) {
-    --m-value-x: -16px;
-    --m-angle: 135deg;
-    content: '↣' / 'right';
-    position-area: right center;
-    translate: -100%;
   }
 
   @keyframes rotate-cover {

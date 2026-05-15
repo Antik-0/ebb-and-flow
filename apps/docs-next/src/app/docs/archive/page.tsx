@@ -13,37 +13,39 @@ export default async function Page() {
   const articles = await getArchiveData()
 
   return (
-    <div className="archive-page">
-      <div className="chain top-[--offset]"></div>
-      <div className="chain bottom-[--offset]" data-reverse="true"></div>
+    <div className="archive-page" data-page="archive">
       <div className="cards-container">
         <ul className="cards">
           {articles.map((item, index) => (
-            <li key={index}>
+            <li className="card-item" key={index}>
               <TransitionLink to={`/docs/${item.path}`}>
-                <CardCover src={item.cover} />
-                <div className="bg-black p-2">
-                  <p className="mb-2 truncate text-center font-bold leading-6">
-                    {item.title}
-                  </p>
-                </div>
-                <div className="absolute inset-x-0 bottom-10 bg-black/60 p-2">
-                  <p className="flex items-center gap-2 text-xs">
-                    {item.tags?.map((tag, idx) => (
-                      <span key={idx}>{`#${tag}`}</span>
-                    ))}
-                    <span className="flex-1"></span>
-                  </p>
-                </div>
-                <div
-                  className="card-mask absolute inset-0 z-10"
-                  data-role="mask"
-                ></div>
+                <article className="card relative">
+                  <figure className="card-content">
+                    <CardCover src={item.cover} />
+                    <figcaption className="card-summary">
+                      <p className="truncate text-center font-bold text-8 text-brand leading-12 tracking-px lg:text-4 lg:leading-8">
+                        {item.title}
+                      </p>
+                      <p className="flex items-center gap-2 p-4 text-base text-brand-2 lg:p-2 lg:text-sm">
+                        {item.tags?.map((tag, idx) => (
+                          <span key={idx}>{`#${tag}`}</span>
+                        ))}
+                        <span className="flex-1"></span>
+                      </p>
+                    </figcaption>
+                  </figure>
+                  <div className="card-mask"></div>
+                </article>
               </TransitionLink>
             </li>
           ))}
         </ul>
       </div>
+      <div aria-hidden="true" className="chain" data-pos="bs"></div>
+      <div aria-hidden="true" className="chain" data-pos="be"></div>
+      <div aria-hidden="true" className="shadow-mask" data-pos="is"></div>
+      <div aria-hidden="true" className="shadow-mask" data-pos="ie"></div>
+      <div aria-hidden="true" className="indicator"></div>
     </div>
   )
 }

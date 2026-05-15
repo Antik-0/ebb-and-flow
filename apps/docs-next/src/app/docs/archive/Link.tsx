@@ -11,7 +11,11 @@ export function TransitionLink(props: PropsWithChildren<{ to: string }>) {
   }
 
   return (
-    <EbbLink className="card relative" href={to} onNavigate={onNavigate}>
+    <EbbLink
+      className="lg:transform-3d block"
+      href={to}
+      onNavigate={onNavigate}
+    >
       {children}
     </EbbLink>
   )

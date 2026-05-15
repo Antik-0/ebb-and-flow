@@ -23,7 +23,7 @@ onMounted(() => {
     <img
       ref="cover"
       alt="cover"
-      class="card-cover size-full"
+      class="card-cover"
       loading="lazy"
       :src="props.src"
       @load="onLoad"

@@ -65,29 +65,31 @@ onBeforeUnmount(() => {
     <div class="cards-container">
       <ul class="cards">
         <li v-for="(item, index) in articles" :key="index" class="card-item">
-          <NuxtLink class="block transform-3d" :to="item.path">
+          <NuxtLink class="block lg:transform-3d" :to="item.path">
             <article class="card relative">
               <figure class="card-content">
                 <CardCover :src="item.cover" />
                 <figcaption class="card-summary">
                   <p
-                    class="leading-8 text-4 font-bold text-center text-brand truncate tracking-px"
+                    class="text-8 leading-12 font-bold text-center text-brand truncate tracking-px lg:text-4 lg:leading-8"
                   >
                     {{ item.title }}
                   </p>
-                  <p class="text-sm p-2 flex gap-2 items-center text-brand-2">
+                  <p
+                    class="p-4 text-base flex gap-2 items-center text-brand-2 lg:text-sm lg:p-2"
+                  >
                     <span v-for="(tag, idx) in item.tags" :key="idx">
                       {{ '#' + tag }}
                     </span>
                     <span class="flex-1"></span>
                     <NuxtTime
-                      class="text-sm text-muted-foreground"
+                      class="text-base text-muted-foreground lg:text-sm"
                       :datetime="item.lastUpdated"
                     />
                   </p>
                 </figcaption>
               </figure>
-              <div class="card-mask inset-0 absolute z-10"></div>
+              <div class="card-mask"></div>
             </article>
           </NuxtLink>
         </li>
@@ -97,6 +99,7 @@ onBeforeUnmount(() => {
     <div class="chain" data-pos="be" aria-hidden="true"></div>
     <div class="shadow-mask" data-pos="is" aria-hidden="true"></div>
     <div class="shadow-mask" data-pos="ie" aria-hidden="true"></div>
+    <div class="indicator" aria-hidden="true"></div>
   </div>
   <canvas
     ref="animation"
