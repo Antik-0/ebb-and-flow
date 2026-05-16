@@ -25,10 +25,12 @@ export default defineConfig({
     newlinesBetween: false,
     partitionByNewline: true,
     groups: [
-      'type-import',
+      'type-builtin',
+      'type-external',
       'type-internal',
       ['type-parent', 'type-sibling', 'type-index'],
-      ['value-builtin', 'value-external'],
+      'value-builtin',
+      'value-external',
       'value-internal',
       ['value-parent', 'value-sibling', 'value-index'],
       'unknown'

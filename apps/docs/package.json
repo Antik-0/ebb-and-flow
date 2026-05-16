@@ -20,7 +20,7 @@
     "motion-v": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",
-    "vue-router": "^5.0.6"
+    "vue-router": "^5.0.7"
   },
   "devDependencies": {
     "@config/unocss": "workspace:*",
