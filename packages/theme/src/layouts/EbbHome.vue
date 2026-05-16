@@ -6,9 +6,9 @@ import { CubeAvatar, MoonAvatar } from '#/components/Effect.tsx'
 import FloatingText from '#/components/FloatingText.vue'
 import { setHtmlLayout } from '#/controller/layout'
 import { Power } from '#/icons'
-import { useTheme } from '#/theme'
+import { useEbbTheme } from '#/theme'
 
-const { theme } = useTheme()
+const theme = useEbbTheme()
 
 const titleMotion = ref('fade')
 const taglineMotion = ref('')

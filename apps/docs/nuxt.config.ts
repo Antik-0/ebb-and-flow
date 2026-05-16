@@ -4,15 +4,9 @@ export default defineNuxtConfig({
   modules: ['@unocss/nuxt'],
   app: {
     head: {
-      link: [{ rel: 'icon', href: '/avatar.png' }],
-      htmlAttrs: {
-        class: 'dark',
-        lang: 'zh-CN'
-      }
+      link: [{ rel: 'icon', href: '/avatar.png' }]
     },
-    rootAttrs: {
-      id: 'app'
-    }
+    rootAttrs: { id: 'app' }
   },
   postcss: {
     plugins: {

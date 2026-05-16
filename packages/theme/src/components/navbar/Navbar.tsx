@@ -2,16 +2,16 @@ import { navigateTo } from 'nuxt/app'
 import { defineComponent, h } from 'vue'
 import { useLayout } from '#/controller/layout'
 import { Menu } from '#/icons'
-import { useTheme } from '#/theme'
+import { useEbbTheme } from '#/theme'
 import { Avatar, CubeAvatar, GlassMask } from '../Effect.tsx'
 import Menubar from '../menubar/Menubar.tsx'
 import SidebarTrigger from '../sidebar/SidebarTrigger.vue'
-import ThemeToggle from '../ThemeToggle.vue'
+import ThemeToggle from '../ThemeToggle.tsx'
 import SocialLinks from './SocialLinks.vue'
 
 export default defineComponent(
   () => {
-    const { theme } = useTheme()
+    const theme = useEbbTheme()
     const { isMobile } = useLayout()
 
     return () => (

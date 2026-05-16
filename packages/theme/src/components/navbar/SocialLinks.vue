@@ -2,10 +2,10 @@
 import type { Component } from 'vue'
 import { h, shallowRef } from 'vue'
 import { Github } from '#/icons'
-import { useTheme } from '#/theme'
+import { useEbbTheme } from '#/theme'
 import Link from '../Link.vue'
 
-const { theme } = useTheme()
+const theme = useEbbTheme()
 
 const logoMap: Record<string, Component> = {
   github: () => h(Github)

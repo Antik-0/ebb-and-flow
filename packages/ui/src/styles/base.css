@@ -1,9 +1,12 @@
 @layer base {
   html {
-    color-scheme: dark;
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: var(--c-scrollbar-thumb) oklch(28.908% 0.00003 271.152);
+  }
+
+  html[data-theme='dark'] {
+    color-scheme: dark;
   }
 
   html[data-locked='true'] {

@@ -2,7 +2,7 @@ import type { MenuItem, NavMenuRecord } from '#/types'
 import { isExternalLink } from '@repo/utils'
 import { useRouter } from 'nuxt/app'
 import { computed, onMounted, shallowRef, watch } from 'vue'
-import { useTheme } from '#/theme'
+import { useEbbTheme } from '#/theme'
 
 const menus = shallowRef<MenuItem[]>([])
 let menuIndexMap: Record<string, string> = {}
@@ -63,7 +63,7 @@ function createMenuTree(menus: NavMenuRecord[]) {
  * 获取共享菜单
  */
 export function useMenus() {
-  const { theme } = useTheme()
+  const theme = useEbbTheme()
   if (menus.value.length === 0) {
     menus.value = createMenuTree(theme.navMenus)
   }

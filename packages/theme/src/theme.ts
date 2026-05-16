@@ -1,33 +1,65 @@
-import type { InjectionKey, SlotsType, VNodeChild } from 'vue'
-import type { Empty, ThemeConfig } from './types'
+import type { InjectionKey, ShallowRef, SlotsType, VNodeChild } from 'vue'
+import type { AppTheme, Empty, ThemeConfig } from './types'
 import { useNuxtApp } from 'nuxt/app'
-import { defineComponent, inject, provide } from 'vue'
+import { defineComponent, inject, provide, shallowRef } from 'vue'
 import { usePage } from './controller/layout'
 
-// 类型推导
 export function defineThemeConfig(config: ThemeConfig): ThemeConfig
 export function defineThemeConfig(config: () => ThemeConfig): ThemeConfig
 export function defineThemeConfig(config: ThemeConfig | (() => ThemeConfig)) {
   return typeof config === 'function' ? config() : config
 }
 
-function createEbbTheme() {
-  const contextKey = Symbol() as InjectionKey<ThemeConfig>
+interface AppThemeCtx {
+  theme: ShallowRef<AppTheme>
+  toggleTheme: () => void
+}
 
-  const provider = (value: ThemeConfig) => provide(contextKey, value)
+function createAppTheme() {
+  const appThemeKey = Symbol() as InjectionKey<AppThemeCtx>
+  const expiredDate = 1000 * 60 * 60 * 24 * 360
 
-  const useTheme = () => {
-    const theme = inject(contextKey)!
-    return { theme }
+  function initTheme(value: AppTheme) {
+    const theme = shallowRef(value)
+
+    function toggleTheme() {
+      const themeValue = theme.value === 'light' ? 'dark' : 'light'
+      theme.value = themeValue
+      document.documentElement.setAttribute('data-theme', themeValue)
+      window.cookieStore.set({
+        name: 'theme',
+        value: themeValue,
+        path: '/',
+        sameSite: 'lax',
+        expires: Date.now() + expiredDate
+      })
+    }
+
+    provide(appThemeKey, { theme, toggleTheme })
   }
+
+  function useTheme() {
+    return inject(appThemeKey)!
+  }
+
+  return [initTheme, useTheme] as const
+}
+
+function createEbbTheme() {
+  const ebbThemeKey = Symbol() as InjectionKey<ThemeConfig>
+
+  const provider = (value: ThemeConfig) => provide(ebbThemeKey, value)
+
+  const useTheme = () => inject(ebbThemeKey)!
 
   return [provider, useTheme] as const
 }
 
-const [provideTheme, useTheme] = createEbbTheme()
+const [initAppTheme, useAppTheme] = createAppTheme()
+const [initEbbTheme, useEbbTheme] = createEbbTheme()
 
 const EbbThemeProvider = defineComponent<
-  { config: ThemeConfig },
+  { config: ThemeConfig; theme: AppTheme },
   Empty,
   '',
   SlotsType<{ default: () => VNodeChild }>
@@ -61,11 +93,12 @@ const EbbThemeProvider = defineComponent<
       )
     })
 
-    provideTheme(props.config)
+    initAppTheme(props.theme)
+    initEbbTheme(props.config)
 
     return () => slots.default()
   },
-  { name: 'EbbThemeProvider', props: ['config'] }
+  { name: 'EbbThemeProvider', props: ['config', 'theme'] }
 )
 
-export { EbbThemeProvider, useTheme }
+export { EbbThemeProvider, useAppTheme, useEbbTheme }

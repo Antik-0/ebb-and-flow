@@ -10,6 +10,11 @@ export interface ThemeConfig {
   titleTemplate?: string
 
   /**
+   * 默认主题
+   */
+  defaultTheme?: 'light' | 'dark'
+
+  /**
    * 404 页面标题
    */
   notFoundTitle?: string
