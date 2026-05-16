@@ -71,7 +71,7 @@ iconify-icon {
   opacity: var(--m-opacity);
   clip-path: inset(0 var(--m-value-x) round 8px);
   animation-name: motion-opacity, motion-value-x;
-  animation-timing-function: var(--ease-motion);
+  animation-timing-function: ease;
   animation-duration: auto;
   animation-timeline: view(block);
   animation-range: entry 0% contain 20%;

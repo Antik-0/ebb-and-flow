@@ -34,7 +34,7 @@
     z-index: -2;
     border-radius: var(--rounded);
     opacity: 0;
-    transition: opacity 200ms var(--ease-motion);
+    transition: opacity 200ms ease;
     background: radial-gradient(
       100px circle at 50% 50%,
       var(--bg-color),
@@ -52,7 +52,7 @@
     inset: 0;
     z-index: -1;
     animation-duration: 600ms;
-    animation-timing-function: var(--ease-motion);
+    animation-timing-function: ease;
 
     .grid {
       grid-template-columns: repeat(3, 1fr);
@@ -110,7 +110,7 @@
     padding-left: calc(var(--level, 0) * 16px + 8px);
     border-radius: 8px;
     cursor: pointer;
-    transition: --m-color 250ms var(--ease-feedback);
+    transition: --m-color 250ms ease-out;
     box-shadow: inset 0 0 12px 2px var(--m-color);
 
     &:hover {
@@ -158,7 +158,7 @@
     overflow: hidden;
     opacity: var(--m-opacity);
     translate: var(--m-value-x);
-    animation: var(--ease-motion) forwards;
+    animation: ease forwards;
     animation-name: motion-opacity, motion-value-x, lock;
     animation-duration: auto;
     animation-timeline: scroll(root block);
@@ -262,7 +262,7 @@
     background-image: var(--avatar);
     background-size: cover;
     filter: drop-shadow(0 0 var(--rounded) var(--c-brand-1));
-    transition: 400ms var(--ease-motion);
+    transition: 400ms ease;
     transition-property: --m-value-x, opacity;
   }
 

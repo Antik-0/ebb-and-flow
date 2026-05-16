@@ -19,7 +19,7 @@
   .site-title[data-motion='fade'] {
     --value-x-to: 120px;
     clip-path: circle(var(--m-value-x) at center);
-    animation: motion-value-x 2s var(--ease-motion);
+    animation: motion-value-x 2s ease;
   }
 
   .site-title[data-motion='flow'] {
@@ -34,7 +34,7 @@
     font-weight: 600;
     line-height: 2;
     color: var(--m-color);
-    transition: --m-color 400ms var(--ease-motion);
+    transition: --m-color 400ms ease;
   }
 
   .tagline[data-motion='fade'] {
@@ -49,7 +49,7 @@
     position: absolute;
     z-index: -1;
     translate: 0 var(--m-value-x);
-    transition: transform 400ms var(--ease-motion);
+    transition: transform 400ms ease;
     animation: motion-value-x 1s linear infinite alternate;
   }
 
