@@ -1,4 +1,4 @@
-import { random, range } from '@repo/utils'
+import { random, randomInt, range } from '@repo/utils'
 
 interface EventData {
   type: 'start' | 'update' | 'stop'
@@ -13,12 +13,12 @@ self.addEventListener('message', event => {
       start(payload)
       break
     }
-    case 'stop': {
-      stop()
-      break
-    }
     case 'update': {
       update(payload)
+      break
+    }
+    case 'stop': {
+      stop()
       break
     }
     default:
@@ -75,14 +75,14 @@ async function createSakuraImageList(sakuraImage: ImageBitmap) {
 
 function animate(timestamp: DOMHighResTimeStamp) {
   if (!lastCreateTime) {
-    const n = random(...SakuraConfig.initCount)
-    generateSakuras(n, timestamp)
+    const n = randomInt(...SakuraConfig.initCount)
+    generateSakuras(n)
     lastCreateTime = timestamp
   }
 
   if (timestamp - lastCreateTime >= SakuraConfig.interval) {
-    const n = random(...SakuraConfig.yieldCount)
-    generateSakuras(n, timestamp)
+    const n = randomInt(...SakuraConfig.yieldCount)
+    generateSakuras(n)
     lastCreateTime = timestamp
   }
 
@@ -90,7 +90,7 @@ function animate(timestamp: DOMHighResTimeStamp) {
 
   for (const sakura of sakuraList.values()) {
     if (sakura.active) {
-      sakura.animate(canvasCtx, timestamp)
+      sakura.animate(canvasCtx)
     } else {
       clearSakura(sakura)
     }
@@ -99,18 +99,9 @@ function animate(timestamp: DOMHighResTimeStamp) {
   animationFrame = self.requestAnimationFrame(animate)
 }
 
-function generateSakuras(n: number, time: number) {
-  const createSakura = () => {
-    const length = sakuraImageList.length
-    const sakuraImage = sakuraImageList[random(0, length - 1)]!
-    return new Sakura({
-      source: sakuraImage,
-      createTime: time
-    })
-  }
-
+function generateSakuras(n: number) {
   for (const _ of range(n)) {
-    sakuraList.add(createSakura())
+    sakuraList.add(new Sakura())
   }
 }
 
@@ -130,12 +121,7 @@ type RangeNumber = [number, number]
 
 interface SakuraConfig {
   /**
-   * 樱花出现的范围
-   */
-  startXRange: RangeNumber
-  startYRange: RangeNumber
-  /**
-   * 首次出现的流星数量
+   * 首次出现的数量
    */
   initCount: RangeNumber
   /**
@@ -147,10 +133,6 @@ interface SakuraConfig {
    */
   yieldCount: RangeNumber
   /**
-   * 樱花飘落时间(s)
-   */
-  duration: RangeNumber
-  /**
    * 樱花粒子大小
    */
   size: [number, number]
@@ -161,43 +143,27 @@ interface SakuraConfig {
 }
 
 const SakuraConfig: SakuraConfig = {
-  startXRange: [0.2, 1.4],
-  startYRange: [0, 0.2],
   initCount: [2, 6],
-  interval: 1000,
+  interval: 2000,
   yieldCount: [1, 3],
-  duration: [8, 16],
   size: [24, 24],
   scaleLevels: [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2]
 }
 
-interface SakuraOptions {
-  source: ImageBitmap
-  createTime: number
-}
-
-interface Point {
-  x: number
-  y: number
-}
-
 class Sakura {
-  /**
-   * 创建时间
-   */
-  public createTime: number
   /**
    * 控制状态
    */
-  public duration: number // 动画时间: ms
+  public x: number
+  public y: number
+  public a: number
+  public b: number
+  public amplitude: number
+  public frequency: number
+  public phase: number
+  public speed: number // 飘落速度
   public angle: number // 旋转角度
   public rotateSpeed: number // 旋转的变化速度
-  /**
-   * 贝塞尔曲线
-   */
-  public cp: Point // 控制点
-  public sp: Point // 起点
-  public ep: Point // 终点
   /**
    * 边界
    */
@@ -212,77 +178,55 @@ class Sakura {
    */
   #source: ImageBitmap
 
-  constructor(options: SakuraOptions) {
-    const cw = canvas.width
+  constructor() {
+    const length = sakuraImageList.length
+    const scaleIndex = randomInt(0, length - 1)
+    this.#source = sakuraImageList[scaleIndex]!
+
     const ch = canvas.height
+    this.edgeX = -60
+    this.edgeY = ch + 60
 
-    this.createTime = options.createTime
-    const sakura = options.source
-    this.#source = sakura
-    this.edgeX = 0 - sakura.width
-    this.edgeY = ch + sakura.height
+    const state = generateSakuraTrajectory()
+    this.x = state.x
+    this.y = state.y
+    this.a = state.a
+    this.b = state.b
+    this.amplitude = state.amplitude
+    this.frequency = state.frequency
+    this.phase = state.phase
 
-    this.duration = random(...SakuraConfig.duration) * 1000
+    this.speed = 1 * SakuraConfig.scaleLevels[scaleIndex]!
     this.angle = Math.floor(Math.random() * Math.PI * 2)
     this.rotateSpeed = (Math.random() - 0.5) * 0.1
 
-    // 贝塞尔曲线轨迹
-    // 起点
-    const [spx, spy] = generateSakuraStartPoint()
-    this.sp = { x: spx, y: spy }
-    // 终点
-    const epx = random(0, cw) - ch * 0.5
-    this.ep = { x: epx, y: this.edgeY }
-    // 控制点
-    // 为了保证轨迹是向下的弧线，控制点随机分布在下 x 轴差 [0.25, 0.5]
-    // 与 y 轴差 [0.75, 1] 所围成的矩形范围内
-    const cpxStart = this.getPointAt(epx, spx, 0.25)
-    const cpxEnd = this.getPointAt(epx, spx, 0.5)
-    const cpyStart = this.getPointAt(0, this.ep.y, 0.75)
-    const cpyEnd = this.ep.y
-    this.cp = {
-      x: random(cpxStart, cpxEnd),
-      y: random(cpyStart, cpyEnd)
-    }
     this.active = true
-  }
-
-  /**
-   * 获取两点间的指定位置
-   */
-  public getPointAt(start: number, end: number, p: number) {
-    return start + p * (end - start)
-  }
-
-  /**
-   * 计算经过时间 `e`，贝塞尔曲线所在的坐标
-   */
-  #getNextPoint(e: number) {
-    const { duration: d, cp, sp, ep } = this
-    const t = Math.min(e / d, 1)
-
-    const x = (1 - t) * (1 - t) * sp.x + 2 * (1 - t) * t * cp.x + t * t * ep.x
-    const y = (1 - t) * (1 - t) * sp.y + 2 * (1 - t) * t * cp.y + t * t * ep.y
-
-    return { x, y }
   }
 
   /**
    * 判断樱花是否落入屏幕外，飘落轨迹是从右上角到左下角
    */
-  public isOffcanvas(p: Point) {
-    const { x, y } = p
-    return x <= this.edgeX || y >= this.edgeY
+  public isOffcanvas() {
+    return this.x <= this.edgeX || this.y >= this.edgeY
+  }
+
+  /**
+   * 计算运动轨迹
+   */
+  public computeMotionY(x: number) {
+    // 运动轨迹方程: y = ax + b + Asim(cx + d)
+    const { a, b, amplitude, frequency, phase } = this
+    return a * x + b + amplitude * Math.sin(frequency * x + phase)
   }
 
   /**
    * 樱花飘落动画
    */
-  public animate(ctx: OffscreenCanvasRenderingContext2D, t: number) {
-    const elapsed = t - this.createTime
-    const point = this.#getNextPoint(elapsed)
+  public animate(ctx: OffscreenCanvasRenderingContext2D) {
+    this.x -= this.speed
+    this.y = this.computeMotionY(this.x)
 
-    if (this.isOffcanvas(point)) {
+    if (this.isOffcanvas()) {
       this.active = false
       return
     }
@@ -294,7 +238,7 @@ class Sakura {
     ctx.save()
 
     // 将画布移动樱花轨迹点
-    ctx.translate(point.x, point.y)
+    ctx.translate(this.x, this.y)
     // 旋转画布
     ctx.rotate(this.angle)
     // 以当前轨迹点为原点，绘制樱花
@@ -304,16 +248,28 @@ class Sakura {
   }
 }
 
-function generateSakuraStartPoint(): [number, number] {
-  const { startXRange, startYRange } = SakuraConfig
+function generateSakuraTrajectory() {
   const w = canvas.width
   const h = canvas.height
 
-  let [x, y] = [random(w * startXRange[0], w * startXRange[1]), 0]
-  if (x >= w) {
-    x = w + 40
-    y = random(h * startYRange[0], h * startYRange[1])
-  }
+  const x1 = random(0.5, 1.2) * w
+  const x2 = random(-0.2, 0.4) * w
+  const y1 = 0
+  const y2 = h
 
-  return [x, y]
+  const a = (y2 - y1) / (x2 - x1)
+  const b = -(a * x1)
+
+  // sin 振荡参数
+  const amplitude = random(10, 40)
+  const frequency = random(0.005, 0.02)
+  const phase = random(0, Math.PI * 2)
+
+  let [x, y] = [x1, y1]
+  if (x > w) {
+    x = Math.min(w + 60, x)
+  }
+  y = a * x + b + amplitude * Math.sin(frequency * x + phase)
+
+  return { x, y, a, b, amplitude, frequency, phase }
 }

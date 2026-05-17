@@ -14,9 +14,16 @@ export const sleep = (time: number) =>
   new Promise(resolve => setTimeout(resolve, time))
 
 /**
- * 返回指定闭区间的随机整数
+ * 返回指定闭区间的随机小数
  */
 export const random = (min: number, max: number) => {
+  return Math.random() * (max - min) + min
+}
+
+/**
+ * 返回指定闭区间的随机整数
+ */
+export const randomInt = (min: number, max: number) => {
   const n = Math.random() * (max - min + 1) + min
   return Math.floor(n)
 }

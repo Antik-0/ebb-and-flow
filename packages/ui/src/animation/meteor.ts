@@ -1,4 +1,4 @@
-import { random, range } from '@repo/utils'
+import { random, randomInt, range } from '@repo/utils'
 
 interface EventData {
   type: 'start' | 'update' | 'stop'
@@ -13,12 +13,12 @@ self.addEventListener('message', event => {
       start(payload)
       break
     }
-    case 'stop': {
-      stop()
-      break
-    }
     case 'update': {
       update(payload)
+      break
+    }
+    case 'stop': {
+      stop()
       break
     }
     default:
@@ -38,7 +38,7 @@ function start(payload: { canvas: OffscreenCanvas }) {
   canvas = payload.canvas
   canvasCtx = canvas.getContext('2d')!
 
-  generateMeteor(random(...MeteorConfig.initCount))
+  generateMeteor(randomInt(...MeteorConfig.initCount))
   animationFrame = self.requestAnimationFrame(animate)
 }
 
@@ -58,7 +58,7 @@ function animate(timestamp: DOMHighResTimeStamp) {
   }
 
   if (timestamp - lastCreateTime >= MeteorConfig.interval) {
-    generateMeteor(random(...MeteorConfig.yieldCount))
+    generateMeteor(randomInt(...MeteorConfig.yieldCount))
     lastCreateTime = timestamp
   }
 
@@ -171,11 +171,11 @@ class Meteor {
     const h = canvas.height
     this.fadeY = random(h * endYRange[0], h * endYRange[1])
 
-    const velocity = random(...velocityRange)
+    const velocity = randomInt(...velocityRange)
     this.vx = velocity * Math.cos(angle) * -1
     this.vy = velocity * Math.sin(angle)
     this.angle = angle
-    this.length = random(...length)
+    this.length = randomInt(...length)
     this.visibleLength = this.length
 
     this.state = MeteorState.Active

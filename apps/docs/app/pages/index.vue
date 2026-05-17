@@ -30,8 +30,9 @@ onMounted(() => {
     [offscreenCanvas]
   )
 
-  onWindowResize(entry => {
-    const { width, height } = entry.contentRect
+  onWindowResize(() => {
+    const width = window.innerWidth
+    const height = window.innerHeight
     worker.postMessage({
       type: 'update',
       payload: { width, height }
