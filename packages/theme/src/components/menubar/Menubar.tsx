@@ -82,7 +82,7 @@ export const Menubar = defineComponent(
         </MotionProvider>
 
         <MenubarProvider value={contextValue}>
-          <menu
+          <ul
             class="grid-full flex px-4"
             data-role="menu"
             onPointerenter={onMouseEnter}
@@ -92,7 +92,7 @@ export const Menubar = defineComponent(
                 <MenubarItem index={index} item={item} key={item.id} />
               ))}
             </LayoutGroup>
-          </menu>
+          </ul>
           <MenuViewport onClose={onViewportClose} ref={viewportRef} />
         </MenubarProvider>
 

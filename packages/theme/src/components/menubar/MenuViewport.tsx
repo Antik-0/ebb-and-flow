@@ -1,6 +1,5 @@
 import type { SlotsType, VNodeChild } from 'vue'
 import type { EmptyProps, MenuItem } from '#/types'
-import { AnimatePresence, motion } from 'motion-v'
 import { computed, defineComponent, ref, shallowRef, watch } from 'vue'
 import { useMenus } from '#/controller/menus'
 import { useMenubar, useViewport, ViewportProvider } from '#/controller/navbar'
@@ -17,6 +16,8 @@ export const MenuViewport = defineComponent<EmptyProps, { close: () => void }>(
     const menus = useMenus()
     const contents = computed(() => menus.value.map(item => item.items))
 
+    const popover = shallowRef<HTMLDivElement | null>(null)
+
     const show = ref(false)
     const prevIndex = ref(-1)
     const currIndex = ref(-1)
@@ -29,43 +30,45 @@ export const MenuViewport = defineComponent<EmptyProps, { close: () => void }>(
 
     onHoverIndexChange(handleIndexChange)
 
-    function onExitComplete() {
-      !show.value && emit('close')
+    function onTransitionend(event: TransitionEvent) {
+      if (event.currentTarget !== event.target) return
+      if (show.value) return
+      popover.value?.hidePopover()
+      emit('close')
     }
 
     const contextValue = { prevIndex, currIndex }
 
     expose({
-      open: () => (show.value = true),
+      open: () => {
+        show.value = true
+        popover.value?.showPopover()
+      },
       close: () => (show.value = false)
     })
 
     return () => (
-      <AnimatePresence onExitComplete={onExitComplete}>
-        {show.value && (
-          <motion.div
-            animate={{ y: 0 }}
-            class="absolute top-full left-1/2 isolate min-w-full -translate-x-1/2 pt-2 contain-layout"
-            data-role="menuviewport"
-            exit={{ opacity: 0, y: 40 }}
-            initial={{ y: 40 }}
-            transition={{ type: 'spring', duration: 0.6 }}
-          >
-            <div class="relative isolate">
-              <ViewportProvider value={contextValue}>
-                <div class="relative overflow-hidden rounded-4">
-                  {contents.value.map((content, index) => (
-                    <MenuViewContent index={index} key={index}>
-                      {content && <MenuViewGroup items={content} />}
-                    </MenuViewContent>
-                  ))}
-                </div>
-              </ViewportProvider>
-              <GlassMask class="absolute inset-0 -z-1 rounded-4" />
+      <div
+        class="menubar-viewport"
+        data-role="menuviewport"
+        data-show={show.value}
+        onTransitionend={onTransitionend}
+        {...{ popover: 'manual' }}
+        ref={popover}
+      >
+        <div class="relative isolate">
+          <ViewportProvider value={contextValue}>
+            <div class="relative overflow-hidden rounded-4">
+              {contents.value.map((content, index) => (
+                <MenuViewContent index={index} key={index}>
+                  {content && <MenuViewGroup items={content} />}
+                </MenuViewContent>
+              ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </ViewportProvider>
+          <GlassMask class="absolute inset-0 -z-1 rounded-4" />
+        </div>
+      </div>
     )
   },
   { name: 'MenuViewport', emits: ['close'] }

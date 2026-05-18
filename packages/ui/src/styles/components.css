@@ -8,6 +8,7 @@
     --rounded: 999px;
     --shadow-1: oklch(86.509% 0.11539 207.124 / 0.1);
     --shadow-2: oklch(75.394% 0.12008 255.191 / 0.4);
+    anchor-name: --menubar;
     isolation: isolate;
     position: relative;
     display: grid;
@@ -45,6 +46,29 @@
 
   :scope:hover .menubar-background {
     opacity: 1;
+  }
+
+  .menubar-viewport {
+    contain: layout;
+    position: absolute;
+    position-anchor: --menubar;
+    position-area: bottom center;
+    padding-top: 12px;
+    background-color: transparent;
+    translate: 0 var(--m-value-x);
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+    transition-behavior: allow-discrete;
+    transition-property: --m-value-x, display, overlay;
+
+    @starting-style {
+      --m-value-x: 40px;
+    }
+
+    &[data-show='false'] {
+      --m-value-x: 40px;
+      display: none;
+    }
   }
 
   .menu-content {
