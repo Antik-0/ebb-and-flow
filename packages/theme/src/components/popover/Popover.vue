@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance, StyleValue } from 'vue'
-import type { Timer } from '#/types'
 import type { PopoverProps } from './index.ts'
 import { computed, h, onMounted, Teleport, watch } from 'vue'
 import { useEventListener } from '#/hooks'
@@ -54,8 +53,8 @@ watch(
   }
 )
 
-let timer: Timer | null = null
-const clearTimer = () => timer && clearTimeout(timer)
+let timer: number | null = null
+const clearTimer = () => timer && window.clearTimeout(timer)
 
 function createEvents(): {
   onClick?: () => void
@@ -72,7 +71,7 @@ function createEvents(): {
   }
 
   const onMouseLeave = () => {
-    timer = setTimeout(handleClose, props.delayClose)
+    timer = window.setTimeout(handleClose, props.delayClose)
   }
 
   if (props.trigger === 'click') {

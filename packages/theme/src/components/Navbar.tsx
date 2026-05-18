@@ -1,15 +1,17 @@
+import type { Component } from 'vue'
+import type { SocialLink } from '#/types'
 import { navigateTo } from 'nuxt/app'
 import { defineComponent, h } from 'vue'
 import { useLayout } from '#/controller/layout'
-import { Menu } from '#/icons'
+import { Github, Menu } from '#/icons'
 import { useEbbTheme } from '#/theme'
-import { Avatar, CubeAvatar, GlassMask } from '../Effect.tsx'
-import Menubar from '../menubar/Menubar.tsx'
-import SidebarTrigger from '../sidebar/SidebarTrigger.vue'
-import ThemeToggle from '../ThemeToggle.tsx'
-import SocialLinks from './SocialLinks.vue'
+import { Avatar, CubeAvatar, GlassMask } from './Effect.tsx'
+import { Link } from './Link.tsx'
+import { Menubar } from './menubar/Menubar.tsx'
+import { SidebarTrigger } from './sidebar/Sidebar.tsx'
+import { ThemeToggle } from './ThemeToggle.tsx'
 
-export default defineComponent(
+export const Navbar = defineComponent(
   () => {
     const theme = useEbbTheme()
     const { isMobile } = useLayout()
@@ -35,7 +37,7 @@ export default defineComponent(
 
           <div class="flex items-center justify-end gap-2 pr-4">
             <ThemeToggle />
-            <SocialLinks />
+            <SocialLinks items={theme.socialLinks} />
           </div>
         </div>
 
@@ -65,3 +67,34 @@ function NavbarAction(props: { avatar: string; isMobile: boolean }) {
   })
 }
 NavbarAction.props = ['avatar', 'isMobile']
+
+const logoMap: Record<string, Component> = {
+  github: Github
+}
+
+function SocialLinks(props: { items?: SocialLink[] }) {
+  const links =
+    props.items
+      ?.filter(item => item.icon in logoMap)
+      .map(item => ({
+        label: item.icon,
+        link: item.link,
+        icon: logoMap[item.icon]!
+      })) ?? []
+
+  return (
+    <div class="flex gap-2">
+      {links.map(item => (
+        <Link
+          aria-label={item.label}
+          class="flex size-9 flex-center cursor-pointer text-6"
+          href={item.link}
+          key={item.label}
+        >
+          {h(item.icon)}
+        </Link>
+      ))}
+    </div>
+  )
+}
+SocialLinks.props = ['items']

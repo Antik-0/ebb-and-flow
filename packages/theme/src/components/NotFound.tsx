@@ -1,6 +1,6 @@
-import Link from '#/components/Link.vue'
+import { Link } from '#/components/Link.tsx'
 
-export default function NotFound() {
+export function NotFound() {
   return (
     <div class="w-full px-8 py-24 text-center">
       <p class="font-600 text-16 leading-[1]">404</p>

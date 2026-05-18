@@ -9,12 +9,12 @@ import {
   useMotionCtx
 } from '#/controller/navbar'
 import { FlowingLight } from '../Effect.tsx'
-import MenubarItem from './MenubarItem.vue'
-import MenuViewport from './MenuViewport.tsx'
+import { MenubarItem } from './MenubarItem.tsx'
+import { MenuViewport } from './MenuViewport.tsx'
 
 type HoverChangeCallback = (index: number) => void
 
-export default defineComponent(
+export const Menubar = defineComponent(
   () => {
     const menus = useMenus()
     const currActiveNode = useCurrActiveNode()

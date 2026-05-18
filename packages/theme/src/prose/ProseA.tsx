@@ -1,6 +1,6 @@
 import type { SetupContext } from 'vue'
 import { isExternalLink } from '@repo/utils'
-import Link from '#/components/Link.vue'
+import { Link } from '#/components/Link.tsx'
 import { ArrowUpRight } from '#/icons'
 
 export function ProseA(props: { href?: string }, { slots }: SetupContext) {

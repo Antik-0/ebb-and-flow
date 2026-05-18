@@ -11,7 +11,7 @@ import {
 import { lockScrollbar, unlockScrollbar, usePage } from '#/controller/layout'
 import { useAnimation } from '#/hooks'
 
-export default defineComponent(
+export const ImageViewer = defineComponent(
   () => {
     let controller: AbortController | null = null
 

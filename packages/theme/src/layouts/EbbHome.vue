@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { navigateTo } from 'nuxt/app'
 import { onMounted, ref } from 'vue'
-import CodeMotion from '#/components/CodeMotion.vue'
+import { CodeMotion } from '#/components/CodeMotion.tsx'
 import { CubeAvatar, MoonAvatar } from '#/components/Effect.tsx'
-import FloatingText from '#/components/FloatingText.vue'
+import { FloatingText } from '#/components/FloatingText.tsx'
 import { setHtmlLayout } from '#/controller/layout'
 import { Power } from '#/icons'
 import { useEbbTheme } from '#/theme'

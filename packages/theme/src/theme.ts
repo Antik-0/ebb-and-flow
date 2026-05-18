@@ -1,5 +1,5 @@
 import type { InjectionKey, ShallowRef, SlotsType, VNodeChild } from 'vue'
-import type { AppTheme, Empty, ThemeConfig } from './types'
+import type { AppTheme, EmptyProps, ThemeConfig } from './types'
 import { useNuxtApp } from 'nuxt/app'
 import { defineComponent, inject, provide, shallowRef } from 'vue'
 import { usePage } from './controller/layout'
@@ -60,7 +60,7 @@ const [initEbbTheme, useEbbTheme] = createEbbTheme()
 
 const EbbThemeProvider = defineComponent<
   { config: ThemeConfig; theme: AppTheme },
-  Empty,
+  EmptyProps,
   '',
   SlotsType<{ default: () => VNodeChild }>
 >(

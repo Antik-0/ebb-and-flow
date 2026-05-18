@@ -4,7 +4,7 @@ import { computed, defineComponent, reactive, watch } from 'vue'
 import { createSVGMask, useOutline, useTocActive } from '#/controller/outline'
 import { TextAlignStart } from '#/icons'
 
-export default defineComponent(
+export const DocOutline = defineComponent(
   () => {
     const { toc } = useOutline()
 

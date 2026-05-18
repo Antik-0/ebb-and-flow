@@ -1,14 +1,14 @@
 import { defineComponent, ref, watch } from 'vue'
-import DocOutline from '#/components/doc/DocOutline.tsx'
+import { DocOutline } from '#/components/doc/DocOutline.tsx'
 import { GlassMask, ScrollIndicator } from '#/components/Effect.tsx'
 import { Popover } from '#/components/popover'
 import { useLayout } from '#/controller/layout'
 import { useSidebarControl } from '#/controller/sidebar.ts'
 import { useAnimation, useFPS } from '#/hooks'
 import { BookOpen, PanelLeftClose, PanelLeftOpen, Rocket } from '#/icons'
-import SidebarTrigger from './sidebar/SidebarTrigger.vue'
+import { SidebarTrigger } from './sidebar/Sidebar'
 
-export default defineComponent(
+export const ToolPanel = defineComponent(
   () => {
     const { isMobile, isTriggerSentinel } = useLayout()
     const { close: closeSidebar } = useSidebarControl()

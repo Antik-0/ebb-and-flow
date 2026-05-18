@@ -7,7 +7,7 @@ import type {
   VNode,
   VNodeChild
 } from 'vue'
-import type { Empty } from '#/types'
+import type { EmptyProps } from '#/types'
 import { clsx } from '@repo/utils'
 import {
   computed,
@@ -72,7 +72,7 @@ const [provideAccordion, useAccordionCtx] = createAccordionContext()
 
 export const Accordion = defineComponent<
   { defaultValue?: boolean },
-  Empty,
+  EmptyProps,
   '',
   SlotsType<{ default: () => VNodeChild }>
 >(
@@ -101,8 +101,8 @@ export const Accordion = defineComponent<
 )
 
 export const AccordionTrigger = defineComponent<
-  Empty,
-  Empty,
+  EmptyProps,
+  EmptyProps,
   '',
   SlotsType<{ default: () => VNode[] }>
 >(
@@ -135,7 +135,7 @@ export const AccordionTrigger = defineComponent<
 
 export const AccordionContent = defineComponent<
   { class?: string; style?: StyleValue },
-  Empty,
+  EmptyProps,
   '',
   SlotsType<{ default: () => VNodeChild }>
 >(

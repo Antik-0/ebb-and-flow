@@ -1,13 +1,13 @@
 import type { SlotsType, VNodeChild } from 'vue'
-import type { Empty } from '#/types'
+import type { EmptyProps } from '#/types'
 import { animate, motion, useMotionValue } from 'motion-v'
 import { defineComponent, onMounted, useTemplateRef, watch } from 'vue'
 import { useSidebarControl, useSidebarMenus } from '#/controller/sidebar'
 import { useEventListener, useResizeObserver } from '#/hooks'
 import { GlassMask } from '../Effect.tsx'
-import SidebarGroup from './SidebarGroup.vue'
+import { SidebarGroup } from './SidebarGroup.tsx'
 
-export default defineComponent(
+export const Sidebar = defineComponent(
   () => {
     const { isOpen, close } = useSidebarControl()
     const x = useMotionValue(isOpen.value ? '0%' : '-100%')
@@ -86,8 +86,8 @@ function SidebarMask() {
 }
 
 export const SidebarContainer = defineComponent<
-  Empty,
-  Empty,
+  EmptyProps,
+  EmptyProps,
   '',
   SlotsType<{ default: () => VNodeChild }>
 >(
@@ -138,4 +138,23 @@ export const SidebarOverlay = defineComponent(
     )
   },
   { name: 'SidebarOverlay' }
+)
+
+export const SidebarTrigger = defineComponent(
+  (_, { slots }) => {
+    const { isOpen, toggle } = useSidebarControl()
+    return () => (
+      <button
+        aria-checked={isOpen.value}
+        aria-label="sidebar-button"
+        class="flex flex-center cursor-pointer"
+        onClick={toggle}
+        role="switch"
+        type="button"
+      >
+        {slots.default?.()}
+      </button>
+    )
+  },
+  { name: 'SidebarTrigger' }
 )

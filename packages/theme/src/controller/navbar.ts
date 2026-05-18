@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref, SlotsType, VNodeChild } from 'vue'
-import type { Empty } from '#/types'
+import type { EmptyProps } from '#/types'
 import {
   defineComponent,
   inject,
@@ -73,7 +73,7 @@ function createContext<T>() {
 
   const Provider = defineComponent<
     { value: T },
-    Empty,
+    EmptyProps,
     '',
     SlotsType<{ default: () => VNodeChild }>
   >(

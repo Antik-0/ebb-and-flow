@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import ImageViewer from '#/components/ImageViewer.tsx'
-import Navbar from '#/components/navbar/Navbar.tsx'
-import Sidebar, {
+import { ImageViewer } from '#/components/ImageViewer.tsx'
+import { Navbar } from '#/components/Navbar.tsx'
+import {
+  Sidebar,
   SidebarContainer,
   SidebarOverlay
 } from '#/components/sidebar/Sidebar.tsx'
-import ToolPanel from '#/components/ToolPanel.tsx'
-import ViewportSentinel from '#/components/ViewportSentinel.vue'
+import { ToolPanel } from '#/components/ToolPanel.tsx'
+import { ViewportSentinel } from '#/components/ViewportSentinel.tsx'
 import {
   provideLayout,
   setHtmlLayout,

@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { ThemeDark, ThemeLight } from '#/icons'
 import { useAppTheme } from '#/theme'
 
-export default defineComponent(
+export const ThemeToggle = defineComponent(
   () => {
     const { theme, toggleTheme } = useAppTheme()
 

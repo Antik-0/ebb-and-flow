@@ -1,9 +1,12 @@
 import type { IconifyIconAttributes } from 'iconify-icon'
-import type { FunctionalComponent } from 'vue'
+import type { ClassValue, FunctionalComponent, StyleValue } from 'vue'
 import { h } from 'vue'
 import { builtingLogoIcons } from './logos'
 
-interface IconProps extends IconifyIconAttributes {}
+interface IconProps extends IconifyIconAttributes {
+  class?: ClassValue
+  style?: StyleValue
+}
 
 const Icon: FunctionalComponent<IconProps> = (props, { attrs }) => {
   return h('iconify-icon', { ...props, ...attrs })
