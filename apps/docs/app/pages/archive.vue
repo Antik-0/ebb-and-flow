@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useResizeObserver } from 'ebb-theme'
-import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue'
+import { useAnimationWorker } from '#/hooks/animation'
 
 definePageMeta({ layout: false })
 
@@ -13,52 +12,7 @@ const articles = await useFetch('/api/archive').then(
   res => res.data.value?.data
 )
 
-const { onWindowResize } = useResizeObserver()
-const canvas = useTemplateRef<HTMLCanvasElement>('animation')
-
-let worker: Worker = null!
-onMounted(async () => {
-  worker = new Worker(new URL('../workers/sakura.ts', import.meta.url), {
-    type: 'module'
-  })
-
-  const offscreenCanvas = canvas.value!.transferControlToOffscreen()
-  offscreenCanvas.width = window.innerWidth
-  offscreenCanvas.height = window.innerHeight
-
-  async function loadImage(source: string) {
-    const image = new Image(24)
-    await new Promise(resolve => {
-      image.src = source
-      image.onload = () => resolve(true)
-    })
-    return window.createImageBitmap(image)
-  }
-
-  const sakuraImage = await loadImage('/sakura.png')
-
-  worker.postMessage(
-    {
-      type: 'start',
-      payload: { canvas: offscreenCanvas, sakuraImage }
-    },
-    [offscreenCanvas, sakuraImage]
-  )
-
-  onWindowResize(() => {
-    const width = window.innerWidth
-    const height = window.innerHeight
-    worker.postMessage({
-      type: 'update',
-      payload: { width, height }
-    })
-  })
-})
-
-onBeforeUnmount(() => {
-  worker.postMessage({ type: 'stop' })
-  worker.terminate()
-})
+useAnimationWorker(new URL('../workers/sakura.ts', import.meta.url))
 </script>
 
 <template>

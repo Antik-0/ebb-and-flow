@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { EbbHome, useResizeObserver } from 'ebb-theme'
-import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue'
+import { EbbHome } from 'ebb-theme'
+import { useAnimationWorker } from '#/hooks/animation'
 
 definePageMeta({ layout: false })
 
@@ -9,41 +9,7 @@ useSeoMeta({
   description: '潮起潮落-主页'
 })
 
-const { onWindowResize } = useResizeObserver()
-const canvas = useTemplateRef<HTMLCanvasElement>('animation')
-
-let worker: Worker = null!
-onMounted(() => {
-  worker = new Worker(new URL('../workers/meteor.ts', import.meta.url), {
-    type: 'module'
-  })
-
-  const offscreenCanvas = canvas.value!.transferControlToOffscreen()
-  offscreenCanvas.width = window.innerWidth
-  offscreenCanvas.height = window.innerHeight
-
-  worker.postMessage(
-    {
-      type: 'start',
-      payload: { canvas: offscreenCanvas }
-    },
-    [offscreenCanvas]
-  )
-
-  onWindowResize(() => {
-    const width = window.innerWidth
-    const height = window.innerHeight
-    worker.postMessage({
-      type: 'update',
-      payload: { width, height }
-    })
-  })
-})
-
-onBeforeUnmount(() => {
-  worker.postMessage({ type: 'stop' })
-  worker.terminate()
-})
+useAnimationWorker(new URL('../workers/meteor.ts', import.meta.url))
 </script>
 
 <template>

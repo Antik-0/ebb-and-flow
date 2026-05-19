@@ -42,7 +42,8 @@ async function start(payload: {
   canvas = payload.canvas
   canvasCtx = canvas.getContext('2d')!
 
-  sakuraImageList = await createSakuraImageList(payload.sakuraImage)
+  const sakuraImage = await loadSakuraImage()
+  sakuraImageList = await createSakuraImageList(sakuraImage)
   animationFrame = self.requestAnimationFrame(animate)
 }
 
@@ -54,6 +55,12 @@ function update(payload: { width: number; height: number }) {
 
 function stop() {
   self.cancelAnimationFrame(animationFrame)
+}
+
+async function loadSakuraImage() {
+  const source = await fetch('/sakura.png').then(res => res.blob())
+  const sakuraImage = await self.createImageBitmap(source)
+  return sakuraImage
 }
 
 async function createSakuraImageList(sakuraImage: ImageBitmap) {
