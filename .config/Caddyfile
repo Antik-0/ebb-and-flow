@@ -1,0 +1,19 @@
+https://antik-yuyi.me {
+
+	tls /site/antik-yuyi.me.pem  /site/antik-yuyi.me.key
+
+    handle_path /webp/* {
+        root * /site/images/webp
+        file_server
+    }
+
+    handle {
+        root * /site/public
+
+        try_files {path}/index.html {path} /index.html
+
+        file_server {
+          precompressed br
+        }
+    }
+}
