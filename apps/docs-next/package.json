@@ -21,8 +21,8 @@
   "devDependencies": {
     "@config/tsconfig": "workspace:*",
     "@config/unocss": "workspace:*",
-    "@types/node": "25.8.0",
-    "@types/react": "^19.2.14",
+    "@types/node": "25.9.1",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@unocss/postcss": "catalog:",
     "@unocss/reset": "catalog:",
