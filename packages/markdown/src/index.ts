@@ -1,2 +1,9 @@
-export type { MarkdownData, Metadata, VNode } from './types/index.ts'
-export { createSource } from './build.ts'
+export type {
+  Frontmatter,
+  MarkdownData,
+  Metadata,
+  TocItem,
+  VNode
+} from './types/index.ts'
+
+export { createUnified } from './unified.ts'

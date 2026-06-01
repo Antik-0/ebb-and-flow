@@ -5,6 +5,7 @@ export default defineConfig({
     '**/node_modules',
     '**/dist',
     '**/.data',
+    '**/.drizzle',
     '**/.nuxt',
     '**/.next',
     '**/.nitro',

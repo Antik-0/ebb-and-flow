@@ -44,8 +44,6 @@ export interface VFileData {
   frontmatter?: Frontmatter
 }
 
-export interface MarkdownData {
+export interface MarkdownData extends VFileData {
   body: VNode[]
-  metadata: Metadata
-  frontmatter?: Frontmatter
 }

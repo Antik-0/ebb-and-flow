@@ -2,25 +2,30 @@ import type { Compiler, Parser, Pluggable, Plugin } from 'unified'
 import type { HAST, VFileData } from './types/index.ts'
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import { unified } from 'unified'
+import { rehypePatch } from './rehype/patch.ts'
+import { rehypeShiki } from './rehype/shiki.ts'
+import { remarkComponent } from './remark/component.ts'
+import { remarkMetadata } from './remark/metadata.ts'
+import { remarkToRehype } from './remark/to-hast.ts'
 import { parseFrontmatter } from './shared/frontmatter.ts'
 import { createVNodeTree } from './shared/vnode.ts'
 
-interface UnifiedOptions {
-  remarkPlugins?: Pluggable[]
-  rehypePlugins?: Pluggable[]
-}
+const remarkPlugins = [
+  [remarkComponent],
+  [remarkMetadata],
+  [remarkToRehype]
+] as Pluggable[]
+const rehypePlugins = [[rehypeShiki], [rehypePatch]] as Pluggable[]
 
 /**
  * ✨ 创建 `unified` 处理器
  */
-export function createUnified(options: UnifiedOptions = {}) {
-  const { remarkPlugins = [], rehypePlugins = [] } = options
-  const plguins = [...remarkPlugins, ...rehypePlugins]
-
+export function createUnified() {
   const processor = unified()
   processor.parser = ebbParser
   processor.compiler = ebbCompiler
 
+  const plguins = [...remarkPlugins, ...rehypePlugins]
   for (const plugin of plguins) {
     processor.use(plugin as Plugin)
   }
