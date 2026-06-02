@@ -25,7 +25,7 @@ const slogan = [
 const base = Bun.fileURLToPath(new URL('.', import.meta.url))
 const dbDir = resolve(base, '.db')
 const dbURL = resolve(dbDir, 'ebb.sqlite')
-const docsDir = resolve(base, '../docs/src')
+const docsDir = resolve(base, '../docs')
 const cachePath = resolve(dbDir, 'cache.json')
 
 {

@@ -2,8 +2,8 @@
 
 ## 🏷️ Home
 
-![home](./docs/assets//web-site-home.webp)
+![home](./site/site-home.webp)
 
 ## 🔖 Archive
 
-![archive](./docs/assets//web-site-archive.webp)
+![archive](./site/site-archive.webp)
