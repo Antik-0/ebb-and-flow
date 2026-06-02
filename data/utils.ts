@@ -39,7 +39,7 @@ export function normalizePath(path: string) {
   return '/' + path.replaceAll('\\', '/').slice(0, -3)
 }
 
-type CacheMap = Record<string, number>
+type CacheMap = Record<string, string>
 
 export async function loadCache(filepath: string) {
   try {
@@ -50,8 +50,8 @@ export async function loadCache(filepath: string) {
   }
 }
 
-export function isCacheHit(path: string, mtimeMs: number, cache: CacheMap) {
-  return path in cache && mtimeMs === cache[path]
+export function isCacheHit(key: string, hash: string, cache: CacheMap) {
+  return key in cache && hash === cache[key]
 }
 
 export async function updateCache(filepath: string, cache: CacheMap) {

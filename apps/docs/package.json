@@ -6,14 +6,13 @@
     "#/*": "./app/*"
   },
   "scripts": {
-    "build": "nuxt generate",
-    "build:ssr": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "bun --bun nuxt generate",
+    "build:ssr": "bun --bun nuxt build",
+    "dev": "bun --bun nuxt dev",
     "preview": "nuxt preview"
   },
   "dependencies": {
     "@repo/utils": "workspace:*",
-    "ebb-db": "workspace:*",
     "ebb-markdown": "workspace:*",
     "ebb-theme": "workspace:*",
     "ebb-ui": "workspace:*",

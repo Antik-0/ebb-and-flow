@@ -4,7 +4,7 @@ export default defineConfig({
   ignorePatterns: [
     '**/node_modules',
     '**/dist',
-    '**/.data',
+    '**/.db',
     '**/.drizzle',
     '**/.nuxt',
     '**/.next',

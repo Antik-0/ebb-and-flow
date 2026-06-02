@@ -6,7 +6,8 @@
     "jsxImportSource": "react",
     "incremental": true,
     "paths": {
-      "#/*": ["./src/*"]
+      "#/*": ["./src/*"],
+      "#db": ["../../data/api.ts"]
     },
     "plugins": [{ "name": "next" }],
     "types": ["react", "react-dom", "bun"]

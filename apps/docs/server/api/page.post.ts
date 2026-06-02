@@ -1,19 +1,11 @@
-import type { MarkdownData } from 'ebb-docs'
-import { loadSource } from 'ebb-docs'
+import { getArticle } from '#db'
 
 interface RequestBody {
   path: string
 }
 
 export default defineEventHandler(async event => {
-  const source = await loadSource()
-
   const body = (await readBody(event)) as RequestBody
-  const path = body.path
-
-  let data: MarkdownData | null = null
-  if (path in source) {
-    data = (source as any)[path] as MarkdownData
-  }
+  const data = await getArticle(body.path)
   return { data }
 })

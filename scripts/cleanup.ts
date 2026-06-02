@@ -1,3 +1,10 @@
+/**
+ *             〰️ 〰️ 〰️  Ebb-and-Flow  〰️ 〰️ 〰️
+ *
+ *         .·´¯`·.      潮汐往复，流动不息      .·´¯`·.
+ *      ~~~        ~~~                 ~~~        ~~~
+ */
+
 import * as fs from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
@@ -6,7 +13,7 @@ import pc from 'picocolors'
 // @ts-expect-error: no types
 import prompts from 'prompts'
 
-const packages = ['docs', 'apps/*', 'packages/*', 'packages/configs/*']
+const packages = ['apps/*', 'packages/*', 'packages/configs/*']
 const effects = [
   'apps/docs/{.nuxt,.nitro,.output}',
   'apps/docs-next/{.next,out}',
@@ -40,7 +47,7 @@ try {
     ...nodeModules,
     ...effectsList,
     '.turbo',
-    'docs/.data'
+    'data/.db'
   ]
 
   const response = await prompts(

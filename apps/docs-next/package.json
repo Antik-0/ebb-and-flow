@@ -6,9 +6,9 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
-    "start": "next start"
+    "build": "bun --bun next build",
+    "dev": "bun --bun next dev",
+    "start": "bun --bun next start"
   },
   "dependencies": {
     "@iconify-icon/react": "^3.0.3",
@@ -26,7 +26,6 @@
     "@types/react-dom": "^19.2.3",
     "@unocss/postcss": "catalog:",
     "@unocss/reset": "catalog:",
-    "ebb-db": "workspace:*",
     "ebb-markdown": "workspace:*",
     "ebb-ui": "workspace:*",
     "typescript": "catalog:",

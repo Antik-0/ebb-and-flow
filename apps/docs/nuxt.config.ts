@@ -1,3 +1,5 @@
+import { fileURLToPath, URL } from 'node:url'
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-30',
   devtools: { enabled: false },
@@ -17,10 +19,25 @@ export default defineNuxtConfig({
     localLayerAliases: false
   },
   typescript: {
+    includeWorkspace: true,
     tsConfig: {
       compilerOptions: {
         paths: {
           '#/*': ['../app/*']
+        }
+      }
+    }
+  },
+  nitro: {
+    alias: {
+      '#db': fileURLToPath(new URL('../../data/api.ts', import.meta.url))
+    },
+    typescript: {
+      tsConfig: {
+        compilerOptions: {
+          paths: {
+            '#db': ['../../../data/api.ts']
+          }
         }
       }
     }

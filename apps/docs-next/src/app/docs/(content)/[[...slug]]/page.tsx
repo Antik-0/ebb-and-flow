@@ -4,7 +4,7 @@ import { ContentRender } from '#/render'
 import { EbbDocContent } from '#/theme'
 import { themeConfig } from '#/theme.config'
 import { formatTitle } from '#/utils'
-import { getPageData, getPageSlugs } from './_data'
+import { getPageData } from './_data'
 
 interface PageProps {
   params: Promise<{ slug: string[] }>
@@ -44,8 +44,4 @@ export async function generateMetadata({
   const tags = data.frontmatter?.tags ?? []
   const description = tags ? `潮起潮落: ${tags.join(' ')}` : '潮起潮落'
   return { title, description }
-}
-
-export async function generateStaticParams() {
-  return await getPageSlugs()
 }

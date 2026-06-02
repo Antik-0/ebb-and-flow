@@ -4,6 +4,7 @@
     "includes": [
       "apps/**/*",
       "docs/**/*",
+      "data/**/*",
       "packages/**/*",
       "scripts/*",
       "uno.config.ts",
@@ -13,7 +14,7 @@
       "tsconfig.json",
       "!**/node_modules",
       "!**/dist",
-      "!**/.data",
+      "!**/.db",
       "!**/.drizzle",
       "!**/.nuxt",
       "!**/.next",
