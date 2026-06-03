@@ -1,17 +1,9 @@
-/**
- *             〰️ 〰️ 〰️  Ebb-and-Flow  〰️ 〰️ 〰️
- *
- *         .·´¯`·.      潮汐往复，流动不息      .·´¯`·.
- *      ~~~        ~~~                 ~~~        ~~~
- */
-
 import * as fs from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 import ora from 'ora'
 import pc from 'picocolors'
-// @ts-expect-error: no types
-import prompts from 'prompts'
+import { EbbAndFlow } from './ebb-and-flow.ts'
 
 const packages = ['apps/*', 'packages/*', 'packages/configs/*']
 const effects = [
@@ -36,7 +28,8 @@ const rootPath = fileURLToPath(new URL('../', import.meta.url))
 const spinner = ora({ indent: 2 })
 
 try {
-  console.log(`\n\n🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)
+  EbbAndFlow()
+  console.log(`🧹${pc.yellow('---------- 清 理 脚 本 ----------')}🧹\n\n`)
 
   const nodeModules = await collectCleanupPaths(
     packages.map(pkg => pkg + '/node_modules')
@@ -46,28 +39,11 @@ try {
     'node_modules',
     ...nodeModules,
     ...effectsList,
-    '.turbo',
-    'data/.db'
+    'data/.db',
+    'bun.lock',
+    '.turbo'
   ]
 
-  const response = await prompts(
-    [
-      {
-        type: 'confirm',
-        name: 'includeLockFile',
-        message: pc.red('是否删除 bun.lock 文件?'),
-        initial: true
-      }
-    ],
-    {
-      onCancel: () => Promise.reject(false)
-    }
-  )
-  if (response.includeLockFile) {
-    cleanupList.push('bun.lock')
-  }
-
-  console.log('\n')
   for (const path of cleanupList) {
     const filePath = resolve(rootPath, path)
     try {

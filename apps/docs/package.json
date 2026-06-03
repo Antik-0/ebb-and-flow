@@ -6,9 +6,9 @@
     "#/*": "./app/*"
   },
   "scripts": {
-    "build": "bun --bun nuxt generate",
-    "build:ssr": "bun --bun nuxt build",
-    "dev": "bun --bun nuxt dev",
+    "build": "nuxt generate",
+    "build:ssr": "nuxt build",
+    "dev": "nuxt dev",
     "preview": "nuxt preview"
   },
   "dependencies": {

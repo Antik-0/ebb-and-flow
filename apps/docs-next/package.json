@@ -6,9 +6,9 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "build": "bun --bun next build",
-    "dev": "bun --bun next dev",
-    "start": "bun --bun next start"
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
   },
   "dependencies": {
     "@iconify-icon/react": "^3.0.3",

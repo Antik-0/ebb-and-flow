@@ -1,13 +1,16 @@
 import { resolve } from 'node:path'
 import { brotliCompressSync, constants } from 'node:zlib'
 import pc from 'picocolors'
+import { EbbAndFlow } from './ebb-and-flow.ts'
+
+EbbAndFlow()
 
 const root = process.cwd()
 const output = 'apps/docs/.output/public/_nuxt'
 const dist = resolve(root, output)
 const params = { [constants.BROTLI_PARAM_QUALITY]: 10 }
 
-console.log(`\n✨ ${pc.yellow('compress ...')} ✨\n`)
+console.log(`✨ ${pc.yellow('compress ...')} ✨\n`)
 
 const glob = new Bun.Glob('*.{js,css}')
 for await (const filename of glob.scan({ cwd: dist })) {

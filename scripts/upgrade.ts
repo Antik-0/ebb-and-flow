@@ -4,14 +4,14 @@ import { fileURLToPath, URL } from 'node:url'
 import ora from 'ora'
 import pc from 'picocolors'
 import rootPackageJSON from '../package.json' with { type: 'json' }
+import { EbbAndFlow } from './ebb-and-flow.ts'
 
 const rootPath = fileURLToPath(new URL('../', import.meta.url))
 const spinner = ora({ indent: 2 })
 
 try {
-  console.log(
-    `\n\n🎮${pc.yellow('---------- 依 赖 升 级 脚 本 ----------')}🎮\n\n`
-  )
+  EbbAndFlow()
+  console.log(`🎮${pc.yellow('---------- 依 赖 升 级 ----------')}🎮\n\n`)
 
   // 计算 workspaces 下的 package.json 路径
   const workspaces = rootPackageJSON.workspaces.packages

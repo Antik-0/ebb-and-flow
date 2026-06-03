@@ -1,2 +1,6 @@
 [install]
 linker = "isolated"
+
+[run]
+bun = true
+elide-lines = 0
