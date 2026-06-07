@@ -1,7 +1,6 @@
 {
   "name": "ebb-markdown",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {

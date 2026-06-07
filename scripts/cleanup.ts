@@ -39,9 +39,9 @@ try {
     'node_modules',
     ...nodeModules,
     ...effectsList,
-    'data/.db',
-    'bun.lock',
-    '.turbo'
+    '.db',
+    '.turbo',
+    'bun.lock'
   ]
 
   for (const path of cleanupList) {

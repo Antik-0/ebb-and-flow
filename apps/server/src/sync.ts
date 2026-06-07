@@ -9,32 +9,20 @@ import pc from 'picocolors'
 import { articles } from './schema.ts'
 import {
   createLogger,
+  findRootPath,
   isCacheHit,
   loadCache,
   normalizePath,
   updateCache
 } from './utils.ts'
 
-const slogan = [
-  '             〰️ 〰️ 〰️  Ebb-and-Flow  〰️ 〰️ 〰️         ',
-  '                                                        ',
-  '        .·´¯`·.      潮汐往复，流动不息      .·´¯`·.       ',
-  '     ~~~        ~~~                     ~~~        ~~~  '
-]
-
-const base = Bun.fileURLToPath(new URL('.', import.meta.url))
-const dbDir = resolve(base, '.db')
+const root = findRootPath()
+const dbDir = resolve(root, '.db')
 const dbURL = resolve(dbDir, 'ebb.sqlite')
-const docsDir = resolve(base, '../docs')
+const docsDir = resolve(root, 'docs')
 const cachePath = resolve(dbDir, 'cache.json')
 
 {
-  console.log('\n')
-  for (const text of slogan) {
-    console.log(pc.cyan(text))
-  }
-  console.log('\n')
-
   const isExist = await exists(dbDir)
   if (!isExist) {
     await mkdir(dbDir)
@@ -43,6 +31,7 @@ const cachePath = resolve(dbDir, 'cache.json')
 
   console.log(pc.cyan(`[step] create sqlite table \n`))
   const proc = Bun.spawn(['bunx', 'drizzle-kit', 'push'], {
+    cwd: root,
     stdin: 'inherit',
     stdout: 'inherit',
     stderr: 'inherit'

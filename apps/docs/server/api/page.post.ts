@@ -1,11 +1,9 @@
-import { getArticle } from '#db'
-
-interface RequestBody {
-  path: string
-}
+import type { MarkdownData } from 'ebb-markdown'
 
 export default defineEventHandler(async event => {
-  const body = (await readBody(event)) as RequestBody
-  const data = await getArticle(body.path)
-  return { data }
+  const res = await fetch('http://localhost:8080/article', {
+    method: 'POST',
+    body: await readBody(event)
+  })
+  return (await res.json()) as MarkdownData
 })

@@ -1,7 +1,6 @@
 {
   "name": "ebb-theme",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "imports": {
     "#/*": "./src/*"

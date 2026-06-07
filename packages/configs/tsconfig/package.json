@@ -1,7 +1,6 @@
 {
   "name": "@config/tsconfig",
   "private": true,
-  "license": "MIT",
   "files": [
     "tsconfig.base.json",
     "tsconfig.app.json",

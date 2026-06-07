@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { formatTitle } from '#/utils'
-import { getArchiveData } from './_data'
+import { getArchive } from './_data'
 import { CardCover } from './CardCover'
 import { TransitionLink } from './Link'
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const articles = await getArchiveData()
+  const articles = await getArchive()
 
   return (
     <div className="archive-page" data-page="archive">

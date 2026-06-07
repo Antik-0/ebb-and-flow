@@ -4,7 +4,6 @@
     "includes": [
       "apps/**/*",
       "docs/**/*",
-      "data/**/*",
       "packages/**/*",
       "scripts/*",
       "uno.config.ts",

@@ -44,7 +44,7 @@ onMounted(() => setHtmlLayout('home'))
           <CodeMotion
             :codes="theme.codes"
             :paused="taglineMotion !== 'fade'"
-            cycle
+            :cycle="true"
           />
         </p>
       </h2>

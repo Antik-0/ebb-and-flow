@@ -9,7 +9,7 @@ const route = useRoute()
 const page = await useFetch('/api/page', {
   method: 'post',
   body: { path: route.path }
-}).then(res => res.data.value?.data)
+}).then(res => res.data.value)
 
 const metadata = page?.metadata
 

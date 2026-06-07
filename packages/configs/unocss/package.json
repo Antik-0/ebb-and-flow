@@ -1,7 +1,6 @@
 {
   "name": "@config/unocss",
   "private": true,
-  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {

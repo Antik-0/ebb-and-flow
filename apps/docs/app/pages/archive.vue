@@ -9,7 +9,7 @@ useSeoMeta({
 })
 
 const articles = await useFetch('/api/archive').then(
-  res => res.data.value?.data ?? []
+  res => res.data.value ?? []
 )
 
 useAnimationWorker(new URL('../workers/sakura.ts', import.meta.url))

@@ -6,20 +6,19 @@
       "cache": false,
       "persistent": true
     },
+    "start": {
+      "dependsOn": [],
+      "cache": false,
+      "persistent": true
+    },
+    "sync": {
+      "dependsOn": [],
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".output/**"]
-    },
-    "preview": {
-      "dependsOn": ["^preview"]
-    },
-    "stub": {
-      "dependsOn": [],
-      "outputs": ["dist/**"]
-    },
-    "check-types": {
-      "dependsOn": []
     }
   },
   "cacheDir": ".turbo/cache"

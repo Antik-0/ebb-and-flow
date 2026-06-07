@@ -1,0 +1,13 @@
+{
+  "name": "ebb-server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "sync": "bun run src/sync.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^1.0.0-beta.22",
+    "ebb-markdown": "workspace:*"
+  }
+}
