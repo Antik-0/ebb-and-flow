@@ -14,7 +14,6 @@
   "dependencies": {
     "@repo/utils": "workspace:*",
     "ebb-markdown": "workspace:*",
-    "ebb-server": "workspace:*",
     "ebb-theme": "workspace:*",
     "ebb-ui": "workspace:*",
     "motion-v": "catalog:",

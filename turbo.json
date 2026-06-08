@@ -1,10 +1,11 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "./node_modules/turbo/schema.json",
   "tasks": {
     "dev": {
       "dependsOn": [],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "with": ["ebb-server#start"]
     },
     "start": {
       "dependsOn": [],
