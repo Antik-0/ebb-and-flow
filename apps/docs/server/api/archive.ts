@@ -8,6 +8,6 @@ interface Archive {
 }
 
 export default defineEventHandler(async () => {
-  const res = await fetch('http://localhost:8080/archive', { method: 'GET' })
+  const res = await $api('/archive', { method: 'GET' })
   return (await res.json()) as Archive[]
 })

@@ -28,8 +28,9 @@
   "type": "module",
   "scripts": {
     "boot": "bun install && bun db:sync",
-    "build": "turbo run build ebb-nuxt#build",
-    "build:next": "turbo run build ebb-next#build",
+    "build": "bun run ./scripts/ebb-build.ts",
+    "build:next": "turbo run ebb-next#build",
+    "build:nuxt": "turbo run ebb-nuxt#build",
     "check": "oxfmt && biome check --fix",
     "clean": "bun run ./scripts/cleanup.ts",
     "compress": "bun run ./scripts/compress.ts",

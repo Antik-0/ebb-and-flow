@@ -1,25 +1,24 @@
 import type { MarkdownData } from 'ebb-markdown'
 import { Database } from 'bun:sqlite'
 import { exists, mkdir } from 'node:fs/promises'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { sql } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/bun-sqlite'
+import { ebbEnv, rootPath } from 'ebb-env'
 import { createUnified } from 'ebb-markdown'
 import pc from 'picocolors'
 import { articles } from './schema.ts'
 import {
   createLogger,
-  findRootPath,
   isCacheHit,
   loadCache,
   normalizePath,
   updateCache
 } from './utils.ts'
 
-const root = findRootPath()
-const dbDir = resolve(root, '.db')
-const dbURL = resolve(dbDir, 'ebb.sqlite')
-const docsDir = resolve(root, 'docs')
+const dbURL = ebbEnv.EBB_DB_URL
+const dbDir = dirname(dbURL)
+const docsDir = resolve(rootPath, 'docs')
 const cachePath = resolve(dbDir, 'cache.json')
 
 {
@@ -31,7 +30,7 @@ const cachePath = resolve(dbDir, 'cache.json')
 
   console.log(pc.cyan(`[step] create sqlite table \n`))
   const proc = Bun.spawn(['bunx', 'drizzle-kit', 'push'], {
-    cwd: root,
+    cwd: rootPath,
     stdin: 'inherit',
     stdout: 'inherit',
     stderr: 'inherit'

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@repo/utils": "workspace:*",
+    "ebb-env": "workspace:*",
     "ebb-markdown": "workspace:*",
     "ebb-theme": "workspace:*",
     "ebb-ui": "workspace:*",

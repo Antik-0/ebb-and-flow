@@ -22,8 +22,8 @@
       "name": "ebb-nuxt",
       "dependencies": {
         "@repo/utils": "workspace:*",
+        "ebb-env": "workspace:*",
         "ebb-markdown": "workspace:*",
-        "ebb-server": "workspace:*",
         "ebb-theme": "workspace:*",
         "ebb-ui": "workspace:*",
         "motion-v": "catalog:",
@@ -54,6 +54,7 @@
         "@types/react-dom": "^19.2.3",
         "@unocss/postcss": "catalog:",
         "@unocss/reset": "catalog:",
+        "ebb-env": "workspace:*",
         "ebb-markdown": "workspace:*",
         "ebb-ui": "workspace:*",
         "typescript": "catalog:",
@@ -64,6 +65,7 @@
       "name": "ebb-server",
       "dependencies": {
         "drizzle-orm": "^1.0.0-beta.22",
+        "ebb-env": "workspace:*",
         "ebb-markdown": "workspace:*",
       },
     },
@@ -77,6 +79,9 @@
         "@unocss/preset-wind4": "^66.7.0",
         "unocss": "catalog:",
       },
+    },
+    "packages/env": {
+      "name": "ebb-env",
     },
     "packages/markdown": {
       "name": "ebb-markdown",
@@ -1124,6 +1129,8 @@
     "duplexer": ["duplexer@0.1.2", "", {}, "sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg=="],
 
     "eastasianwidth": ["eastasianwidth@0.2.0", "", {}, "sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA=="],
+
+    "ebb-env": ["ebb-env@workspace:packages/env"],
 
     "ebb-markdown": ["ebb-markdown@workspace:packages/markdown"],
 

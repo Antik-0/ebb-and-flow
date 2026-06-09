@@ -1,8 +1,17 @@
 import type { Metadata } from 'next'
 import { formatTitle } from '#/utils'
-import { getArchive } from './_data'
+import { $api } from '#/utils/api'
 import { CardCover } from './CardCover'
 import { TransitionLink } from './Link'
+
+interface Archive {
+  id: number
+  path: string
+  title: string
+  lastUpdated: number
+  cover: string
+  tags: string[]
+}
 
 export const metadata: Metadata = {
   title: formatTitle('归档'),
@@ -10,7 +19,8 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const articles = await getArchive()
+  const res = await $api('/archive', { method: 'GET' })
+  const articles = (await res.json()) as Archive[]
 
   return (
     <div className="archive-page" data-page="archive">

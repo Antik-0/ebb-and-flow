@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
     tsconfigPath: 'tsconfig.app.json'
   },
-  pageExtensions: ['tsx']
+  pageExtensions: ['ts', 'tsx']
 }
 
 export default nextConfig

@@ -1,24 +1,4 @@
-import { existsSync } from 'node:fs'
-import { resolve } from 'node:path'
 import pc from 'picocolors'
-
-export function findRootPath() {
-  const search = (path: string) => {
-    const lockfile = resolve(path, 'bun.lock')
-    if (existsSync(lockfile)) {
-      return path
-    }
-
-    const parent = resolve(path, '..')
-    if (parent === path) {
-      return path
-    }
-    return search(parent)
-  }
-
-  const currPath = Bun.fileURLToPath(new URL('.', import.meta.url))
-  return search(currPath)
-}
 
 export function createLogger() {
   const logStart = () => {

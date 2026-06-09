@@ -1,9 +1,10 @@
 import type { MarkdownData } from 'ebb-markdown'
 
 export default defineEventHandler(async event => {
-  const res = await fetch('http://localhost:8080/article', {
+  const body = await readBody(event)
+  const res = await $api('/article', {
     method: 'POST',
-    body: await readBody(event)
+    body: JSON.stringify(body)
   })
   return (await res.json()) as MarkdownData
 })

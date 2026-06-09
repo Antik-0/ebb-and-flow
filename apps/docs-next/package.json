@@ -26,6 +26,7 @@
     "@types/react-dom": "^19.2.3",
     "@unocss/postcss": "catalog:",
     "@unocss/reset": "catalog:",
+    "ebb-env": "workspace:*",
     "ebb-markdown": "workspace:*",
     "ebb-ui": "workspace:*",
     "typescript": "catalog:",

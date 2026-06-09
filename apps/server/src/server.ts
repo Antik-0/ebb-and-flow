@@ -1,7 +1,9 @@
+import { ebbEnv } from 'ebb-env'
+import pc from 'picocolors'
 import { getArchive, getArticle } from './api.ts'
 
 const server = Bun.serve({
-  port: 8080,
+  port: ebbEnv.EBB_SERVER_PORT,
   routes: {
     '/archive': {
       GET: async () => {
@@ -17,4 +19,5 @@ const server = Bun.serve({
   }
 })
 
-console.log(`Server running at ${server.url}`)
+console.log(pc.red(`Server running at ${server.url}`) + '\n')
+console.log(pc.cyan('ok'))

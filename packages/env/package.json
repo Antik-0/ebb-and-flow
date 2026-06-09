@@ -1,0 +1,11 @@
+{
+  "name": "ebb-env",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./loader.ts",
+      "import": "./loader.ts"
+    }
+  }
+}
