@@ -52,7 +52,7 @@
       --m-angle: var(--angle-from, 0deg);
     }
     to {
-      --m-angle: var(--angle-to, 360deg);
+      --m-angle: var(--angle-to, 0deg);
     }
   }
 
@@ -61,7 +61,7 @@
       --m-opacity: var(--opacity-from, 0);
     }
     to {
-      --m-opacity: var(--opacity-to, 1);
+      --m-opacity: var(--opacity-to, 0);
     }
   }
 

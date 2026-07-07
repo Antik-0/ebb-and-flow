@@ -16,17 +16,18 @@ export const MenubarItem = defineComponent<{
 
     return () => {
       const { index, item } = props
+      const active = isActive.value
 
       return (
         <motion.li
           class="relative cursor-pointer hover:text-brand data-[active=true]:text-brand"
-          data-active={isActive.value}
+          data-active={active}
           data-role="menuitem"
           layout
           onPointerenter={() => onMenuItemHover(index)}
         >
           <Link class="flex items-center px-4 py-2.5" href={item.link}>
-            {item.icon && isActive.value && (
+            {item.icon && active && (
               <motion.span
                 class="mr-1 inline-flex flex-center text-4"
                 layoutId="menuitem-icon"
@@ -38,7 +39,7 @@ export const MenubarItem = defineComponent<{
               {item.text}
             </motion.span>
           </Link>
-          {isActive.value && (
+          {active && (
             <motion.span
               class="absolute inset-x-px -bottom-px h-px bg-linear-to-r from-transparent via-brand/70 to-transparent"
               layoutId="menuitem-line"

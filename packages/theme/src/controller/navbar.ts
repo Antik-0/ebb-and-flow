@@ -39,23 +39,33 @@ export function useMenubarMotion() {
     ]
   })
 
-  async function updateMotion(index: number) {
-    const target = menuItemNodes[index]
-    if (!target) return
+  const motionCache = new Map<number, MenubarMotion>()
 
-    // 等待 `scope` 和 `icon` 渲染完毕
-    await nextTick()
-
-    if (scopeHalfWidth === 0) {
-      const rect = scope.value!.getBoundingClientRect()
-      scopeHalfWidth = rect.width / 2
+  async function updateMotion(index: number, reset: boolean = false) {
+    if (reset) {
+      motionCache.clear()
     }
 
-    const offsetLeft = target.offsetLeft
-    const offsetWidth = target.offsetWidth
-    const offsetX = offsetLeft + offsetWidth / 2 - scopeHalfWidth
+    let motion = motionCache.get(index)
+    if (!motion) {
+      const target = menuItemNodes[index]
+      if (!target) return
 
-    const motion = { offsetX, width: offsetWidth }
+      // 等待 `scope` 和 `icon` 渲染完毕
+      await nextTick()
+
+      if (scopeHalfWidth === 0) {
+        const rect = scope.value!.getBoundingClientRect()
+        scopeHalfWidth = rect.width / 2
+      }
+
+      const offsetLeft = target.offsetLeft
+      const offsetWidth = target.offsetWidth
+      const offsetX = offsetLeft + offsetWidth / 2 - scopeHalfWidth
+      motion = { offsetX, width: offsetWidth }
+      motionCache.set(index, motion)
+    }
+
     for (const cb of motionCbs) {
       cb(motion)
     }

@@ -1,7 +1,5 @@
 import type {
   InjectionKey,
-  Ref,
-  ShallowRef,
   SlotsType,
   StyleValue,
   VNode,
@@ -49,14 +47,7 @@ function useAccordion() {
   }
 }
 
-interface AccordionContext {
-  scope: ShallowRef<HTMLElement | undefined>
-  height: Ref<number>
-  hidden: Ref<boolean>
-  collapsed: Ref<boolean>
-  open: () => void
-  fold: () => void
-}
+type AccordionContext = ReturnType<typeof useAccordion>
 
 function createAccordionContext() {
   const contextKey = Symbol() as InjectionKey<AccordionContext>

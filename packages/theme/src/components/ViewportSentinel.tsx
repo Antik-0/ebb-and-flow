@@ -37,5 +37,5 @@ export const ViewportSentinel = defineComponent<
       ></div>
     )
   },
-  { name: 'ViewportSentinel' }
+  { name: 'ViewportSentinel', props: ['top'] }
 )

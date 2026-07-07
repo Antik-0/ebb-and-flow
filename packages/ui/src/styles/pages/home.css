@@ -54,6 +54,7 @@
   }
 
   .entry-background {
+    --opacity-to: 1;
     position: absolute;
     inset: 10px;
     z-index: -1;
@@ -78,6 +79,7 @@
     }
 
     svg {
+      --angle-to: 360deg;
       rotate: y var(--m-angle);
       animation: motion-angle 2s linear infinite;
     }

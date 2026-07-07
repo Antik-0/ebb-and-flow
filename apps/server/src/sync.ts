@@ -16,7 +16,7 @@ import {
   updateCache
 } from './utils.ts'
 
-const dbURL = ebbEnv.EBB_DB_URL
+const dbURL = resolve(rootPath, ebbEnv.EBB_DB_URL)
 const dbDir = dirname(dbURL)
 const docsDir = resolve(rootPath, 'docs')
 const cachePath = resolve(dbDir, 'cache.json')

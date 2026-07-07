@@ -37,7 +37,7 @@ export const Menubar = defineComponent(
         const index = Number(activeNode.index.split('_')[0]!)
         if (prevActiveIndex !== index) {
           activeIndex = index
-          updateMotion(index)
+          updateMotion(index, true)
         }
       },
       { immediate: true }
@@ -77,8 +77,8 @@ export const Menubar = defineComponent(
         ref={scope}
       >
         <MotionProvider value={motionValue}>
-          <MenubarBackground />
           <MenubarIndicator />
+          <MenubarBackground />
         </MotionProvider>
 
         <MenubarProvider value={contextValue}>
@@ -103,22 +103,6 @@ export const Menubar = defineComponent(
   { name: 'Menubar' }
 )
 
-const MenubarBackground = defineComponent(() => {
-  const offsetX = ref(0)
-  const { onMotionChange } = useMotionCtx()
-
-  onMotionChange(motion => (offsetX.value = motion.offsetX))
-
-  return () => (
-    <div
-      aria-hidden="true"
-      class="menubar-background"
-      data-role="background"
-      style={{ '--offset-x': offsetX.value + 'px' }}
-    ></div>
-  )
-})
-
 const MenubarIndicator = defineComponent(() => {
   const motionW = useMotionValue(0)
   const motionX = useMotionValue(0)
@@ -137,5 +121,21 @@ const MenubarIndicator = defineComponent(() => {
       data-role="indicator"
       style={{ x: motionX, width: motionW }}
     />
+  )
+})
+
+const MenubarBackground = defineComponent(() => {
+  const offsetX = ref(0)
+  const { onMotionChange } = useMotionCtx()
+
+  onMotionChange(motion => (offsetX.value = motion.offsetX))
+
+  return () => (
+    <div
+      aria-hidden="true"
+      class="menubar-background"
+      data-role="background"
+      style={{ '--m-value-x': offsetX.value + 'px' }}
+    ></div>
   )
 })
