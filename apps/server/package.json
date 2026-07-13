@@ -7,7 +7,7 @@
     "sync": "bun run  src/sync.ts"
   },
   "dependencies": {
-    "drizzle-orm": "1.0.0-beta.24",
+    "drizzle-orm": "1.0.0-rc.4",
     "ebb-env": "workspace:*",
     "ebb-markdown": "workspace:*"
   }
