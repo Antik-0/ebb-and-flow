@@ -1,6 +1,5 @@
 {
   "name": "ebb-and-flow",
-  "version": "2.0.0",
   "private": true,
   "description": "潮起潮落的个人博客",
   "workspaces": {
@@ -20,7 +19,7 @@
       "nuxt": "^4.4.8",
       "react": "^19.2.7",
       "react-dom": "^19.2.7",
-      "typescript": "^7.0.2",
+      "typescript": "6.0.3",
       "unocss": "^66.7.5",
       "vue": "^3.5.39"
     }
@@ -53,6 +52,7 @@
     "oxfmt": "^0.58.0",
     "picocolors": "^1.1.1",
     "turbo": "^2.10.4",
+    "typescript": "catalog:",
     "unocss": "catalog:"
   },
   "lint-staged": {

@@ -25,7 +25,7 @@ const cachePath = resolve(dbDir, 'cache.json')
   const isExist = await exists(dbDir)
   if (!isExist) {
     await mkdir(dbDir)
-    console.log(pc.cyan(`[step: create db dir]: ${dbDir} \n`))
+    console.log(pc.cyan(`[step] create db dir: ${dbDir} \n`))
   }
 
   console.log(pc.cyan(`[step] create sqlite table \n`))

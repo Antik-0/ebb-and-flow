@@ -2,8 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@config/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "incremental": true,
-    "types": ["bun"]
+    "incremental": true
   },
   "include": ["scripts", "uno.config.ts"]
 }

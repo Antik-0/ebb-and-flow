@@ -3,14 +3,6 @@
   "compilerOptions": {
     "target": "esnext",
     "checkJs": false,
-    "useDefineForClassFields": true,
-
-    "allowArbitraryExtensions": true,
-    "allowUmdGlobalAccess": false,
-    "noUncheckedSideEffectImports": false,
-    "resolveJsonModule": true,
-    "removeComments": true,
-    "forceConsistentCasingInFileNames": true,
 
     "strict": true,
     "allowUnreachableCode": false,
@@ -19,15 +11,10 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": false,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    "noErrorTruncation": true,
-    "preserveWatchOutput": true,
-    "pretty": true
+    "noUnusedParameters": true
   },
   "exclude": ["**/node_modules/**"]
 }

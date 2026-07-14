@@ -2,20 +2,21 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
+    "target": "esnext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
     "moduleDetection": "force",
 
-    "target": "esnext",
+    "types": ["bun"],
     "module": "esnext",
     "moduleResolution": "bundler",
+    "allowArbitraryExtensions": true,
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
 
     "noEmit": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "isolatedModules": true,
+    "esModuleInterop": true,
     "verbatimModuleSyntax": true
   }
 }

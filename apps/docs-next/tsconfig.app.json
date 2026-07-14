@@ -2,14 +2,14 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@config/tsconfig/tsconfig.app.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "incremental": true,
     "paths": {
       "#/*": ["./src/*"]
     },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "plugins": [{ "name": "next" }],
-    "types": ["react", "react-dom", "bun"]
+    "types": ["react", "react-dom", "bun"],
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",

@@ -4,8 +4,7 @@
   "files": [
     "tsconfig.base.json",
     "tsconfig.app.json",
-    "tsconfig.node.json",
-    "tsconfig.repo.json"
+    "tsconfig.node.json"
   ],
   "type": "module"
 }
