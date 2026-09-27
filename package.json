@@ -2,12 +2,9 @@
   "name": "ebb-and-flow",
   "private": true,
   "description": "潮起潮落的个人博客",
+  "type": "module",
   "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*",
-      "packages/configs/*"
-    ],
+    "packages": ["apps/*", "packages/*", "packages/configs/*"],
     "catalog": {
       "@unocss/nuxt": "^66.10.5",
       "@unocss/postcss": "^66.10.5",
@@ -24,13 +21,12 @@
       "vue": "^3.5.43"
     }
   },
-  "type": "module",
   "scripts": {
     "boot": "bun install && bun db:sync",
     "build": "bun run ./scripts/ebb-build.ts",
     "build:next": "turbo run ebb-next#build",
     "build:nuxt": "turbo run ebb-nuxt#build",
-    "check": "oxfmt && biome check --fix",
+    "check": "biome check --fix",
     "clean": "bun run ./scripts/cleanup.ts",
     "compress": "bun run ./scripts/compress.ts",
     "db:push": "bunx drizzle-kit push",
@@ -41,6 +37,9 @@
     "image-kit": "bun run ./scripts/image-kit.ts",
     "up-deps": "bun run ./scripts/upgrade.ts"
   },
+  "lint-staged": {
+    "*.{ts,tsx,css,vue,json}": ["bun run check"]
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",
     "@config/tsconfig": "workspace:*",
@@ -49,16 +48,10 @@
     "drizzle-kit": "1.0.0-rc.4",
     "lint-staged": "^17.6.0",
     "ora": "^9.4.1",
-    "oxfmt": "^0.70.0",
     "picocolors": "^1.1.1",
     "turbo": "^2.11.4",
     "typescript": "catalog:",
     "unocss": "catalog:"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,css,vue,json}": [
-      "bun run check"
-    ]
   },
   "packageManager": "bun@1.4.2"
 }

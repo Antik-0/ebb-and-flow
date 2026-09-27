@@ -320,7 +320,7 @@
       box-shadow:
         inset -1px -1px 6px 1px oklch(70.065% 0.1962 10.597 / 0.4),
         0 2px 16px 0
-          color-mix(in oklch, var(--c-brand-3), transparent var(--m-value-x));
+        color-mix(in oklch, var(--c-brand-3), transparent var(--m-value-x));
     }
 
     .indicator {

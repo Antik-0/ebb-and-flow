@@ -7,7 +7,6 @@
       "packages/**/*",
       "scripts/*",
       "uno.config.ts",
-      "oxfmt.config.ts",
       "drizzle.config.ts",
       "package.json",
       "tsconfig.json",
@@ -22,13 +21,10 @@
       "!**/out"
     ]
   },
-  "formatter": {
-    "enabled": false
-  },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "a11y": {
         "noStaticElementInteractions": "off",
         "noSvgWithoutTitle": "off",
@@ -94,9 +90,56 @@
     "enabled": true,
     "actions": {
       "source": {
-        "organizeImports": "off",
-        "useSortedAttributes": "on"
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              {
+                "type": true
+              }
+            ]
+          }
+        },
+        "useSortedAttributes": "on",
+        "useSortedPackageJson": "on"
       }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "attributePosition": "auto",
+    "bracketSpacing": true,
+    "expand": "auto"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
+      "trailingCommas": "none",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "asNeeded"
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": false,
+      "allowTrailingCommas": false
+    },
+    "formatter": {
+      "trailingCommas": "none",
+      "expand": "auto"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
     }
   },
   "overrides": [
@@ -111,27 +154,6 @@
           "correctness": {
             "noUnusedVariables": "off",
             "noUnusedImports": "off"
-          },
-          "nursery": {
-            "useVueDefineMacrosOrder": {
-              "level": "error",
-              "fix": "safe",
-              "options": {
-                "order": [
-                  "defineProps",
-                  "defineModel",
-                  "defineEmits",
-                  "defineSlots"
-                ]
-              }
-            },
-            "useVueNextTickPromise": "error",
-            "noVueVIfWithVFor": "error",
-            "useVueHyphenatedAttributes": "error",
-            "useVueVForKey": "error",
-            "useVueValidVElse": "error",
-            "useVueValidVElseIf": "error",
-            "useVueValidVFor": "error"
           }
         }
       }

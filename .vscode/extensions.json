@@ -3,7 +3,6 @@
     "antfu.unocss",
     "antfu.iconify",
     "biomejs.biome",
-    "oxc.oxc-vscode",
     "vue.volar"
   ]
 }
