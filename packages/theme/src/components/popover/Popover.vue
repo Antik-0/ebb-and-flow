@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { ComponentPublicInstance, StyleValue } from 'vue'
 import type { PopoverProps } from './index.ts'
 import { computed, h, onMounted, Teleport, watch } from 'vue'
@@ -126,10 +126,10 @@ onMounted(() => {
   <TriggerElement />
   <Teleport to="#teleports">
     <div
+      class="popover"
       v-if="isActive"
       v-show="visible"
       ref="vRef"
-      class="popover"
       :data-show="visible"
       :style="[
         {

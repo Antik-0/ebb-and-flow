@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { EbbHome } from 'ebb-theme'
 import { useAnimationWorker } from '#/hooks/animation'
 
@@ -15,7 +15,7 @@ useAnimationWorker(new URL('../workers/meteor.ts', import.meta.url))
 <template>
   <EbbHome />
   <canvas
-    ref="animation"
     class="size-screen pointer-events-none left-0 top-0 fixed z-1"
+    ref="animation"
   ></canvas>
 </template>

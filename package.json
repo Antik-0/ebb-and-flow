@@ -4,7 +4,11 @@
   "description": "潮起潮落的个人博客",
   "type": "module",
   "workspaces": {
-    "packages": ["apps/*", "packages/*", "packages/configs/*"],
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "packages/configs/*"
+    ],
     "catalog": {
       "@unocss/nuxt": "^66.10.5",
       "@unocss/postcss": "^66.10.5",
@@ -38,7 +42,9 @@
     "up-deps": "bun run ./scripts/upgrade.ts"
   },
   "lint-staged": {
-    "*.{ts,tsx,css,vue,json}": ["bun run check"]
+    "*.{ts,tsx,css,vue,json}": [
+      "bun run check"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",

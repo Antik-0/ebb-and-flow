@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useAnimationWorker } from '#/hooks/animation'
 
 definePageMeta({ layout: false })
@@ -19,7 +19,7 @@ useAnimationWorker(new URL('../workers/sakura.ts', import.meta.url))
   <div class="archive-page" data-page="archive">
     <div class="cards-container">
       <ul class="cards">
-        <li v-for="(item, index) in articles" :key="index" class="card-item">
+        <li class="card-item" v-for="(item, index) in articles" :key="index">
           <NuxtLink class="block lg:transform-3d" :to="item.path">
             <article class="card relative">
               <figure class="card-content">
@@ -50,14 +50,14 @@ useAnimationWorker(new URL('../workers/sakura.ts', import.meta.url))
         </li>
       </ul>
     </div>
-    <div class="chain" data-pos="bs" aria-hidden="true"></div>
-    <div class="chain" data-pos="be" aria-hidden="true"></div>
-    <div class="shadow-mask" data-pos="is" aria-hidden="true"></div>
-    <div class="shadow-mask" data-pos="ie" aria-hidden="true"></div>
-    <div class="indicator" aria-hidden="true"></div>
+    <div aria-hidden="true" class="chain" data-pos="bs"></div>
+    <div aria-hidden="true" class="chain" data-pos="be"></div>
+    <div aria-hidden="true" class="shadow-mask" data-pos="is"></div>
+    <div aria-hidden="true" class="shadow-mask" data-pos="ie"></div>
+    <div aria-hidden="true" class="indicator"></div>
   </div>
   <canvas
-    ref="animation"
     class="size-screen pointer-events-none left-0 top-0 fixed z-1"
+    ref="animation"
   ></canvas>
 </template>

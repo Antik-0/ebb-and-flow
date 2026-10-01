@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { onMounted } from 'vue'
 import { ImageViewer } from '#/components/ImageViewer.tsx'
 import { Navbar } from '#/components/Navbar.tsx'
@@ -46,7 +46,7 @@ provideLayout({
       >
         <slot></slot>
 
-        <div v-if="isLoading" class="p-8 bg-black/60 inset-0 absolute">
+        <div class="p-8 bg-black/60 inset-0 absolute" v-if="isLoading">
           <slot name="loading"></slot>
         </div>
       </section>

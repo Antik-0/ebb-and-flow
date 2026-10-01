@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { AppTheme } from 'ebb-theme'
 import { EbbThemeProvider } from 'ebb-theme'
 import { themeConfig } from './theme.config'

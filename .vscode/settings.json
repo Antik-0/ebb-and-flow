@@ -7,6 +7,8 @@
     "source.biome": "explicit",
     "source.fixAll.ts": "explicit",
     "source.fixAll.biome": "explicit",
+    "source.sortImports": "never",
+    "source.organizeImports": "never",
     "source.organizeImports.biome": "explicit",
     "source.action.useSortedAttributes.biome": "explicit",
     "source.action.useSortedPackageJson.biome": "explicit",

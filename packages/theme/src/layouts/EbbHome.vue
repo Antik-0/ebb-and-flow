@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { navigateTo } from 'nuxt/app'
 import { onMounted, ref } from 'vue'
 import { CodeMotion } from '#/components/CodeMotion.tsx'
@@ -43,8 +43,8 @@ onMounted(() => setHtmlLayout('home'))
           />
           <CodeMotion
             :codes="theme.codes"
-            :paused="taglineMotion !== 'fade'"
             :cycle="true"
+            :paused="taglineMotion !== 'fade'"
           />
         </p>
       </h2>

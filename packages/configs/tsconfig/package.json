@@ -2,5 +2,9 @@
   "name": "@config/tsconfig",
   "private": true,
   "type": "module",
-  "files": ["tsconfig.base.json", "tsconfig.app.json", "tsconfig.node.json"]
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.app.json",
+    "tsconfig.node.json"
+  ]
 }

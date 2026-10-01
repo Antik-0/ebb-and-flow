@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps<{ src: string }>()
 
 const isLoading = ref(true)
@@ -17,16 +17,16 @@ onMounted(() => {
 
 <template>
   <picture class="overflow-hidden">
-    <div v-if="isLoading" class="p-8 bg-black inset-0 absolute z-10">
-      <img alt="loading" class="size-full object-contain" src="/loading.webp" />
+    <div class="p-8 bg-black inset-0 absolute z-10" v-if="isLoading">
+      <img alt="loading" class="size-full object-contain" src="/loading.webp">
     </div>
     <img
-      ref="cover"
       alt="cover"
       class="card-cover"
       loading="lazy"
+      ref="cover"
       :src="props.src"
       @load="onLoad"
-    />
+    >
   </picture>
 </template>

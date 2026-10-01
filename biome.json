@@ -93,11 +93,7 @@
         "organizeImports": {
           "level": "on",
           "options": {
-            "groups": [
-              {
-                "type": true
-              }
-            ]
+            "groups": [{ "type": true }]
           }
         },
         "useSortedAttributes": "on",
@@ -112,8 +108,7 @@
     "indentWidth": 2,
     "lineWidth": 80,
     "attributePosition": "auto",
-    "bracketSpacing": true,
-    "expand": "auto"
+    "bracketSpacing": true
   },
   "javascript": {
     "formatter": {
@@ -130,8 +125,7 @@
       "allowTrailingCommas": false
     },
     "formatter": {
-      "trailingCommas": "none",
-      "expand": "auto"
+      "trailingCommas": "none"
     }
   },
   "css": {
@@ -142,21 +136,10 @@
       "quoteStyle": "single"
     }
   },
-  "overrides": [
-    {
-      "includes": ["**/*.vue"],
-      "linter": {
-        "rules": {
-          "style": {
-            "useConst": "off",
-            "useImportType": "off"
-          },
-          "correctness": {
-            "noUnusedVariables": "off",
-            "noUnusedImports": "off"
-          }
-        }
-      }
+  "html": {
+    "experimentalFullSupportEnabled": true,
+    "formatter": {
+      "enabled": true
     }
-  ]
+  }
 }
