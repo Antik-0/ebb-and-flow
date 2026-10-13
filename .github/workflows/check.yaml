@@ -1,9 +1,9 @@
 #
 # CI: 代码检查与修复
 #
-name: Check ebb-and-flow Codes
+name: Check
 
-run-name: Check by ${{ github.actor }} on ${{ github.ref_name }}
+run-name: Check ${{ github.ref_name }} branch by ${{ github.actor }}
 
 on: workflow_dispatch
 
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: check-${{ github.run_id }}
+  group: check
   cancel-in-progress: true
 
 jobs:
