@@ -14,8 +14,6 @@ const BundledLangs = [
 ]
 
 const BundledThemes = [
-  import('shiki/themes/github-light.mjs'),
-  import('shiki/themes/github-dark.mjs'),
   import('shiki/themes/vitesse-light.mjs'),
   import('shiki/themes/vitesse-dark.mjs')
 ]

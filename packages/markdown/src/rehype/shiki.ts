@@ -3,16 +3,10 @@ import { withErrorHandler } from '../shared/error.ts'
 import { highlighterPromise } from '../shared/shiki.ts'
 import { getNodeText, visit } from '../shared/visit.ts'
 
-export interface RehypeShikiOptions {
-  theme?: 'github' | 'vitesse'
-}
-
 /**
  * ✨ 基于 `shiki` 的代码高亮解析
  */
-export function rehypeShiki(options: RehypeShikiOptions = {}) {
-  const { theme = 'vitesse' } = options
-
+export function rehypeShiki() {
   return withErrorHandler<HAST.Root>('rehypeShiki', async ast => {
     const highlighter = await highlighterPromise
 
@@ -35,8 +29,8 @@ export function rehypeShiki(options: RehypeShikiOptions = {}) {
         const preRoot = highlighter.codeToHast(codeRaw, {
           lang: language ?? 'text',
           themes: {
-            light: `${theme}-light`,
-            dark: `${theme}-dark`
+            light: 'vitesse-light',
+            dark: 'vitesse-dark'
           },
           defaultColor: false,
           transformers: [

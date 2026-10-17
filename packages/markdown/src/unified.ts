@@ -7,7 +7,6 @@ import { rehypeShiki } from './rehype/shiki.ts'
 import { remarkComponent } from './remark/component.ts'
 import { remarkMetadata } from './remark/metadata.ts'
 import { remarkToRehype } from './remark/to-hast.ts'
-import { parseFrontmatter } from './shared/frontmatter.ts'
 import { createVNodeTree } from './shared/vnode.ts'
 
 const remarkPlugins = [
@@ -37,18 +36,22 @@ export function createUnified() {
  * ✨ `unified.parser`
  */
 const ebbParser: Parser = (document, vfile) => {
-  const { content, template } = contentSplit(document)
-  if (template) {
+  const frontmatterReg = /^---\r?\n([\s\S]+?)\r?\n---/
+
+  const match = document.match(frontmatterReg)
+  if (match) {
+    const index = match[0].length
+    document = document.slice(index)
     try {
       // 解析 frontmatter
-      const frontmatter = parseFrontmatter(template)
-      vfile.data.frontmatter = frontmatter
+      vfile.data.frontmatter = Bun.YAML.parse(match[1]!)
     } catch (error) {
       throw new Error('[Markdown Parse Error]: ' + (error as Error).message)
     }
   }
+
   // 去除头部的换行符
-  const markdown = content.replaceAll(/^(\r?\n)+/g, '')
+  const markdown = document.replaceAll(/^(\r?\n)+/g, '')
   return fromMarkdown(markdown)
 }
 
@@ -67,18 +70,4 @@ const ebbCompiler: Compiler = (ast, file) => {
   } catch (error) {
     throw new Error('[Markdown Compiler Error]: ' + (error as Error).message)
   }
-}
-
-const frontmatterReg = /^---\r?\n([\s\S]+?)\r?\n---/
-
-function contentSplit(content: string): { content: string; template?: string } {
-  const match = content.match(frontmatterReg)
-  if (match) {
-    const index = match[0].length
-    return {
-      content: content.slice(index),
-      template: match[1]
-    }
-  }
-  return { content }
 }
