@@ -1,6 +1,6 @@
 import { ebbEnv } from 'ebb-env'
 import pc from 'picocolors'
-import { getArchive, getArticle } from './api.ts'
+import { getArchive, getArticle } from './api/articles.ts'
 
 const server = Bun.serve({
   port: ebbEnv.EBB_SERVER_PORT,

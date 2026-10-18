@@ -51,7 +51,6 @@ function parseEnvText(text: string) {
 interface EbbEnv {
   EBB_SERVER_PORT: number
   EBB_SERVER_BASE_URL: string
-  EBB_DB_URL: string
 }
 
 const rootPath = findRootPath()

@@ -1,7 +1,7 @@
 import type { MarkdownData } from 'ebb-markdown'
 import { desc } from 'drizzle-orm'
-import db from './db.ts'
-import { articles } from './schema.ts'
+import db from '#/db.ts'
+import { articles } from '#/schema/articles.ts'
 
 export async function getArticle(path: string) {
   const data = await db.query.articles.findFirst({ where: { path } })
@@ -48,19 +48,20 @@ export async function getArchive() {
 }
 
 const covers = [
-  'https://antik-yuyi.me/webp/wallhaven-3qrol9.webp',
-  'https://antik-yuyi.me/webp/wallhaven-gw2zpq.webp',
-  'https://antik-yuyi.me/webp/wallhaven-yqv7xx.webp',
-  'https://antik-yuyi.me/webp/wallhaven-8grg3j.webp',
-  'https://antik-yuyi.me/webp/wallhaven-k8kgz1.webp',
-  'https://antik-yuyi.me/webp/wallhaven-9mxxvd.webp',
-  'https://antik-yuyi.me/webp/wallhaven-9om1lk.webp',
-  'https://antik-yuyi.me/webp/wallhaven-eov7yl.webp',
-  'https://antik-yuyi.me/webp/wallhaven-lykqqq.webp',
-  'https://antik-yuyi.me/webp/wallhaven-zp5pwy.webp',
-  'https://antik-yuyi.me/webp/wallhaven-1qr1y3.webp',
-  'https://antik-yuyi.me/webp/wallhaven-576pq3.webp',
-  'https://antik-yuyi.me/webp/wallhaven-l39zlr.webp',
-  'https://antik-yuyi.me/webp/wallhaven-rrwvdq.webp',
-  'https://antik-yuyi.me/webp/wallhaven-xepeld.webp'
+  'https://antik-yuyi.me/cdn/wallhaven-1q2w63.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-3qrol9.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-6lemmw.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-7jxxp3.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-9mxxvd.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-9om1lk.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-216xmy.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-e8v2do.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-e8vvx8.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-jedeww.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-k8kgz1.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-mly2vm.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-rrwvdq.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-vp23lp.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-yqkwg7.webp',
+  'https://antik-yuyi.me/cdn/wallhaven-zpvvyo.webp'
 ]

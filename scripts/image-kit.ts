@@ -3,7 +3,7 @@ import pc from 'picocolors'
 import { EbbAndFlow } from './ebb-and-flow.ts'
 
 const targetDir = './images'
-const outputDir = './webp'
+const outputDir = './dist'
 const targetPath = Bun.fileURLToPath(new URL(targetDir, import.meta.url))
 const outputPath = Bun.fileURLToPath(new URL(outputDir, import.meta.url))
 

@@ -2,8 +2,8 @@ https://antik-yuyi.me {
 
 	tls /site/antik-yuyi.me.pem  /site/antik-yuyi.me.key
 
-    handle_path /webp/* {
-        root * /site/images/webp
+    handle_path /cdn/* {
+        root * /site/images
         file_server
     }
 

@@ -2,11 +2,16 @@
   "name": "ebb-server",
   "private": true,
   "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
   "scripts": {
-    "start": "bun run src/server.ts",
-    "sync": "bun run  src/sync.ts"
+    "dz:push": "drizzle-kit push",
+    "start": "bun run ./src/main.ts",
+    "sync": "bun run ./src/sync.ts"
   },
   "dependencies": {
+    "drizzle-kit": "1.0.0-rc.4",
     "drizzle-orm": "1.0.0-rc.4",
     "ebb-env": "workspace:*",
     "ebb-markdown": "workspace:*"

@@ -1,5 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@config/tsconfig/tsconfig.node.json",
+  "compilerOptions": {
+    "paths": {
+      "#/*": ["./src/*"]
+    },
+    "rewriteRelativeImportExtensions": false,
+    "noEmit": true
+  },
   "include": ["src/**/*"]
 }

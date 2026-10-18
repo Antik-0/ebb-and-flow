@@ -1,36 +1,36 @@
 import type { MarkdownData } from 'ebb-markdown'
 import { Database } from 'bun:sqlite'
 import { exists, mkdir } from 'node:fs/promises'
-import { dirname, resolve } from 'node:path'
+import { resolve } from 'node:path'
 import { sql } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/bun-sqlite'
-import { ebbEnv, rootPath } from 'ebb-env'
+import { rootPath } from 'ebb-env'
 import { createUnified } from 'ebb-markdown'
 import pc from 'picocolors'
-import { articles } from './schema.ts'
+import { articles } from './schema/articles.ts'
 import {
   createLogger,
   isCacheHit,
   loadCache,
   normalizePath,
   updateCache
-} from './utils.ts'
+} from './utils/index.ts'
 
-const dbURL = resolve(rootPath, ebbEnv.EBB_DB_URL)
-const dbDir = dirname(dbURL)
+const dbDir = Bun.fileURLToPath(new URL('../.db', import.meta.url))
+const dbURL = resolve(dbDir, 'ebb.sqlite')
 const docsDir = resolve(rootPath, 'docs')
 const cachePath = resolve(dbDir, 'cache.json')
 
 {
   const isExist = await exists(dbDir)
   if (!isExist) {
-    await mkdir(dbDir)
     console.log(pc.cyan(`[step] create db dir: ${dbDir} \n`))
+    await mkdir(dbDir)
   }
 
   console.log(pc.cyan(`[step] create sqlite table \n`))
-  const proc = Bun.spawn(['bunx', 'drizzle-kit', 'push'], {
-    cwd: rootPath,
+  const proc = Bun.spawn(['bun', 'drizzle-kit', 'push'], {
+    cwd: resolve(dbDir, '..'),
     stdin: 'inherit',
     stdout: 'inherit',
     stderr: 'inherit'

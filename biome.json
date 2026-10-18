@@ -7,7 +7,6 @@
       "packages/**/*",
       "scripts/*",
       "uno.config.ts",
-      "drizzle.config.ts",
       "package.json",
       "tsconfig.json",
       "!**/node_modules",

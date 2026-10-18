@@ -9,6 +9,7 @@ const packages = ['apps/*', 'packages/*', 'packages/configs/*']
 const effects = [
   'apps/docs/{.nuxt,.nitro,.output}',
   'apps/docs-next/{.next,out}',
+  'apps/server/{.db,.drizzle}',
   'packages/*/{dist,.turbo}',
   'packages/configs/*/{dist,.turbo}'
 ]
@@ -39,7 +40,6 @@ try {
     'node_modules',
     ...nodeModules,
     ...effectsList,
-    '.db',
     '.turbo',
     'bun.lock'
   ]

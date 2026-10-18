@@ -33,3 +33,4 @@ server.kill('SIGTERM')
 await server.exited
 
 console.log(pc.red('构建结束'))
+console.log('\n')
